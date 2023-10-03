@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface EmployeeRepository extends CrudRepository<Employee, String> {
     Employee findEmployeeByEmail(String email);
-    Employee findEmplyeeByName(String name);
+    Employee findEmployeeByName(String name);
     Employee findEmployeeByAccount_AccountNumber(int id);
 
     void deleteEmployeeByEmail(String email);
