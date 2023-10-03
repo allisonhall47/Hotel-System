@@ -7,6 +7,7 @@ public class Repair {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int repairId;
+    
     private CompletionStatus status;
     private String description;
 
