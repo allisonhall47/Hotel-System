@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 
 @SpringBootTest
-public class PersonRepositoryTests {
+public class EmployeeRepositoryTests {
     @Autowired
     private EmployeeRepository employeeRepository;
 
