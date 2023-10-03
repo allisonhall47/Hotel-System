@@ -24,6 +24,9 @@ public class ReservedRoom {
         this.reservedID = reservedID;
     }
 
+    public ReservedRoom() {
+    }
+
     public int getReservedID() {
         return reservedID;
     }

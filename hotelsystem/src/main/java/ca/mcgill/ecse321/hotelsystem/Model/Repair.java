@@ -1,5 +1,7 @@
 package ca.mcgill.ecse321.hotelsystem.Model;
 
+import jakarta.persistence.*;
+
 @Entity
 public class Repair {
     @Id
@@ -11,6 +13,10 @@ public class Repair {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "email")
     private Employee employee;
+
+    @SuppressWarnings("unused")
+    public Repair() {
+    }
 
     public Repair(CompletionStatus status, String description, Employee employee) {
         this.status = status;

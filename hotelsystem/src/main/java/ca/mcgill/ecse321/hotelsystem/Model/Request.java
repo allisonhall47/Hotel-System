@@ -1,5 +1,7 @@
 package ca.mcgill.ecse321.hotelsystem.Model;
 
+import jakarta.persistence.*;
+
 @Entity
 public class Request {
     @Id
@@ -12,10 +14,13 @@ public class Request {
     @JoinColumn(name = "reservationID")
     private Reservation reservation;
 
-    public Repair(CompletionStatus status, String description, Reservation reservation) {
+    public Request(CompletionStatus status, String description, Reservation reservation) {
         this.status = status;
         this.description = description;
         this.reservation = reservation;
+    }
+
+    public Request() {
     }
 
     public int getRequestId() {

@@ -10,13 +10,12 @@ public abstract class User {
     private String name;
 
 
-    protected User() {
+    public User() {
     }
 
-    public User(String email, String name, Account account) {
+    public User(String email, String name) {
         this.email = email;
         this.name = name;
-        this.account = account;
     }
 
     public String getEmail() {
@@ -33,14 +32,6 @@ public abstract class User {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Account getAccount() {
-        return account;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
     }
 
     @Override

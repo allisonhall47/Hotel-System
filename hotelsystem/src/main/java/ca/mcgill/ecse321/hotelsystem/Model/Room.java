@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 
 @Entity
 public class Room {
-    @id
+    @Id
     private String type;
     private int rate;
     private BedType bedType;
@@ -16,6 +16,9 @@ public class Room {
         this.rate = rate;
         this.bedType = bedType;
         this.capacity = capacity;
+    }
+
+    public Room() {
     }
 
     public String getType() {

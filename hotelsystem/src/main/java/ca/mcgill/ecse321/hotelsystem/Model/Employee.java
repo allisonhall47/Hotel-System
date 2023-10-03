@@ -7,13 +7,12 @@ public class Employee extends User {
 
     private int salary;
 
-    protected Employee() {
-
+    public Employee(String email, String name, int salary) {
+        super(email, name);
+        this.salary = salary;
     }
 
-    public Employee(String email, String name, Account account, int salary) {
-        super(email, name, account);
-        this.salary = salary;
+    public Employee() {
     }
 
     public int getSalary() {

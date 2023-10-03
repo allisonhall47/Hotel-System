@@ -6,11 +6,12 @@ import jakarta.persistence.Id;
 @Entity
 public class Customer extends User{
 
-    protected Customer() {
 
+
+    public Customer(String email, String name) {
+        super(email, name);
     }
 
-    public Customer(String email, String name, Account account) {
-        super(email, name, account);
+    public Customer() {
     }
 }

@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.hotelsystem.Model;
 
 import java.sql.Date;
 import java.sql.Time;
+import jakarta.persistence.*;
 
 @Entity
 public class Shift {
@@ -15,11 +16,19 @@ public class Shift {
     @JoinColumn(name = "email")
     private Employee employee;
 
-    public Shift(Time startTime, Time endTime, Date date, Employee employee) {
+    public Shift(int shiftId, Time startTime, Time endTime, Date date, Employee employee) {
+        this.shiftId = shiftId;
         this.startTime = startTime;
         this.endTime = endTime;
         this.date = date;
         this.employee = employee;
+    }
+
+    public Shift() {
+    }
+
+    public void setShiftId(int shiftId) {
+        this.shiftId = shiftId;
     }
 
     public int getShiftId() {

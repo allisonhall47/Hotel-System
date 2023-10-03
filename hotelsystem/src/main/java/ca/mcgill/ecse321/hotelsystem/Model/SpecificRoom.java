@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 
 @Entity
 public class SpecificRoom {
-    @id
+    @Id
     private int number;
     private ViewType view;
     private String description;
@@ -21,6 +21,9 @@ public class SpecificRoom {
         this.description = description;
         this.openForUse = openForUse;
         this.room = room;
+    }
+
+    public SpecificRoom() {
     }
 
     public int getNumber() {

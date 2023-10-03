@@ -1,8 +1,6 @@
 package ca.mcgill.ecse321.hotelsystem.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.sql.Date;
 
@@ -25,6 +23,9 @@ public class Account {
         this.address = address;
         this.dob = dob;
         this.user = user;
+    }
+
+    public Account() {
     }
 
     public User getUser() {
