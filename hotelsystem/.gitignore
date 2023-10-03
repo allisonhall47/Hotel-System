@@ -38,4 +38,8 @@ out/
 ### VS Code ###
 .vscode/
 
+hotelsystem/gradlew.bat
+hotelsystem/gradle/wrapper/gradle-wrapper.properties
+hotelsystem/gradle/wrapper/gradle-wrapper.jar
+hotelsystem/gradlew
 
