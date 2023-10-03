@@ -16,8 +16,7 @@ public class Shift {
     private Time endTime;
     private Date date;
     
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "email")
+    @ManyToOne
     private Employee employee;
 
     public Shift(int shiftId, Time startTime, Time endTime, Date date, Employee employee) {

@@ -10,7 +10,6 @@ public abstract class User {
     private String name;
 
     @OneToOne
-    @JoinColumn(name = "email")
     private Account account;
 
     public User() {

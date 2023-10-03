@@ -16,8 +16,7 @@ public class Reservation {
     private boolean paid;
     private CheckInStatus checkedIn;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "email")
+    @ManyToOne
     private Customer customer;
 
 

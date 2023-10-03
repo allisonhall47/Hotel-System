@@ -11,8 +11,7 @@ public class Repair {
     private CompletionStatus status;
     private String description;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "email")
+    @ManyToOne
     private Employee employee;
 
     @SuppressWarnings("unused")

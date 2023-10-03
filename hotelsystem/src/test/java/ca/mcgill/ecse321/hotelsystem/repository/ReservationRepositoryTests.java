@@ -1,5 +1,7 @@
 package ca.mcgill.ecse321.hotelsystem.repository;
 
+import ca.mcgill.ecse321.hotelsystem.Model.Account;
+import ca.mcgill.ecse321.hotelsystem.Model.CheckInStatus;
 import ca.mcgill.ecse321.hotelsystem.Model.Customer;
 import ca.mcgill.ecse321.hotelsystem.Model.Reservation;
 import org.junit.jupiter.api.AfterEach;
@@ -27,26 +29,17 @@ public class ReservationRepositoryTests {
 
     @Test
     public void testPersistAndLoadReservation() {
-        Customer customer = new Customer();
-        customer.setEmail("bill@gmail.com");
-        customer.setName("Bill");
-        customer.setAccount(null);
+        Customer customer = new Customer("bill@gmail.com", "Bill", null);
         customerRepository.save(customer);
 
-        Reservation reservation = new Reservation();
-        Date checkInDate = Date.valueOf("2023-10-23");
-        Date checkOutDate = Date.valueOf("2023-11-01");
-        reservation.setCheckIn(checkInDate);
-        reservation.setCheckOut(checkOutDate);
-        reservation.setPaid(false);
-        reservation.setNumPeople(2);
-        reservation.setCustomer(customer);
+        Reservation reservation = new Reservation(2, Date.valueOf("2023-10-23"), Date.valueOf("2023-11-01"), 1400, false, CheckInStatus.BeforeCheckIn);
         reservationRepository.save(reservation);
+
         Reservation reservationRep = reservationRepository.findReservationByReservationID(reservation.getReservationID());
 
         assertNotNull(reservationRep);
-        assertEquals(checkInDate, reservationRep.getCheckIn());
-        assertEquals(checkOutDate, reservationRep.getCheckOut());
+        assertEquals(reservation.getCheckIn(), reservationRep.getCheckIn());
+        assertEquals(reservation.getCheckOut(), reservationRep.getCheckOut());
         assertEquals(2, reservationRep.getNumPeople());
         assertFalse(reservationRep.isPaid());
     }

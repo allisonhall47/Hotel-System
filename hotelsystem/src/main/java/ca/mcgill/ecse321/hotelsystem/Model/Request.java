@@ -10,8 +10,7 @@ public class Request {
     private CompletionStatus status;
     private String description;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "reservationID")
+    @ManyToOne
     private Reservation reservation;
 
     public Request(CompletionStatus status, String description, Reservation reservation) {

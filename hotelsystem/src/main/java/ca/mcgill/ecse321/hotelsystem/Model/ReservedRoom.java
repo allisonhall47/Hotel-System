@@ -6,12 +6,10 @@ import jakarta.persistence.*;
 @Entity
 public class ReservedRoom {
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "reservationID")
+    @ManyToOne
     private Reservation reservation;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "number")
+    @ManyToOne
     private SpecificRoom specificRoom;
 
     @Id
