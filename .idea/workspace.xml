@@ -5,13 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ecbdc42b-94a4-4177-ae3e-1c0da903d29f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/project-group-01.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hotelsystem/src/main/java/ca/mcgill/ecse321/hotelsystem/repository/RoomRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hotelsystem/src/main/java/ca/mcgill/ecse321/hotelsystem/Model/Room.java" beforeDir="false" afterPath="$PROJECT_DIR$/hotelsystem/src/main/java/ca/mcgill/ecse321/hotelsystem/Model/Room.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hotelsystem/src/main/java/ca/mcgill/ecse321/hotelsystem/repository/RoomRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/hotelsystem/src/main/java/ca/mcgill/ecse321/hotelsystem/repository/RoomRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
