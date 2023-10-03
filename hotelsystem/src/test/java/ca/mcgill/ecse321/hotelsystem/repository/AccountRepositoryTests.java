@@ -46,5 +46,16 @@ public class AccountRepositoryTests {
         assertEquals(dob, account.getDob());
         assertEquals(address, account.getAddress());
         assertEquals(password, account.getPassword());
+
+    }
+
+    @Test
+    public void testAddAndDeleteMultipleAccounts() {
+        Integer acc1ID = 1;
+        Integer acc2ID = 2;
+        Integer acc3ID = 3;
+
+        Account acc1 = new Account();
+
     }
 }
