@@ -20,8 +20,6 @@ public class Reservation {
     @JoinColumn(name = "email")
     private Customer customer;
 
-    protected Reservation() {
-    }
 
     public Reservation(int numPeople, Date checkIn, Date checkOut, int totalPrice, boolean paid, CheckInStatus checkedIn) {
         this.numPeople = numPeople;
@@ -32,12 +30,11 @@ public class Reservation {
         this.checkedIn = checkedIn;
     }
 
-    public int getReservationID() {
-        return reservationID;
+    public Reservation() {
     }
 
-    public void setReservationID(int reservationID) {
-        this.reservationID = reservationID;
+    public int getReservationID() {
+        return reservationID;
     }
 
     public int getNumPeople() {

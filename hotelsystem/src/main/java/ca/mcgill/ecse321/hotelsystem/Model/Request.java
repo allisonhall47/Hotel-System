@@ -3,30 +3,28 @@ package ca.mcgill.ecse321.hotelsystem.Model;
 import jakarta.persistence.*;
 
 @Entity
-public class Repair {
+public class Request {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int repairId;
-    
+    private int requestId;
     private CompletionStatus status;
     private String description;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "email")
-    private Employee employee;
+    @JoinColumn(name = "reservationID")
+    private Reservation reservation;
 
-    @SuppressWarnings("unused")
-    public Repair() {
-    }
-
-    public Repair(CompletionStatus status, String description, Employee employee) {
+    public Request(CompletionStatus status, String description, Reservation reservation) {
         this.status = status;
         this.description = description;
-        this.employee = employee;
+        this.reservation = reservation;
     }
 
-    public int getRepairId() {
-        return repairId;
+    public Request() {
+    }
+
+    public int getRequestId() {
+        return requestId;
     }
 
     public CompletionStatus getStatus() {
@@ -37,8 +35,8 @@ public class Repair {
         return description;
     }
 
-    public Employee getEmployee() {
-        return employee;
+    public Reservation getReservation() {
+        return reservation;
     }
 
     public void setStatus(CompletionStatus status) {
@@ -49,8 +47,8 @@ public class Repair {
         this.description = description;
     }
 
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
     }
 
     @java.lang.Override
@@ -58,7 +56,7 @@ public class Repair {
         return "Repair{" +
                 "status=" + status +
                 ", description='" + description + '\'' +
-                ", employee=" + employee +
+                ", reservation=" + reservation +
                 '}';
     }
 }

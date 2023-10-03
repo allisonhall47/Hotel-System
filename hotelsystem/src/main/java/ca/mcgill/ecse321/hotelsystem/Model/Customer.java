@@ -5,19 +5,13 @@ import jakarta.persistence.Id;
 
 @Entity
 public class Customer extends User{
-//    @Id
-//    public String getEmail() {
-//        return super.getEmail();
-//    }
-//    public void setEmail(String email) {
-//        super.setEmail(email);
-//    }
 
-    protected Customer() {
 
+
+    public Customer(String email, String name) {
+        super(email, name);
     }
 
-    public Customer(String email, String name, Account account) {
-        super(email, name, account);
+    public Customer() {
     }
 }

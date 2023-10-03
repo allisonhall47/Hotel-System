@@ -1,8 +1,6 @@
 package ca.mcgill.ecse321.hotelsystem.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.sql.Date;
 
@@ -14,6 +12,29 @@ public class Account {
     private String password;
     private String address;
     private Date dob;
+
+    @OneToOne
+    @JoinColumn(name = "email")
+    private User user;
+
+    public Account(int accountNumber, String password, String address, Date dob, User user) {
+        this.accountNumber = accountNumber;
+        this.password = password;
+        this.address = address;
+        this.dob = dob;
+        this.user = user;
+    }
+
+    public Account() {
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public int getAccountNumber() {
         return accountNumber;

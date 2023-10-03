@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ecbdc42b-94a4-4177-ae3e-1c0da903d29f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/hotelsystem.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hotelsystem/src/main/java/ca/mcgill/ecse321/hotelsystem/Model/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/hotelsystem/src/main/java/ca/mcgill/ecse321/hotelsystem/Model/Account.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hotelsystem/src/main/java/ca/mcgill/ecse321/hotelsystem/Model/Customer.java" beforeDir="false" afterPath="$PROJECT_DIR$/hotelsystem/src/main/java/ca/mcgill/ecse321/hotelsystem/Model/Customer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hotelsystem/src/main/java/ca/mcgill/ecse321/hotelsystem/Model/Employee.java" beforeDir="false" afterPath="$PROJECT_DIR$/hotelsystem/src/main/java/ca/mcgill/ecse321/hotelsystem/Model/Employee.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hotelsystem/src/main/java/ca/mcgill/ecse321/hotelsystem/Model/Owner.java" beforeDir="false" afterPath="$PROJECT_DIR$/hotelsystem/src/main/java/ca/mcgill/ecse321/hotelsystem/Model/Owner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hotelsystem/src/main/java/ca/mcgill/ecse321/hotelsystem/Model/Repair.java" beforeDir="false" afterPath="$PROJECT_DIR$/hotelsystem/src/main/java/ca/mcgill/ecse321/hotelsystem/Model/Repair.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hotelsystem/src/main/java/ca/mcgill/ecse321/hotelsystem/Model/Request.java" beforeDir="false" afterPath="$PROJECT_DIR$/hotelsystem/src/main/java/ca/mcgill/ecse321/hotelsystem/Model/Request.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hotelsystem/src/main/java/ca/mcgill/ecse321/hotelsystem/Model/Shift.java" beforeDir="false" afterPath="$PROJECT_DIR$/hotelsystem/src/main/java/ca/mcgill/ecse321/hotelsystem/Model/Shift.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hotelsystem/src/main/java/ca/mcgill/ecse321/hotelsystem/Model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/hotelsystem/src/main/java/ca/mcgill/ecse321/hotelsystem/Model/User.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$/hotelsystem">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view>
+          <tree_state>
+            <expand />
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2WD9y9HNTBH3r8VQy8QY2WA4r2d" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/allis/IdeaProjects/ECSE321/project-group-01",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="HotelsystemApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="hotelsystem.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="ca.mcgill.ecse321.hotelsystem.HotelsystemApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ecbdc42b-94a4-4177-ae3e-1c0da903d29f" name="Changes" comment="" />
+      <created>1696256534949</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1696256534949</updated>
+      <workItem from="1696256536696" duration="10747000" />
+      <workItem from="1696345324004" duration="689000" />
+      <workItem from="1696346027804" duration="601000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

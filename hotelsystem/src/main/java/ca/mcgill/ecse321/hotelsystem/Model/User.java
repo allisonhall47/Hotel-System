@@ -9,18 +9,13 @@ public abstract class User {
     private String email;
     private String name;
 
-    //TODO in the model diagram , there is uni directional association from Account to User, should we remove this field ?
-    @OneToOne
-    @JoinColumn(name = "accountNumber")
-    private Account account;
 
-    protected User() {
+    public User() {
     }
 
-    public User(String email, String name, Account account) {
+    public User(String email, String name) {
         this.email = email;
         this.name = name;
-        this.account = account;
     }
 
     public String getEmail() {
@@ -39,13 +34,6 @@ public abstract class User {
         this.name = name;
     }
 
-    public Account getAccount() {
-        return account;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
-    }
     @Override
     public String toString() {
         return "User{" +
@@ -53,6 +41,5 @@ public abstract class User {
                 ", name='" + name + '\'' +
                 '}';
     }
-
 
 }
