@@ -9,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -67,24 +66,23 @@ public class AccountRepositoryTests {
         acc3 = accountRepository.save(acc3);
 
         accountRepository.deleteAccountByAccountNumber(acc2.getAccountNumber());
-
+        // Now only acc1 and acc3 should be left in the db
         List<Account> results = new ArrayList<>();
         accountRepository.findAll().forEach(results::add);
 
         assertEquals(2, results.size());
 
-        Optional<Account> shouldBeAcc1 = results.stream().filter(acc -> acc1PW.equals(acc.getPassword())).findFirst();
-        assertFalse(shouldBeAcc1.isEmpty(), "Account 1 is not present in db");
-        assertEquals(acc1.getAccountNumber(), shouldBeAcc1.get().getAccountNumber());
+        acc1 = accountRepository.findAccountByAccountNumber(acc1.getAccountNumber());
+        assertNotNull(acc1);
+        assertEquals(acc1PW, acc1.getPassword());
 
-        Optional<Account> shouldBeAcc3 = results.stream().filter(acc -> acc3PW.equals(acc.getPassword())).findFirst();
-        assertFalse(shouldBeAcc3.isEmpty(), "Account 3 is not present in db");
-        assertEquals(acc3.getAccountNumber(), shouldBeAcc3.get().getAccountNumber());
+        acc3 = accountRepository.findAccountByAccountNumber(acc3.getAccountNumber());
+        assertNotNull(acc3);
+        assertEquals(acc3PW, acc3.getPassword());
 
-        accountRepository.deleteAccountByAccountNumber(acc1.getAccountNumber());
-        assertEquals(acc3PW, accountRepository.findAccountByAccountNumber(acc3.getAccountNumber()).getPassword());
 
         accountRepository.deleteAll();
+        // Now no account should be left in the db
         assertFalse(accountRepository.findAll().iterator().hasNext(), "Accounts table should be empty");
     }
 }
