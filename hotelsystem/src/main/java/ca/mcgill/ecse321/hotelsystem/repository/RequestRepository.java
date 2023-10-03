@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.hotelsystem.repository;
 
+import ca.mcgill.ecse321.hotelsystem.Model.CompletionStatus;
 import ca.mcgill.ecse321.hotelsystem.Model.Request;
 import org.springframework.data.repository.CrudRepository;
 
@@ -10,4 +11,7 @@ public interface RequestRepository extends CrudRepository<Request, Integer> {
     List<Request> findRequestByReservation_ReservationID(int id);
     void deleteRequestByRequestId(int id);
     void deleteRequestsByReservation_ReservationID(int id);
+    Request findRequestsByStatus(CompletionStatus status);
+    
+
 }
