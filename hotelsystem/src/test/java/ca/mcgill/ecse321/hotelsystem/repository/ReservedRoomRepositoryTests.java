@@ -1,8 +1,6 @@
 package ca.mcgill.ecse321.hotelsystem.repository;
 
-import ca.mcgill.ecse321.hotelsystem.Model.CheckInStatus;
-import ca.mcgill.ecse321.hotelsystem.Model.Reservation;
-import ca.mcgill.ecse321.hotelsystem.Model.ReservedRoom;
+import ca.mcgill.ecse321.hotelsystem.Model.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +17,7 @@ public class ReservedRoomRepositoryTests {
     @Autowired
     private ReservationRepository reservationRepository;
 
-    @Autowired
+
 
     @AfterEach
     public void clearDatabase() {
@@ -29,6 +27,8 @@ public class ReservedRoomRepositoryTests {
     @Test
     public void testCreateAndRetrieveReservedRoom() {
         Reservation res = new Reservation(2, Date.valueOf("223-23-23"), Date.valueOf("223-23-23"),23,false, CheckInStatus.BeforeCheckIn);
+        reservationRepository.save(res);
 
+        Room room = new Room("double", 5, BedType.Double, 2);
     }
 }

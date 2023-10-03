@@ -14,7 +14,7 @@ public class Account {
     private Date dob;
 
 
-    public Account(String password, String address, Date dob) {
+    public Account(int accountNumber, String password, String address, Date dob) {
         this.accountNumber = accountNumber;
         this.password = password;
         this.address = address;
