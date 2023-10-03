@@ -9,10 +9,6 @@ public abstract class User {
     private String email;
     private String name;
 
-    //TODO in the model diagram , there is uni directional association from Account to User, should we remove this field ?
-    @OneToOne
-    @JoinColumn(name = "accountNumber")
-    private Account account;
 
     protected User() {
     }

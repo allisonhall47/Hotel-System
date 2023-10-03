@@ -14,9 +14,22 @@ public class ReservedRoom {
     @JoinColumn(name = "number")
     private SpecificRoom specificRoom;
 
-    public ReservedRoom(Reservation reservation, SpecificRoom specificRoom) {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int reservedID;
+
+    public ReservedRoom(Reservation reservation, SpecificRoom specificRoom, int reservedID) {
         this.reservation = reservation;
         this.specificRoom = specificRoom;
+        this.reservedID = reservedID;
+    }
+
+    public int getReservedID() {
+        return reservedID;
+    }
+
+    public void setReservedID(int reservedID) {
+        this.reservedID = reservedID;
     }
 
     public SpecificRoom getSpecificRoom() {
