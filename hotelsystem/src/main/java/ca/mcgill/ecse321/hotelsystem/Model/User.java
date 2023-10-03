@@ -9,11 +9,15 @@ public abstract class User {
     private String email;
     private String name;
 
+    @OneToOne
+    @JoinColumn(name = "email")
+    private Account account;
 
     public User() {
     }
 
-    public User(String email, String name) {
+    public User(String email, String name, Account account) {
+        this.account = account;
         this.email = email;
         this.name = name;
     }
@@ -32,6 +36,14 @@ public abstract class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
     @Override

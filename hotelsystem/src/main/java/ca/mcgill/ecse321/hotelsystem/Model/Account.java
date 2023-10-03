@@ -13,28 +13,17 @@ public class Account {
     private String address;
     private Date dob;
 
-    @OneToOne
-    @JoinColumn(name = "email")
-    private User user;
 
-    public Account(int accountNumber, String password, String address, Date dob, User user) {
+    public Account(int accountNumber, String password, String address, Date dob) {
         this.accountNumber = accountNumber;
         this.password = password;
         this.address = address;
         this.dob = dob;
-        this.user = user;
     }
 
     public Account() {
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     public int getAccountNumber() {
         return accountNumber;

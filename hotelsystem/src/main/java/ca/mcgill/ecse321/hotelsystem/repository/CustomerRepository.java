@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface CustomerRepository extends CrudRepository<Customer, String> {
     Customer findCustomerByEmail(String email);
-    void deleteCustomerBy(String email);
+    void deleteCustomerByEmail(String email);
     Customer findCustomerByName(String name);
     Customer findCustomerByAccount_AccountNumber(int accountNumber);
-    void deleteCustomerById(String s);
+    void deleteCustomerByName(String s);
     List<Customer> findAll();
 }

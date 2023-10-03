@@ -7,8 +7,8 @@ public class Owner extends User {
 
 
 
-    public Owner(String email, String name) {
-        super(email, name);
+    public Owner(String email, String name, Account account) {
+        super(email, name, account);
     }
 
     public Owner() {

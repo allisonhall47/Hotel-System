@@ -7,8 +7,8 @@ public class Employee extends User {
 
     private int salary;
 
-    public Employee(String email, String name, int salary) {
-        super(email, name);
+    public Employee(String email, String name, int salary, Account account) {
+        super(email, name, account);
         this.salary = salary;
     }
 
