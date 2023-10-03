@@ -36,10 +36,6 @@ public class Reservation {
         return reservationID;
     }
 
-    public void setReservationID(int reservationID) {
-        this.reservationID = reservationID;
-    }
-
     public int getNumPeople() {
         return numPeople;
     }

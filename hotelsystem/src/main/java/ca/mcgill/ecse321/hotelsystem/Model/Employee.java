@@ -23,4 +23,5 @@ public class Employee extends User {
     public void setSalary(int salary) {
         this.salary = salary;
     }
+
 }
