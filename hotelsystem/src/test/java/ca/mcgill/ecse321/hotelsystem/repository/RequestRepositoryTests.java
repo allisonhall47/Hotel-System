@@ -41,10 +41,12 @@ public class RequestRepositoryTests {
         requestRepository.deleteRequestByRequestId(requestId);
         requestRepository.deleteRequestsByReservation_ReservationID(requestId);
 
+        requestRepository.save(request);
+        request = requestRepository.findRequestByRequestId(requestId);
+
         assertNotNull(reservation10);
         assertEquals(reservation10,request.getReservation());
         assertEquals(description,request.getDescription());
-
 
 //        Person person = new Person();
 //        person.setName(name);
