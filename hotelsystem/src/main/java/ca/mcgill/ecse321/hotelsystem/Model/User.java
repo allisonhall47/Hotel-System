@@ -6,12 +6,22 @@ import jakarta.persistence.*;
 @MappedSuperclass
 public abstract class User {
     @Id
-    @GeneratedValue
     private String email;
-
     private String name;
+
+    //TODO in the model diagram , there is uni directional association from Account to User, should we remove this field ?
     @OneToOne
+    @JoinColumn(name = "accountNumber")
     private Account account;
+
+    protected User() {
+    }
+
+    public User(String email, String name, Account account) {
+        this.email = email;
+        this.name = name;
+        this.account = account;
+    }
 
     public String getEmail() {
         return email;

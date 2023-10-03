@@ -13,7 +13,7 @@ public class Account {
     private int accountNumber;
     private String password;
     private String address;
-    Date dob;
+    private Date dob;
 
     public int getAccountNumber() {
         return accountNumber;

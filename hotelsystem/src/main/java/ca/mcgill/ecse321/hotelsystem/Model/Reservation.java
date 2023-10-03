@@ -15,6 +15,7 @@ public class Reservation {
     private int totalPrice;
     private boolean paid;
     private CheckInStatus checkedIn;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "email")
     private Customer customer;
@@ -85,5 +86,13 @@ public class Reservation {
 
     public void setCheckedIn(CheckInStatus checkedIn) {
         this.checkedIn = checkedIn;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 }
