@@ -17,7 +17,7 @@ public class SpecificRoomRepositoryTests {
     private RoomRepository roomRepository;
 
     @Test
-    public void testCreateAndRetrieveReservedRoom() {
+    public void testCreateAndRetrieveSpecificRoom() {
         Room room = new Room("double", 5, BedType.Double, 2);
         roomRepository.save(room);
 
