@@ -45,24 +45,7 @@ public class RequestRepositoryTests {
         request = requestRepository.findRequestByRequestId(requestId);
 
         assertNotNull(reservation10);
-        assertEquals(reservation10,request.getReservation());
-        assertEquals(description,request.getDescription());
-
-//        Person person = new Person();
-//        person.setName(name);
-//        person.setAge(age);
-//        person.setAddress(address);
-//
-//        // Save person
-//        personRepository.save(person);
-//
-//        // Read person from database.
-//        person = personRepository.findPersonByName(name);
-//
-//        // Assert that person is not null and has correct attributes.
-//        assertNotNull(person);
-//        assertEquals(name, person.getName());
-//        assertEquals(age, person.getAge());
-//        assertEquals(address, person.getAddress());
+        assertEquals(reservation10, request.getReservation());
+        assertEquals(description, request.getDescription());
     }
 }

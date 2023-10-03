@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ReservationRepository extends CrudRepository<Reservation, Integer> {
     Reservation findReservationByReservationID(int id);
-    Reservation findReservationByCheckin(Date date);
+    List<Reservation> findReservationsByCheckin(Date date);
     List<Reservation> findReservationsByCustomerEmail(String email); // potentially customer_email
     void deleteByReservationID(int id);
 
