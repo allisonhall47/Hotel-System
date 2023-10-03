@@ -18,10 +18,9 @@ public class ReservedRoom {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int reservedID;
 
-    public ReservedRoom(Reservation reservation, SpecificRoom specificRoom, int reservedID) {
+    public ReservedRoom(Reservation reservation, SpecificRoom specificRoom) {
         this.reservation = reservation;
         this.specificRoom = specificRoom;
-        this.reservedID = reservedID;
     }
 
     public ReservedRoom() {

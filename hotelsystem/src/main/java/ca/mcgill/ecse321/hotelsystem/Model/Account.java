@@ -13,7 +13,6 @@ public class Account {
     private String address;
     private Date dob;
 
-
     public Account(String password, String address, Date dob) {
         this.password = password;
         this.address = address;
