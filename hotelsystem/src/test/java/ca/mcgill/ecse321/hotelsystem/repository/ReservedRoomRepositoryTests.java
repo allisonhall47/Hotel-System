@@ -32,7 +32,7 @@ public class ReservedRoomRepositoryTests {
 
     @Test
     public void testCreateAndRetrieveReservedRoom() {
-        Reservation res = new Reservation(2, Date.valueOf("223-23-23"), Date.valueOf("223-23-23"),23,false, CheckInStatus.BeforeCheckIn);
+        Reservation res = new Reservation(2, Date.valueOf("1884-11-23"), Date.valueOf("1992-11-23"),23,false, CheckInStatus.BeforeCheckIn);
         reservationRepository.save(res);
 
         Room room = new Room("double", 5, BedType.Double, 2);
