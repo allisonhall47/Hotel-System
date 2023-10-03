@@ -7,7 +7,7 @@ import java.sql.Date;
 @Entity
 public class Account {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int accountNumber;
     private String password;
     private String address;
