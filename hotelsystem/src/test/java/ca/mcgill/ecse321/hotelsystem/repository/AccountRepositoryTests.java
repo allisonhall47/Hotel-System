@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.hotelsystem.repository;
 
 import ca.mcgill.ecse321.hotelsystem.Model.Account;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,7 @@ public class AccountRepositoryTests {
     }
 
     @Test
+    @Transactional
     public void testAddAndDeleteMultipleAccounts() {
         String acc1PW = "1";
         String acc2PW = "2";

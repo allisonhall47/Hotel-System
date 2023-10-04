@@ -8,10 +8,10 @@ import java.util.List;
 
 public interface RequestRepository extends CrudRepository<Request, Integer> {
     Request findRequestByRequestId(int id);
-    List<Request> findRequestByReservation_ReservationID(int id);
+    List<Request> findRequestsByReservation_ReservationID(int id);
     void deleteRequestByRequestId(int id);
     void deleteRequestsByReservation_ReservationID(int id);
-    Request findRequestsByStatus(CompletionStatus status);
+    List<Request> findRequestsByStatus(CompletionStatus status);
     
 
 }
