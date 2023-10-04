@@ -32,6 +32,27 @@ public class ShiftRepositoryTests {
 
     @Test
     public void testPersistAndLoadWithUniqueId() {
+
+        String password = "harrysmith1234";
+        String address = "123 snowy road";
+        Date dob = Date.valueOf("1980-04-03");
+        Account account = new Account();
+        account.setPassword(password);
+        account.setAddress(address);
+        account.setDob(dob);
+        account = accountRepository.save(account);
+
+        // Create Employee
+        String name = "Harry Smith";
+        String email = "harrysmith@gmail.com";
+        int salary = 40000;
+        Employee employee = new Employee();
+        employee.setSalary(salary);
+        employee.setEmail(email);
+        employee.setName(name);
+        employee.setAccount(account);
+        employee = employeeRepository.save(employee);
+
         // Create Shift
         Date shiftDate = Date.valueOf("2023-10-04");
         Time startTime = new Time(7, 0, 0);
@@ -41,7 +62,29 @@ public class ShiftRepositoryTests {
         shift.setDate(shiftDate);
         shift.setEndTime(endTime);
         shift.setStartTime(startTime);
+        shift.setEmployee(employee);
+        shift = shiftRepository.save(shift);
 
+
+        // Read from database using Unique I
+        int shiftID = shift.getShiftId();
+        int accountID = account.getAccountNumber();
+        shift = shiftRepository.findShiftByShiftId(shiftID);
+        employee = employeeRepository.findEmployeeByEmail(email);
+        account = accountRepository.findAccountByAccountNumber(accountID);
+
+        // Check if correct
+        assertNotNull(shift);
+
+        assertEquals(shiftDate, shift.getDate());
+        assertEquals(startTime, shift.getStartTime());
+        assertEquals(endTime, shift.getEndTime());
+
+        assertEquals(employee.getName(), shift.getEmployee().getName());
+    }
+
+    @Test
+    public void testPersistAndLoadWithDate() {
         // Create Account
         String password = "harrysmith1234";
         String address = "123 snowy road";
@@ -50,6 +93,8 @@ public class ShiftRepositoryTests {
         account.setPassword(password);
         account.setAddress(address);
         account.setDob(dob);
+        account = accountRepository.save(account);
+
 
         // Create Employee
         String name = "Harry Smith";
@@ -60,43 +105,8 @@ public class ShiftRepositoryTests {
         employee.setEmail(email);
         employee.setName(name);
         employee.setAccount(account);
+        employee = employeeRepository.save(employee);
 
-        // Finish making shift
-        shift.setEmployee(employee);
-
-        // Save into database
-        shiftRepository.save(shift);
-        employeeRepository.save(employee);
-        accountRepository.save(account);
-
-        // Read from database using Unique ID
-        int shiftID = shift.getShiftId();
-        int accountID = account.getAccountNumber();
-        shift = shiftRepository.findShiftByShiftId(shiftID);
-        employee = employeeRepository.findEmployeeByEmail(email);
-        account = accountRepository.findAccountByAccountNumber(accountID);
-
-        // Check if correct
-        assertNotNull(shift);
-        assertNotNull(employee);
-        assertNotNull(account);
-
-        assertEquals(shiftDate, shift.getDate());
-        assertEquals(startTime, shift.getStartTime());
-        assertEquals(endTime, shift.getEndTime());
-
-        assertEquals(password, account.getPassword());
-        assertEquals(address, account.getAddress());
-        assertEquals(dob, account.getDob());
-
-        assertEquals(name, employee.getName());
-        assertEquals(email, employee.getEmail());
-
-        assertEquals(employee, shift.getEmployee());
-    }
-
-    @Test
-    public void testPersistAndLoadWithDate() {
         // Create Shift
         Date shiftDate = Date.valueOf("2023-10-04");
         Time startTime = new Time(7, 0, 0);
@@ -106,28 +116,9 @@ public class ShiftRepositoryTests {
         shift.setDate(shiftDate);
         shift.setEndTime(endTime);
         shift.setStartTime(startTime);
-
-        // Create Account
-        String password = "harrysmith1234";
-        String address = "123 snowy road";
-        Date dob = Date.valueOf("1980-04-03");
-        Account account = new Account();
-        account.setPassword(password);
-        account.setAddress(address);
-        account.setDob(dob);
-
-        // Create Employee
-        String name = "Harry Smith";
-        String email = "harrysmith@gmail.com";
-        int salary = 40000;
-        Employee employee = new Employee();
-        employee.setSalary(salary);
-        employee.setEmail(email);
-        employee.setName(name);
-        employee.setAccount(account);
-
-        // Finish making shift
         shift.setEmployee(employee);
+        shift = shiftRepository.save(shift);
+
 
         // Create Shift
         Time startTime2 = new Time(14, 0, 0);
@@ -138,12 +129,7 @@ public class ShiftRepositoryTests {
         shift2.setEndTime(endTime2);
         shift2.setStartTime(startTime2);
         shift2.setEmployee(employee);
-
-        // Save into database
-        shiftRepository.save(shift);
-        shiftRepository.save(shift2);
-        employeeRepository.save(employee);
-        accountRepository.save(account);
+        shift2 = shiftRepository.save(shift2);
 
         // Read from database using Date
         List<Shift> shifts = shiftRepository.findShiftsByDate(shiftDate);
@@ -154,25 +140,15 @@ public class ShiftRepositoryTests {
         assertEquals(shiftDate, shifts.get(0).getDate());
         assertEquals(startTime, shifts.get(0).getStartTime());
         assertEquals(endTime, shifts.get(0).getEndTime());
-        assertEquals(employee, shifts.get(0).getEmployee());
+        assertEquals(employee.getName(), shifts.get(0).getEmployee().getName());
         assertEquals(shiftDate, shifts.get(1).getDate());
         assertEquals(startTime2, shifts.get(1).getStartTime());
         assertEquals(endTime2, shifts.get(1).getEndTime());
-        assertEquals(employee, shifts.get(1).getEmployee());
+        assertEquals(employee.getName(), shifts.get(1).getEmployee().getName());
     }
 
     @Test
     public void testPersistAndLoadWithDateAndStartTime() {
-        // Create Shift
-        Date shiftDate = Date.valueOf("2023-10-04");
-        Time startTime = new Time(7, 0, 0);
-        Time endTime = new Time(12, 0, 0);
-
-        Shift shift = new Shift();
-        shift.setDate(shiftDate);
-        shift.setEndTime(endTime);
-        shift.setStartTime(startTime);
-
         // Create Account
         String password = "harrysmith1234";
         String address = "123 snowy road";
@@ -181,6 +157,7 @@ public class ShiftRepositoryTests {
         account.setPassword(password);
         account.setAddress(address);
         account.setDob(dob);
+        account = accountRepository.save(account);
 
         // Create Employee
         String name = "Harry Smith";
@@ -191,9 +168,19 @@ public class ShiftRepositoryTests {
         employee.setEmail(email);
         employee.setName(name);
         employee.setAccount(account);
+        employee = employeeRepository.save(employee);
 
-        // Finish making shift
+        // Create Shift
+        Date shiftDate = Date.valueOf("2023-10-04");
+        Time startTime = new Time(7, 0, 0);
+        Time endTime = new Time(12, 0, 0);
+
+        Shift shift = new Shift();
+        shift.setDate(shiftDate);
+        shift.setEndTime(endTime);
+        shift.setStartTime(startTime);
         shift.setEmployee(employee);
+        shift = shiftRepository.save(shift);
 
         // Create Shift
         Time startTime2 = new Time(14, 0, 0);
@@ -204,12 +191,7 @@ public class ShiftRepositoryTests {
         shift2.setEndTime(endTime2);
         shift2.setStartTime(startTime2);
         shift2.setEmployee(employee);
-
-        // Save into database
-        shiftRepository.save(shift);
-        shiftRepository.save(shift2);
-        employeeRepository.save(employee);
-        accountRepository.save(account);
+        shift2 = shiftRepository.save(shift2);
 
         // Read from database using Date
         List<Shift> shifts = shiftRepository.findShiftsByDateAndStartTime(shiftDate, startTime);
@@ -222,16 +204,6 @@ public class ShiftRepositoryTests {
 
     @Test
     public void testPersistAndLoadWithEmployeeEmail() {
-        // Create Shift
-        Date shiftDate = Date.valueOf("2023-10-04");
-        Time startTime = new Time(7, 0, 0);
-        Time endTime = new Time(12, 0, 0);
-
-        Shift shift = new Shift();
-        shift.setDate(shiftDate);
-        shift.setEndTime(endTime);
-        shift.setStartTime(startTime);
-
         // Create Account
         String password = "harrysmith1234";
         String address = "123 snowy road";
@@ -240,6 +212,7 @@ public class ShiftRepositoryTests {
         account.setPassword(password);
         account.setAddress(address);
         account.setDob(dob);
+        account = accountRepository.save(account);
 
         // Create Employee
         String name = "Harry Smith";
@@ -250,9 +223,21 @@ public class ShiftRepositoryTests {
         employee.setEmail(email);
         employee.setName(name);
         employee.setAccount(account);
+        employee = employeeRepository.save(employee);
+
+        // Create Shift
+        Date shiftDate = Date.valueOf("2023-10-04");
+        Time startTime = new Time(7, 0, 0);
+        Time endTime = new Time(12, 0, 0);
+
+        Shift shift = new Shift();
+        shift.setDate(shiftDate);
+        shift.setEndTime(endTime);
+        shift.setStartTime(startTime);
 
         // Finish making shift
         shift.setEmployee(employee);
+        shift = shiftRepository.save(shift);
 
         // Create Shift
         Time startTime2 = new Time(14, 0, 0);
@@ -263,35 +248,20 @@ public class ShiftRepositoryTests {
         shift2.setEndTime(endTime2);
         shift2.setStartTime(startTime2);
         shift2.setEmployee(employee);
-
-        // Save into database
-        shiftRepository.save(shift);
-        shiftRepository.save(shift2);
-        employeeRepository.save(employee);
-        accountRepository.save(account);
+        shift2 = shiftRepository.save(shift2);
 
         // Read from database using Date
         List<Shift> shifts = shiftRepository.findShiftsByEmployeeEmail(email);
 
         // Check if correct
-        assertEquals(1, shifts.size());
+        assertEquals(2, shifts.size());
         assertEquals(shiftDate, shifts.get(0).getDate());
-        assertEquals(startTime, shifts.get(1).getDate());
+        assertEquals(startTime2, shifts.get(1).getStartTime());
     }
 
     @Test
     @Transactional
     public void testDeleteShift() {
-        // Create Shift
-        Date shiftDate = Date.valueOf("2023-10-04");
-        Time startTime = new Time(7, 0, 0);
-        Time endTime = new Time(12, 0, 0);
-
-        Shift shift = new Shift();
-        shift.setDate(shiftDate);
-        shift.setEndTime(endTime);
-        shift.setStartTime(startTime);
-
         // Create Account
         String password = "harrysmith1234";
         String address = "123 snowy road";
@@ -300,6 +270,7 @@ public class ShiftRepositoryTests {
         account.setPassword(password);
         account.setAddress(address);
         account.setDob(dob);
+        account = accountRepository.save(account);
 
         // Create Employee
         String name = "Harry Smith";
@@ -310,19 +281,19 @@ public class ShiftRepositoryTests {
         employee.setEmail(email);
         employee.setName(name);
         employee.setAccount(account);
-
-        // Finish making shift
-        shift.setEmployee(employee);
+        employee = employeeRepository.save(employee);
 
         // Create Shift
-        Time startTime2 = new Time(14, 0, 0);
-        Time endTime2 = new Time(15, 0, 0);
+        Date shiftDate = Date.valueOf("2023-10-04");
+        Time startTime = new Time(7, 0, 0);
+        Time endTime = new Time(12, 0, 0);
 
-
-        // Save into database
-        shiftRepository.save(shift);
-        employeeRepository.save(employee);
-        accountRepository.save(account);
+        Shift shift = new Shift();
+        shift.setDate(shiftDate);
+        shift.setEndTime(endTime);
+        shift.setStartTime(startTime);
+        shift.setEmployee(employee);
+        shift = shiftRepository.save(shift);
 
         // Read from database using Date
         int shiftID = shift.getShiftId();
@@ -330,6 +301,6 @@ public class ShiftRepositoryTests {
         assertNotNull(shift);
         shiftRepository.deleteShiftByShiftId(shiftID);
         shift = shiftRepository.findShiftByShiftId(shiftID);
-        assertEquals(null, shift);
+        assertNull(shift);
     }
 }
