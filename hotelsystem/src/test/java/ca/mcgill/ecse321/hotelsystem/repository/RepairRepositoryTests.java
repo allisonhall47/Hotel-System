@@ -29,13 +29,6 @@ public class RepairRepositoryTests {
 
     @Test
     public void testPersistAndLoadWithUniqueId() {
-        // Create Repair
-        String description = "Leaking Roof";
-        CompletionStatus status = CompletionStatus.Pending;
-        Repair repair = new Repair();
-        repair.setDescription(description);
-        repair.setStatus(status);
-
         // Create Account
         String password = "harrysmith1234";
         String address = "123 snowy road";
@@ -44,6 +37,7 @@ public class RepairRepositoryTests {
         account.setPassword(password);
         account.setAddress(address);
         account.setDob(dob);
+        account = accountRepository.save(account);
 
         // Create Employee
         String name = "Harry Smith";
@@ -54,14 +48,16 @@ public class RepairRepositoryTests {
         employee.setEmail(email);
         employee.setName(name);
         employee.setAccount(account);
+        employee = employeeRepository.save(employee);
 
-        // Finish making repair
+        // Create Repair
+        String description = "Leaking Roof";
+        CompletionStatus status = CompletionStatus.Pending;
+        Repair repair = new Repair();
+        repair.setDescription(description);
+        repair.setStatus(status);
         repair.setEmployee(employee);
-
-        // Save into database
-        repairRepository.save(repair);
-        employeeRepository.save(employee);
-        accountRepository.save(account);
+        repair = repairRepository.save(repair);
 
         // Read from database using Unique ID
         int repairID = repair.getRepairId();
@@ -83,6 +79,7 @@ public class RepairRepositoryTests {
         account.setPassword(password);
         account.setAddress(address);
         account.setDob(dob);
+        account = accountRepository.save(account);
 
         // Create Employee
         String name = "Harry Smith";
@@ -93,6 +90,7 @@ public class RepairRepositoryTests {
         employee.setEmail(email);
         employee.setName(name);
         employee.setAccount(account);
+        employee = employeeRepository.save(employee);
 
         // Create Repair
         String description = "Leaking Roof";
@@ -100,22 +98,16 @@ public class RepairRepositoryTests {
         Repair repair = new Repair();
         repair.setDescription(description);
         repair.setStatus(status);
+        repair.setEmployee(employee);
+        repair = repairRepository.save(repair);
 
         // Create Repair
         String description2 = "Broken heating";
         Repair repair2 = new Repair();
         repair2.setDescription(description2);
         repair2.setStatus(status);
-
-        // Finish making repair
-        repair.setEmployee(employee);
         repair2.setEmployee(employee);
-
-        // Save into database
-        repairRepository.save(repair);
-        repairRepository.save(repair2);
-        employeeRepository.save(employee);
-        accountRepository.save(account);
+        repair2 = repairRepository.save(repair2);
 
         // Read from database using Date
         List<Repair> repairs = repairRepository.findRepairsByEmployeeEmail(email);
@@ -137,6 +129,7 @@ public class RepairRepositoryTests {
         account.setPassword(password);
         account.setAddress(address);
         account.setDob(dob);
+        account = accountRepository.save(account);
 
         // Create Employee
         String name = "Harry Smith";
@@ -147,6 +140,7 @@ public class RepairRepositoryTests {
         employee.setEmail(email);
         employee.setName(name);
         employee.setAccount(account);
+        employee = employeeRepository.save(employee);
 
         // Create Repair
         String description = "Leaking Roof";
@@ -154,13 +148,9 @@ public class RepairRepositoryTests {
         Repair repair = new Repair();
         repair.setDescription(description);
         repair.setStatus(status);
-
-        // Finish making repair
         repair.setEmployee(employee);
-
-        // Save into database
+        repair = repairRepository.save(repair);
         int repairId = repair.getRepairId();
-        repairRepository.save(repair);
 
         repair = repairRepository.findRepairByRepairId(repairId);
         assertNotNull(repair);
