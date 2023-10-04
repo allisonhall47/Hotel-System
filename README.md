@@ -19,7 +19,6 @@ During the development process for this application, our team will follow the ma
 | Patrick Ohl | [PatrickRic](https://github.com/PatrickRic)  | Computer Science | Exchange Student |  |
 | Wasif Somji | [wasifsomji](https://github.com/wasifsomji)  | Computer Engineering | U2 | Grow a beard |
 
-
 # Overview Table 🥇 
 | Name  | Role | Sprint 1 Hours | Sprint 2 Hours | Sprint 3 Hours | Presentation Hours | Total Effort Hours |
 | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
@@ -29,6 +28,10 @@ During the development process for this application, our team will follow the ma
 | Yassine Mimet  | | | | | | |
 | Patrick Ohl | | | | | | |
 | Wasif Somji | | | | | | |
+
+[Sprint 1](https://github.com/McGill-ECSE321-Fall2023/project-group-01/blob/main/README.md#sprint-1-)
+[Sprint 2](https://github.com/McGill-ECSE321-Fall2023/project-group-01#sprint-2-)
+[Sprint 3](https://github.com/McGill-ECSE321-Fall2023/project-group-01#sprint-3-)
 
 # Sprint 1 🏃 
 ## Effort Table
