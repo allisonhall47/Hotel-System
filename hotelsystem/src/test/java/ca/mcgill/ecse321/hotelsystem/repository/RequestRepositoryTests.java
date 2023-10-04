@@ -9,6 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -87,6 +90,8 @@ public class RequestRepositoryTests {
         assertEquals(status3, req3.getStatus());
     }
 
+    @Test
+    @Transactional
     public void testDeleteById() {
         String description = "Need more towels";
         CompletionStatus status = CompletionStatus.Pending;
@@ -94,6 +99,25 @@ public class RequestRepositoryTests {
 
         requestRepository.deleteRequestByRequestId(requestAndResId.req.getRequestId());
         assertFalse(requestRepository.findAll().iterator().hasNext(), "Request table should be empty");
+    }
+
+    @Test
+    @Transactional
+    public void testDeleteByReservation() {
+        String description = "Need more towels";
+        CompletionStatus status = CompletionStatus.Pending;
+        Reservation res12 = new Reservation();
+        res12 = reservationRepository.save(res12);
+
+        createRequest(res12, description, status);
+        createRequest(res12, description, status);
+        RequestAndResId requestAndResId3 = createRequest(null, description, status);
+
+        requestRepository.deleteRequestsByReservation_ReservationID(res12.getReservationID());
+        List<Request> allRequests = new ArrayList<>();
+        requestRepository.findAll().forEach(allRequests::add);
+        assertEquals(1, allRequests.size());
+        assertEquals(requestAndResId3.resId, allRequests.get(0).getReservation().getReservationID());
     }
 
 
