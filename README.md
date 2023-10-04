@@ -9,6 +9,10 @@ We are developing website for a hotel reservation system. The general functional
 
 During the development process for this application, our team will follow the main software engineering activities: specification, development, validation, and evolution.
 
+[Sprint 1](https://github.com/McGill-ECSE321-Fall2023/project-group-01/blob/main/README.md#sprint-1-), 
+[Sprint 2](https://github.com/McGill-ECSE321-Fall2023/project-group-01#sprint-2-), 
+[Sprint 3](https://github.com/McGill-ECSE321-Fall2023/project-group-01#sprint-3-)
+
 # The Team 👥 
 | Name  | Github | Major | Year | One bucket list item |
 | ------------- | ------------- | ------------- | ------------- | ------------- |
@@ -28,10 +32,6 @@ During the development process for this application, our team will follow the ma
 | Yassine Mimet  | | | | | | |
 | Patrick Ohl | | | | | | |
 | Wasif Somji | | | | | | |
-
-[Sprint 1](https://github.com/McGill-ECSE321-Fall2023/project-group-01/blob/main/README.md#sprint-1-)
-[Sprint 2](https://github.com/McGill-ECSE321-Fall2023/project-group-01#sprint-2-)
-[Sprint 3](https://github.com/McGill-ECSE321-Fall2023/project-group-01#sprint-3-)
 
 # Sprint 1 🏃 
 ## Effort Table
