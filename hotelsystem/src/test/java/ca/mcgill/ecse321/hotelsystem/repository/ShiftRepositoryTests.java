@@ -28,6 +28,8 @@ public class ShiftRepositoryTests {
     @AfterEach
     public void clearDatabase() {
         shiftRepository.deleteAll();
+        employeeRepository.deleteAll();
+        accountRepository.deleteAll();
     }
 
     @Test

@@ -24,6 +24,7 @@ public class RequestRepositoryTests {
     @AfterEach
     public void clearDatabase() {
         requestRepository.deleteAll();
+        reservationRepository.deleteAll();
     }
 
     @Test

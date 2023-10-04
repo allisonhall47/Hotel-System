@@ -22,6 +22,7 @@ public class OwnerRepositoryTests {
     @AfterEach
     public void clearDatabase() {
         ownerRepository.deleteAll();
+        accountRepository.deleteAll();
     }
 
     @Test

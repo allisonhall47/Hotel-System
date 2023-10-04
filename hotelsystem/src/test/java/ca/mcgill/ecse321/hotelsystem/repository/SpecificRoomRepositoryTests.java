@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.hotelsystem.repository;
 
 import ca.mcgill.ecse321.hotelsystem.Model.*;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +16,12 @@ public class SpecificRoomRepositoryTests {
 
     @Autowired
     private RoomRepository roomRepository;
+
+    @AfterEach
+    public void clearDatabase() {
+        repo.deleteAll();
+        roomRepository.deleteAll();
+    }
 
     @Test
     public void testCreateAndRetrieveSpecificRoom() {

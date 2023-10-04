@@ -25,6 +25,7 @@ public class ReservationRepositoryTests {
     @AfterEach
     public void clearDatabase() {
         reservationRepository.deleteAll();
+        customerRepository.deleteAll();
     }
 
     @Test

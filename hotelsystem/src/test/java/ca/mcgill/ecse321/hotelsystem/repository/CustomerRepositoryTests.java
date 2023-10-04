@@ -24,6 +24,7 @@ public class CustomerRepositoryTests {
     @AfterEach
     public void clearDatabase() {
         customerRepository.deleteAll();
+        accountRepository.deleteAll();
     }
     @Test
     public void testPersistAndLoad(){

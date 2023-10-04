@@ -28,6 +28,9 @@ public class ReservedRoomRepositoryTests {
     @AfterEach
     public void clearDatabase() {
         repo.deleteAll();
+        specificRoomRepository.deleteAll();
+        roomRepository.deleteAll();
+        reservationRepository.deleteAll();
     }
 
     @Test
