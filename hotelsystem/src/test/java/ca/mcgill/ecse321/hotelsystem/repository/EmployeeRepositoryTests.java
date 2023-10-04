@@ -1,23 +1,99 @@
 package ca.mcgill.ecse321.hotelsystem.repository;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
+import ca.mcgill.ecse321.hotelsystem.Model.Account;
+import ca.mcgill.ecse321.hotelsystem.Model.Customer;
+import ca.mcgill.ecse321.hotelsystem.Model.Employee;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.sql.Date;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
 public class EmployeeRepositoryTests {
     @Autowired
     private EmployeeRepository employeeRepository;
 
+    @Autowired
+    private AccountRepository accountRepository;
+
     @AfterEach
     public void clearDatabase() {
         employeeRepository.deleteAll();
     }
 
+    @Test
+    public void testPersistAndLoad(){
+        Account account = new Account("bestpassword", "1234 idk street", Date.valueOf("2002-10-23"));
+        account = accountRepository.save(account);
+
+        Employee employee = new Employee("bill@gmail.com", "Bill", 30000, account);
+        employee = employeeRepository.save(employee);
+
+        Employee employeeRep = employeeRepository.findEmployeeByEmail("bill@gmail.com");
+
+        assertNotNull(employeeRep);
+        assertEquals("Bill", employeeRep.getName());
+        assertEquals(Date.valueOf("2002-10-23"), employeeRep.getAccount().getDob());
+    }
+
+    @Test
+    public void testFindEmployeesByName(){
+        Account account = new Account("bestpassword", "1234 idk street", Date.valueOf("2002-10-23"));
+        account = accountRepository.save(account);
+
+        Employee employee = new Employee("bill@gmail.com", "Bill", 30000, account);
+        employee = employeeRepository.save(employee);
+
+        Account account2 = new Account("badpassword", "1234 nvm street", Date.valueOf("2002-12-05"));
+        account2 = accountRepository.save(account2);
+
+        Employee employee2 = new Employee("billo@gmail.com", "Bill", 30000, account2);
+        employee2 = employeeRepository.save(employee2);
+
+        List<Employee> employees = employeeRepository.findEmployeesByName("Bill");
+
+        assertEquals(2, employees.size());
+        assertEquals("bill@gmail.com", employees.get(0).getEmail());
+        assertEquals("1234 nvm street", employees.get(1).getAccount().getAddress());
+    }
+
+    @Test
+    public void testFindEmployeeByAccountId(){
+        Account account = new Account("bestpassword", "1234 idk street", Date.valueOf("2002-10-23"));
+        account = accountRepository.save(account);
+
+        Employee employee = new Employee("bill@gmail.com", "Bill", 30000, account);
+        employee = employeeRepository.save(employee);
+
+        Employee employeeRep = employeeRepository.findEmployeeByAccount_AccountNumber(account.getAccountNumber());
+
+        assertNotNull(employeeRep);
+        assertEquals("Bill", employeeRep.getName());
+    }
+
+
+    @Test
+    @Transactional
+    public void testDeleteEmployeeByEmail(){
+        Account account = new Account("bestpassword", "1234 idk street", Date.valueOf("2002-10-23"));
+        account = accountRepository.save(account);
+
+        Employee employee = new Employee("bill@gmail.com", "Bill", 30000, account);
+        employee = employeeRepository.save(employee);
+
+        Employee employeeRep = employeeRepository.findEmployeeByEmail("bill@gmail.com");
+        assertNotNull(employeeRep);
+
+        employeeRepository.deleteEmployeeByEmail("bill@gmail.com");
+        employeeRep = employeeRepository.findEmployeeByEmail("bill@gmail.com");
+        assertNull(employeeRep);
+    }
 
 }
