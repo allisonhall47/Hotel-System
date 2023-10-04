@@ -75,19 +75,6 @@ public class RepairRepositoryTests {
 
     @Test
     public void testPersistAndLoadWithEmployeeEmail() {
-        // Create Repair
-        String description = "Leaking Roof";
-        CompletionStatus status = CompletionStatus.Pending;
-        Repair repair = new Repair();
-        repair.setDescription(description);
-        repair.setStatus(status);
-
-        // Create Repair
-        String description2 = "Broken heating";
-        Repair repair2 = new Repair();
-        repair2.setDescription(description2);
-        repair2.setStatus(status);
-
         // Create Account
         String password = "harrysmith1234";
         String address = "123 snowy road";
@@ -106,6 +93,19 @@ public class RepairRepositoryTests {
         employee.setEmail(email);
         employee.setName(name);
         employee.setAccount(account);
+
+        // Create Repair
+        String description = "Leaking Roof";
+        CompletionStatus status = CompletionStatus.Pending;
+        Repair repair = new Repair();
+        repair.setDescription(description);
+        repair.setStatus(status);
+
+        // Create Repair
+        String description2 = "Broken heating";
+        Repair repair2 = new Repair();
+        repair2.setDescription(description2);
+        repair2.setStatus(status);
 
         // Finish making repair
         repair.setEmployee(employee);
@@ -129,13 +129,6 @@ public class RepairRepositoryTests {
     @Test
     @Transactional
     public void testDeleteRepair() {
-        // Create Repair
-        String description = "Leaking Roof";
-        CompletionStatus status = CompletionStatus.Pending;
-        Repair repair = new Repair();
-        repair.setDescription(description);
-        repair.setStatus(status);
-
         // Create Account
         String password = "harrysmith1234";
         String address = "123 snowy road";
@@ -154,6 +147,13 @@ public class RepairRepositoryTests {
         employee.setEmail(email);
         employee.setName(name);
         employee.setAccount(account);
+
+        // Create Repair
+        String description = "Leaking Roof";
+        CompletionStatus status = CompletionStatus.Pending;
+        Repair repair = new Repair();
+        repair.setDescription(description);
+        repair.setStatus(status);
 
         // Finish making repair
         repair.setEmployee(employee);
