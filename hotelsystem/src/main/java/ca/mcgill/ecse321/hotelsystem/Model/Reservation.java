@@ -20,13 +20,14 @@ public class Reservation {
     private Customer customer;
 
 
-    public Reservation(int numPeople, Date checkIn, Date checkOut, int totalPrice, boolean paid, CheckInStatus checkedIn) {
+    public Reservation( int numPeople, Date checkin, Date checkOut, int totalPrice, boolean paid, CheckInStatus checkedIn, Customer customer) {
         this.numPeople = numPeople;
-        this.checkin = checkIn;
+        this.checkin = checkin;
         this.checkOut = checkOut;
         this.totalPrice = totalPrice;
         this.paid = paid;
         this.checkedIn = checkedIn;
+        this.customer = customer;
     }
 
     public Reservation() {

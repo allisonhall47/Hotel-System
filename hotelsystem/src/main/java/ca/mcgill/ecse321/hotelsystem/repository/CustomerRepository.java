@@ -11,5 +11,4 @@ public interface CustomerRepository extends CrudRepository<Customer, String> {
     void deleteCustomerByEmail(String email);
     List<Customer> findCustomersByName(String name);
     Customer findCustomerByAccount_AccountNumber(int accountNumber);
-    List<Customer> findAll();
 }
