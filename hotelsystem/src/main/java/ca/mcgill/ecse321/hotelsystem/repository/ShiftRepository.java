@@ -12,7 +12,7 @@ public interface ShiftRepository extends CrudRepository<Shift, Integer>{
     Shift findShiftByShiftId(int shiftId);
     List<Shift> findShiftsByDate(Date date);
     List<Shift> findShiftsByDateAndStartTime(Date date, Time startTime);
-    List<Shift> findShiftsByEmployeeEmail(String email); // potential Employee_email
+    List<Shift> findShiftsByEmployeeEmail(String email);
     void deleteShiftByShiftId(int shiftId);
 
 

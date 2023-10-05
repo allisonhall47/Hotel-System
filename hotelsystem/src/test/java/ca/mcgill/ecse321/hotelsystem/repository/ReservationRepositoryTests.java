@@ -30,7 +30,7 @@ public class ReservationRepositoryTests {
 
     @Test
     public void testPersistAndLoadReservation() {
-        Customer customer = new Customer("bill@gmail.com", "Bill", null, 0);
+        Customer customer = new Customer("bill@gmail.com", "Bill", null);
         customer = customerRepository.save(customer);
 
         Reservation reservation = new Reservation(2, Date.valueOf("2023-10-23"), Date.valueOf("2023-11-01"), 1400, false, CheckInStatus.BeforeCheckIn, customer);
@@ -47,7 +47,7 @@ public class ReservationRepositoryTests {
 
     @Test
     public void testFindByCheckInDate(){
-        Customer customer = new Customer("bill@gmail.com", "Bill", null, 0);
+        Customer customer = new Customer("bill@gmail.com", "Bill", null);
         customer = customerRepository.save(customer);
 
 
@@ -71,7 +71,7 @@ public class ReservationRepositoryTests {
 
     @Test
     public void testFindReservationsByCustomerEmail(){
-        Customer customer = new Customer("bill@gmail.com", "Bill", null, 0);
+        Customer customer = new Customer("bill@gmail.com", "Bill", null);
         customer = customerRepository.save(customer);
 
         Date checkInDate = Date.valueOf("2023-10-23");
@@ -92,7 +92,7 @@ public class ReservationRepositoryTests {
     @Test
     @Transactional
     public void testDeleteById(){
-        Customer customer = new Customer("bill@gmail.com", "Bill", null, 0);
+        Customer customer = new Customer("bill@gmail.com", "Bill", null);
         customer = customerRepository.save(customer);
 
         Date checkInDate = Date.valueOf("2023-10-23");

@@ -10,4 +10,5 @@ public interface EmployeeRepository extends CrudRepository<Employee, String> {
     List<Employee> findEmployeesByName(String name);
     Employee findEmployeeByAccount_AccountNumber(int id);
     void deleteEmployeeByEmail(String email);
+    List<Employee> findAll();
 }

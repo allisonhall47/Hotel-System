@@ -79,6 +79,23 @@ public class EmployeeRepositoryTests {
         assertEquals("Bill", employeeRep.getName());
     }
 
+    @Test
+    public void testFindAllEmployees(){
+        Account account1 = new Account("bestpassword", "1234 idk street", Date.valueOf("2002-10-23"));
+        Account account2 = new Account("bestpassword", "1234 idk street", Date.valueOf("2002-10-23"));
+        Employee employee1 = new Employee("bill@gmail.com", "Bill", 30000, account1);
+        Employee employee2 = new Employee("jill@gmail.com", "Jill", 30000, account2);
+
+        account1 = accountRepository.save(account1);
+        account2 = accountRepository.save(account2);
+        employee1 = employeeRepository.save(employee1);
+        employee2 = employeeRepository.save(employee2);
+
+        List<Employee> employees = employeeRepository.findAll();
+
+        assertEquals(2, employees.size());
+    }
+
 
     @Test
     @Transactional
