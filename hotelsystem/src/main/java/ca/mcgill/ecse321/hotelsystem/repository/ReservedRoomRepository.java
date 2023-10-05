@@ -8,7 +8,8 @@ import java.util.List;
 
 @Repository
 public interface ReservedRoomRepository extends CrudRepository<ReservedRoom, Integer> {
-    public ReservedRoom findReservedRoomByReservedID(int id);
-    public List<ReservedRoom> findReservedRoomsByReservation_ReservationID(int id);
-    public List<ReservedRoom> findReservedRoomsBySpecificRoom_Number(int id);
+    ReservedRoom findReservedRoomByReservedID(int id);
+    List<ReservedRoom> findReservedRoomsByReservation_ReservationID(int id);
+    List<ReservedRoom> findReservedRoomsBySpecificRoom_Number(int id);
+    void deleteByReservedID(int id);
 }
