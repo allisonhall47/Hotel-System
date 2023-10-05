@@ -37,8 +37,10 @@ public class EmployeeRepositoryTests {
         Employee employee = new Employee("bill@gmail.com", "Bill", 30000, account);
         employee = employeeRepository.save(employee);
 
+        // retrieves employee by email
         Employee employeeRep = employeeRepository.findEmployeeByEmail("bill@gmail.com");
 
+        // Asserts retrieved employee and verifies properties
         assertNotNull(employeeRep);
         assertEquals("Bill", employeeRep.getName());
         assertEquals(Date.valueOf("2002-10-23"), employeeRep.getAccount().getDob());
@@ -58,8 +60,10 @@ public class EmployeeRepositoryTests {
         Employee employee2 = new Employee("billo@gmail.com", "Bill", 30000, account2);
         employee2 = employeeRepository.save(employee2);
 
+        // retrieves employees by name
         List<Employee> employees = employeeRepository.findEmployeesByName("Bill");
 
+        // Asserts retrieved customer is not null and verifies properties
         assertEquals(2, employees.size());
         assertEquals("bill@gmail.com", employees.get(0).getEmail());
         assertEquals("1234 nvm street", employees.get(1).getAccount().getAddress());

@@ -74,6 +74,8 @@ public class AccountRepositoryTests {
 
         assertEquals(2, results.size());
 
+        // The following tests are to verify account is not null
+        // Also to verify the getters and setters are working as expected
         acc1 = accountRepository.findAccountByAccountNumber(acc1.getAccountNumber());
         assertNotNull(acc1);
         assertEquals(acc1PW, acc1.getPassword());

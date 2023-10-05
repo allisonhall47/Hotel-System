@@ -34,15 +34,17 @@ public class CustomerRepositoryTests {
         Customer customer = new Customer("bill@gmail.com", "Bill", account);
         customer = customerRepository.save(customer);
 
+        // Retrieves customer by email
         Customer customerRep = customerRepository.findCustomerByEmail("bill@gmail.com");
 
+        // Asserting that the retrieved customer is not null and its properties match the expected value
         assertNotNull(customerRep);
         assertEquals("Bill", customerRep.getName());
         assertEquals(Date.valueOf("2002-10-23"), customerRep.getAccount().getDob());
     }
 
     @Test
-    public void testFindCustomersByName(){
+    public void testFindCustomersByName(){ // tests method to check retrieval of customers by name
         Account account1 = new Account("bestpassword", "1234 idk street", Date.valueOf("2002-10-23"));
         account1 = accountRepository.save(account1);
 
@@ -55,8 +57,10 @@ public class CustomerRepositoryTests {
         Customer customer2 = new Customer("billo@gmail.com", "Bill", null);
         customer2 = customerRepository.save(customer2);
 
+        // Retrieves customer by name
         List<Customer> customers = customerRepository.findCustomersByName("Bill");
 
+        // Asserts the number of retrieved customers and verifies properties
         assertEquals(2, customers.size());
         assertEquals("bill@gmail.com", customers.get(0).getEmail());
         assertNull(customers.get(1).getAccount());
@@ -70,8 +74,10 @@ public class CustomerRepositoryTests {
         Customer customer1 = new Customer("bill@gmail.com", "Bill", account1);
         customer1 = customerRepository.save(customer1);
 
+        // Retrieves customer by account ID
         Customer customerRep = customerRepository.findCustomerByAccount_AccountNumber(account1.getAccountNumber());
 
+        // Asserts retrieved customer is not null and verifies properties
         assertNotNull(customerRep);
         assertEquals("Bill", customerRep.getName());
     }
@@ -86,8 +92,10 @@ public class CustomerRepositoryTests {
         customer2 = customerRepository.save(customer2);
         customer3 = customerRepository.save(customer3);
 
+        // finds all customers in the repository
         List<Customer> customers = customerRepository.findAll();
 
+        // verifies number of customers match up
         assertEquals(3, customers.size());
     }
 
@@ -104,9 +112,9 @@ public class CustomerRepositoryTests {
 
         Customer customerRep = customerRepository.findCustomerByEmail("bill@gmail.com");
         assertNotNull(customerRep);
-
+        // deletes customer from respository
         customerRepository.deleteCustomerByEmail("bill@gmail.com");
         customerRep = customerRepository.findCustomerByEmail("bill@gmail.com");
-        assertNull(customerRep);
+        assertNull(customerRep); // verifies that account is gone from the repo
     }
 }
