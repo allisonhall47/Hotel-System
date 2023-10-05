@@ -39,8 +39,10 @@ public class RequestRepositoryTests {
 
         request = requestRepository.save(request);
 
+        // retrieves request by request ID
         request = requestRepository.findRequestByRequestId(request.getRequestId());
 
+        // asserts retrieved request and verifies properties
         assertNotNull(request);
         assertEquals(description, request.getDescription());
         assertEquals(status, request.getStatus());
@@ -64,7 +66,10 @@ public class RequestRepositoryTests {
         assertEquals(1, requestRepository.findRequestsByStatus(CompletionStatus.Done).size());
         assertEquals(0, requestRepository.findRequestsByStatus(CompletionStatus.InProgress).size());
 
+        // retrieves requests by status
         Request req2 = requestRepository.findRequestsByStatus(CompletionStatus.Done).get(0);
+
+        // asserts retrieved request and verifies properties
         assertEquals(descr2, req2.getDescription());
         assertEquals(status2, req2.getStatus());
     }
@@ -86,7 +91,11 @@ public class RequestRepositoryTests {
 
         assertEquals(2, requestRepository.findRequestsByReservation_ReservationID(res12.getReservationID()).size());
         assertEquals(1, requestRepository.findRequestsByReservation_ReservationID(requestAndResId3.resId).size());
+
+        // retrieves request by reservation ID
         Request req3 = requestRepository.findRequestsByReservation_ReservationID(requestAndResId3.resId).get(0);
+
+        // asserts retrieved request and verifies properties
         assertEquals(descr3, req3.getDescription());
         assertEquals(status3, req3.getStatus());
     }
@@ -97,8 +106,10 @@ public class RequestRepositoryTests {
         String description = "Need more towels";
         CompletionStatus status = CompletionStatus.Pending;
         RequestAndResId requestAndResId = createRequest(null, description, status);
-
+        // deletes a request
         requestRepository.deleteRequestByRequestId(requestAndResId.req.getRequestId());
+
+        // asserts there is no next request to verify deletion
         assertFalse(requestRepository.findAll().iterator().hasNext(), "Request table should be empty");
     }
 
@@ -114,9 +125,11 @@ public class RequestRepositoryTests {
         createRequest(res12, description, status);
         RequestAndResId requestAndResId3 = createRequest(null, description, status);
 
+        // deletes reservation by reservation ID
         requestRepository.deleteRequestsByReservation_ReservationID(res12.getReservationID());
         List<Request> allRequests = new ArrayList<>();
         requestRepository.findAll().forEach(allRequests::add);
+        // checks new size and that IDs match
         assertEquals(1, allRequests.size());
         assertEquals(requestAndResId3.resId, allRequests.get(0).getReservation().getReservationID());
     }

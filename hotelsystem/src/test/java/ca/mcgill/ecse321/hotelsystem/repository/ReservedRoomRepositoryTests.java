@@ -47,8 +47,10 @@ public class ReservedRoomRepositoryTests {
         ReservedRoom reservedRoom = new ReservedRoom(res,specificRoom);
         reservedRoom = repo.save(reservedRoom);
 
+        // retrieves the reserved room by reservedID
         ReservedRoom temp = repo.findReservedRoomByReservedID(reservedRoom.getReservedID());
 
+        // asserts retrieved reserved room and verifies properties
         assertNotNull(temp);
         assertEquals(reservedRoom.getReservedID(), temp.getReservedID());
         assertEquals(reservedRoom.getSpecificRoom().getNumber(), temp.getSpecificRoom().getNumber());
@@ -67,6 +69,7 @@ public class ReservedRoomRepositoryTests {
 
         ReservedRoom reservedRoom = new ReservedRoom(res,specificRoom);
         reservedRoom = repo.save(reservedRoom);
+
 
         ReservedRoom temp = repo.findReservedRoomByReservedID(reservedRoom.getReservedID());
 

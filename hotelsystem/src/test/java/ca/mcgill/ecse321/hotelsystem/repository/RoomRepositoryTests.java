@@ -17,7 +17,10 @@ public class RoomRepositoryTests {
         Room room = new Room("Idk", 5, BedType.King, 3);
         room = roomRepository.save(room);
 
+        // finds the room by type
         Room roomRep = roomRepository.findRoomByType("Idk");
+
+        // asserts the retrieved room and verifies properties
         assertNotNull(roomRep);
         assertEquals(5, roomRep.getRate());
         assertEquals(3, roomRep.getCapacity());

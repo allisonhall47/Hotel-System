@@ -36,8 +36,10 @@ public class ReservationRepositoryTests {
         Reservation reservation = new Reservation(2, Date.valueOf("2023-10-23"), Date.valueOf("2023-11-01"), 1400, false, CheckInStatus.BeforeCheckIn, customer);
         reservation = reservationRepository.save(reservation);
 
+        // retrieves reservation from reservation ID
         Reservation reservationRep = reservationRepository.findReservationByReservationID(reservation.getReservationID());
 
+        // asserts retrieved reservation and verifies properties
         assertNotNull(reservationRep);
         assertEquals(reservation.getCheckIn(), reservationRep.getCheckIn());
         assertEquals(reservation.getCheckOut(), reservationRep.getCheckOut());
@@ -62,7 +64,10 @@ public class ReservationRepositoryTests {
 
         reservation2 = reservationRepository.save(reservation2);
 
+        // retrieves properties by check ind date
         List<Reservation> reservations = reservationRepository.findReservationsByCheckin(checkInDate);
+
+        // asserts reservations' repository, as well as properties of the reservations
         assertEquals(2, reservations.size());
         assertEquals(Date.valueOf("2023-11-01"), reservations.get(0).getCheckOut());
         assertEquals(Date.valueOf("2023-11-05"), reservations.get(1).getCheckOut());
@@ -83,7 +88,10 @@ public class ReservationRepositoryTests {
         Reservation reservation2 = new Reservation(2, checkInDate, checkOutDate, 1700, false, CheckInStatus.BeforeCheckIn, customer);
         reservation2 = reservationRepository.save(reservation2);
 
+        // retrieves the reservation by customer email
         List<Reservation> reservations = reservationRepository.findReservationsByCustomerEmail("bill@gmail.com");
+
+        // asserts reservations' repository, as well as properties of the reservations
         assertEquals(2, reservations.size());
         assertEquals(Date.valueOf("2023-11-01"), reservations.get(0).getCheckOut());
         assertEquals(Date.valueOf("2023-11-05"), reservations.get(1).getCheckOut());
@@ -104,9 +112,11 @@ public class ReservationRepositoryTests {
         Reservation reservationRep = reservationRepository.findReservationByReservationID(reservationID);
 
         assertNotNull(reservationRep);
+
+        // deletes the reservation from the reservation
         reservationRepository.deleteReservationByReservationID(reservationID);
 
         reservationRep = reservationRepository.findReservationByReservationID(reservation.getReservationID());
-        assertNull(reservationRep);
+        assertNull(reservationRep); // makes sure the reservation is deleted
     }
 }

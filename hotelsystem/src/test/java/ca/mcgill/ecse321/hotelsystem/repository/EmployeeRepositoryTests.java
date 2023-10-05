@@ -63,7 +63,7 @@ public class EmployeeRepositoryTests {
         // retrieves employees by name
         List<Employee> employees = employeeRepository.findEmployeesByName("Bill");
 
-        // Asserts retrieved customer is not null and verifies properties
+        // Asserts retrieved employee is not null and verifies properties
         assertEquals(2, employees.size());
         assertEquals("bill@gmail.com", employees.get(0).getEmail());
         assertEquals("1234 nvm street", employees.get(1).getAccount().getAddress());
@@ -77,8 +77,10 @@ public class EmployeeRepositoryTests {
         Employee employee = new Employee("bill@gmail.com", "Bill", 30000, account);
         employee = employeeRepository.save(employee);
 
+        // retrieves employee by account number
         Employee employeeRep = employeeRepository.findEmployeeByAccount_AccountNumber(account.getAccountNumber());
 
+        // Asserts retrieved employee and verifies properties
         assertNotNull(employeeRep);
         assertEquals("Bill", employeeRep.getName());
     }
@@ -95,8 +97,10 @@ public class EmployeeRepositoryTests {
         employee1 = employeeRepository.save(employee1);
         employee2 = employeeRepository.save(employee2);
 
+        // finds all employees in the repository
         List<Employee> employees = employeeRepository.findAll();
 
+        // verifies number of employees matches up
         assertEquals(2, employees.size());
     }
 
@@ -112,10 +116,10 @@ public class EmployeeRepositoryTests {
 
         Employee employeeRep = employeeRepository.findEmployeeByEmail("bill@gmail.com");
         assertNotNull(employeeRep);
-
+        // deletes employee from repository
         employeeRepository.deleteEmployeeByEmail("bill@gmail.com");
         employeeRep = employeeRepository.findEmployeeByEmail("bill@gmail.com");
-        assertNull(employeeRep);
+        assertNull(employeeRep); // asserts that employee is gone from the repo
     }
 
 }
