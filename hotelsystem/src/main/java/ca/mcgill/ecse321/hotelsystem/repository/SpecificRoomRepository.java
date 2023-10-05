@@ -8,5 +8,9 @@ import java.util.List;
 
 public interface SpecificRoomRepository extends CrudRepository<SpecificRoom, Integer> {
     SpecificRoom findSpecificRoomByNumber(int number);
+    List<SpecificRoom> findSpecificRoomsByView(ViewType view);
+    List<SpecificRoom> findSpecificRoomsByRoom_Type(String type);
+    List<SpecificRoom> findSpecificRoomsByOpenForUseIsTrue();
+    List<SpecificRoom> findSpecificRoomsByOpenForUseIsFalse();
     void deleteByNumber(int number);
 }
