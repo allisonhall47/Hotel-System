@@ -1,7 +1,6 @@
 package ca.mcgill.ecse321.hotelsystem.repository;
 
 import ca.mcgill.ecse321.hotelsystem.Model.Account;
-import ca.mcgill.ecse321.hotelsystem.Model.Customer;
 import ca.mcgill.ecse321.hotelsystem.Model.Employee;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
