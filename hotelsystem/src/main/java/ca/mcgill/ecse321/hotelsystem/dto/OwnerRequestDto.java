@@ -1,24 +1,23 @@
 package ca.mcgill.ecse321.hotelsystem.dto;
 
 import ca.mcgill.ecse321.hotelsystem.Model.Account;
-import ca.mcgill.ecse321.hotelsystem.Model.Employee;
+import ca.mcgill.ecse321.hotelsystem.Model.Owner;
 
-public class EmployeeRequestDto {
+public class OwnerRequestDto {
+
     private String name;
     private String email;
-    private int salary;
 
     private int accountNumber;
 
-    public EmployeeRequestDto(String name, String email, int salary, int accountNumber){
+    public OwnerRequestDto(String name, String email, int accountNumber){
         this.name = name;
         this.email = email;
-        this.salary = salary;
         this.accountNumber = accountNumber;
     }
 
-    public Employee toModel(Account account) {
-        return new Employee(email, name, salary, account);
+    public Owner toModel(Account account){
+        return new Owner(email, name, account);
     }
 
     public String getName() {
@@ -35,14 +34,6 @@ public class EmployeeRequestDto {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public int getSalary() {
-        return salary;
-    }
-
-    public void setSalary(int salary) {
-        this.salary = salary;
     }
 
     public int getAccountNumber() {
