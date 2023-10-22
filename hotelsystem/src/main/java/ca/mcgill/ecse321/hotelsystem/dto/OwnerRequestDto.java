@@ -43,4 +43,5 @@ public class OwnerRequestDto {
     public void setAccountNumber(int accountNumber) {
         this.accountNumber = accountNumber;
     }
+
 }

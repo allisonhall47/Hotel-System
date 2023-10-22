@@ -63,4 +63,5 @@ public class SpecificRoomRequestDto {
     public void setRoomType(String roomType) {
         this.roomType = roomType;
     }
+
 }

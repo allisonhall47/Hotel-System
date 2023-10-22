@@ -43,4 +43,5 @@ public class ReservedRoomRequestDto {
     public void setRoomNumber(int roomNumber) {
         this.roomNumber = roomNumber;
     }
+
 }

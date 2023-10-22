@@ -97,4 +97,5 @@ public class ReservationRequestDto {
     public void setCustomerEmail(String customerEmail) {
         this.customerEmail = customerEmail;
     }
+
 }

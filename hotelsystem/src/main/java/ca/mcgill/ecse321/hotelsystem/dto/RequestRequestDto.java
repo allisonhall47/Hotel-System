@@ -8,14 +8,12 @@ public class RequestRequestDto {
 
     private int requestId;
     private String description;
-    private int room;
     private int reservationId;
     private CompletionStatus status;
 
     public RequestRequestDto(int requestId, String description, int room, int reservationId, CompletionStatus status){
         this.requestId = requestId;
         this.description = description;
-        this.room = room;
         this.reservationId = reservationId;
         this.status = status;
     }
@@ -40,14 +38,6 @@ public class RequestRequestDto {
         this.description = description;
     }
 
-    public int getRoom() {
-        return room;
-    }
-
-    public void setRoom(int room) {
-        this.room = room;
-    }
-
     public int getReservationId() {
         return reservationId;
     }
@@ -63,4 +53,5 @@ public class RequestRequestDto {
     public void setStatus(CompletionStatus status) {
         this.status = status;
     }
+
 }

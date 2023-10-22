@@ -62,4 +62,5 @@ public class ShiftRequestDto {
     public void setEmployeeEmail(String employeeEmail) {
         this.employeeEmail = employeeEmail;
     }
+
 }

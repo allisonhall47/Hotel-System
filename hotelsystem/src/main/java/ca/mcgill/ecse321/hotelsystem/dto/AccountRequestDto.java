@@ -8,18 +8,18 @@ public class AccountRequestDto {
 
     private String password;
     private String address;
-    private Date birthday;
+    private Date dob;
     private int accountNumber;
 
-    public AccountRequestDto(String password, String address, Date birthday, int accountNumber){
+    public AccountRequestDto(String password, String address, Date dob, int accountNumber){
         this.password = password;
         this.address = address;
-        this.birthday = birthday;
+        this.dob = dob;
         this.accountNumber = accountNumber;
     }
 
     public Account toModel(){
-        return new Account(password, address, birthday);
+        return new Account(password, address, dob);
     }
 
     public String getPassword() {
@@ -30,8 +30,8 @@ public class AccountRequestDto {
         return address;
     }
 
-    public Date getBirthday() {
-        return birthday;
+    public Date getdob() {
+        return dob;
     }
 
     public int getAccountNumber() {
@@ -46,7 +46,7 @@ public class AccountRequestDto {
         this.address = address;
     }
 
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
+    public void setdob(Date dob) {
+        this.dob = dob;
     }
 }

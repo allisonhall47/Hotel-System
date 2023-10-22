@@ -43,4 +43,5 @@ public class CustomerRequestDto {
     public void setAccountNumber(int accountNumber) {
         this.accountNumber = accountNumber;
     }
+
 }

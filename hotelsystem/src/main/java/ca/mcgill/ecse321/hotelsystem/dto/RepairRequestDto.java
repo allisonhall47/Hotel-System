@@ -53,4 +53,5 @@ public class RepairRequestDto {
     public void setStatus(CompletionStatus status) {
         this.status = status;
     }
+
 }
