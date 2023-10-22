@@ -1,18 +1,23 @@
 package ca.mcgill.ecse321.hotelsystem.dto;
 
 import ca.mcgill.ecse321.hotelsystem.Model.Account;
-import ca.mcgill.ecse321.hotelsystem.Model.Customer;
+import ca.mcgill.ecse321.hotelsystem.Model.Owner;
 
-public class CustomerResponseDto {
+public class OwnerRequestDto {
+
     private String name;
     private String email;
 
     private int accountNumber;
 
-    public CustomerResponseDto(Customer customer){
-        this.name = customer.getName();
-        this.email = customer.getEmail();
-        if (customer.getAccount() != null) this.accountNumber = customer.getAccount().getAccountNumber();
+    public OwnerRequestDto(String name, String email, int accountNumber){
+        this.name = name;
+        this.email = email;
+        this.accountNumber = accountNumber;
+    }
+
+    public Owner toModel(Account account){
+        return new Owner(email, name, account);
     }
 
     public String getName() {
