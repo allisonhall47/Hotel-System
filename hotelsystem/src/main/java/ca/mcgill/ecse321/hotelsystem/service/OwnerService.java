@@ -56,18 +56,14 @@ public class OwnerService {
 
     /**
      * CreateOwner: service method to create and store an owner in the database
-     * @param email: email for the owner
-     * @param name: name for the owner
-     * @param account: account for the owner
+     * @param owner: owner to be created
      * @return created owner
      * @throws HRSException if a user with the email already exist
      */
     @Transactional
-    public Owner createOwner(String email, String name, Account account){
-        if ((ownerRepository.findOwnerByEmail(email) == null) && (employeeRepository.findEmployeeByEmail(email) == null) && (customerRepository.findCustomerByEmail(email) == null)) {
-            Owner owner = new Owner(email, name, account);
-            ownerRepository.save(owner);
-            return owner;
+    public Owner createOwner(Owner owner){
+        if ((ownerRepository.findOwnerByEmail(owner.getEmail()) == null) && (employeeRepository.findEmployeeByEmail(owner.getEmail()) == null) && (customerRepository.findCustomerByEmail(owner.getEmail()) == null)) {
+            return ownerRepository.save(owner);
         } else {
             throw new HRSException(HttpStatus.CONFLICT, "A user with this email already exists.");
         }

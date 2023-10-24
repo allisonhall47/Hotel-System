@@ -56,16 +56,13 @@ public class CustomerService {
 
     /**
      * CreateCustomer: service method to create and store a customer in the database
-     * @param email: email for the customer
-     * @param name: name for the customer
-     * @param account: account for the customer
+     * @param customer: customer to be created
      * @return created customer
      * @throws HRSException if a user with the email already exist
      */
     @Transactional
-    public Customer createCustomer(String email, String name, Account account){
-        if ((customerRepository.findCustomerByEmail(email) == null) && (employeeRepository.findEmployeeByEmail(email) == null) && (ownerRepository.findOwnerByEmail(email) == null)) {
-            Customer customer = new Customer(email, name, account);
+    public Customer createCustomer(Customer customer){
+        if ((customerRepository.findCustomerByEmail(customer.getEmail()) == null) && (employeeRepository.findEmployeeByEmail(customer.getEmail()) == null) && (ownerRepository.findOwnerByEmail(customer.getEmail()) == null)) {
             return customerRepository.save(customer);
         } else {
             throw new HRSException(HttpStatus.CONFLICT, "A user with this email already exists.");

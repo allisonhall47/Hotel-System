@@ -54,8 +54,7 @@ public class AccountService {
      * @return created account
      */
     @Transactional
-    public Account createAccount(String password, String address, Date dob){
-        Account account = new Account(password, address, dob);
+    public Account createAccount(Account account){
         accountRepository.save(account);
         return account;
     }

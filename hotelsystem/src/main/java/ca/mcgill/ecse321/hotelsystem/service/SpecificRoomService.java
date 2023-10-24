@@ -1,6 +1,5 @@
 package ca.mcgill.ecse321.hotelsystem.service;
 
-import ca.mcgill.ecse321.hotelsystem.Model.Owner;
 import ca.mcgill.ecse321.hotelsystem.Model.SpecificRoom;
 import ca.mcgill.ecse321.hotelsystem.exception.HRSException;
 import ca.mcgill.ecse321.hotelsystem.repository.SpecificRoomRepository;

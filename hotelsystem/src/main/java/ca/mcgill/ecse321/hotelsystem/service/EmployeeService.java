@@ -56,16 +56,13 @@ public class EmployeeService {
 
     /**
      * CreateEmployee: service method to create and store an employee in the database
-     * @param email: email for the employee
-     * @param name: name for the employee
-     * @param account: account for the employee
+     * @param employee: employee to be created
      * @return created employee
      * @throws HRSException if a user with the email already exist
      */
     @Transactional
-    public Employee createEmployee(String email, String name, int salary, Account account){
-        if ((employeeRepository.findEmployeeByEmail(email) == null) && (customerRepository.findCustomerByEmail(email) == null) && (ownerRepository.findOwnerByEmail(email) == null)) {
-            Employee employee = new Employee(email, name, salary, account);
+    public Employee createEmployee(Employee employee){
+        if ((employeeRepository.findEmployeeByEmail(employee.getEmail()) == null) && (customerRepository.findCustomerByEmail(employee.getEmail()) == null) && (ownerRepository.findOwnerByEmail(employee.getEmail()) == null)) {
             return employeeRepository.save(employee);
         } else {
             throw new HRSException(HttpStatus.CONFLICT, "A user with this email already exists.");
