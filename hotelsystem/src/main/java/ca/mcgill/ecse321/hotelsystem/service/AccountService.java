@@ -1,9 +1,11 @@
 package ca.mcgill.ecse321.hotelsystem.service;
 
 import ca.mcgill.ecse321.hotelsystem.Model.Account;
+import ca.mcgill.ecse321.hotelsystem.exception.HRSException;
 import ca.mcgill.ecse321.hotelsystem.repository.AccountRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -18,20 +20,29 @@ public class AccountService {
     /**
      * GetAllAccounts: service method to fetch all existing accounts in the database
      * @return List of accounts
+     * @throws HRSException if no accounts exist in the system
      */
     @Transactional
     public List<Account> getAllAccounts() {
-        return accountRepository.findAll();
+        List<Account> accounts = accountRepository.findAll();
+        if(accounts.size() == 0){
+            throw new HRSException(HttpStatus.NOT_FOUND, "There are no accounts in the system.");
+        }
+        return accounts;
     }
 
     /**
      * GetAccountByAccountNumber: service number to fetch an existing account with a specific account number
      * @param accountNumber: number of the account
      * @return account
+     * @throws HRSException if the account does not exist
      */
     @Transactional
     public Account getAccountByAccountNumber(int accountNumber) {
         Account account = accountRepository.findAccountByAccountNumber(accountNumber);
+        if (account == null){
+            throw new HRSException(HttpStatus.NOT_FOUND, "Account not found.");
+        }
         return account;
     }
 
@@ -62,9 +73,5 @@ public class AccountService {
         oldAccount.setAddress(account.getAddress());
         return accountRepository.save(oldAccount);
     }
-
-
-
-
 
 }

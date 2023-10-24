@@ -25,19 +25,32 @@ public class OwnerService {
     @Autowired
     CustomerRepository customerRepository;
 
+    /**
+     * GetAllOwners: service method to fetch all existing owners in the database
+     * @return List of owners
+     * @throws HRSException if no owners exist in the system
+     */
     @Transactional
     public List<Owner> getAllOwners(){
-        return ownerRepository.findAll();
+        List<Owner> owners = ownerRepository.findAll();
+        if (owners.size() == 0){
+            throw new HRSException(HttpStatus.NOT_FOUND, "There are no owners in the system.");
+        }
+        return owners;
     }
 
     /**
-     * GetAccountByAccountNumber: service number to fetch an existing owner with a specific email
+     * GetOwnerByEmail: service number to fetch an existing owner with a specific email
      * @param email: email of the owner
      * @return owner
+     * @throws HRSException if the owner does not exist
      */
     @Transactional
     public Owner getOwnerByEmail(String email){
         Owner owner = ownerRepository.findOwnerByEmail(email);
+        if (owner == null){
+            throw new HRSException(HttpStatus.NOT_FOUND, "Owner not found.");
+        }
         return owner;
     }
 
@@ -47,6 +60,7 @@ public class OwnerService {
      * @param name: name for the owner
      * @param account: account for the owner
      * @return created owner
+     * @throws HRSException if a user with the email already exist
      */
     @Transactional
     public Owner createOwner(String email, String name, Account account){
@@ -55,7 +69,7 @@ public class OwnerService {
             ownerRepository.save(owner);
             return owner;
         } else {
-            throw new HRSException(HttpStatus.CONFLICT, "An account with this email already exists.");
+            throw new HRSException(HttpStatus.CONFLICT, "A user with this email already exists.");
         }
     }
 
@@ -70,7 +84,6 @@ public class OwnerService {
         oldOwner.setName(newOwnerInfo.getName());
         oldOwner.setAccount(newOwnerInfo.getAccount());
         return ownerRepository.save(oldOwner);
-
     }
 
 }
