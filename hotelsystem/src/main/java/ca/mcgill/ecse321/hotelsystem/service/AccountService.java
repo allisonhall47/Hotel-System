@@ -49,6 +49,20 @@ public class AccountService {
         return account;
     }
 
+    /**
+     * UpdateAccount: service method to update information in an account
+     * @param account: account with new information
+     * @return updated account
+     */
+    @Transactional
+    public Account updateAccount(Account account){
+        Account oldAccount = getAccountByAccountNumber(account.getAccountNumber());
+        oldAccount.setDob(account.getDob());
+        oldAccount.setPassword(account.getPassword());
+        oldAccount.setAddress(account.getAddress());
+        return accountRepository.save(oldAccount);
+    }
+
 
 
 
