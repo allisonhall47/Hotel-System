@@ -51,16 +51,10 @@ public class AccountService {
      * CreateAccount: service method to create and store an account in the database
      * @param account: account to create
      * @return created account
-     * @throws HRSException if account has an empty field or an invalid password
      */
     @Transactional
     public Account createAccount(Account account){
-        if(account.getAddress() == null || account.getDob() == null || account.getPassword() == null){
-            throw new HRSException(HttpStatus.BAD_REQUEST, "Empty field in the account");
-        }
-        if(!Pattern.compile("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$").matcher(account.getPassword()).find()){
-            throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid Password");
-        }
+        isValidAccount(account);
         accountRepository.save(account);
         return account;
     }
@@ -69,14 +63,35 @@ public class AccountService {
      * UpdateAccount: service method to update information in an account
      * @param account: account with new information
      * @return updated account
+     * @throws HRSException if the account is not found
      */
     @Transactional
     public Account updateAccount(Account account){
+        isValidAccount(account);
+
         Account oldAccount = getAccountByAccountNumber(account.getAccountNumber());
+        if (oldAccount == null){
+            throw new HRSException(HttpStatus.NOT_FOUND, "Account not found.");
+        }
+
         oldAccount.setDob(account.getDob());
         oldAccount.setPassword(account.getPassword());
         oldAccount.setAddress(account.getAddress());
         return accountRepository.save(oldAccount);
+    }
+
+    /**
+     * IsValidAccount: checks if account is valid to update or create
+     * @param account: account to check if valid
+     * @throws HRSException if account has an empty field or an invalid password
+     */
+    private void isValidAccount(Account account) {
+        if(account.getAddress() == null || account.getDob() == null || account.getPassword() == null){
+            throw new HRSException(HttpStatus.BAD_REQUEST, "Empty field in the account");
+        }
+        if(!Pattern.compile("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$").matcher(account.getPassword()).find()){
+            throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid Password");
+        }
     }
 
 }

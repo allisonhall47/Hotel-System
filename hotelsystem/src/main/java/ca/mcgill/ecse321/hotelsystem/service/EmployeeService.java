@@ -73,10 +73,15 @@ public class EmployeeService {
      * UpdateEmployeeInformation: service method to update information in an employee
      * @param newEmployeeInfo: employee with new information
      * @return updated employee
+     * @throws HRSException if employee not found
      */
     @Transactional
     public Employee updateEmployeeInformation(Employee newEmployeeInfo){
         Employee employee = getEmployeeByEmail(newEmployeeInfo.getEmail());
+        if (employee == null){
+            throw new HRSException(HttpStatus.NOT_FOUND, "Employee not found.");
+        }
+
         employee.setName(newEmployeeInfo.getName());
         employee.setSalary(newEmployeeInfo.getSalary());
         employee.setAccount(newEmployeeInfo.getAccount());

@@ -73,10 +73,15 @@ public class OwnerService {
      * UpdateOwnerInformation: service method to update information in an owner
      * @param newOwnerInfo: owner with new information
      * @return updated owner
+     * @throws HRSException if owner not found
      */
     @Transactional
     public Owner updateOwnerInformation(Owner newOwnerInfo){
         Owner oldOwner = getOwnerByEmail(newOwnerInfo.getEmail());
+        if (oldOwner == null){
+            throw new HRSException(HttpStatus.NOT_FOUND, "Owner not found.");
+        }
+
         oldOwner.setName(newOwnerInfo.getName());
         oldOwner.setAccount(newOwnerInfo.getAccount());
         return ownerRepository.save(oldOwner);

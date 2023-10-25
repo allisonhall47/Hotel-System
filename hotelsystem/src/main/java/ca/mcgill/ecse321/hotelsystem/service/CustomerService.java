@@ -73,10 +73,15 @@ public class CustomerService {
      * UpdateCustomerInformation: service method to update information in a customer
      * @param newCustomerInfo: owner with new information
      * @return updated customer
+     * @throws HRSException if customer not found
      */
     @Transactional
     public Customer updateCustomerInformation(Customer newCustomerInfo){
         Customer customer = getCustomerByEmail(newCustomerInfo.getEmail());
+        if (customer == null){
+            throw new HRSException(HttpStatus.NOT_FOUND, "Customer not found.");
+        }
+
         customer.setName(newCustomerInfo.getName());
         customer.setAccount(newCustomerInfo.getAccount());
         return customerRepository.save(customer);
