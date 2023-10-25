@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Service
 public class AccountService {
@@ -48,13 +49,18 @@ public class AccountService {
 
     /**
      * CreateAccount: service method to create and store an account in the database
-     * @param password: password for the account
-     * @param address: address for the account
-     * @param dob: date of birth for the account
+     * @param account: account to create
      * @return created account
+     * @throws HRSException if account has an empty field or an invalid password
      */
     @Transactional
     public Account createAccount(Account account){
+        if(account.getAddress() == null || account.getDob() == null || account.getPassword() == null){
+            throw new HRSException(HttpStatus.BAD_REQUEST, "Empty field in the account");
+        }
+        if(!Pattern.compile("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$").matcher(account.getPassword()).find()){
+            throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid Password");
+        }
         accountRepository.save(account);
         return account;
     }
