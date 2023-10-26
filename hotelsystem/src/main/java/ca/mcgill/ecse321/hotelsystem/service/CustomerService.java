@@ -62,6 +62,7 @@ public class CustomerService {
      */
     @Transactional
     public Customer createCustomer(Customer customer){
+        isValidCustomer(customer);
         if ((customerRepository.findCustomerByEmail(customer.getEmail()) == null) && (employeeRepository.findEmployeeByEmail(customer.getEmail()) == null) && (ownerRepository.findOwnerByEmail(customer.getEmail()) == null)) {
             return customerRepository.save(customer);
         } else {
@@ -77,14 +78,28 @@ public class CustomerService {
      */
     @Transactional
     public Customer updateCustomerInformation(Customer newCustomerInfo){
+        isValidCustomer(newCustomerInfo);
         Customer customer = getCustomerByEmail(newCustomerInfo.getEmail());
         if (customer == null){
             throw new HRSException(HttpStatus.NOT_FOUND, "Customer not found.");
         }
-
         customer.setName(newCustomerInfo.getName());
         customer.setAccount(newCustomerInfo.getAccount());
         return customerRepository.save(customer);
+    }
+
+    /**
+     * IsValidCustomer: checks if account is valid to update or create
+     * @param customer: customer to check if valid
+     * @throws HRSException if customer is null or has a null field
+     */
+    private void isValidCustomer(Customer customer){
+        if (customer == null){
+            throw new HRSException(HttpStatus.BAD_REQUEST, "Empty customer.");
+        }
+        if (customer.getName() == null || customer.getEmail() == null){
+            throw new HRSException(HttpStatus.BAD_REQUEST, "Empty field in the customer.");
+        }
     }
 
 }
