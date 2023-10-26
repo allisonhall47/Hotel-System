@@ -13,4 +13,6 @@ public interface ReservedRoomRepository extends CrudRepository<ReservedRoom, Int
     List<ReservedRoom> findReservedRoomsBySpecificRoom_Number(int id);
     void deleteByReservedID(int id);
 
+    List<ReservedRoom> findAll();
+
 }
