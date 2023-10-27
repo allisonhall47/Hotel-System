@@ -55,7 +55,7 @@ public class AccountService {
     @Transactional
     public Account createAccount(Account account){
         isValidAccount(account);
-        accountRepository.save(account);
+        account = accountRepository.save(account);
         return account;
     }
 
