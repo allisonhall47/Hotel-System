@@ -84,6 +84,34 @@ public class CustomerServiceTests {
     }
 
     /**
+     * Test get customer with valid email
+     */
+    @Test
+    public void testGetValidCustomer(){
+        String name = "Jane White";
+        String email = "jane@gmail.com";
+        Customer c = new Customer(email, name, null);
+
+        when(customerRepository.findCustomerByEmail(email)).thenReturn(c);
+
+        Customer output = customerService.getCustomerByEmail(email);
+        assertEquals(output, c);
+    }
+
+    /**
+     * Test get customer with invalid email
+     */
+    @Test
+    public void testGetInvalidCustomer(){
+        String email = "jane@gmail.com";
+        when(customerRepository.findCustomerByEmail(email)).thenReturn(null);
+
+        HRSException e = assertThrows(HRSException.class, () -> customerService.getCustomerByEmail(email));
+        assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
+        assertEquals(e.getMessage(), "Customer not found.");
+    }
+
+    /**
      * Test creating a valid customer without an account
      */
     @Test
@@ -145,6 +173,59 @@ public class CustomerServiceTests {
         HRSException e = assertThrows(HRSException.class, () -> customerService.createCustomer(c));
         assertEquals(e.getStatus(), HttpStatus.CONFLICT);
         assertEquals(e.getMessage(), "A user with this email already exists.");
+    }
+
+    /**
+     * Test creating a customer with an empty field
+     */
+    @Test
+    public void testCreateInvalidEmptyCustomer(){
+        Customer c = new Customer();
+        HRSException e = assertThrows(HRSException.class, () -> customerService.createCustomer(c));
+        assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
+        assertEquals(e.getMessage(), "Empty field in the customer.");
+    }
+
+    /**
+     * Test update customer with valid information
+     */
+    @Test
+    public void testValidUpdateCustomer(){
+        String name = "Jane White";
+        String email = "jane@gmail.com";
+        Customer c = new Customer(email, name, null);
+
+        when(customerRepository.findCustomerByEmail(email)).thenReturn(c);
+
+        String password = "Password123";
+        Date dob = Date.valueOf("1990-03-03");
+        String address = "435 Snow Hill Road";
+        Account a = accountService.createAccount(new Account(password, address, dob));
+
+        Customer c2 = new Customer(email, name, a);
+
+        when(customerRepository.save(c)).thenReturn(c2);
+        Customer output = customerService.updateCustomerInformation(c2);
+        assertEquals(output, c2);
+    }
+
+    /**
+     * Test update customer with invalid information - tries to update email
+     */
+    @Test
+    public void testInvalidUpdateCustomer(){
+        String name = "Jane White";
+        String email = "jane@gmail.com";
+        Customer c = new Customer(email, name, null);
+
+        when(customerRepository.findCustomerByEmail(email)).thenReturn(c);
+
+        String email2 = "jane@hotmail.com";
+        Customer c2 = new Customer(email2, name, null);
+
+        HRSException e = assertThrows(HRSException.class, () -> customerService.updateCustomerInformation(c2));
+        assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
+        assertEquals(e.getMessage(), "Customer not found.");
     }
 
 }
