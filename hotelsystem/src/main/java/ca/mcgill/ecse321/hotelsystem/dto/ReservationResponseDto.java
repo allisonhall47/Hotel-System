@@ -15,7 +15,7 @@ public class ReservationResponseDto {
     private Boolean paid;
     private CheckInStatus checkedIn;
 
-    private String customerEmail;
+    private Customer customer;
 
     public ReservationResponseDto(Reservation reservation){
         this.reservationId = reservation.getReservationID();
@@ -25,7 +25,7 @@ public class ReservationResponseDto {
         this.totalPrice = reservation.getTotalPrice();
         this.paid = reservation.isPaid();
         this.checkedIn = reservation.getCheckedIn();
-        if (reservation.getCustomer() != null) this.customerEmail = reservation.getCustomer().getEmail();
+        this.customer = reservation.getCustomer();
     }
 
     public int getReservationId() {
@@ -84,12 +84,12 @@ public class ReservationResponseDto {
         this.checkedIn = checkedIn;
     }
 
-    public String getCustomerEmail() {
-        return customerEmail;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCustomerEmail(String customerEmail) {
-        this.customerEmail = customerEmail;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
 }
