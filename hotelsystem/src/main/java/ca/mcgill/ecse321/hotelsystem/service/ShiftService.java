@@ -90,11 +90,34 @@ public class ShiftService {
         return shift;
     }
 
-    // make updateShift
-    // make isValidShift
+    // make deleteShift
+    @Transactional
+    public void deleteShift(Shift shift) {
+        isValidShift(shift);
+        shiftRepository.delete(shift);
+    }
+
+    @Transactional
+    public Shift updateShift(Shift shift) {
+        isValidShift(shift);
+        Shift previousShift = getShiftByShiftID(shift.getShiftId());
+        if (previousShift == null) {
+            throw new HRSException(HttpStatus.NOT_FOUND, "Shift not found.");
+        }
+        previousShift.setShiftId(shift.getShiftId());
+        previousShift.setDate(shift.getDate());
+        previousShift.setStartTime(shift.getStartTime());
+        previousShift.setShiftId(shift.getShiftId());
+
+        return shiftRepository.save(previousShift);
+    }
+
     private void isValidShift(Shift shift) {
         if (shift == null) {
             throw new HRSException(HttpStatus.NOT_FOUND, "Shift not found.");
+        }
+        if (shift.getStartTime().after(shift.getEndTime())) {
+            throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid start/end dates.");
         }
     }
 
