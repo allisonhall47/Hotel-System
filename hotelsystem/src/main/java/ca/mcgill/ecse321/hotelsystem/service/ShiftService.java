@@ -40,6 +40,9 @@ public class ShiftService {
      */
     @Transactional
     public Shift getShiftByShiftID(int shiftID) {
+        if (shiftID < 0) {
+            throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid shift ID.");
+        }
         Shift shift = shiftRepository.findShiftByShiftId(shiftID);
         if (shift == null) {
             throw new HRSException(HttpStatus.NOT_FOUND, "Shift not found.");
@@ -79,18 +82,19 @@ public class ShiftService {
     public List<Shift> getShiftsByDateAndStartTime(Date date, Time startTime) {
         List<Shift> stList = shiftRepository.findShiftsByDateAndStartTime(date, startTime);
         if (stList == null) {
-            throw new HRSException(HttpStatus.NOT_FOUND, "Shift list for this date and time does not exist");
+            throw new HRSException(HttpStatus.NOT_FOUND, "Shift list for this date and time does not exist.");
         }
         return stList;
     }
     @Transactional
     public Shift createShift(Shift shift) {
         isValidShift(shift);
-        shift = shiftRepository.save(shift);
-        return shift;
+        if ((shiftRepository.findShiftByShiftId(shift.getShiftId()) == null)) {
+            return shiftRepository.save(shift);
+        }
+        throw new HRSException(HttpStatus.CONFLICT, "A shift with this ID already exists.");
     }
 
-    // make deleteShift
     @Transactional
     public void deleteShift(Shift shift) {
         isValidShift(shift);
@@ -104,10 +108,12 @@ public class ShiftService {
         if (previousShift == null) {
             throw new HRSException(HttpStatus.NOT_FOUND, "Shift not found.");
         }
+        // setters and getters to test
         previousShift.setShiftId(shift.getShiftId());
         previousShift.setDate(shift.getDate());
         previousShift.setStartTime(shift.getStartTime());
         previousShift.setShiftId(shift.getShiftId());
+        previousShift.setEmployee(shift.getEmployee());
 
         return shiftRepository.save(previousShift);
     }
@@ -116,9 +122,17 @@ public class ShiftService {
         if (shift == null) {
             throw new HRSException(HttpStatus.NOT_FOUND, "Shift not found.");
         }
+        if (shift.getStartTime() == null || shift.getEndTime() == null || shift.getDate() == null) {
+            throw new HRSException(HttpStatus.BAD_REQUEST, "Empty fields are present.");
+        }
         if (shift.getStartTime().after(shift.getEndTime())) {
-            throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid start/end dates.");
+            throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid start/end times.");
+        }
+        // checks if an employee already has a shift at the same date and time
+        List<Shift> shiftsWithSameDateAndTime = shiftRepository.findShiftsByDateAndStartTime(shift.getDate(), shift.getStartTime());
+
+        if (shiftsWithSameDateAndTime.stream().anyMatch(s -> s.getEmployee().getEmail().equals(shift.getEmployee().getEmail()))) {
+            throw new HRSException(HttpStatus.CONFLICT, "A shift with this start date, start time, and employee already exists.");
         }
     }
-
 }
