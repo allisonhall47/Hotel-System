@@ -24,8 +24,10 @@ public class RepairService {
 
     @Transactional
     public Repair createRepair(int employeeAccountId, String description) {
-        if (description == null || description.length() == 0) {
-            throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid repair description (empty)");
+        if (description == null || description.isBlank()) {
+            throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid repair description: Empty");
+        } else if (description.length() < 10) {
+            throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid repair description: Too short");
         }
 
         Employee emp = employeeRepository.findEmployeeByAccount_AccountNumber(employeeAccountId);
@@ -46,7 +48,7 @@ public class RepairService {
         }
 
         rep.setStatus(status);
-        repairRepository.save(rep);
+        rep = repairRepository.save(rep);
 
         return rep;
     }
@@ -79,14 +81,11 @@ public class RepairService {
     /**
      * GetAllRepairs: service method to fetch all existing repairs in the database
      * @return List of repairs
-     * @throws HRSException if no repairs exist in the system
      */
     @Transactional
     public List<Repair> getAllRepairs(){
         List<Repair> repairs = repairRepository.findAll();
-        if (repairs.size() == 0){
-            throw new HRSException(HttpStatus.NOT_FOUND, "There are no repairs in the system.");
-        }
         return repairs;
     }
+
 }
