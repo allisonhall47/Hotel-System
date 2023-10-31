@@ -15,14 +15,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.lenient;
-import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 import org.springframework.http.HttpStatus;
 
@@ -49,7 +46,7 @@ public class RepairServiceTests {
 
     @BeforeEach
     public void setMockOutput() {
-        lenient().when(employeeDao.findById(anyString())).thenAnswer((InvocationOnMock invocation) -> {
+        lenient().when(employeeDao.findEmployeeByAccount_AccountNumber(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
             Employee emp = new Employee(EMAIL, NAME, SALARY, new Account());
             emp.getAccount().setAccountNumber(ACC_ID);
             return emp;
@@ -57,7 +54,7 @@ public class RepairServiceTests {
 
         lenient().when(repairDao.findRepairByRepairId(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
             if (invocation.getArgument(0).equals(VALID_REPAIR_KEY)) {
-                return new Repair(CompletionStatus.Pending, REPAIR_DESCRIPTION, employeeDao.findEmployeeByEmail(EMAIL));
+                return new Repair(CompletionStatus.Pending, REPAIR_DESCRIPTION, employeeDao.findEmployeeByAccount_AccountNumber(ACC_ID));
             } else {
                 return null;
             }
@@ -90,7 +87,7 @@ public class RepairServiceTests {
         Repair rep = service.readRepairById(VALID_REPAIR_KEY);
         assertNotNull(rep);
         assertEquals(REPAIR_DESCRIPTION, rep.getDescription());
-        assertEquals(ACC_ID, rep.getEmployee().getAccount().getAccountNumber());
+        assertEquals(EMAIL, rep.getEmployee().getEmail());
     }
 
     @Test
@@ -101,6 +98,21 @@ public class RepairServiceTests {
     }
 
     @Test
-    publoic
+    public void testChangeRepairInvalidStatus() {
+        HRSException ex = assertThrows(HRSException.class, () -> service.changeRepairStatus(VALID_REPAIR_KEY, null));
+        assertEquals(HttpStatus.BAD_REQUEST, ex.getStatus());
+    }
+
+    @Test
+    public void testChangeInvalidRepairStatus() {
+        HRSException ex = assertThrows(HRSException.class, () -> service.changeRepairStatus(VALID_REPAIR_KEY+1, CompletionStatus.InProgress));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatus());
+    }
+
+    @Test
+    public void testDeleteInvalidRepair() {
+        HRSException ex = assertThrows(HRSException.class, () -> service.deleteRepair(VALID_REPAIR_KEY+ 1));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatus());
+    }
 
 }
