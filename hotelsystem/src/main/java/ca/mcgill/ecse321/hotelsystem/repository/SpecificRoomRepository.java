@@ -12,8 +12,5 @@ public interface SpecificRoomRepository extends CrudRepository<SpecificRoom, Int
     List<SpecificRoom> findSpecificRoomsByRoom_Type(String type);
     List<SpecificRoom> findSpecificRoomsByOpenForUseIsTrue();
     List<SpecificRoom> findSpecificRoomsByOpenForUseIsFalse();
-
-    List<SpecificRoom> findAll();
     void deleteByNumber(int number);
-
 }
