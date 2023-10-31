@@ -12,8 +12,6 @@ public interface RequestRepository extends CrudRepository<Request, Integer> {
     void deleteRequestByRequestId(int id);
     void deleteRequestsByReservation_ReservationID(int id);
     List<Request> findRequestsByStatus(CompletionStatus status);
-
-    List<Request> findAll();
     
 
 }
