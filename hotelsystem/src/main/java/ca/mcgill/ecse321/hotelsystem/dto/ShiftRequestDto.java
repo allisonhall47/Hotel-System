@@ -24,7 +24,7 @@ public class ShiftRequestDto {
     }
 
     public Shift toModel(Employee employee){
-        return new Shift(shiftId, startTime, endTime, date, employee);
+        return new Shift(startTime, endTime, date, employee);
     }
 
     public Time getStartTime() {

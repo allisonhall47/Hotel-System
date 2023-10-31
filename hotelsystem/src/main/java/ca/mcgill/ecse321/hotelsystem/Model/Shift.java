@@ -19,8 +19,7 @@ public class Shift {
     @ManyToOne
     private Employee employee;
 
-    public Shift(int shiftId, Time startTime, Time endTime, Date date, Employee employee) {
-        this.shiftId = shiftId;
+    public Shift(Time startTime, Time endTime, Date date, Employee employee) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.date = date;

@@ -38,13 +38,13 @@ public class ShiftServiceTests {
             Time startTime1 = Time.valueOf("6:30:00");
             Time endTime1 = Time.valueOf("12:30:00");
             Date date1 = Date.valueOf("1994-06-15");
-            Shift shift1 = new Shift(shiftId1,startTime1,endTime1,date1,null);
+            Shift shift1 = new Shift(startTime1,endTime1,date1,null);
 
             int shiftId2 = 373;
             Time startTime2 = Time.valueOf("12:30:00");
             Time endTime2 = Time.valueOf("18:30:00");
             Date date2 = Date.valueOf("1994-06-15");
-            Shift shift2 = new Shift(shiftId2,startTime2,endTime2,date2,null);
+            Shift shift2 = new Shift(startTime2,endTime2,date2,null);
 
             List<Shift> shiftList = new ArrayList<>();
             shiftList.add(shift1);
@@ -74,7 +74,7 @@ public class ShiftServiceTests {
             Time startTime = Time.valueOf("7:30:00");
             Time endTime = Time.valueOf("14:30:00");
             Date date = Date.valueOf("1993-04-20");
-            Shift shift = new Shift(shiftID,startTime,endTime,date,null);
+            Shift shift = new Shift(startTime,endTime,date,null);
 
             when(shiftRepository.findShiftByShiftId(shiftID)).thenReturn(shift);
 
@@ -88,7 +88,7 @@ public class ShiftServiceTests {
             Time startTime = Time.valueOf("7:30:00");
             Time endTime = Time.valueOf("14:30:00");
             Date date = Date.valueOf("1993-04-20");
-            Shift shift = new Shift(shiftID,startTime,endTime,date,null);
+            Shift shift = new Shift(startTime,endTime,date,null);
 
             when(shiftRepository.save(shift)).thenReturn(shift);
 
@@ -107,7 +107,7 @@ public class ShiftServiceTests {
             Time startTime = Time.valueOf("7:30:00");
             Time endTime = Time.valueOf("5:30:00");
             Date date = Date.valueOf("1993-04-20");
-            Shift shift = new Shift(shiftID,startTime,endTime,date,null);
+            Shift shift = new Shift(startTime,endTime,date,null);
 
             HRSException e = assertThrows(HRSException.class, () -> shiftService.createShift(shift));
             assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
@@ -128,7 +128,8 @@ public class ShiftServiceTests {
             Time startTime = Time.valueOf("7:30:00");
             Time endTime = Time.valueOf("5:30:00");
             Date date = Date.valueOf("1993-04-20");
-            Shift shift = new Shift(shiftID,startTime,endTime,date,null);
+            Shift shift = new Shift(startTime,endTime,date,null);
+            shift.setShiftId(shiftID);
 
             when(shiftRepository.findShiftByShiftId(shiftID)).thenReturn(shift);
             Shift outputShift = shiftService.getShiftByShiftID(shift.getShiftId());
@@ -153,10 +154,12 @@ public class ShiftServiceTests {
             Time endTime = Time.valueOf("9:30:00");
             Date date = Date.valueOf("1993-04-20");
 
-            Shift s1 = new Shift(shiftID,startTime, endTime, date, null);
+            Shift s1 = new Shift(startTime, endTime, date, null);
+            s1.setShiftId(shiftID);
             when(shiftRepository.findShiftByShiftId(shiftID)).thenReturn(s1);
 
-            Shift s2 = new Shift(shiftID,startTime, endTime, date, null);
+            Shift s2 = new Shift(startTime, endTime, date, null);
+            s2.setShiftId(shiftID);
 
             HRSException e = assertThrows(HRSException.class, () -> shiftService.createShift(s2));
             assertEquals(e.getStatus(),HttpStatus.CONFLICT);
@@ -175,7 +178,7 @@ public class ShiftServiceTests {
             Account account = new Account();
             Employee employee = new Employee(email,name,salary,account);
 
-            Shift shift = new Shift(shiftID,startTime,endTime,date,employee);
+            Shift shift = new Shift(startTime,endTime,date,employee);
 
             when(shiftRepository.save(shift)).thenReturn(shift);
             when(employeeRepository.findEmployeeByEmail(email)).thenReturn(employee);
@@ -201,11 +204,11 @@ public class ShiftServiceTests {
             Account account = new Account();
 
             Employee employee = new Employee(email,name,salary,account);
-            Shift s1 = new Shift(shiftID,startTime,endTime,date,employee);
+            Shift s1 = new Shift(startTime,endTime,date,employee);
             when(shiftRepository.findShiftsByDateAndStartTime(date,startTime)).thenReturn(Collections.singletonList(s1));
 
 
-            Shift s2 = new Shift(shiftID1,startTime, endTime, date, employee);
+            Shift s2 = new Shift(startTime, endTime, date, employee);
 
             HRSException e = assertThrows(HRSException.class, () -> shiftService.createShift(s2));
             assertEquals(e.getStatus(),HttpStatus.CONFLICT);
@@ -229,10 +232,10 @@ public class ShiftServiceTests {
 
             Employee employee = new Employee(email,name,salary,account);
 
-            Shift s1 = new Shift(shiftID1,startTime1,endTime1,date,employee);
+            Shift s1 = new Shift(startTime1,endTime1,date,employee);
             when(shiftRepository.findShiftsByDate(date)).thenReturn(Collections.singletonList(s1));
 
-            Shift s2 = new Shift(shiftID2,startTime2,endTime2,date,employee);
+            Shift s2 = new Shift(startTime2,endTime2,date,employee);
             HRSException e = assertThrows(HRSException.class, () -> shiftService.createShift(s2));
             assertEquals(e.getStatus(),HttpStatus.CONFLICT);
             assertEquals(e.getMessage(), "The employee has an overlapping shift on this date.");
@@ -252,7 +255,7 @@ public class ShiftServiceTests {
 
             Employee employee = new Employee(email, name, salary, account);
 
-            Shift shift = new Shift(shiftID, startTime, endTime, date, employee);
+            Shift shift = new Shift(startTime, endTime, date, employee);
 
             // Mocking that employee doesn't exist in the system.
             when(employeeRepository.findEmployeeByEmail(email)).thenReturn(null);
