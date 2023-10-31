@@ -1,7 +1,10 @@
 package ca.mcgill.ecse321.hotelsystem.service;
 
+import ca.mcgill.ecse321.hotelsystem.Model.Employee;
 import ca.mcgill.ecse321.hotelsystem.Model.Shift;
 import ca.mcgill.ecse321.hotelsystem.exception.HRSException;
+import ca.mcgill.ecse321.hotelsystem.repository.CustomerRepository;
+import ca.mcgill.ecse321.hotelsystem.repository.EmployeeRepository;
 import ca.mcgill.ecse321.hotelsystem.repository.ShiftRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,9 @@ public class ShiftService {
 
     @Autowired
     ShiftRepository shiftRepository;
+
+    @Autowired
+    EmployeeRepository employeeRepository;
 
     /**
      * GetAllShifts: service method to fetch all existing shifts in the database
@@ -97,7 +103,9 @@ public class ShiftService {
 
     @Transactional
     public void deleteShift(Shift shift) {
-        isValidShift(shift);
+        if (!shiftRepository.existsById(shift.getShiftId())) {
+            throw new HRSException(HttpStatus.BAD_REQUEST, "Shift does not exist.");
+        }
         shiftRepository.delete(shift);
     }
 
@@ -133,6 +141,24 @@ public class ShiftService {
 
         if (shiftsWithSameDateAndTime.stream().anyMatch(s -> s.getEmployee().getEmail().equals(shift.getEmployee().getEmail()))) {
             throw new HRSException(HttpStatus.CONFLICT, "A shift with this start date, start time, and employee already exists.");
+        }
+
+        // write to determine no person overlaps shift
+        // same employee, same date, no overlap can occur
+        List<Shift> shiftsOnSameDate = shiftRepository.findShiftsByDate(shift.getDate());
+
+        if (shiftsOnSameDate.stream().anyMatch(existingShift ->
+                existingShift.getEmployee().getEmail().equals(shift.getEmployee().getEmail()) &&
+                        (shift.getStartTime().before(existingShift.getEndTime()) &&
+                                shift.getEndTime().after(existingShift.getStartTime())))) {
+
+            throw new HRSException(HttpStatus.CONFLICT, "The employee has an overlapping shift on this date.");
+        }
+
+        Employee employee = shift.getEmployee();
+
+        if (shift.getEmployee() != null && employeeRepository.findEmployeeByEmail(employee.getEmail()) == null) {
+            throw new HRSException(HttpStatus.BAD_REQUEST, "Employee does not exist.");
         }
     }
 }

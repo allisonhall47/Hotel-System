@@ -27,6 +27,8 @@ public class ShiftServiceTests {
       @Mock
       private ShiftRepository shiftRepository;
 
+      @Mock
+      private EmployeeRepository employeeRepository;
       @InjectMocks
       private ShiftService shiftService;
 
@@ -176,6 +178,7 @@ public class ShiftServiceTests {
             Shift shift = new Shift(shiftID,startTime,endTime,date,employee);
 
             when(shiftRepository.save(shift)).thenReturn(shift);
+            when(employeeRepository.findEmployeeByEmail(email)).thenReturn(employee);
 
             Shift outputShift = shiftService.createShift(shift);
             assertNotNull(outputShift);
@@ -207,6 +210,70 @@ public class ShiftServiceTests {
             HRSException e = assertThrows(HRSException.class, () -> shiftService.createShift(s2));
             assertEquals(e.getStatus(),HttpStatus.CONFLICT);
             assertEquals(e.getMessage(), "A shift with this start date, start time, and employee already exists.");
+      }
+
+      // write a test to determine overlapping shifts
+      @Test
+      public void testCreateShiftWithOverlappingTimes() {
+            int shiftID1 = 430;
+            int shiftID2 = 435;
+            Time startTime1 = Time.valueOf("7:30:00");
+            Time startTime2 = Time.valueOf("8:30:00");
+            Time endTime1 = Time.valueOf("9:30:00");
+            Time endTime2 = Time.valueOf("10:30:00");
+            Date date = Date.valueOf("1993-04-20");
+            String email = "janewhite@gmail.com";
+            String name = "Jane White";
+            int salary = 6000;
+            Account account = new Account();
+
+            Employee employee = new Employee(email,name,salary,account);
+
+            Shift s1 = new Shift(shiftID1,startTime1,endTime1,date,employee);
+            when(shiftRepository.findShiftsByDate(date)).thenReturn(Collections.singletonList(s1));
+
+            Shift s2 = new Shift(shiftID2,startTime2,endTime2,date,employee);
+            HRSException e = assertThrows(HRSException.class, () -> shiftService.createShift(s2));
+            assertEquals(e.getStatus(),HttpStatus.CONFLICT);
+            assertEquals(e.getMessage(), "The employee has an overlapping shift on this date.");
+      }
+
+      @Test
+      public void testCreateShiftWithNonExistentEmployee() {
+            int shiftID = 440;
+            Time startTime = Time.valueOf("7:30:00");
+            Time endTime = Time.valueOf("14:30:00");
+            Date date = Date.valueOf("1993-04-20");
+
+            String email = "janegill@gmail.com";
+            String name = "Jane Gill";
+            int salary = 6000;
+            Account account = new Account();
+
+            Employee employee = new Employee(email, name, salary, account);
+
+            Shift shift = new Shift(shiftID, startTime, endTime, date, employee);
+
+            // Mocking that employee doesn't exist in the system.
+            when(employeeRepository.findEmployeeByEmail(email)).thenReturn(null);
+
+
+            HRSException e = assertThrows(HRSException.class, () -> shiftService.createShift(shift));
+            assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
+            assertEquals(e.getMessage(), "Employee does not exist.");
+      }
+
+      @Test
+      public void testDeleteNonExistentShift() {
+            Shift shift = new Shift();
+            int shiftID = 650;
+            shift.setShiftId(shiftID);
+
+            when(shiftRepository.findById(shiftID)).thenReturn(Optional.empty());
+
+            HRSException e = assertThrows(HRSException.class, () -> shiftService.deleteShift(shift));
+            assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
+            assertEquals(e.getMessage(), "Shift does not exist.");
       }
 
 }
