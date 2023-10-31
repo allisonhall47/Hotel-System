@@ -24,11 +24,31 @@ public class RepairService {
 
     @Transactional
     public Repair createRepair(int employeeAccountId, String description) {
+        if (description == null || description.length() == 0) {
+            throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid repair description (empty)");
+        }
+
         Employee emp = employeeRepository.findEmployeeByAccount_AccountNumber(employeeAccountId);
         if (emp == null) {
             throw new HRSException(HttpStatus.NOT_FOUND, String.format("No employee with account id %d", employeeAccountId));
         }
         return repairRepository.save(new Repair(CompletionStatus.Pending, description, emp));
+    }
+
+    @Transactional
+    public Repair changeRepairStatus(int id, CompletionStatus status) {
+        if (status == null) {
+            throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid repair status (null)");
+        }
+        Repair rep = repairRepository.findRepairByRepairId(id);
+        if (rep == null) {
+            throw new HRSException(HttpStatus.NOT_FOUND, String.format("No repair with id %d", id));
+        }
+
+        rep.setStatus(status);
+        repairRepository.save(rep);
+
+        return rep;
     }
 
     @Transactional

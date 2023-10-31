@@ -22,6 +22,9 @@ public class RequestService {
 
     @Transactional
     public Request createRequest(String description, int reservationId) {
+        if (description == null || description.length() == 0) {
+            throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid request description (empty)");
+        }
         Reservation res = reservationRepository.findReservationByReservationID(reservationId);
         if (res == null) {
             throw new HRSException(HttpStatus.NOT_FOUND, String.format("No reservation with id %d", reservationId));
@@ -35,6 +38,22 @@ public class RequestService {
         if (req == null) {
             throw new HRSException(HttpStatus.NOT_FOUND, String.format("No request with id %d", id));
         }
+        return req;
+    }
+
+    @Transactional
+    public Request changeRequestStatus(int id, CompletionStatus status) {
+        if (status == null) {
+            throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid request status (null)");
+        }
+        Request req = requestRepository.findRequestByRequestId(id);
+        if (req == null) {
+            throw new HRSException(HttpStatus.NOT_FOUND, String.format("No request with id %d", id));
+        }
+
+        req.setStatus(status);
+        requestRepository.save(req);
+
         return req;
     }
 
