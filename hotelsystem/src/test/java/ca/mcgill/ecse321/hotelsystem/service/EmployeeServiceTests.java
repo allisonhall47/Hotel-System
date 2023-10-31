@@ -80,8 +80,8 @@ public class EmployeeServiceTests {
     }
 
     /**
-     *  This test ensures that the getEmployeeByEmail method can correctly fetch
-     *  an employee based on a provided email when that email corresponds to an existing employee.
+     * This test ensures that the getEmployeeByEmail method can correctly fetch
+     * an employee based on a provided email when that email corresponds to an existing employee.
      */
     @Test
     public void testGetEmployeeByEmail_Valid() {
@@ -93,8 +93,8 @@ public class EmployeeServiceTests {
     }
 
     /**
-     *  This test checks if the getEmployeeByEmail method throws an HRSException
-     *  when the provided email does not match any employee in the system.
+     * This test checks if the getEmployeeByEmail method throws an HRSException
+     * when the provided email does not match any employee in the system.
      */
     @Test
     public void testGetEmployeeByEmail_NotFound() {
@@ -106,9 +106,9 @@ public class EmployeeServiceTests {
     }
 
     /**
-     *  This test verifies that the createEmployee method can successfully create
-     *  a new employee when the provided email is not already in use by any existing
-     *  employee, customer, or owner in the system.
+     * This test verifies that the createEmployee method can successfully create
+     * a new employee when the provided email is not already in use by any existing
+     * employee, customer, or owner in the system.
      */
     @Test
     public void testCreateEmployee_Valid() {
@@ -123,9 +123,9 @@ public class EmployeeServiceTests {
     }
 
     /**
-     *  This test ensures that the createEmployee method throws an HRSException
-     *  when trying to create an employee using an email that's already in use
-     *  by another user (employee, customer, or owner) in the system.
+     * This test ensures that the createEmployee method throws an HRSException
+     * when trying to create an employee using an email that's already in use
+     * by another user (employee, customer, or owner) in the system.
      */
     @Test
     public void testCreateEmployee_EmailExists() {
@@ -138,9 +138,9 @@ public class EmployeeServiceTests {
     }
 
     /**
-     *  This test checks if the updateEmployeeInformation method can correctly update
-     *  an existing employee's information based on the provided new info, and the
-     *  returned updated employee reflects these changes.
+     * This test checks if the updateEmployeeInformation method can correctly update
+     * an existing employee's information based on the provided new info, and the
+     * returned updated employee reflects these changes.
      */
     @Test
     public void testUpdateEmployeeInformation_Valid() {
@@ -165,8 +165,8 @@ public class EmployeeServiceTests {
 
 
     /**
-     *  This test ensures that the updateEmployeeInformation method throws an HRSException
-     *  when trying to update information for an employee that doesn't exist in the system.
+     * This test ensures that the updateEmployeeInformation method throws an HRSException
+     * when trying to update information for an employee that doesn't exist in the system.
      */
     @Test
     public void testUpdateEmployeeInformation_NotFound() {
@@ -174,6 +174,36 @@ public class EmployeeServiceTests {
         when(employeeRepository.findEmployeeByEmail(newInfo.getEmail())).thenReturn(null);
 
         HRSException e = assertThrows(HRSException.class, () -> employeeService.updateEmployeeInformation(newInfo));
+        assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
+        assertEquals(e.getMessage(), "Employee not found.");
+    }
+
+    /**
+     * This test verifies that the deleteEmployee method can successfully delete
+     * an employee based on a provided email.
+     */
+    @Test
+    public void testDeleteEmployee_Valid() {
+        String email = "john@gmail.com";
+        Employee e = new Employee(email, "John Doe", 50000, null);
+
+        when(employeeRepository.findEmployeeByEmail(email)).thenReturn(e);
+        // You can also verify that the delete method was called if needed using Mockito's verify() method
+
+        assertDoesNotThrow(() -> employeeService.deleteEmployee(email)); // Ensure no exceptions are thrown
+    }
+
+    /**
+     * This test checks if the deleteEmployee method throws an HRSException
+     * when the provided email does not match any employee in the system.
+     */
+    @Test
+    public void testDeleteEmployee_NotFound() {
+        String email = "john@gmail.com";
+
+        when(employeeRepository.findEmployeeByEmail(email)).thenReturn(null);
+
+        HRSException e = assertThrows(HRSException.class, () -> employeeService.deleteEmployee(email));
         assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
         assertEquals(e.getMessage(), "Employee not found.");
     }

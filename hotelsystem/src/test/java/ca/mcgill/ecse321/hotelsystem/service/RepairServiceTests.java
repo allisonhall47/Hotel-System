@@ -41,20 +41,7 @@ public class RepairServiceTests {
 
     @BeforeEach
     public void setMockOutput() {
-        lenient().when(repairDao.findRepairByRepairId(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
-            if (invocation.getArgument(0).equals(VALID_REPAIR_KEY)) {
-                Repair repair = new Repair(CompletionStatus.Pending, );
-                repair.setDescription()
-                return person;
-            } else {
-                return null;
-            }
-        });
-        // Whenever anything is saved, just return the parameter object
-        Answer<?> returnParameterAsAnswer = (InvocationOnMock invocation) -> {
-            return invocation.getArgument(0);
-        };
-        lenient().when(repairDao.save(any(Repair.class))).thenAnswer(returnParameterAsAnswer);
+
     }
 
 
