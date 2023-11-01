@@ -22,26 +22,25 @@ public class ReservedRoomService {
     ReservedRoomRepository reservedRoomRepository;
 
     @Autowired
-    ReservationRepository reservationRepository;
+    ReservationService reservationService;
 
     @Autowired
-    SpecificRoomRepository specificRoomRepository;
+    SpecificRoomService specificRoomService;
+
+//    @Autowired
+//    ReservationRepository reservationRepository;
+//
+//    @Autowired
+//    SpecificRoomRepository specificRoomRepository;
 
     @Transactional
-    public ReservedRoom createReservedRoom(SpecificRoom specRoom, Reservation reservation) {
-        reservation = reservationRepository.findReservationByReservationID(reservation.getReservationID());
-        if(reservation == null) {
-            throw new HRSException(HttpStatus.NOT_FOUND, "reservation does not exist");
-        }
-        specRoom = specificRoomRepository.findSpecificRoomByNumber(specRoom.getNumber());
-        if(specRoom == null) {
-            throw new HRSException(HttpStatus.NOT_FOUND, "reservation does not exist");
-        }
-
-        ReservedRoom room = new ReservedRoom(reservation, null);
-        room = reservedRoomRepository.save(room);
-        room = this.assignReservedRoomToReservation(reservation,room);
-        return room;
+    public ReservedRoom createReservedRoom(ReservedRoom reservedRoom) {
+        //input check in other services
+        Reservation reservation = reservedRoom.getReservation();
+        reservedRoom.setReservation(null); //temporarily sent to null
+        reservedRoom = reservedRoomRepository.save(reservedRoom);
+        reservedRoom = this.assignReservedRoomToReservation(reservation,reservedRoom); //this to check if valid
+        return reservedRoom;
     }
 
     /**
@@ -51,11 +50,7 @@ public class ReservedRoomService {
      */
     @Transactional
     public List<ReservedRoom> getAllReservedRooms(){
-        List<ReservedRoom> reservedRooms = reservedRoomRepository.findAll();
-        if (reservedRooms == null || reservedRooms.isEmpty()){
-            throw new HRSException(HttpStatus.NOT_FOUND, "There are no reserved rooms in the system.");
-        }
-        return reservedRooms;
+        return reservedRoomRepository.findAll();
     }
 
     /**
@@ -74,34 +69,30 @@ public class ReservedRoomService {
 
     /**
      * getReservedRoomsByReservation: service method to get reserved rooms booked in a reservation
-     * @param reservation reservation
+     * @param reservationId reservation id
      * @return list of reserved rooms
      */
     @Transactional
-    public List<ReservedRoom> getReservedRoomsByReservation(Reservation reservation) {
-        List<ReservedRoom> list = reservedRoomRepository.findReservedRoomsByReservation_ReservationID(reservation.getReservationID());
+    public List<ReservedRoom> getReservedRoomsByReservation(int reservationId) {
+        List<ReservedRoom> list = reservedRoomRepository.findReservedRoomsByReservation_ReservationID(reservationId);
         if(list == null || list.isEmpty()) {
-            throw new HRSException(HttpStatus.NOT_FOUND, "no reserved room for given reservation with id: " + reservation.getReservationID());
+            throw new HRSException(HttpStatus.NOT_FOUND, "no reserved room for given reservation with id: " + reservationId);
         }
         return list;
     }
 
     /**
      * getReservedRoomsBySpecRoom: service method to get reserved rooms that are linked to a specific room number
-     * @param specRoom specific room
+     * @param specRoom specific room to find linked reserved rooms
      * @return list of reserved rooms
      */
     @Transactional
     public List<ReservedRoom> getReservedRoomsBySpecRoom(SpecificRoom specRoom) {
-        specRoom = specificRoomRepository.findSpecificRoomByNumber(specRoom.getNumber());
+        //SpecificRoom specRoom = specificRoomService.findSpecificRoomByNumber(room.getNumber());
         if(specRoom == null) {
-            throw new HRSException(HttpStatus.NOT_FOUND, "reservation does not exist");
+            throw new HRSException(HttpStatus.NOT_FOUND, "specific room does not exist");
         }
-        List<ReservedRoom> list = reservedRoomRepository.findReservedRoomsBySpecificRoom_Number(specRoom.getNumber());
-        if(list == null || list.isEmpty()) {
-            throw new HRSException(HttpStatus.NOT_FOUND, "no reserved room for given specific room with number: " + specRoom.getNumber());
-        }
-        return list;
+        return reservedRoomRepository.findReservedRoomsBySpecificRoom_Number(specRoom.getNumber());
     }
 
     /**
@@ -143,7 +134,7 @@ public class ReservedRoomService {
         List<ReservedRoom> list = reservedRoomRepository.findReservedRoomsBySpecificRoom_Number(specRoom.getNumber());
         for(ReservedRoom resRoom : list) {
             Reservation res = resRoom.getReservation();
-            if(res == null) continue;
+            if(res == null) continue; //if res null, then skip no need to check
             Date checkIn = res.getCheckIn();
             Date checkOut = res.getCheckOut();
             if((reservation.getCheckIn().before(checkOut) && reservation.getCheckIn().after(checkIn)) ||

@@ -26,7 +26,6 @@ public class AccountServiceTests {
     @InjectMocks
     private AccountService accountService;
 
-
     /**
      * Test get all accounts in the hotel system
      */
