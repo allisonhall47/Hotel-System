@@ -15,10 +15,10 @@ import java.util.List;
 public class RequestService {
 
     @Autowired
-    RequestRepository requestRepository;
+    private RequestRepository requestRepository;
 
     @Autowired
-    ReservationRepository reservationRepository;
+    private ReservationRepository reservationRepository;
 
     @Transactional
     public Request createRequest(String description, int reservationId) {
@@ -79,14 +79,10 @@ public class RequestService {
     /**
      * GetAllRequests: service method to fetch all existing request in the database
      * @return List of requests
-     * @throws HRSException if no requests exist in the system
      */
     @Transactional
     public List<Request> getAllRequests(){
         List<Request> requests = requestRepository.findAll();
-        if (requests.size() == 0){
-            throw new HRSException(HttpStatus.NOT_FOUND, "There are no owners in the system.");
-        }
         return requests;
     }
 }

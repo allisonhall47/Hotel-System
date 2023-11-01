@@ -64,6 +64,9 @@ public class RepairService {
 
     @Transactional
     public List<Repair> getRepairsByEmployeeEmail(String email) {
+        if (email == null) {
+            throw new HRSException(HttpStatus.BAD_REQUEST, "Email can't be null");
+        }
         return repairRepository.findRepairsByEmployee_Email(email);
     }
 
