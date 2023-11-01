@@ -26,9 +26,9 @@ public class ReservationService {
     @Transactional
     public List<Reservation> getAllReservations(){
         List<Reservation> reservations = reservationRepository.findAll();
-        if (reservations == null || reservations.isEmpty()){
-            throw new HRSException(HttpStatus.NOT_FOUND, "There are no reservations in the system.");
-        }
+//        if (reservations == null || reservations.isEmpty()){
+//            throw new HRSException(HttpStatus.NOT_FOUND, "There are no reservations in the system.");
+//        }
         return reservations;
     }
 
@@ -49,17 +49,17 @@ public class ReservationService {
     /**
      * createReservation: service method to create a reservation and assign it to a customer
      * @param reservation reservation to be created
-     * @param customer customer to assign to reservation
      * @return a created reservation
      */
     @Transactional
-    public Reservation createReservation(Reservation reservation, Customer customer) {
+    public Reservation createReservation(Reservation reservation) {
         isValid(reservation);
-        if(reservationRepository.findReservationByReservationID(reservation.getReservationID()) != null) {
-            throw new HRSException(HttpStatus.CONFLICT, "reservation with id already exists");
-        }
-        //TODO assume customer is valid
-        reservation.setCustomer(customer);
+        //LOOK CONTROLLER FOR RESERVATION CREATERESERVATION
+//        if(reservationRepository.findReservationByReservationID(reservation.getReservationID()) != null) {
+//            throw new HRSException(HttpStatus.CONFLICT, "reservation with id already exists");
+//        }
+        //assume customer is valid
+        //reservation.setCustomer(customer);
         return reservationRepository.save(reservation);
     }
 
@@ -70,7 +70,6 @@ public class ReservationService {
         if(reservation.getNumPeople() <= 0 || reservation.getTotalPrice() <= 0) {
             throw new HRSException(HttpStatus.BAD_REQUEST, "invalid integer");
         }
-        //TODO check customer ???
     }
 
     /**
@@ -80,9 +79,9 @@ public class ReservationService {
     @Transactional
     public void deleteReservation(Reservation reservation) {
         reservation = reservationRepository.findReservationByReservationID(reservation.getReservationID());
-        if(reservation == null) {
-            throw new HRSException(HttpStatus.NOT_FOUND, "reservation does not exist");
-        }
+//        if(reservation == null) {
+//            throw new HRSException(HttpStatus.NOT_FOUND, "reservation does not exist");
+//        }
         reservationRepository.delete(reservation);
     }
 
@@ -93,8 +92,13 @@ public class ReservationService {
      */
     @Transactional
     public List<Reservation> getReservationsByCustomer(Customer customer) {
-        //TODO check customer is valid ??
-        return reservationRepository.getReservationByCustomerEmail(customer.getEmail());
+        //no need to if check customer is valid
+        //already checked when we use customerService.getCustomerByEmail(customerEmail) in the controller
+        List<Reservation> list = reservationRepository.getReservationByCustomerEmail(customer.getEmail());
+        if(list == null || list.isEmpty()) {
+            throw new HRSException(HttpStatus.NOT_FOUND, "no reservation for customer with email: " + customer.getEmail());
+        }
+        return list;
     }
 
     /**
@@ -104,21 +108,24 @@ public class ReservationService {
      * @return change
      */
     @Transactional
-    public int payReservation(Reservation reservation, int money) {
+    public Reservation payReservation(Reservation reservation, int money) {
+        if(reservation == null) {
+            throw new HRSException(HttpStatus.BAD_REQUEST, "reservation cannot be null");
+        }
+
         reservation = reservationRepository.findReservationByReservationID(reservation.getReservationID());
         if(reservation == null) {
             throw new HRSException(HttpStatus.NOT_FOUND, "reservation does not exist");
         }
         if(reservation.isPaid()) {
-            throw new IllegalArgumentException("reservation is already paid");
+            throw new HRSException(HttpStatus.BAD_REQUEST, "already paid");
         }
         if(money < reservation.getTotalPrice()) {
-            throw new IllegalArgumentException("not sufficient money");
+            throw new HRSException(HttpStatus.BAD_REQUEST, "money not sufficient");
         }
 
         reservation.setPaid(true);
-        reservationRepository.save(reservation);
-        return money-reservation.getTotalPrice();
+        return reservationRepository.save(reservation);
     }
 
     @Transactional
