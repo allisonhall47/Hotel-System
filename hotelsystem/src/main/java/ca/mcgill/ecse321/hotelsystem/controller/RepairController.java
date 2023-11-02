@@ -1,13 +1,12 @@
 package ca.mcgill.ecse321.hotelsystem.controller;
 
+import ca.mcgill.ecse321.hotelsystem.Model.CompletionStatus;
+import ca.mcgill.ecse321.hotelsystem.Model.Repair;
 import ca.mcgill.ecse321.hotelsystem.dto.RepairRequestDto;
 import ca.mcgill.ecse321.hotelsystem.dto.RepairResponseDto;
 import ca.mcgill.ecse321.hotelsystem.service.RepairService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -15,19 +14,38 @@ import java.util.List;
 public class RepairController {
 
     @Autowired
-    private RepairService repairService;
+    private RepairService service;
 
-    @GetMapping (value = { "/repairs", "/repairs /" })
+    @GetMapping ("/repair")
     public List<RepairResponseDto> getAllRepairs() {
-        return service.getAllPersons().stream().map(p -> convertToDto(p)).collect(Collectors.toList());
+        return service.getAllRepairs().stream().map(rep -> new RepairResponseDto(rep)).toList();
     }
 
-    @PostMapping("/repair/new")
-    public RepairResponseDto createRepair(@RequestBody RepairRequestDto reqRepair) {
-        repairService.createRepair(reqRepair.e)
-        Reservation res = resRoom.toModel(reservationService.getReservation(resRoom.getLinkedReservationId()), specificRoomService.findSpecificRoomByNumber(resRoom.getRoomNumber()));
-        ReservedRoom newRoom = reservedRoomService.createReservedRoom(room);
-        return new ReservedRoomResponseDto(newRoom);
+    @GetMapping ("/repair/{id}")
+    public RepairResponseDto getRepairWithId(@PathVariable int id) {
+        return new RepairResponseDto(service.readRepairById(id));
+    }
+
+    @GetMapping ("repair/employee/{email}")
+    public List<RepairResponseDto> getRepairsForEmployeeEmail(@PathVariable String email) {
+        return service.getRepairsByEmployeeEmail(email).stream().map(rep -> new RepairResponseDto(rep)).toList();
+    }
+
+    @PostMapping ("repair/new")
+    public RepairResponseDto createRepair(@RequestBody RepairRequestDto rep) {
+        Repair repair = service.createRepair(rep.getEmployeeId(), rep.getDescription());
+        return new RepairResponseDto(repair);
+    }
+
+    @PatchMapping ("repair/{id}") //TODO: Completion status in requestBody? (make dto?)
+    public RepairResponseDto changeRepairStatus(@PathVariable int id, @RequestBody CompletionStatus status) {
+        return new RepairResponseDto(service.changeRepairStatus(id, status));
+    }
+
+    @DeleteMapping("repair/{id}")
+    public String deleteRepair(@PathVariable int id) {
+        service.deleteRepair(id);
+        return "redirect:/repair";
     }
 
 }

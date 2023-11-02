@@ -3,11 +3,11 @@ package ca.mcgill.ecse321.hotelsystem.dto;
 public class RepairRequestDto {
 
     private String description;
-    private String employeeEmail;
-
-    public RepairRequestDto(String description, String employeeEmail){
+    private int employeeId;
+    //TODO: employee id or email??
+    public RepairRequestDto(String description, int employeeId){
         this.description = description;
-        this.employeeEmail = employeeEmail;
+        this.employeeId = employeeId;
     }
 
     public String getDescription() {
@@ -18,12 +18,12 @@ public class RepairRequestDto {
         this.description = description;
     }
 
-    public String getEmployeeEmail() {
-        return employeeEmail;
+    public int getEmployeeId() {
+        return employeeId;
     }
 
-    public void setEmployeeEmail(String employeeEmail) {
-        this.employeeEmail = employeeEmail;
+    public void setEmployeeId(int id) {
+        this.employeeId = id;
     }
 
 }
