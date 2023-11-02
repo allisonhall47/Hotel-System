@@ -112,7 +112,7 @@ public class RepairRepositoryTests {
         repair2 = repairRepository.save(repair2);
 
         // Read from database using Date
-        List<Repair> repairs = repairRepository.findRepairsByEmployeeEmail(email);
+        List<Repair> repairs = repairRepository.findRepairsByEmployee_Email(email);
 
         // Check if correct
         assertEquals(2, repairs.size());
