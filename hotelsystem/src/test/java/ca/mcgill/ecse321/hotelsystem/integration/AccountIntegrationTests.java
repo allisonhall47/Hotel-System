@@ -104,15 +104,16 @@ public class AccountIntegrationTests {
     @Test
     @Order(2)
     public void testValidUpdateAccount(){
-        AccountRequestUpdateDto request = new AccountRequestUpdateDto("NewPass123", accountFixture.address, accountFixture.dob, accountFixture.accountNumber);
-        HttpEntity<AccountRequestUpdateDto> requestEntity = new HttpEntity<>(request);
-        System.out.println(request.getAccountNumber());
-        ResponseEntity<String> response = client.exchange("/account/update", HttpMethod.PUT, requestEntity, String.class);
-        assertNull(response.getBody());
-//        assertEquals(HttpStatus.OK, response.getStatusCode());
-//        assertNotNull(response.getBody());
-//        assertEquals(response.getBody().getPassword(), "NewPass123");
-//        assertEquals(response.getBody().getAddress(), accountFixture.address);
+        AccountRequestDto request = new AccountRequestDto("NewPass123", accountFixture.address, accountFixture.dob);
+        HttpEntity<AccountRequestDto> requestEntity = new HttpEntity<>(request);
+        int id = accountFixture.accountNumber;
+        ResponseEntity<AccountResponseDto> response = client.exchange("/account/"+id, HttpMethod.PUT, requestEntity, AccountResponseDto.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(response.getBody().getPassword(), "NewPass123");
+        assertEquals(response.getBody().getAddress(), accountFixture.address);
+
+        accountFixture.setPassword(response.getBody().getPassword());
     }
 
     @Test

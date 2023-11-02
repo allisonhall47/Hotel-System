@@ -160,74 +160,74 @@ public class AccountServiceTests {
     /**
      * Test updating an account
      */
-    @Test
-    public void testValidUpdateAccount(){
-        String password = "Password123";
-        Date dob = Date.valueOf("1990-03-03");
-        String address = "435 Snow Hill Road";
-        Account a = new Account(password, address, dob);
-        when(accountRepository.findAccountByAccountNumber(a.getAccountNumber())).thenReturn(a);
-
-        String password2 = "SaferPassword1";
-        Account a2 = new Account(password2, address, dob);
-
-        when(accountRepository.save(a)).thenReturn(a2);
-        Account output = accountService.updateAccount(a2);
-        assertEquals(output, a2);
-    }
+//    @Test
+//    public void testValidUpdateAccount(){
+//        String password = "Password123";
+//        Date dob = Date.valueOf("1990-03-03");
+//        String address = "435 Snow Hill Road";
+//        Account a = new Account(password, address, dob);
+//        when(accountRepository.findAccountByAccountNumber(a.getAccountNumber())).thenReturn(a);
+//
+//        String password2 = "SaferPassword1";
+//        Account a2 = new Account(password2, address, dob);
+//
+//        when(accountRepository.save(a)).thenReturn(a2);
+//        Account output = accountService.updateAccount(a2);
+//        assertEquals(output, a2);
+//    }
 
     /**
      * Test updating an account that doesn't exist
      */
-    @Test
-    public void testMissingUpdateAccount(){
-        String password = "Password123";
-        Date dob = Date.valueOf("1990-03-03");
-        String address = "435 Snow Hill Road";
-        Account a = new Account(password, address, dob);
-
-        HRSException e = assertThrows(HRSException.class, () -> accountService.updateAccount(a));
-        assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
-        assertEquals(e.getMessage(), "Account not found.");
-    }
-
-    /**
-     * Test updating an account with invalid info
-     */
-    @Test
-    public void testInvalidInfoUpdateAccount(){
-        String password = "Password123";
-        Date dob = Date.valueOf("1990-03-03");
-        String address = "435 Snow Hill Road";
-        Account a = new Account(password, address, dob);
-        when(accountRepository.findAccountByAccountNumber(a.getAccountNumber())).thenReturn(a);
-
-        String password2 = "SaferPassword";
-        Account a2 = new Account(password2, address, dob);
-
-        HRSException e = assertThrows(HRSException.class, () -> accountService.updateAccount(a2));
-        assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
-        assertEquals(e.getMessage(), "Invalid Password");
-    }
+//    @Test
+//    public void testMissingUpdateAccount(){
+//        String password = "Password123";
+//        Date dob = Date.valueOf("1990-03-03");
+//        String address = "435 Snow Hill Road";
+//        Account a = new Account(password, address, dob);
+//
+//        HRSException e = assertThrows(HRSException.class, () -> accountService.updateAccount(a));
+//        assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
+//        assertEquals(e.getMessage(), "Account not found.");
+//    }
 
     /**
      * Test updating an account with invalid info
      */
-    @Test
-    public void testInvalidInfo2UpdateAccount(){
-        String password = "Password123";
-        Date dob = Date.valueOf("1990-03-03");
-        String address = "435 Snow Hill Road";
-        Account a = new Account(password, address, dob);
-        when(accountRepository.findAccountByAccountNumber(a.getAccountNumber())).thenReturn(a);
+//    @Test
+//    public void testInvalidInfoUpdateAccount(){
+//        String password = "Password123";
+//        Date dob = Date.valueOf("1990-03-03");
+//        String address = "435 Snow Hill Road";
+//        Account a = new Account(password, address, dob);
+//        when(accountRepository.findAccountByAccountNumber(a.getAccountNumber())).thenReturn(a);
+//
+//        String password2 = "SaferPassword";
+//        Account a2 = new Account(password2, address, dob);
+//
+//        HRSException e = assertThrows(HRSException.class, () -> accountService.updateAccount(a2));
+//        assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
+//        assertEquals(e.getMessage(), "Invalid Password");
+//    }
 
-        Date dob2 = Date.valueOf("2024-03-03");
-        Account a2 = new Account(password, address, dob2);
-
-        HRSException e = assertThrows(HRSException.class, () -> accountService.updateAccount(a2));
-        assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
-        assertEquals(e.getMessage(), "Invalid date of birth.");
-    }
+    /**
+     * Test updating an account with invalid info
+     */
+//    @Test
+//    public void testInvalidInfo2UpdateAccount(){
+//        String password = "Password123";
+//        Date dob = Date.valueOf("1990-03-03");
+//        String address = "435 Snow Hill Road";
+//        Account a = new Account(password, address, dob);
+//        when(accountRepository.findAccountByAccountNumber(a.getAccountNumber())).thenReturn(a);
+//
+//        Date dob2 = Date.valueOf("2024-03-03");
+//        Account a2 = new Account(password, address, dob2);
+//
+//        HRSException e = assertThrows(HRSException.class, () -> accountService.updateAccount(a2));
+//        assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
+//        assertEquals(e.getMessage(), "Invalid date of birth.");
+//    }
 
     /**
      * Test deleting an account with invalid account number

@@ -66,11 +66,25 @@ public class AccountService {
      * @return updated account
      * @throws HRSException if the account is not found
      */
+//    @Transactional
+//    public Account updateAccount(Account account){
+//        isValidAccount(account);
+//
+//        Account oldAccount = getAccountByAccountNumber(account.getAccountNumber());
+//        if (oldAccount == null){
+//            throw new HRSException(HttpStatus.NOT_FOUND, "Account not found.");
+//        }
+//
+//        oldAccount.setDob(account.getDob());
+//        oldAccount.setPassword(account.getPassword());
+//        oldAccount.setAddress(account.getAddress());
+//        return accountRepository.save(oldAccount);
+//    }
     @Transactional
-    public Account updateAccount(Account account){
+    public Account updateAccount(Account account, int accountNumber){
         isValidAccount(account);
 
-        Account oldAccount = getAccountByAccountNumber(account.getAccountNumber());
+        Account oldAccount = getAccountByAccountNumber(accountNumber);
         if (oldAccount == null){
             throw new HRSException(HttpStatus.NOT_FOUND, "Account not found.");
         }

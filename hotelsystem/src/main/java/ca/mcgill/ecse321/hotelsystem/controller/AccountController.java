@@ -37,10 +37,10 @@ public class AccountController {
         return new ResponseEntity<AccountResponseDto>(new AccountResponseDto(account), HttpStatus.CREATED);
     }
 
-    @PutMapping(value = { "/account/update", "/account/update/"})
-    public ResponseEntity<AccountResponseDto> updateAccount(@RequestBody AccountRequestUpdateDto accountRequest){
+    @PutMapping(value = { "/account/{id}", "/account/{id}/"})
+    public ResponseEntity<AccountResponseDto> updateAccount(@PathVariable int id, @RequestBody AccountRequestDto accountRequest){
         Account account = accountRequest.toModel();
-        account = accountService.updateAccount(account);
+        account = accountService.updateAccount(account, id);
         return new ResponseEntity<AccountResponseDto>(new AccountResponseDto(account), HttpStatus.OK);
     }
 
