@@ -99,7 +99,7 @@ public class AccountServiceTests {
     }
 
     /**
-     * Test creating an invalid account with an invalid password
+     * Test creating an account with an invalid password
      */
     @Test
     public void testCreateInvalidPasswordAccount(){
@@ -111,6 +111,21 @@ public class AccountServiceTests {
         HRSException e = assertThrows(HRSException.class, () -> accountService.createAccount(a));
         assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
         assertEquals(e.getMessage(), "Invalid Password");
+    }
+
+    /**
+     * Test creating an account with an invalid date of birth
+     */
+    @Test
+    public void testCreateInvalidDoBAccount(){
+        String password = "Password123";
+        Date dob = Date.valueOf("2024-03-03");
+        String address = "435 Snow Hill Road";
+        Account a = new Account(password, address, dob);
+
+        HRSException e = assertThrows(HRSException.class, () -> accountService.createAccount(a));
+        assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
+        assertEquals(e.getMessage(), "Invalid date of birth.");
     }
 
     /**
@@ -194,5 +209,61 @@ public class AccountServiceTests {
         assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
         assertEquals(e.getMessage(), "Invalid Password");
     }
+
+    /**
+     * Test updating an account with invalid info
+     */
+    @Test
+    public void testInvalidInfo2UpdateAccount(){
+        String password = "Password123";
+        Date dob = Date.valueOf("1990-03-03");
+        String address = "435 Snow Hill Road";
+        Account a = new Account(password, address, dob);
+        when(accountRepository.findAccountByAccountNumber(a.getAccountNumber())).thenReturn(a);
+
+        Date dob2 = Date.valueOf("2024-03-03");
+        Account a2 = new Account(password, address, dob2);
+
+        HRSException e = assertThrows(HRSException.class, () -> accountService.updateAccount(a2));
+        assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
+        assertEquals(e.getMessage(), "Invalid date of birth.");
+    }
+
+    /**
+     * Test deleting an account with invalid account number
+     */
+    @Test
+    public void testInvalidDeleteAccount(){
+        int accountNumber = 1;
+        when(accountRepository.findAccountByAccountNumber(accountNumber)).thenReturn(null);
+
+        HRSException e = assertThrows(HRSException.class, () -> accountService.deleteAccount(accountNumber));
+        assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
+        assertEquals(e.getMessage(), "Account not found.");
+    }
+
+//    /**
+//     * Test deleting an account
+//     */
+//    @Test
+//    public void testValidDeleteAccount(){
+//        String password = "Password123";
+//        Date dob = Date.valueOf("1990-03-03");
+//        String address = "435 Snow Hill Road";
+//
+//        Account response = new Account(password, address, dob);
+//        when(accountRepository.save(response)).thenReturn(response);
+//
+//        Account output = accountService.createAccount(response);
+//        int accountNumber = output.getAccountNumber();
+//
+//        when(accountRepository.findAccountByAccountNumber(accountNumber)).thenReturn(output);
+//        accountService.deleteAccount(accountNumber);
+//        when(accountRepository.findAccountByAccountNumber(accountNumber)).thenReturn(null);
+//
+//        HRSException e = assertThrows(HRSException.class, () -> accountService.getAccountByAccountNumber(accountNumber));
+//        assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
+//        assertEquals(e.getMessage(), "Account not found.");
+//    }
 
 }

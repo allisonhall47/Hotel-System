@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -26,7 +27,7 @@ public class AccountService {
     @Transactional
     public List<Account> getAllAccounts() {
         List<Account> accounts = accountRepository.findAll();
-        if(accounts.size() == 0){
+        if(accounts.isEmpty()){
             throw new HRSException(HttpStatus.NOT_FOUND, "There are no accounts in the system.");
         }
         return accounts;
@@ -81,6 +82,20 @@ public class AccountService {
     }
 
     /**
+     * DeleteAccount: service method to delete an account
+     * @param accountNumber: account number for the account to delete
+     * @throws HRSException if the account is not found
+     */
+    @Transactional
+    public void deleteAccount(int accountNumber){
+        Account account = accountRepository.findAccountByAccountNumber(accountNumber);
+        if(account == null){
+            throw new HRSException(HttpStatus.NOT_FOUND, "Account not found.");
+        }
+        accountRepository.deleteAccountByAccountNumber(accountNumber);
+    }
+
+    /**
      * IsValidAccount: checks if account is valid to update or create
      * @param account: account to check if valid
      * @throws HRSException if account has an empty field or an invalid password
@@ -91,6 +106,9 @@ public class AccountService {
         }
         if(!Pattern.compile("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$").matcher(account.getPassword()).find()){
             throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid Password");
+        }
+        if(account.getDob().after(new Date(System.currentTimeMillis()))){
+            throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid date of birth.");
         }
     }
 

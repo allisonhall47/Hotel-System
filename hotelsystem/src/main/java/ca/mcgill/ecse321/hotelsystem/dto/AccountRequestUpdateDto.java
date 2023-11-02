@@ -4,20 +4,23 @@ import ca.mcgill.ecse321.hotelsystem.Model.Account;
 
 import java.sql.Date;
 
-public class AccountRequestDto {
-
+public class AccountRequestUpdateDto {
     private String password;
     private String address;
     private Date dob;
+    private int accountNumber;
 
-    public AccountRequestDto(String password, String address, Date dob){
+    public AccountRequestUpdateDto(String password, String address, Date dob, int accountNumber){
         this.password = password;
         this.address = address;
         this.dob = dob;
+        this.accountNumber = accountNumber;
     }
 
     public Account toModel(){
-        return new Account(password, address, dob);
+        Account a = new Account(password, address, dob);
+        a.setAccountNumber(accountNumber);
+        return a;
     }
 
     public String getPassword() {
@@ -42,5 +45,21 @@ public class AccountRequestDto {
 
     public void setdob(Date dob) {
         this.dob = dob;
+    }
+
+    public Date getDob() {
+        return dob;
+    }
+
+    public void setDob(Date dob) {
+        this.dob = dob;
+    }
+
+    public int getAccountNumber() {
+        return accountNumber;
+    }
+
+    public void setAccountNumber(int accountNumber) {
+        this.accountNumber = accountNumber;
     }
 }

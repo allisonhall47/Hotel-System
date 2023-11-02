@@ -176,6 +176,20 @@ public class CustomerServiceTests {
     }
 
     /**
+     * Test creating a customer with an invalid email
+     */
+    @Test
+    public void testCreateInvalid2Customer(){
+        String name = "Jane White";
+        String email = "--janewhite@gmail.com123";
+        Customer c = new Customer(email, name, null);
+
+        HRSException e = assertThrows(HRSException.class, () -> customerService.createCustomer(c));
+        assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
+        assertEquals(e.getMessage(), "Invalid email address.");
+    }
+
+    /**
      * Test creating a customer with an empty field
      */
     @Test
@@ -224,6 +238,19 @@ public class CustomerServiceTests {
         Customer c2 = new Customer(email2, name, null);
 
         HRSException e = assertThrows(HRSException.class, () -> customerService.updateCustomerInformation(c2));
+        assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
+        assertEquals(e.getMessage(), "Customer not found.");
+    }
+
+    /**
+     * Test deleting a customer with invalid account number
+     */
+    @Test
+    public void testInvalidDelete(){
+        String email = "jane@gmail.com";
+        when(customerRepository.findCustomerByEmail(email)).thenReturn(null);
+
+        HRSException e = assertThrows(HRSException.class, () -> customerService.deleteCustomer(email));
         assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
         assertEquals(e.getMessage(), "Customer not found.");
     }
