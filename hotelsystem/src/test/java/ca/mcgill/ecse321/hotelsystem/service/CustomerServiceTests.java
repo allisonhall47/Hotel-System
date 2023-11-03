@@ -218,9 +218,11 @@ public class CustomerServiceTests {
 
         Customer c2 = new Customer(email, name, a);
 
-        when(customerRepository.save(c)).thenReturn(c2);
+        when(customerRepository.save(c)).thenReturn(c);
         Customer output = customerService.updateCustomerInformation(c2);
-        assertEquals(output, c2);
+        assertEquals(output.getName(), c2.getName());
+        assertEquals(output.getEmail(), c2.getEmail());
+        assertEquals(output.getAccount(), c2.getAccount());
     }
 
     /**

@@ -1,7 +1,6 @@
 package ca.mcgill.ecse321.hotelsystem.integration;
 
 import ca.mcgill.ecse321.hotelsystem.dto.AccountRequestDto;
-import ca.mcgill.ecse321.hotelsystem.dto.AccountRequestUpdateDto;
 import ca.mcgill.ecse321.hotelsystem.dto.AccountResponseDto;
 import ca.mcgill.ecse321.hotelsystem.repository.AccountRepository;
 import org.junit.jupiter.api.*;
@@ -125,16 +124,16 @@ public class AccountIntegrationTests {
         assertTrue(equals(response.getBody(), accountFixture));
     }
 
-//    @Test
-//    @Order(4)
-//    public void testValidDeleteAccount(){
-//        HttpEntity<String> requestEntity = new HttpEntity<>(null);
-//        ResponseEntity<String> response = client.exchange("/account/delete/" + accountFixture.accountNumber, HttpMethod.DELETE, requestEntity, String.class);
-//        assertEquals(HttpStatus.OK, response.getStatusCode());
-//        ResponseEntity<String> response2 = client.getForEntity("/account?accountNumber=" + accountFixture.getAccountNumber(), String.class);
-//        assertEquals(HttpStatus.NOT_FOUND, response2.getStatusCode());
-//        assertEquals(response2.getBody(),  "Account does not exist");
-//    }
+    @Test
+    @Order(4)
+    public void testValidDeleteAccount(){
+        HttpEntity<String> requestEntity = new HttpEntity<>(null);
+        ResponseEntity<String> response = client.exchange("/account/delete/" + accountFixture.getAccountNumber(), HttpMethod.DELETE, requestEntity, String.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        ResponseEntity<String> response2 = client.getForEntity("/account?accountNumber=" + accountFixture.getAccountNumber(), String.class);
+        assertEquals(HttpStatus.NOT_FOUND, response2.getStatusCode());
+        assertEquals(response2.getBody(),  "Account not found.");
+    }
 
     private boolean equals(AccountResponseDto response, AccountFixture a){
         boolean b = response.getPassword().equals(a.password);

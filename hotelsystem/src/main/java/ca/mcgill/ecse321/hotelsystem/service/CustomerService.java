@@ -80,6 +80,7 @@ public class CustomerService {
     @Transactional
     public Customer updateCustomerInformation(Customer newCustomerInfo){
         isValidCustomer(newCustomerInfo);
+
         Customer customer = getCustomerByEmail(newCustomerInfo.getEmail());
         if (customer == null){
             throw new HRSException(HttpStatus.NOT_FOUND, "Customer not found.");
