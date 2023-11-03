@@ -11,16 +11,13 @@ public class ShiftRequestDto {
     private Time startTime;
     private Time endTime;
     private Date date;
-    private int shiftId;
 
     private String employeeEmail;
 
-    public ShiftRequestDto(Time startTime, Time endTime, Date date, int shiftId, String employeeEmail){
+    public ShiftRequestDto(Time startTime, Time endTime, Date date) {
         this.startTime = startTime;
         this.endTime = endTime;
-        this.date = date;
-        this.shiftId = shiftId;
-        this.employeeEmail = employeeEmail;
+        this.date = date;;
     }
 
     public Shift toModel(Employee employee){
@@ -39,9 +36,6 @@ public class ShiftRequestDto {
         return date;
     }
 
-    public int getShiftId() {
-        return shiftId;
-    }
 
     public void setStartTime(Time startTime) {
         this.startTime = startTime;
@@ -54,6 +48,7 @@ public class ShiftRequestDto {
     public void setDate(Date date) {
         this.date = date;
     }
+
 
     public String getEmployeeEmail() {
         return employeeEmail;

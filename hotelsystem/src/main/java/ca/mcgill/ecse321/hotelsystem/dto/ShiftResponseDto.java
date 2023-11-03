@@ -10,15 +10,17 @@ public class ShiftResponseDto {
     private Time startTime;
     private Time endTime;
     private Date date;
-    private int shiftId;
 
     private String employeeEmail;
+
+    public ShiftResponseDto() {
+        // NO FIELDS CONSTRUCTOR
+    }
 
     public ShiftResponseDto(Shift shift){
         this.startTime = shift.getStartTime();
         this.endTime = shift.getEndTime();
         this.date = shift.getDate();
-        this.shiftId = shift.getShiftId();
         if (shift.getEmployee() != null) this.employeeEmail = shift.getEmployee().getEmail();
     }
 
@@ -34,9 +36,6 @@ public class ShiftResponseDto {
         return date;
     }
 
-    public int getShiftId() {
-        return shiftId;
-    }
 
     public void setStartTime(Time startTime) {
         this.startTime = startTime;
@@ -56,6 +55,15 @@ public class ShiftResponseDto {
 
     public void setEmployeeEmail(String employeeEmail) {
         this.employeeEmail = employeeEmail;
+    }
+
+    public String toString() {
+        return "ShiftResponseDto{" +
+                "startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", date=" + date +
+                ", employeeEmail='" + employeeEmail + '\'' +
+                '}';
     }
 
 }

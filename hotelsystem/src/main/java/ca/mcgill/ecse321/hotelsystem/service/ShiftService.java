@@ -38,6 +38,8 @@ public class ShiftService {
         }
         return shifts;
     }
+
+
     /**
      * getShiftByShiftID: service ID to get the shift corresponding to the shift ID
      * @param shiftID: shift ID of the employee
@@ -95,10 +97,11 @@ public class ShiftService {
     @Transactional
     public Shift createShift(Shift shift) {
         isValidShift(shift);
-        if ((shiftRepository.findShiftByShiftId(shift.getShiftId()) == null)) {
-            return shiftRepository.save(shift);
-        }
-        throw new HRSException(HttpStatus.CONFLICT, "A shift with this ID already exists.");
+//        if ((shiftRepository.findShiftByShiftId(shift.getShiftId()) == null)) {
+//            return shiftRepository.save(shift);
+//        }
+//        throw new HRSException(HttpStatus.CONFLICT, "A shift with this ID already exists.");
+        return shiftRepository.save(shift);
     }
 
     @Transactional
@@ -117,7 +120,7 @@ public class ShiftService {
             throw new HRSException(HttpStatus.NOT_FOUND, "Shift not found.");
         }
         // setters and getters to test
-        previousShift.setShiftId(shift.getShiftId());
+//      previousShift.setShiftId(shift.getShiftId());
         previousShift.setDate(shift.getDate());
         previousShift.setStartTime(shift.getStartTime());
         previousShift.setShiftId(shift.getShiftId());
