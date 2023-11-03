@@ -9,13 +9,11 @@ public class AccountRequestDto {
     private String password;
     private String address;
     private Date dob;
-    private int accountNumber;
 
-    public AccountRequestDto(String password, String address, Date dob, int accountNumber){
+    public AccountRequestDto(String password, String address, Date dob){
         this.password = password;
         this.address = address;
         this.dob = dob;
-        this.accountNumber = accountNumber;
     }
 
     public Account toModel(){
@@ -32,10 +30,6 @@ public class AccountRequestDto {
 
     public Date getdob() {
         return dob;
-    }
-
-    public int getAccountNumber() {
-        return accountNumber;
     }
 
     public void setPassword(String password) {

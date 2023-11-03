@@ -11,6 +11,8 @@ public class AccountResponseDto {
     private Date dob;
     private int accountNumber;
 
+    public AccountResponseDto(){}
+
     public AccountResponseDto(Account account){
         this.password = account.getPassword();
         this.address = account.getAddress();

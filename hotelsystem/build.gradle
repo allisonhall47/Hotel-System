@@ -35,3 +35,12 @@ tasks.named('test') {
 tasks.named('jacocoTestReport') {
 	dependsOn test
 }
+
+task integrationTest(type: Test){
+	include '**/ca/mcgill/ecse321/hotelsystem/integration/*'
+	useJUnitPlatform()
+	testLogging {
+		exceptionFormat "full"
+		events "failed", "skipped", "passed"
+	}
+}

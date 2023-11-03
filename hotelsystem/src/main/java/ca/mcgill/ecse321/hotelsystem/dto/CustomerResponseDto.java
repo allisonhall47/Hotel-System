@@ -9,6 +9,10 @@ public class CustomerResponseDto {
 
     private int accountNumber;
 
+    public CustomerResponseDto(){
+
+    }
+
     public CustomerResponseDto(Customer customer){
         this.name = customer.getName();
         this.email = customer.getEmail();
