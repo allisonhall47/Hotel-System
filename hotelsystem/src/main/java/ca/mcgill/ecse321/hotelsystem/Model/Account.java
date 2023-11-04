@@ -3,6 +3,7 @@ package ca.mcgill.ecse321.hotelsystem.Model;
 import jakarta.persistence.*;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 @Entity
 public class Account {
@@ -11,9 +12,9 @@ public class Account {
     private int accountNumber;
     private String password;
     private String address;
-    private Date dob;
+    private LocalDate dob;
 
-    public Account(String password, String address, Date dob) {
+    public Account(String password, String address, LocalDate dob) {
         this.password = password;
         this.address = address;
         this.dob = dob;
@@ -47,11 +48,11 @@ public class Account {
         this.address = address;
     }
 
-    public Date getDob() {
+    public LocalDate getDob() {
         return dob;
     }
 
-    public void setDob(Date dob) {
+    public void setDob(LocalDate dob) {
         this.dob = dob;
     }
 

@@ -18,6 +18,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -138,7 +139,7 @@ public class CustomerServiceTests {
         String name = "Jane White";
         String email = "jane@gmail.com";
         String password = "Password123";
-        Date dob = Date.valueOf("1990-03-03");
+        LocalDate dob = LocalDate.of(1980, 3, 3);
         String address = "435 Snow Hill Road";
         Account a = accountService.createAccount(new Account(password, address, dob));
         Customer c = new Customer(email, name, a);
@@ -161,7 +162,7 @@ public class CustomerServiceTests {
         String name = "Jane White";
         String email = "jane@gmail.com";
         String password = "Password123";
-        Date dob = Date.valueOf("1990-03-03");
+        LocalDate dob = LocalDate.of(1980, 3, 3);
         String address = "435 Snow Hill Road";
         Account a = accountService.createAccount(new Account(password, address, dob));
         Employee employee = new Employee(email, name, 30000, a);
@@ -212,7 +213,7 @@ public class CustomerServiceTests {
         when(customerRepository.findCustomerByEmail(email)).thenReturn(c);
 
         String password = "Password123";
-        Date dob = Date.valueOf("1990-03-03");
+        LocalDate dob = LocalDate.of(1980, 3, 3);
         String address = "435 Snow Hill Road";
         Account a = accountService.createAccount(new Account(password, address, dob));
 

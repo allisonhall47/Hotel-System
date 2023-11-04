@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -108,9 +109,14 @@ public class AccountService {
         if(!Pattern.compile("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$").matcher(account.getPassword()).find()){
             throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid Password");
         }
-        if(account.getDob().after(new Date(System.currentTimeMillis()))){
+        if(account.getDob().isAfter(LocalDate.now())){
             throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid date of birth.");
+
         }
+
+//        if(account.getDob().after(new Date(System.currentTimeMillis()))){
+//            throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid date of birth.");
+//        }
     }
 
 }

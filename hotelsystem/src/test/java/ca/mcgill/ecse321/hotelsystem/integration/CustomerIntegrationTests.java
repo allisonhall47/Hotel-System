@@ -15,7 +15,9 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.sql.Date;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -56,6 +58,8 @@ public class CustomerIntegrationTests {
             this.accountNumber = accountNumber;
         }
     }
+
+    private Account account = new Account("Password123", "123 Snow Road", LocalDate.of(1990, 3, 3));
 
     private CustomerFixture customerFixture;
 
@@ -103,6 +107,33 @@ public class CustomerIntegrationTests {
 
     @Test
     @Order(2)
+    public void testCreateInvalidEmptyCustomer(){
+        CustomerRequestDto request = new CustomerRequestDto();
+        ResponseEntity<String> response = client.postForEntity("/customer/create", request, String.class);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(response.getBody(), "Empty field in the customer.");
+    }
+
+    @Test
+    @Order(3)
+    public void testCreateInvalidDuplicateCustomer(){
+        CustomerRequestDto request = new CustomerRequestDto(customerFixture.name, customerFixture.email);
+        ResponseEntity<String> response = client.postForEntity("/customer/create", request, String.class);
+        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+        assertEquals(response.getBody(), "A user with this email already exists.");
+    }
+
+    @Test
+    @Order(4)
+    public void testCreateInvalidEmailCustomer(){
+        CustomerRequestDto request = new CustomerRequestDto(customerFixture.name, "jane@white@gmail.com");
+        ResponseEntity<String> response = client.postForEntity("/customer/create", request, String.class);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(response.getBody(), "Invalid email address.");
+    }
+
+    @Test
+    @Order(5)
     public void testValidUpdateCustomer(){
         CustomerRequestDto request = new CustomerRequestDto("Jane Mary White", customerFixture.getEmail());
         HttpEntity<CustomerRequestDto> requestEntity = new HttpEntity<>(request);
@@ -115,7 +146,41 @@ public class CustomerIntegrationTests {
     }
 
     @Test
-    @Order(3)
+    @Order(6)
+    public void testValidUpdateCustomerWithAccount(){
+        CustomerRequestDto request = new CustomerRequestDto(customerFixture.getName(), customerFixture.getEmail());
+        request.setAccountNumber(account.getAccountNumber());
+        HttpEntity<CustomerRequestDto> requestEntity = new HttpEntity<>(request);
+        ResponseEntity<CustomerResponseDto> response = client.exchange("/customer/update", HttpMethod.PUT, requestEntity, CustomerResponseDto.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(response.getBody().getName(), customerFixture.getName());
+        assertEquals(response.getBody().getEmail(), customerFixture.getEmail());
+        assertEquals(response.getBody().getAccountNumber(), account.getAccountNumber());
+    }
+
+    @Test
+    @Order(7)
+    public void testInvalidEmptyUpdateCustomer(){
+        CustomerRequestDto request = new CustomerRequestDto();
+        HttpEntity<CustomerRequestDto> requestEntity = new HttpEntity<>(request);
+        ResponseEntity<String> response = client.exchange("/customer/update", HttpMethod.PUT, requestEntity, String.class);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(response.getBody(), "Empty field in the customer.");
+    }
+
+    @Test
+    @Order(8)
+    public void testInvalidNotFoundUpdateCustomer(){
+        CustomerRequestDto request = new CustomerRequestDto(customerFixture.name, "joewhite@gmail.com");
+        HttpEntity<CustomerRequestDto> requestEntity = new HttpEntity<>(request);
+        ResponseEntity<String> response = client.exchange("/customer/update", HttpMethod.PUT, requestEntity, String.class);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals(response.getBody(), "Customer not found.");
+    }
+
+    @Test
+    @Order(9)
     public void testValidGetAccount(){
         ResponseEntity<CustomerResponseDto> response = client.getForEntity("/customer?email=" + customerFixture.getEmail(), CustomerResponseDto.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -124,7 +189,38 @@ public class CustomerIntegrationTests {
     }
 
     @Test
-    @Order(4)
+    @Order(10)
+    public void testInvalidGetAccount(){
+        String email = "joewhite@gmail.com";
+        ResponseEntity<String> response = client.getForEntity("/customer?email="+email, String.class);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals(response.getBody(), "Customer not found.");
+    }
+
+    @Test
+    @Order(11)
+    public void testValidGetAllCustomers(){
+        ResponseEntity<List> response = client.getForEntity("/customers", List.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(response.getBody().size(), 1);
+        List<Map<String, Object>> customers = response.getBody();
+        assertEquals(customers.get(0).get("name"), customerFixture.getName());
+        assertEquals(customers.get(0).get("email"), customerFixture.getEmail());
+        assertEquals(customers.get(0).get("accountNumber"), customerFixture.getAccountNumber());
+    }
+
+    @Test
+    @Order(12)
+    public void testInvalidDeleteAccount(){
+        String email = "joewhite@gmail.com";
+        HttpEntity<String> requestEntity = new HttpEntity<>(null);
+        ResponseEntity<String> response = client.exchange("/customer/delete/"+email, HttpMethod.DELETE, requestEntity, String.class);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals(response.getBody(), "Customer not found.");
+    }
+
+    @Test
+    @Order(13)
     public void testValidDeleteAccount(){
         HttpEntity<String> requestEntity = new HttpEntity<>(null);
         ResponseEntity<String> response = client.exchange("/customer/delete/" + customerFixture.getEmail(), HttpMethod.DELETE, requestEntity, String.class);
