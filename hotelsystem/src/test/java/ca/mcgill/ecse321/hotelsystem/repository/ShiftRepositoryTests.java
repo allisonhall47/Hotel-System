@@ -43,7 +43,7 @@ public class ShiftRepositoryTests {
         Account account = new Account();
         account.setPassword(password);
         account.setAddress(address);
-        account.setDob(Date.valueOf(dob));
+        account.setDob(dob);
         account = accountRepository.save(account);
 
         // Create Employee
@@ -96,7 +96,7 @@ public class ShiftRepositoryTests {
         Account account = new Account();
         account.setPassword(password);
         account.setAddress(address);
-        account.setDob(Date.valueOf(dob));
+        account.setDob(dob);
         account = accountRepository.save(account);
 
 
@@ -160,7 +160,7 @@ public class ShiftRepositoryTests {
         Account account = new Account();
         account.setPassword(password);
         account.setAddress(address);
-        account.setDob(Date.valueOf(dob));
+        account.setDob(dob);
         account = accountRepository.save(account);
 
         // Create Employee
@@ -215,7 +215,7 @@ public class ShiftRepositoryTests {
         Account account = new Account();
         account.setPassword(password);
         account.setAddress(address);
-        account.setDob(Date.valueOf(dob));
+        account.setDob(dob);
         account = accountRepository.save(account);
 
         // Create Employee
@@ -273,7 +273,7 @@ public class ShiftRepositoryTests {
         Account account = new Account();
         account.setPassword(password);
         account.setAddress(address);
-        account.setDob(Date.valueOf(dob));
+        account.setDob(dob);
         account = accountRepository.save(account);
 
         // Create Employee
