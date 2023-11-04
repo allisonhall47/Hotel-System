@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Wrapper;
+import java.time.LocalDate;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,13 +38,13 @@ public class ShiftServiceTests {
             int shiftId1 = 372;
             Time startTime1 = Time.valueOf("6:30:00");
             Time endTime1 = Time.valueOf("12:30:00");
-            Date date1 = Date.valueOf("1994-06-15");
+            LocalDate date1 = LocalDate.of(1994,6,15);
             Shift shift1 = new Shift(startTime1,endTime1,date1,null);
 
             int shiftId2 = 373;
             Time startTime2 = Time.valueOf("12:30:00");
             Time endTime2 = Time.valueOf("18:30:00");
-            Date date2 = Date.valueOf("1994-06-15");
+            LocalDate date2 = LocalDate.of(1994,6,15);
             Shift shift2 = new Shift(startTime2,endTime2,date2,null);
 
             List<Shift> shiftList = new ArrayList<>();
@@ -73,7 +74,7 @@ public class ShiftServiceTests {
             int shiftID = 425;
             Time startTime = Time.valueOf("7:30:00");
             Time endTime = Time.valueOf("14:30:00");
-            Date date = Date.valueOf("1993-04-20");
+            LocalDate date = LocalDate.of(1993,4,20);
             Shift shift = new Shift(startTime,endTime,date,null);
 
             when(shiftRepository.findShiftByShiftId(shiftID)).thenReturn(shift);
@@ -87,7 +88,7 @@ public class ShiftServiceTests {
             int shiftID = 425;
             Time startTime = Time.valueOf("7:30:00");
             Time endTime = Time.valueOf("14:30:00");
-            Date date = Date.valueOf("1993-04-20");
+            LocalDate date = LocalDate.of(1993,4,20);
             Shift shift = new Shift(startTime,endTime,date,null);
 
             when(shiftRepository.save(shift)).thenReturn(shift);
@@ -106,7 +107,7 @@ public class ShiftServiceTests {
             int shiftID = 430;
             Time startTime = Time.valueOf("7:30:00");
             Time endTime = Time.valueOf("5:30:00");
-            Date date = Date.valueOf("1993-04-20");
+            LocalDate date = LocalDate.of(1993,4,20);
             Shift shift = new Shift(startTime,endTime,date,null);
 
             HRSException e = assertThrows(HRSException.class, () -> shiftService.createShift(shift));
@@ -127,7 +128,7 @@ public class ShiftServiceTests {
             int shiftID = 430;
             Time startTime = Time.valueOf("7:30:00");
             Time endTime = Time.valueOf("5:30:00");
-            Date date = Date.valueOf("1993-04-20");
+            LocalDate date = LocalDate.of(1993,4,20);
             Shift shift = new Shift(startTime,endTime,date,null);
             shift.setShiftId(shiftID);
 
@@ -171,7 +172,7 @@ public class ShiftServiceTests {
             int shiftID = 425;
             Time startTime = Time.valueOf("7:30:00");
             Time endTime = Time.valueOf("14:30:00");
-            Date date = Date.valueOf("1993-04-20");
+            LocalDate date = LocalDate.of(1993,4,20);
             String email = "janewhite@gmail.com";
             String name = "Jane White";
             int salary = 6000;
@@ -197,7 +198,7 @@ public class ShiftServiceTests {
             int shiftID1 = 431;
             Time startTime = Time.valueOf("7:30:00");
             Time endTime = Time.valueOf("9:30:00");
-            Date date = Date.valueOf("1993-04-20");
+            LocalDate date = LocalDate.of(1993,4,20);
             String email = "janewhite@gmail.com";
             String name = "Jane White";
             int salary = 6000;
@@ -224,7 +225,7 @@ public class ShiftServiceTests {
             Time startTime2 = Time.valueOf("8:30:00");
             Time endTime1 = Time.valueOf("9:30:00");
             Time endTime2 = Time.valueOf("10:30:00");
-            Date date = Date.valueOf("1993-04-20");
+            LocalDate date = LocalDate.of(1993,4,20);
             String email = "janewhite@gmail.com";
             String name = "Jane White";
             int salary = 6000;
@@ -246,7 +247,7 @@ public class ShiftServiceTests {
             int shiftID = 440;
             Time startTime = Time.valueOf("7:30:00");
             Time endTime = Time.valueOf("14:30:00");
-            Date date = Date.valueOf("1993-04-20");
+            LocalDate date = LocalDate.of(1993,4,20);
 
             String email = "janegill@gmail.com";
             String name = "Jane Gill";
@@ -296,8 +297,8 @@ public class ShiftServiceTests {
             Time oldStartTime = Time.valueOf("7:30:00");
             Time newStartTime = Time.valueOf("9:30:00");
             Time endTime = Time.valueOf("14:30:00");
-            Date oldDate = Date.valueOf("1993-04-19");
-            Date newDate = Date.valueOf("1993-04-20");
+            LocalDate oldDate = LocalDate.of(1993,4,19);
+            LocalDate newDate = LocalDate.of(1993,4,20);
             String email = "johnbrown@gmail.com";
             String name = "John Brown";
             int salary = 6500;

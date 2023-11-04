@@ -15,6 +15,7 @@ import ca.mcgill.ecse321.hotelsystem.Model.Shift;
 import ca.mcgill.ecse321.hotelsystem.service.ShiftService;
 
 import java.sql.Time;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
@@ -68,7 +69,7 @@ public class ShiftController {
       }
 
       @GetMapping("/shifts/{date}")
-      public List<ShiftResponseDto> getShiftsByDate(@PathVariable Date date) {
+      public List<ShiftResponseDto> getShiftsByDate(@PathVariable LocalDate date) {
             Iterable<Shift> dateShifts = shiftService.getShiftsByDate(date);
             List<ShiftResponseDto> dtos = new ArrayList<ShiftResponseDto>();
             for (Shift s: dateShifts) {
@@ -78,7 +79,7 @@ public class ShiftController {
       }
 
       @GetMapping("/shifts/{date},{startTime}")
-      public List<ShiftResponseDto> getShiftsByDateAndStartTime(@PathVariable Date date, @PathVariable Time startTime) {
+      public List<ShiftResponseDto> getShiftsByDateAndStartTime(@PathVariable LocalDate date, @PathVariable Time startTime) {
             Iterable<Shift> dtShifts = shiftService.getShiftsByDateAndStartTime(date,startTime);
             List<ShiftResponseDto> dtos = new ArrayList<ShiftResponseDto>();
             for (Shift s: dtShifts) {

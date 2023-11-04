@@ -5,6 +5,8 @@ import jakarta.persistence.OneToMany;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -14,12 +16,12 @@ public class Shift {
     private int shiftId;
     private Time startTime;
     private Time endTime;
-    private Date date;
+    private LocalDate date;
     
     @ManyToOne
     private Employee employee;
 
-    public Shift(Time startTime, Time endTime, Date date, Employee employee) {
+    public Shift(Time startTime, Time endTime, LocalDate date, Employee employee) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.date = date;
@@ -45,7 +47,7 @@ public class Shift {
         return endTime;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
@@ -61,7 +63,7 @@ public class Shift {
         this.endTime = endTime;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

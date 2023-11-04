@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -29,7 +30,7 @@ public class ShiftIntegrationTests {
 
       private class ShiftSet {
 
-            public Date date = Date.valueOf("1995-06-07");
+            public LocalDate date = LocalDate.of(1995, 6,7);
             public Time startTime = Time.valueOf("07:30:00");
             public Time endTime = Time.valueOf("09:30:00");
 
@@ -43,11 +44,11 @@ public class ShiftIntegrationTests {
 
             private String employeeEmail;
 
-            public Date getDate() {
+            public LocalDate getDate() {
                   return date;
             }
 
-            public void setDate(Date date) {
+            public void setDate(LocalDate date) {
                   this.date = date;
             }
 
@@ -101,12 +102,7 @@ public class ShiftIntegrationTests {
       public void testCreateValidShift() {
             ShiftRequestDto shiftRequest = new ShiftRequestDto(shiftSet.startTime,shiftSet.endTime,shiftSet.date);
             ResponseEntity<ShiftResponseDto> shiftResponse = client.postForEntity("/shift/create", shiftRequest, ShiftResponseDto.class);
-            // error in line above
-            // debugging for time zone errors lol
-            System.out.println("ShiftResponse: " + shiftResponse.getBody());
-            System.out.println("ShiftSetDate: " + shiftSet.getDate());
-            System.out.println("ShiftSetStartTime and End Time:" + shiftSet.getStartTime() + " " + shiftSet.getEndTime());
-            System.out.println("ShiftSet Employee Email:" + shiftSet.getEmployeeEmail());
+
             assertEquals(HttpStatus.CREATED,shiftResponse.getStatusCode());
             assertNotNull(shiftResponse.getBody());
             assertTrue(equals(shiftResponse.getBody(), shiftSet)); // right now, this is false

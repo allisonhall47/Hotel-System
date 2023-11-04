@@ -5,11 +5,12 @@ import ca.mcgill.ecse321.hotelsystem.Model.Shift;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
 
 public class ShiftResponseDto {
     private Time startTime;
     private Time endTime;
-    private Date date;
+    private LocalDate date;
 
     private String employeeEmail;
 
@@ -32,7 +33,7 @@ public class ShiftResponseDto {
         return endTime;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
@@ -45,7 +46,7 @@ public class ShiftResponseDto {
         this.endTime = endTime;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

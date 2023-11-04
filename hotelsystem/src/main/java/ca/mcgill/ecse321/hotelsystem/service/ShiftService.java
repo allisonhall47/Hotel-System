@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.sql.Date;
 import java.sql.Time;
@@ -78,7 +79,7 @@ public class ShiftService {
      * @throws HRSException if the list doesn't exist
      */
     @Transactional
-    public List<Shift> getShiftsByDate(Date date) {
+    public List<Shift> getShiftsByDate(LocalDate date) {
         List<Shift> sdList = shiftRepository.findShiftsByDate(date);
         if (sdList == null) {
             throw new HRSException(HttpStatus.NOT_FOUND, "Shift list for this date not found. ");
@@ -87,7 +88,7 @@ public class ShiftService {
     }
 
     @Transactional
-    public List<Shift> getShiftsByDateAndStartTime(Date date, Time startTime) {
+    public List<Shift> getShiftsByDateAndStartTime(LocalDate date, Time startTime) {
         List<Shift> stList = shiftRepository.findShiftsByDateAndStartTime(date, startTime);
         if (stList == null) {
             throw new HRSException(HttpStatus.NOT_FOUND, "Shift list for this date and time does not exist.");
