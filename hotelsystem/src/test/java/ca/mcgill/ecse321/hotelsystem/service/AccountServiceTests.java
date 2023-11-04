@@ -13,6 +13,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -32,12 +33,12 @@ public class AccountServiceTests {
     @Test
     public void testGetAllAccounts(){
         String password = "Password123";
-        Date dob = Date.valueOf("1990-03-03");
+        LocalDate dob = LocalDate.of(1980, 3, 3);
         String address = "435 Snow Hill Road";
         Account a1 = new Account(password, address, dob);
 
         String password2 = "Safepassword1";
-        Date dob2 = Date.valueOf("1995-03-03");
+        LocalDate dob2 = LocalDate.of(1990, 3, 3);
         String address2 = "34 Rainbow Road";
         Account a2 = new Account(password, address, dob);
 
@@ -73,7 +74,7 @@ public class AccountServiceTests {
     @Test
     public void testCreateValidAccount(){
         String password = "Password123";
-        Date dob = Date.valueOf("1990-03-03");
+        LocalDate dob = LocalDate.of(1980, 3, 3);
         String address = "435 Snow Hill Road";
 
         Account response = new Account(password, address, dob);
@@ -103,7 +104,7 @@ public class AccountServiceTests {
     @Test
     public void testCreateInvalidPasswordAccount(){
         String password = "Password";
-        Date dob = Date.valueOf("1990-03-03");
+        LocalDate dob = LocalDate.of(1980, 3, 3);
         String address = "435 Snow Hill Road";
         Account a = new Account(password, address, dob);
 
@@ -118,7 +119,7 @@ public class AccountServiceTests {
     @Test
     public void testCreateInvalidDoBAccount(){
         String password = "Password123";
-        Date dob = Date.valueOf("2024-03-03");
+        LocalDate dob = LocalDate.of(2040, 3, 3);
         String address = "435 Snow Hill Road";
         Account a = new Account(password, address, dob);
 
@@ -133,7 +134,7 @@ public class AccountServiceTests {
     @Test
     public void testGetAccountByAccountNumber(){
         String password = "Password123";
-        Date dob = Date.valueOf("1990-03-03");
+        LocalDate dob = LocalDate.of(1980, 3, 3);
         String address = "435 Snow Hill Road";
         Account a = new Account(password, address, dob);
 
@@ -162,7 +163,7 @@ public class AccountServiceTests {
     @Test
     public void testValidUpdateAccount(){
         String password = "Password123";
-        Date dob = Date.valueOf("1990-03-03");
+        LocalDate dob = LocalDate.of(1980, 3, 3);
         String address = "435 Snow Hill Road";
         Account a = new Account(password, address, dob);
         when(accountRepository.findAccountByAccountNumber(a.getAccountNumber())).thenReturn(a);
@@ -183,7 +184,7 @@ public class AccountServiceTests {
     @Test
     public void testMissingUpdateAccount(){
         String password = "Password123";
-        Date dob = Date.valueOf("1990-03-03");
+        LocalDate dob = LocalDate.of(1980, 3, 3);
         String address = "435 Snow Hill Road";
         Account a = new Account(password, address, dob);
 
@@ -198,7 +199,7 @@ public class AccountServiceTests {
     @Test
     public void testInvalidInfoUpdateAccount(){
         String password = "Password123";
-        Date dob = Date.valueOf("1990-03-03");
+        LocalDate dob = LocalDate.of(1980, 3, 3);
         String address = "435 Snow Hill Road";
         Account a = new Account(password, address, dob);
         when(accountRepository.findAccountByAccountNumber(a.getAccountNumber())).thenReturn(a);
@@ -217,12 +218,12 @@ public class AccountServiceTests {
     @Test
     public void testInvalidInfo2UpdateAccount(){
         String password = "Password123";
-        Date dob = Date.valueOf("1990-03-03");
+        LocalDate dob = LocalDate.of(1980, 3, 3);
         String address = "435 Snow Hill Road";
         Account a = new Account(password, address, dob);
         when(accountRepository.findAccountByAccountNumber(a.getAccountNumber())).thenReturn(a);
 
-        Date dob2 = Date.valueOf("2024-03-03");
+        LocalDate dob2 = LocalDate.of(2030, 3, 3);
         Account a2 = new Account(password, address, dob2);
 
         HRSException e = assertThrows(HRSException.class, () -> accountService.updateAccount(a2, a.getAccountNumber()));

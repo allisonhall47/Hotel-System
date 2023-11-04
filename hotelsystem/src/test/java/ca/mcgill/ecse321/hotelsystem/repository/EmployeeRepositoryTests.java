@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.Date;
 import java.util.List;
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -31,7 +32,7 @@ public class EmployeeRepositoryTests {
 
     @Test
     public void testPersistAndLoad(){
-        Account account = new Account("bestpassword", "1234 idk street", Date.valueOf("2002-10-23"));
+        Account account = new Account("bestpassword", "1234 idk street", LocalDate.of(2002, 3, 3));
         account = accountRepository.save(account);
 
         Employee employee = new Employee("bill@gmail.com", "Bill", 30000, account);
@@ -43,18 +44,18 @@ public class EmployeeRepositoryTests {
         // Asserts retrieved employee and verifies properties
         assertNotNull(employeeRep);
         assertEquals("Bill", employeeRep.getName());
-        assertEquals(Date.valueOf("2002-10-23"), employeeRep.getAccount().getDob());
+        assertEquals(LocalDate.of(2002, 3, 3), employeeRep.getAccount().getDob());
     }
 
     @Test
     public void testFindEmployeesByName(){
-        Account account = new Account("bestpassword", "1234 idk street", Date.valueOf("2002-10-23"));
+        Account account = new Account("bestpassword", "1234 idk street", LocalDate.of(2002, 3, 3));
         account = accountRepository.save(account);
 
         Employee employee = new Employee("bill@gmail.com", "Bill", 30000, account);
         employee = employeeRepository.save(employee);
 
-        Account account2 = new Account("badpassword", "1234 nvm street", Date.valueOf("2002-12-05"));
+        Account account2 = new Account("badpassword", "1234 nvm street", LocalDate.of(2002, 3, 3));
         account2 = accountRepository.save(account2);
 
         Employee employee2 = new Employee("billo@gmail.com", "Bill", 30000, account2);
@@ -71,7 +72,7 @@ public class EmployeeRepositoryTests {
 
     @Test
     public void testFindEmployeeByAccountId(){
-        Account account = new Account("bestpassword", "1234 idk street", Date.valueOf("2002-10-23"));
+        Account account = new Account("bestpassword", "1234 idk street", LocalDate.of(2002, 3, 3));
         account = accountRepository.save(account);
 
         Employee employee = new Employee("bill@gmail.com", "Bill", 30000, account);
@@ -87,8 +88,8 @@ public class EmployeeRepositoryTests {
 
     @Test
     public void testFindAllEmployees(){
-        Account account1 = new Account("bestpassword", "1234 idk street", Date.valueOf("2002-10-23"));
-        Account account2 = new Account("bestpassword", "1234 idk street", Date.valueOf("2002-10-23"));
+        Account account1 = new Account("bestpassword", "1234 idk street", LocalDate.of(2002, 3, 3));
+        Account account2 = new Account("bestpassword", "1234 idk street", LocalDate.of(2002, 3, 3));
         Employee employee1 = new Employee("bill@gmail.com", "Bill", 30000, account1);
         Employee employee2 = new Employee("jill@gmail.com", "Jill", 30000, account2);
 
@@ -108,7 +109,7 @@ public class EmployeeRepositoryTests {
     @Test
     @Transactional
     public void testDeleteEmployeeByEmail(){
-        Account account = new Account("bestpassword", "1234 idk street", Date.valueOf("2002-10-23"));
+        Account account = new Account("bestpassword", "1234 idk street", LocalDate.of(2002, 3, 3));
         account = accountRepository.save(account);
 
         Employee employee = new Employee("bill@gmail.com", "Bill", 30000, account);

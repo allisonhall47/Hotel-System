@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -37,7 +38,7 @@ public class ShiftRepositoryTests {
 
         String password = "harrysmith1234";
         String address = "123 snowy road";
-        Date dob = Date.valueOf("1980-04-03");
+        LocalDate dob = LocalDate.of(1980, 3, 3);
         Account account = new Account();
         account.setPassword(password);
         account.setAddress(address);
@@ -90,7 +91,7 @@ public class ShiftRepositoryTests {
         // Create Account
         String password = "harrysmith1234";
         String address = "123 snowy road";
-        Date dob = Date.valueOf("1980-04-03");
+        LocalDate dob = LocalDate.of(1980, 3, 3);
         Account account = new Account();
         account.setPassword(password);
         account.setAddress(address);
@@ -154,7 +155,7 @@ public class ShiftRepositoryTests {
         // Create Account
         String password = "harrysmith1234";
         String address = "123 snowy road";
-        Date dob = Date.valueOf("1980-04-03");
+        LocalDate dob = LocalDate.of(1980, 3, 3);
         Account account = new Account();
         account.setPassword(password);
         account.setAddress(address);
@@ -209,7 +210,7 @@ public class ShiftRepositoryTests {
         // Create Account
         String password = "harrysmith1234";
         String address = "123 snowy road";
-        Date dob = Date.valueOf("1980-04-03");
+        LocalDate dob = LocalDate.of(1980, 3, 3);
         Account account = new Account();
         account.setPassword(password);
         account.setAddress(address);
@@ -267,7 +268,7 @@ public class ShiftRepositoryTests {
         // Create Account
         String password = "harrysmith1234";
         String address = "123 snowy road";
-        Date dob = Date.valueOf("1980-04-03");
+        LocalDate dob = LocalDate.of(1980, 3, 3);
         Account account = new Account();
         account.setPassword(password);
         account.setAddress(address);

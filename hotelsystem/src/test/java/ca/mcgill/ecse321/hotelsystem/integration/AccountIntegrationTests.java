@@ -15,6 +15,10 @@ import org.springframework.http.ResponseEntity;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -23,7 +27,8 @@ public class AccountIntegrationTests {
 
     private class AccountFixture {
         public String password = "Password123";
-        public Date dob = Date.valueOf("1990-03-03");
+
+        public LocalDate dob = LocalDate.of(1990, 3, 3);
         public String address = "435 Snow Hill Road";
 
         public int accountNumber;
@@ -36,11 +41,11 @@ public class AccountIntegrationTests {
             this.password = password;
         }
 
-        public Date getDob() {
+        public LocalDate getDob() {
             return dob;
         }
 
-        public void setDob(Date dob) {
+        public void setDob(LocalDate dob) {
             this.dob = dob;
         }
 
@@ -97,35 +102,117 @@ public class AccountIntegrationTests {
         assertNotNull(response.getBody());
         assertTrue(equals(response.getBody(), accountFixture));
         accountFixture.setAccountNumber(response.getBody().getAccountNumber());
-        System.out.println(accountFixture.accountNumber);
     }
 
     @Test
     @Order(2)
-    public void testValidUpdateAccount(){
-        AccountRequestDto request = new AccountRequestDto("NewPass123", accountFixture.address, accountFixture.dob);
-        HttpEntity<AccountRequestDto> requestEntity = new HttpEntity<>(request);
-        int id = accountFixture.accountNumber;
-        ResponseEntity<AccountResponseDto> response = client.exchange("/account/"+id, HttpMethod.PUT, requestEntity, AccountResponseDto.class);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertEquals(response.getBody().getPassword(), "NewPass123");
-        assertEquals(response.getBody().getAddress(), accountFixture.address);
-
-        accountFixture.setPassword(response.getBody().getPassword());
+    public void testCreateInvalidPasswordAccount(){
+        AccountRequestDto request = new AccountRequestDto("password", accountFixture.address, accountFixture.dob);
+        ResponseEntity<String> response = client.postForEntity("/account/create", request, String.class);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(response.getBody(), "Invalid Password");
     }
 
     @Test
     @Order(3)
+    public void testCreateInvalidDoBAccount(){
+        AccountRequestDto request = new AccountRequestDto(accountFixture.password, accountFixture.address, LocalDate.of(2030, 3, 3));
+        ResponseEntity<String> response = client.postForEntity("/account/create", request, String.class);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(response.getBody(), "Invalid date of birth.");
+    }
+
+    @Test
+    @Order(4)
+    public void testCreateInvalidEmptyAccount(){
+        AccountRequestDto request = new AccountRequestDto();
+        ResponseEntity<String> response = client.postForEntity("/account/create", request, String.class);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(response.getBody(), "Empty field in the account");
+    }
+
+    @Test
+    @Order(5)
+    public void testValidUpdateAccount(){
+        AccountRequestDto request = new AccountRequestDto("NewPass123", accountFixture.getAddress(), accountFixture.getDob());
+        HttpEntity<AccountRequestDto> requestEntity = new HttpEntity<>(request);
+        ResponseEntity<AccountResponseDto> response = client.exchange("/account/"+accountFixture.getAccountNumber(), HttpMethod.PUT, requestEntity, AccountResponseDto.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(response.getBody().getPassword(), "NewPass123");
+        assertEquals(response.getBody().getAddress(), accountFixture.getAddress());
+        accountFixture.setPassword(response.getBody().getPassword());
+    }
+
+    @Test
+    @Order(6)
+    public void testInvalidNoAccountUpdateAccount(){
+        int id = -2;
+        AccountRequestDto request = new AccountRequestDto("NewPass123", accountFixture.getAddress(), accountFixture.getDob());
+        HttpEntity<AccountRequestDto> requestEntity = new HttpEntity<>(request);
+        ResponseEntity<String> response = client.exchange("/account/"+id, HttpMethod.PUT, requestEntity, String.class);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals(response.getBody(), "Account not found.");
+    }
+
+    @Test
+    @Order(7)
+    public void testInvalidFieldUpdateAccount(){
+        AccountRequestDto request = new AccountRequestDto("NewPass", accountFixture.getAddress(), accountFixture.getDob());
+        HttpEntity<AccountRequestDto> requestEntity = new HttpEntity<>(request);
+        ResponseEntity<String> response = client.exchange("/account/"+accountFixture.getAccountNumber(), HttpMethod.PUT, requestEntity, String.class);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(response.getBody(), "Invalid Password");
+    }
+
+    @Test
+    @Order(8)
     public void testValidGetAccount(){
         ResponseEntity<AccountResponseDto> response = client.getForEntity("/account?accountNumber=" + accountFixture.getAccountNumber(), AccountResponseDto.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
         assertTrue(equals(response.getBody(), accountFixture));
+//        assertEquals(response.getBody().getdob(), accountFixture.getDob());
     }
 
     @Test
-    @Order(4)
+    @Order(9)
+    public void testInvalidGetAccount(){
+        int id = -2;
+        ResponseEntity<String> response = client.getForEntity("/account?accountNumber="+id, String.class);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals(response.getBody(), "Account not found.");
+    }
+
+    @Test
+    @Order(10)
+    public void testValidGetAllAccounts(){
+        ResponseEntity<List> response = client.getForEntity("/accounts", List.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(response.getBody().size(), 1);
+        List<Map<String, Object>> accounts = response.getBody();
+
+        System.out.println(accountFixture.getDob());
+        System.out.println(accounts.get(0).get("dob") instanceof LocalDate);
+        System.out.println(accounts.get(0).get("dob") instanceof String);
+        assertEquals(accountFixture.getPassword(), accounts.get(0).get("password"));
+        assertEquals(accountFixture.getDob().toString(), accounts.get(0).get("dob"));
+        assertEquals(accountFixture.getAccountNumber(), accounts.get(0).get("accountNumber"));
+        assertEquals(accountFixture.getAddress(), accounts.get(0).get("address"));
+    }
+
+    @Test
+    @Order(11)
+    public void testInvalidDeleteAccount(){
+        int id = -2;
+        HttpEntity<String> requestEntity = new HttpEntity<>(null);
+        ResponseEntity<String> response = client.exchange("/account/delete/"+id, HttpMethod.DELETE, requestEntity, String.class);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals(response.getBody(),  "Account not found.");
+    }
+
+    @Test
+    @Order(12)
     public void testValidDeleteAccount(){
         HttpEntity<String> requestEntity = new HttpEntity<>(null);
         ResponseEntity<String> response = client.exchange("/account/delete/" + accountFixture.getAccountNumber(), HttpMethod.DELETE, requestEntity, String.class);
@@ -135,8 +222,10 @@ public class AccountIntegrationTests {
         assertEquals(response2.getBody(),  "Account not found.");
     }
 
+
     private boolean equals(AccountResponseDto response, AccountFixture a){
         boolean b = response.getPassword().equals(a.password);
+        b = b & response.getdob().equals(a.dob);
         return b & response.getAddress().equals(a.address);
     }
 

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 @SpringBootTest
 public class OwnerRepositoryTests {
@@ -29,7 +30,7 @@ public class OwnerRepositoryTests {
     public void testPersistAndLoadPerson() {
 
         // Create Account.
-        Date dob = Date.valueOf("2023-12-01");
+        LocalDate dob = LocalDate.of(2002, 3, 3);
         String address = "123 Drury Lane";
         String password = "hallowelt";
 
