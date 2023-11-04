@@ -29,4 +29,9 @@ public class RoomService {
         }
         return rooms;
     }
+
+    @Transactional
+    public Room getRoomByType(String type) {
+        return null;
+    }
 }

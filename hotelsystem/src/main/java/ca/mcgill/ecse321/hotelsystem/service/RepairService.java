@@ -24,11 +24,33 @@ public class RepairService {
 
     @Transactional
     public Repair createRepair(int employeeAccountId, String description) {
+        if (description == null || description.isBlank()) {
+            throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid repair description: Empty");
+        } else if (description.length() < 10) {
+            throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid repair description: Too short");
+        }
+
         Employee emp = employeeRepository.findEmployeeByAccount_AccountNumber(employeeAccountId);
         if (emp == null) {
             throw new HRSException(HttpStatus.NOT_FOUND, String.format("No employee with account id %d", employeeAccountId));
         }
         return repairRepository.save(new Repair(CompletionStatus.Pending, description, emp));
+    }
+
+    @Transactional
+    public Repair changeRepairStatus(int id, CompletionStatus status) {
+        if (status == null) {
+            throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid repair status (null)");
+        }
+        Repair rep = repairRepository.findRepairByRepairId(id);
+        if (rep == null) {
+            throw new HRSException(HttpStatus.NOT_FOUND, String.format("No repair with id %d", id));
+        }
+
+        rep.setStatus(status);
+        rep = repairRepository.save(rep);
+
+        return rep;
     }
 
     @Transactional
@@ -42,6 +64,9 @@ public class RepairService {
 
     @Transactional
     public List<Repair> getRepairsByEmployeeEmail(String email) {
+        if (email == null) {
+            throw new HRSException(HttpStatus.BAD_REQUEST, "Email can't be null");
+        }
         return repairRepository.findRepairsByEmployee_Email(email);
     }
 
@@ -59,14 +84,11 @@ public class RepairService {
     /**
      * GetAllRepairs: service method to fetch all existing repairs in the database
      * @return List of repairs
-     * @throws HRSException if no repairs exist in the system
      */
     @Transactional
     public List<Repair> getAllRepairs(){
         List<Repair> repairs = repairRepository.findAll();
-        if (repairs.size() == 0){
-            throw new HRSException(HttpStatus.NOT_FOUND, "There are no repairs in the system.");
-        }
         return repairs;
     }
+
 }

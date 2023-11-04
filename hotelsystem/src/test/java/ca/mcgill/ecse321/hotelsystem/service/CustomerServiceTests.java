@@ -18,6 +18,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -138,7 +139,7 @@ public class CustomerServiceTests {
         String name = "Jane White";
         String email = "jane@gmail.com";
         String password = "Password123";
-        Date dob = Date.valueOf("1990-03-03");
+        LocalDate dob = LocalDate.of(1980, 3, 3);
         String address = "435 Snow Hill Road";
         Account a = accountService.createAccount(new Account(password, address, dob));
         Customer c = new Customer(email, name, a);
@@ -161,7 +162,7 @@ public class CustomerServiceTests {
         String name = "Jane White";
         String email = "jane@gmail.com";
         String password = "Password123";
-        Date dob = Date.valueOf("1990-03-03");
+        LocalDate dob = LocalDate.of(1980, 3, 3);
         String address = "435 Snow Hill Road";
         Account a = accountService.createAccount(new Account(password, address, dob));
         Employee employee = new Employee(email, name, 30000, a);
@@ -173,6 +174,20 @@ public class CustomerServiceTests {
         HRSException e = assertThrows(HRSException.class, () -> customerService.createCustomer(c));
         assertEquals(e.getStatus(), HttpStatus.CONFLICT);
         assertEquals(e.getMessage(), "A user with this email already exists.");
+    }
+
+    /**
+     * Test creating a customer with an invalid email
+     */
+    @Test
+    public void testCreateInvalid2Customer(){
+        String name = "Jane White";
+        String email = "--janewhite@gmail.com123";
+        Customer c = new Customer(email, name, null);
+
+        HRSException e = assertThrows(HRSException.class, () -> customerService.createCustomer(c));
+        assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
+        assertEquals(e.getMessage(), "Invalid email address.");
     }
 
     /**
@@ -198,15 +213,17 @@ public class CustomerServiceTests {
         when(customerRepository.findCustomerByEmail(email)).thenReturn(c);
 
         String password = "Password123";
-        Date dob = Date.valueOf("1990-03-03");
+        LocalDate dob = LocalDate.of(1980, 3, 3);
         String address = "435 Snow Hill Road";
         Account a = accountService.createAccount(new Account(password, address, dob));
 
         Customer c2 = new Customer(email, name, a);
 
-        when(customerRepository.save(c)).thenReturn(c2);
+        when(customerRepository.save(c)).thenReturn(c);
         Customer output = customerService.updateCustomerInformation(c2);
-        assertEquals(output, c2);
+        assertEquals(output.getName(), c2.getName());
+        assertEquals(output.getEmail(), c2.getEmail());
+        assertEquals(output.getAccount(), c2.getAccount());
     }
 
     /**
@@ -224,6 +241,19 @@ public class CustomerServiceTests {
         Customer c2 = new Customer(email2, name, null);
 
         HRSException e = assertThrows(HRSException.class, () -> customerService.updateCustomerInformation(c2));
+        assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
+        assertEquals(e.getMessage(), "Customer not found.");
+    }
+
+    /**
+     * Test deleting a customer with invalid account number
+     */
+    @Test
+    public void testInvalidDelete(){
+        String email = "jane@gmail.com";
+        when(customerRepository.findCustomerByEmail(email)).thenReturn(null);
+
+        HRSException e = assertThrows(HRSException.class, () -> customerService.deleteCustomer(email));
         assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
         assertEquals(e.getMessage(), "Customer not found.");
     }

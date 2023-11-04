@@ -29,4 +29,9 @@ public class SpecificRoomService {
         }
         return specificRooms;
     }
+
+    @Transactional
+    public SpecificRoom findSpecificRoomByNumber(int number) {
+        return null;
+    }
 }

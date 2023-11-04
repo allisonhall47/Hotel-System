@@ -86,4 +86,19 @@ public class EmployeeService {
         employee.setAccount(newEmployeeInfo.getAccount());
         return employeeRepository.save(employee);
     }
+
+    /**
+     * DeleteEmployee: service method to delete an existing employee from the database
+     * @param email: email of the employee to be deleted
+     * @throws HRSException if the employee does not exist
+     */
+    @Transactional
+    public void deleteEmployee(String email){
+        Employee employee = employeeRepository.findEmployeeByEmail(email);
+        if (employee == null){
+            throw new HRSException(HttpStatus.NOT_FOUND, "Employee not found.");
+        }
+        employeeRepository.delete(employee);
+    }
+
 }

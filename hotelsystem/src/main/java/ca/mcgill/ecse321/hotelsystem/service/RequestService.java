@@ -15,13 +15,16 @@ import java.util.List;
 public class RequestService {
 
     @Autowired
-    RequestRepository requestRepository;
+    private RequestRepository requestRepository;
 
     @Autowired
-    ReservationRepository reservationRepository;
+    private ReservationRepository reservationRepository;
 
     @Transactional
     public Request createRequest(String description, int reservationId) {
+        if (description == null || description.length() == 0) {
+            throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid request description (empty)");
+        }
         Reservation res = reservationRepository.findReservationByReservationID(reservationId);
         if (res == null) {
             throw new HRSException(HttpStatus.NOT_FOUND, String.format("No reservation with id %d", reservationId));
@@ -35,6 +38,22 @@ public class RequestService {
         if (req == null) {
             throw new HRSException(HttpStatus.NOT_FOUND, String.format("No request with id %d", id));
         }
+        return req;
+    }
+
+    @Transactional
+    public Request changeRequestStatus(int id, CompletionStatus status) {
+        if (status == null) {
+            throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid request status (null)");
+        }
+        Request req = requestRepository.findRequestByRequestId(id);
+        if (req == null) {
+            throw new HRSException(HttpStatus.NOT_FOUND, String.format("No request with id %d", id));
+        }
+
+        req.setStatus(status);
+        requestRepository.save(req);
+
         return req;
     }
 
@@ -60,14 +79,10 @@ public class RequestService {
     /**
      * GetAllRequests: service method to fetch all existing request in the database
      * @return List of requests
-     * @throws HRSException if no requests exist in the system
      */
     @Transactional
     public List<Request> getAllRequests(){
         List<Request> requests = requestRepository.findAll();
-        if (requests.size() == 0){
-            throw new HRSException(HttpStatus.NOT_FOUND, "There are no owners in the system.");
-        }
         return requests;
     }
 }
