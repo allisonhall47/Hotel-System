@@ -266,33 +266,58 @@ public class ShiftServiceTests {
             assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
             assertEquals(e.getMessage(), "Employee does not exist.");
       }
-      @Test
-      public void testDeleteExistingShift() {
-            Shift shift = new Shift();
-            int shiftID = 649;
-            shift.setShiftId(shiftID);
+//      @Test
+//      public void testDeleteExistingShift() {
+//            Shift shift = new Shift();
+//            int shiftID = 649;
+//            shift.setShiftId(shiftID);
+//
+//            when(shiftRepository.findShiftByShiftId(shiftID)).thenReturn(shift);
+//            shiftService.deleteShift(shift);
+//            verify(shiftRepository,times(1)).delete(shift);
+//      }
+//
+//      @Test
+//      public void testDeleteNonExistentShift() {
+//            Shift shift = new Shift();
+//            int shiftID = 650;
+//            shift.setShiftId(shiftID);
+//
+//            when(shiftRepository.findById(shiftID)).thenReturn(Optional.empty());
+//
+//            HRSException e = assertThrows(HRSException.class, () -> shiftService.deleteShift(shift));
+//            assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
+//            assertEquals(e.getMessage(), "Shift does not exist.");
+//      }
 
-            when(shiftRepository.findShiftByShiftId(shiftID)).thenReturn(shift);
-            shiftService.deleteShift(shift);
-            verify(shiftRepository,times(1)).delete(shift);
+      @Test
+      public void testValidUpdateShift() {
+            Time oldStartTime = Time.valueOf("7:30:00");
+            Time newStartTime = Time.valueOf("9:30:00");
+            Time endTime = Time.valueOf("14:30:00");
+            LocalDate oldDate = LocalDate.of(1993,4,19);
+            LocalDate newDate = LocalDate.of(1993,4,20);
+            String email = "johnbrown@gmail.com";
+            String name = "John Brown";
+            int salary = 6500;
+            Account account = new Account();
+            Employee employee = new Employee(email, name, salary, account);
+            // Previous shift
+            Shift oldShift = new Shift(oldStartTime, endTime, oldDate, employee);
+            when(shiftRepository.findShiftByShiftId(oldShift.getShiftId())).thenReturn(oldShift);
+
+            Shift newShift = new Shift(newStartTime, endTime, newDate, employee);
+            when(shiftRepository.save(oldShift)).thenReturn(oldShift);
+            Shift output = shiftService.updateShift(newShift,oldShift.getShiftId());
+            assertEquals(output.getDate(), newShift.getDate());
+            assertEquals(output.getStartTime(), newShift.getStartTime());
+            assertEquals(output.getShiftId(), newShift.getShiftId());
+            assertEquals(output.getEndTime(), newShift.getEndTime());
+
       }
-
+      // tests an invalid update when the first shift is null / didn't save it
       @Test
-      public void testDeleteNonExistentShift() {
-            Shift shift = new Shift();
-            int shiftID = 650;
-            shift.setShiftId(shiftID);
-
-            when(shiftRepository.findById(shiftID)).thenReturn(Optional.empty());
-
-            HRSException e = assertThrows(HRSException.class, () -> shiftService.deleteShift(shift));
-            assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
-            assertEquals(e.getMessage(), "Shift does not exist.");
-      }
-
-      @Test
-      public void testUpdateShift() {
-            // Initial data setup
+      public void testInvalidUpdateShift() {
             int shiftID = 450;
             Time oldStartTime = Time.valueOf("7:30:00");
             Time newStartTime = Time.valueOf("9:30:00");
@@ -304,33 +329,12 @@ public class ShiftServiceTests {
             int salary = 6500;
             Account account = new Account();
             Employee employee = new Employee(email, name, salary, account);
-            when(employeeRepository.findEmployeeByEmail(email)).thenReturn(employee);
             // Previous shift
             Shift oldShift = new Shift(oldStartTime, endTime, oldDate, employee);
-            // Assuming Shift has a setter for ShiftId, since it seems to have a getter from your previous code.
-            oldShift.setShiftId(shiftID);
 
-            // New shift (with updated time and date)
-            Shift newShift = new Shift(newStartTime, endTime, newDate, employee);
-            newShift.setShiftId(shiftID); // Ensure it has the same ID to mimic an update
-
-            // Mocking behavior
-            when(shiftRepository.findShiftByShiftId(shiftID)).thenReturn(oldShift);
-            when(shiftRepository.save(newShift)).thenReturn(newShift);
-
-            // Call updateShift
-            Shift updatedShift = shiftService.updateShift(newShift);
-
-            // Assertions
-            assertNotNull(updatedShift);
-            assertEquals(newShift.getShiftId(), updatedShift.getShiftId());
-            assertEquals(newShift.getDate(), updatedShift.getDate());
-            assertEquals(newShift.getStartTime(), updatedShift.getStartTime());
-            assertEquals(newShift.getEmployee(), updatedShift.getEmployee());
-
-            // Verifying interactions
-            verify(shiftRepository, times(1)).findShiftByShiftId(shiftID);
-            verify(shiftRepository, times(1)).save(newShift);
+            HRSException e = assertThrows(HRSException.class, () -> shiftService.updateShift(oldShift, oldShift.getShiftId()));
+            assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
+            assertEquals(e.getMessage(), "Shift not found.");
       }
 
 

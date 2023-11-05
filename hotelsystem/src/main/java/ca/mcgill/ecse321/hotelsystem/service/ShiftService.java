@@ -114,17 +114,25 @@ public class ShiftService {
     }
 
     @Transactional
-    public Shift updateShift(Shift shift) {
-        isValidShift(shift);
-        Shift previousShift = getShiftByShiftID(shift.getShiftId());
+    public Shift updateShift(Shift shift, int shiftID) {
+        if (shift == null) {
+            throw new HRSException(HttpStatus.NOT_FOUND, "Shift not found.");
+        }
+        if (shift.getStartTime() == null || shift.getEndTime() == null || shift.getDate() == null) {
+            throw new HRSException(HttpStatus.BAD_REQUEST, "Empty fields are present.");
+        }
+        if (shift.getStartTime().after(shift.getEndTime())) {
+            throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid start/end times.");
+        }
+        Shift previousShift = getShiftByShiftID(shiftID);
         if (previousShift == null) {
             throw new HRSException(HttpStatus.NOT_FOUND, "Shift not found.");
         }
-        // setters and getters to test
-//      previousShift.setShiftId(shift.getShiftId());
+
+
         previousShift.setDate(shift.getDate());
         previousShift.setStartTime(shift.getStartTime());
-        previousShift.setShiftId(shift.getShiftId());
+        previousShift.setEndTime(shift.getEndTime());
         previousShift.setEmployee(shift.getEmployee());
 
         return shiftRepository.save(previousShift);

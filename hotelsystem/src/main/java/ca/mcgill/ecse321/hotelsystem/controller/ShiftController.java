@@ -89,12 +89,11 @@ public class ShiftController {
       }
 
       // write update controller method
-      @PutMapping("/shift/update")
-      public ResponseEntity<ShiftResponseDto> updateShift(@PathVariable ShiftRequestDto shiftToUpdate) {
-            Shift shiftModel = shiftToUpdate.toModel(employeeService.getEmployeeByEmail(shiftToUpdate.getEmployeeEmail()));
-            Shift updatedShift = shiftService.updateShift(shiftModel);
-            ShiftResponseDto responseDto = new ShiftResponseDto(updatedShift);
-            return new ResponseEntity<ShiftResponseDto>(responseDto, HttpStatus.OK);
+      @PutMapping(value = {"/shift/{shiftID}", "/shift/{shiftID}/"})
+      public ResponseEntity<ShiftResponseDto> updateShift(@PathVariable int shiftID, @RequestBody ShiftRequestDto shiftToUpdate) {
+           Shift shift = shiftToUpdate.toModel(shiftService.getShiftByShiftID(shiftID).getEmployee());
+           shift = shiftService.updateShift(shift, shift.getShiftId());
+           return new ResponseEntity<ShiftResponseDto>(new ShiftResponseDto(shift), HttpStatus.OK);
       }
 
       @DeleteMapping("/shift/delete")

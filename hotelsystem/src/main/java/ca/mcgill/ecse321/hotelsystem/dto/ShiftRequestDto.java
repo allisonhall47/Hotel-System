@@ -14,6 +14,7 @@ public class ShiftRequestDto {
     private LocalDate date;
 
     private String employeeEmail;
+    private Employee employee;
 
     public ShiftRequestDto(Time startTime, Time endTime, LocalDate date) {
         this.startTime = startTime;
