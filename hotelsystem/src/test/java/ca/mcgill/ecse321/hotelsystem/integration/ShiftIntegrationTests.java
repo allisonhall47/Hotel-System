@@ -123,6 +123,7 @@ public class ShiftIntegrationTests {
             assertNotNull(shiftResponse.getBody());
             assertTrue(equals(shiftResponse.getBody(), shiftSet));
             shiftSet.setEmployeeEmail(shiftResponse.getBody().getEmployeeEmail());
+            shiftSet.setShiftID(shiftResponse.getBody().getShiftId());
       }
 
       private boolean equals(ShiftResponseDto response, ShiftSet s) {

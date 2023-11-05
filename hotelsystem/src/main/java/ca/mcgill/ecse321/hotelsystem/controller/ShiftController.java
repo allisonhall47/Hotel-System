@@ -92,7 +92,7 @@ public class ShiftController {
       @PutMapping(value = {"/shift/{shiftID}", "/shift/{shiftID}/"})
       public ResponseEntity<ShiftResponseDto> updateShift(@PathVariable int shiftID, @RequestBody ShiftRequestDto shiftToUpdate) {
            Shift shift = shiftToUpdate.toModel(shiftService.getShiftByShiftID(shiftID).getEmployee());
-           shift = shiftService.updateShift(shift, shift.getShiftId());
+           shift = shiftService.updateShift(shift, shiftID);
            return new ResponseEntity<ShiftResponseDto>(new ShiftResponseDto(shift), HttpStatus.OK);
       }
 
