@@ -29,4 +29,51 @@ public class RoomService {
         }
         return rooms;
     }
+
+    @Transactional
+    public Room createRoom(Room room){
+        isValidRoom(room);
+        room = roomRepository.save(room);
+        return room;
+    }
+
+    @Transactional
+    public Room updateRoom(Room room){
+        isValidRoom(room);
+        Room oldRoom = getRoomByType(room.getType());
+        if (oldRoom == null) {
+            throw new HRSException(HttpStatus.NOT_FOUND, "No rooms in the system with type " + room.getType() + ".");
+        }
+        oldRoom.setRate(room.getRate());
+        oldRoom.setCapacity(room.getCapacity());
+        oldRoom.setBedType(room.getBedType());
+        return roomRepository.save(oldRoom);
+    }
+
+    @Transactional
+    public Room getRoomByType(String type){
+        if(type == null || type.isEmpty()){
+            throw new HRSException(HttpStatus.BAD_REQUEST, "Please enter a valid string.");
+        }
+        Room room = roomRepository.findRoomByType(type);
+        if(room ==  null){
+            throw new HRSException(HttpStatus.NOT_FOUND, "No rooms in the system with type "+ type + ".");
+        }
+        return room;
+    }
+
+    public void isValidRoom(Room room){
+        if(!room.getType().equals("Suite") && !room.getType().equals("Deluxe") && !room.getType().equals("Luxury") && !room.getType().equals("Regular")){
+            throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid room type.");
+        }
+        if(room.getRate()<=0){
+            throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid room rate.");
+        }
+        if(room.getBedType()==null){
+            throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid bed type.");
+        }
+        if(room.getCapacity()<=0){
+            throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid room capacity.");
+        }
+    }
 }
