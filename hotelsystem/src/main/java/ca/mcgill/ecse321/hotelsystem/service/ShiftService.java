@@ -106,10 +106,14 @@ public class ShiftService {
     }
 
     @Transactional
-    public void deleteShift(Shift shift) {
-        if (!shiftRepository.existsById(shift.getShiftId())) {
+    public void deleteShift(int shiftID) {
+        if (shiftID < 0) {
+            throw new HRSException(HttpStatus.NOT_FOUND, "Invalid shift ID.");
+        }
+        if (!shiftRepository.existsById(shiftID)) {
             throw new HRSException(HttpStatus.BAD_REQUEST, "Shift does not exist.");
         }
+        Shift shift = getShiftByShiftID(shiftID);
         shiftRepository.delete(shift);
     }
 
@@ -137,6 +141,7 @@ public class ShiftService {
 
         return shiftRepository.save(previousShift);
     }
+
 
     private void isValidShift(Shift shift) {
         if (shift == null) {

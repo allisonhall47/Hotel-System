@@ -273,22 +273,22 @@ public class ShiftServiceTests {
 //            shift.setShiftId(shiftID);
 //
 //            when(shiftRepository.findShiftByShiftId(shiftID)).thenReturn(shift);
-//            shiftService.deleteShift(shift);
+//            shiftService.deleteShift(shiftID);
 //            verify(shiftRepository,times(1)).delete(shift);
 //      }
-//
-//      @Test
-//      public void testDeleteNonExistentShift() {
-//            Shift shift = new Shift();
-//            int shiftID = 650;
-//            shift.setShiftId(shiftID);
-//
-//            when(shiftRepository.findById(shiftID)).thenReturn(Optional.empty());
-//
-//            HRSException e = assertThrows(HRSException.class, () -> shiftService.deleteShift(shift));
-//            assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
-//            assertEquals(e.getMessage(), "Shift does not exist.");
-//      }
+
+      @Test
+      public void testDeleteNonExistentShift() {
+            Shift shift = new Shift();
+            int shiftID = 650;
+            shift.setShiftId(shiftID);
+
+            when(shiftRepository.findById(shiftID)).thenReturn(Optional.empty());
+
+            HRSException e = assertThrows(HRSException.class, () -> shiftService.deleteShift(shiftID));
+            assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
+            assertEquals(e.getMessage(), "Shift does not exist.");
+      }
 
       @Test
       public void testValidUpdateShift() {

@@ -7,6 +7,7 @@ import ca.mcgill.ecse321.hotelsystem.dto.ShiftRequestDto;
 import ca.mcgill.ecse321.hotelsystem.dto.ShiftResponseDto;
 import ca.mcgill.ecse321.hotelsystem.repository.EmployeeRepository;
 import ca.mcgill.ecse321.hotelsystem.repository.ShiftRepository;
+import org.apache.coyote.Response;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -47,8 +50,19 @@ public class ShiftIntegrationTests {
 
             public int shiftID;
 
+            public int getShiftID1() {
+                  return shiftID1;
+            }
+
+            public void setShiftID1(int shiftID1) {
+                  this.shiftID1 = shiftID1;
+            }
+
+            public int shiftID1 = -1;
+
             public Time endTime1 = Time.valueOf("06:30:00");
 
+            private String employeeEmail;
             public String getEmployeeEmail() {
                   return employeeEmail;
             }
@@ -56,8 +70,6 @@ public class ShiftIntegrationTests {
             public void setEmployeeEmail(String employeeEmail) {
                   this.employeeEmail = employeeEmail;
             }
-
-            private String employeeEmail;
 
             public LocalDate getDate() {
                   return date;
@@ -105,14 +117,20 @@ public class ShiftIntegrationTests {
             shiftRepository.deleteAll();
       }
 
+      /*
+       * Test that gets all empty shifts.
+       */
       @Test
       @Order(0)
       public void testGetAllEmptyShifts() {
-            ResponseEntity<String> response = client.getForEntity("/shifts", String.class);
+            ResponseEntity<String> response = client.getForEntity("/shifts/", String.class);
             assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
             assertEquals(response.getBody(), "There are no shifts in the system.");
       }
 
+      /*
+       * Tests the creation of a valid shift.
+       */
       @Test
       @Order(1)
       public void testCreateValidShift() {
@@ -170,17 +188,131 @@ public class ShiftIntegrationTests {
             assertEquals(response.getBody().getEndTime(), shiftSet.getEndTime());
             shiftSet.setStartTime(response.getBody().getStartTime());
       }
+
+      /*
+       * Tests an invalid start/end time when updating.
+       */
+      @Test
+      @Order(5)
+      public void testInvalidTimesUpdateShift() {
+            ShiftRequestDto request = new ShiftRequestDto(shiftSet.getStartTime(),shiftSet.endTime1,shiftSet.getDate());
+            HttpEntity<ShiftRequestDto> shiftEntity = new HttpEntity<>(request);
+            ResponseEntity<String> response = client.exchange("/shift/"+shiftSet.getShiftID(), HttpMethod.PUT, shiftEntity, String.class);
+            assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+            assertEquals(response.getBody(), "Invalid start/end times.");
+      }
+
+      /*
+       * Tests updating a shift with a null field.
+       */
       @Test
       @Order(6)
-      public void testGetValidShiftBy() {
+      public void testInvalidUpdateShiftNullFields() {
+            ShiftRequestDto request = new ShiftRequestDto(shiftSet.getStartTime(),null,shiftSet.getDate());
+            HttpEntity<ShiftRequestDto> shiftEntity = new HttpEntity<>(request);
+            ResponseEntity<String> response = client.exchange("/shift/"+shiftSet.getShiftID(), HttpMethod.PUT, shiftEntity, String.class);
+            assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+            assertEquals(response.getBody(), "Empty fields are present.");
+      }
+
+      /*
+       * Tests getting a valid shift with ID.
+       */
+      @Test
+      @Order(7)
+      public void testGetValidShiftByID() {
+            ResponseEntity<ShiftResponseDto> response = client.getForEntity("/shift/get/"+shiftSet.getShiftID(), ShiftResponseDto.class);
+            assertEquals(HttpStatus.OK, response.getStatusCode());
+            assertNotNull(response.getBody());
+            assertTrue(equals(response.getBody(), shiftSet));
+      }
+      /*
+       * Tests getting a invalid shift, due to a negative ID.
+       */
+      @Test
+      @Order(8)
+      public void testGetInvalidShiftByInvalidID() {
+            ResponseEntity<String> response = client.getForEntity("/shift/get/"+shiftSet.shiftID1, String.class);
+            assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+            assertEquals(response.getBody(), "Invalid shift ID.");
+      }
+
+      @Test
+      @Order(9)
+      public void testGetValidShiftsByEmployeeEmail() {
             // TO DO
       }
 
-
       @Test
       @Order(10)
-      public void testDeleteValidShift() {
+      public void testGetInvalidShiftsByEmployeeEmail() {
             // TO DO
+
+      }
+
+      @Test
+      @Order(11)
+      public void testGetValidShiftsByDate() {
+            // TO DO
+      }
+
+      @Test
+      @Order(12)
+      public void testGetInvalidShiftsByDate() {
+            // TO DO
+      }
+
+      @Test
+      @Order(13)
+      public void testGetValidShiftsByStartDateAndTime() {
+            // TO DO
+      }
+
+      @Test
+      @Order(14)
+      public void testGetInvalidShiftsByStartDateAndTime() {
+            // TO DO
+      }
+      /*
+       * Test that gets all shifts in the system.
+       */
+      @Test
+      @Order(15)
+      public void testGetAllShifts() {
+            ResponseEntity<List> response = client.getForEntity("/shifts/", List.class);
+            assertEquals(HttpStatus.OK, response.getStatusCode());
+            assertEquals(response.getBody().size(), 1);
+            List<Map<String, Object>> shifts = response.getBody();
+
+            assertEquals(shiftSet.getDate().toString(), shifts.get(0).get("date"));
+            assertEquals(shiftSet.getStartTime().toString(), shifts.get(0).get("startTime"));
+            assertEquals(shiftSet.getEndTime().toString(), shifts.get(0).get("endTime"));
+            assertEquals(shiftSet.getShiftID(), shifts.get(0).get("shiftId"));
+      }
+      /*
+       * Test that deletes a shift successfully then asserts that it has been deleted.
+       */
+      @Test
+      @Order(16)
+      public void testDeleteValidShift() {
+            HttpEntity<String> requestEntity = new HttpEntity<>(null);
+            ResponseEntity<String> response = client.exchange("/shift/delete/"+shiftSet.getShiftID(), HttpMethod.DELETE, requestEntity, String.class);
+            assertEquals(HttpStatus.OK, response.getStatusCode());
+            ResponseEntity<String> testResponse = client.getForEntity("/shift/get/"+shiftSet.getShiftID(), String.class);
+            assertEquals(HttpStatus.NOT_FOUND, testResponse.getStatusCode());
+            assertEquals(testResponse.getBody(), "Shift not found.");
+      }
+
+      /*
+       * Tries deleting a shift with an invalid ID (ID not in system)
+       */
+      @Test
+      @Order(17)
+      public void testDeleteInvalidShift() {
+            HttpEntity<String> requestEntity = new HttpEntity<>(null);
+            ResponseEntity<String> response = client.exchange("/shift/delete/"+shiftSet.getShiftID1(), HttpMethod.DELETE, requestEntity, String.class);
+            assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+            assertEquals(response.getBody(), "Invalid shift ID.");
       }
 
 }
