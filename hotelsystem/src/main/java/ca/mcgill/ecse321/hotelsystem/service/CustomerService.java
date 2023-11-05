@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Service
 public class CustomerService {
@@ -79,6 +80,7 @@ public class CustomerService {
     @Transactional
     public Customer updateCustomerInformation(Customer newCustomerInfo){
         isValidCustomer(newCustomerInfo);
+
         Customer customer = getCustomerByEmail(newCustomerInfo.getEmail());
         if (customer == null){
             throw new HRSException(HttpStatus.NOT_FOUND, "Customer not found.");
@@ -86,6 +88,20 @@ public class CustomerService {
         customer.setName(newCustomerInfo.getName());
         customer.setAccount(newCustomerInfo.getAccount());
         return customerRepository.save(customer);
+    }
+
+    /**
+     * DeleteCustomer: service method to delete a customer
+     * @param email: email for the customer to delete
+     * @throws HRSException if the customer is not found
+     */
+    @Transactional
+    public void deleteCustomer(String email){
+        Customer customer = customerRepository.findCustomerByEmail(email);
+        if(customer == null){
+            throw new HRSException(HttpStatus.NOT_FOUND, "Customer not found.");
+        }
+        customerRepository.deleteCustomerByEmail(email);
     }
 
     /**
@@ -99,6 +115,9 @@ public class CustomerService {
         }
         if (customer.getName() == null || customer.getEmail() == null){
             throw new HRSException(HttpStatus.BAD_REQUEST, "Empty field in the customer.");
+        }
+        if(!Pattern.compile("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@" + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$").matcher(customer.getEmail()).find()){
+            throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid email address.");
         }
     }
 
