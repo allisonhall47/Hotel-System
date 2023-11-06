@@ -19,6 +19,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @CrossOrigin(origins="*")
 @RestController
 public class ShiftController {
@@ -42,7 +44,7 @@ public class ShiftController {
             return new ResponseEntity<ShiftResponseDto>(new ShiftResponseDto(shift), HttpStatus.CREATED);
       }
 
-      @GetMapping("/shifts")
+      @GetMapping("/shifts/")
       public List<ShiftResponseDto> getAllShifts() {
             Iterable<Shift> allShifts = shiftService.getAllShifts();
             List<ShiftResponseDto> dtos = new ArrayList<ShiftResponseDto>();
@@ -52,13 +54,13 @@ public class ShiftController {
             return dtos;
       }
 
-      @GetMapping("/shift/{shiftID}")
+      @GetMapping("/shift/get/{shiftID}")
       public ShiftResponseDto getShiftByID(@PathVariable int shiftID) {
             Shift shift = shiftService.getShiftByShiftID(shiftID);
             return new ShiftResponseDto(shift);
       }
 
-      @GetMapping("/shifts/{employeeEmail}")
+      @GetMapping("/shifts/get/{employeeEmail}")
       public List<ShiftResponseDto> getShiftsByEmail(@PathVariable String employeeEmail) {
             Iterable<Shift> employeeShifts = shiftService.getShiftsByEmployeeEmail(employeeEmail);
             List<ShiftResponseDto> dtos = new ArrayList<ShiftResponseDto>();
@@ -68,7 +70,7 @@ public class ShiftController {
             return dtos;
       }
 
-      @GetMapping("/shifts/{date}")
+      @GetMapping("/shifts/date/get/{date}")
       public List<ShiftResponseDto> getShiftsByDate(@PathVariable LocalDate date) {
             Iterable<Shift> dateShifts = shiftService.getShiftsByDate(date);
             List<ShiftResponseDto> dtos = new ArrayList<ShiftResponseDto>();
@@ -78,7 +80,7 @@ public class ShiftController {
             return dtos;
       }
 
-      @GetMapping("/shifts/{date},{startTime}")
+      @GetMapping("/shifts/date/st/get/{date},{startTime}")
       public List<ShiftResponseDto> getShiftsByDateAndStartTime(@PathVariable LocalDate date, @PathVariable Time startTime) {
             Iterable<Shift> dtShifts = shiftService.getShiftsByDateAndStartTime(date,startTime);
             List<ShiftResponseDto> dtos = new ArrayList<ShiftResponseDto>();
@@ -89,18 +91,16 @@ public class ShiftController {
       }
 
       // write update controller method
-      @PutMapping("/shift/update")
-      public ResponseEntity<ShiftResponseDto> updateShift(@PathVariable ShiftRequestDto shiftToUpdate) {
-            Shift shiftModel = shiftToUpdate.toModel(employeeService.getEmployeeByEmail(shiftToUpdate.getEmployeeEmail()));
-            Shift updatedShift = shiftService.updateShift(shiftModel);
-            ShiftResponseDto responseDto = new ShiftResponseDto(updatedShift);
-            return new ResponseEntity<ShiftResponseDto>(responseDto, HttpStatus.OK);
+      @PutMapping(value = {"/shift/{shiftID}", "/shift/{shiftID}/"})
+      public ResponseEntity<ShiftResponseDto> updateShift(@PathVariable int shiftID, @RequestBody ShiftRequestDto shiftToUpdate) {
+           Shift shift = shiftToUpdate.toModel(shiftService.getShiftByShiftID(shiftID).getEmployee());
+           shift = shiftService.updateShift(shift, shiftID);
+           return new ResponseEntity<ShiftResponseDto>(new ShiftResponseDto(shift), HttpStatus.OK);
       }
 
-      @DeleteMapping("/shift/delete")
-      public void deleteShift(@RequestBody ShiftRequestDto shiftToDelete) {
-            Shift shiftModel = shiftToDelete.toModel(employeeService.getEmployeeByEmail(shiftToDelete.getEmployeeEmail()));
-            shiftService.deleteShift(shiftModel);
+      @DeleteMapping(value = "/shift/delete/{shiftID}")
+      public void deleteShift(@PathVariable int shiftID) {
+            shiftService.deleteShift(shiftID);
       }
 
 }
