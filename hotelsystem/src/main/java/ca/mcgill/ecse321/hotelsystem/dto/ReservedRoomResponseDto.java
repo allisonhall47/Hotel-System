@@ -10,6 +10,8 @@ public class ReservedRoomResponseDto {
     private Reservation reservation;
     private SpecificRoom room;
 
+    public ReservedRoomResponseDto() {}
+
     public ReservedRoomResponseDto(ReservedRoom reservedRoom){
         this.reservedId = reservedRoom.getReservedID();
         //if (reservedRoom.getReservation() != null) this.linkedReservationId = reservedRoom.getReservation().getReservationID();

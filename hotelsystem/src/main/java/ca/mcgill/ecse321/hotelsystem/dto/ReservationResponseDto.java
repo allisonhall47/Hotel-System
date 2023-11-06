@@ -17,6 +17,10 @@ public class ReservationResponseDto {
 
     private Customer customer;
 
+    public ReservationResponseDto() {
+
+    }
+
     public ReservationResponseDto(Reservation reservation){
         this.reservationId = reservation.getReservationID();
         this.numPeople = reservation.getNumPeople();
