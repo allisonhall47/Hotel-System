@@ -12,7 +12,7 @@ import org.springframework.http.HttpStatus;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +29,7 @@ public class ReservedRoomTests {
     @Test
     public void testCreateValidReservedRoom() {
         SpecificRoom room = new SpecificRoom(20, ViewType.Mountain, "sdfs", true, null);
-        Reservation res = new Reservation(4, Date.valueOf("1990-03-03"), Date.valueOf("1990-03-06"), 5, false, CheckInStatus.BeforeCheckIn, null);
+        Reservation res = new Reservation(4, LocalDate.of(1990,3,3), LocalDate.of(1990,3,6), 5, false, CheckInStatus.BeforeCheckIn, null);
 
         ReservedRoom resRoom = new ReservedRoom(res, room);
 
@@ -66,10 +66,10 @@ public class ReservedRoomTests {
         SpecificRoom room = new SpecificRoom(20, ViewType.Mountain, "sdfs", true, null);
         ReservedRoom resRoom = new ReservedRoom(null, room);
 
-        Reservation res = new Reservation(4, Date.valueOf("1990-03-03"), Date.valueOf("1990-03-06"), 5, false, CheckInStatus.BeforeCheckIn, null);
+        Reservation res = new Reservation(4, LocalDate.of(1990,3,3), LocalDate.of(1990,3,6), 5, false, CheckInStatus.BeforeCheckIn, null);
         ReservedRoom resRoom2 = new ReservedRoom(res, room);
 
-        Reservation res2 = new Reservation(4, Date.valueOf("1991-03-03"), Date.valueOf("1991-03-06"), 5, false, CheckInStatus.BeforeCheckIn, null);
+        Reservation res2 = new Reservation(4, LocalDate.of(1990,3,3), LocalDate.of(1990,3,6), 5, false, CheckInStatus.BeforeCheckIn, null);
         List<ReservedRoom> list = new ArrayList<>();
         list.add(resRoom2);
         list.add(resRoom);
@@ -86,10 +86,10 @@ public class ReservedRoomTests {
     @Test
     public void testAssignInValidReservedRoomToReservation() {
         SpecificRoom room = new SpecificRoom(20, ViewType.Mountain, "sdfs", true, null);
-        Reservation res = new Reservation(4, Date.valueOf("1990-03-03"), Date.valueOf("1990-03-06"), 5, false, CheckInStatus.BeforeCheckIn, null);
+        Reservation res = new Reservation(4,LocalDate.of(1990,3,3), LocalDate.of(1990,3,6), 5, false, CheckInStatus.BeforeCheckIn, null);
         ReservedRoom resRoom = new ReservedRoom(res, room);
 
-        Reservation res2 = new Reservation(4, Date.valueOf("1990-03-04"), Date.valueOf("1990-03-07"), 5, false, CheckInStatus.BeforeCheckIn, null);
+        Reservation res2 = new Reservation(4, LocalDate.of(1990,3,4), LocalDate.of(1990,3,7), 5, false, CheckInStatus.BeforeCheckIn, null);
         ReservedRoom resRoom2 = new ReservedRoom(null, room);
 
         List<ReservedRoom> list = new ArrayList<>();
@@ -106,10 +106,10 @@ public class ReservedRoomTests {
     @Test
     public void testGetAllReservedRooms() {
         SpecificRoom room = new SpecificRoom(20, ViewType.Mountain, "sdfs", true, null);
-        Reservation res = new Reservation(4, Date.valueOf("1990-03-03"), Date.valueOf("1990-03-06"), 5, false, CheckInStatus.BeforeCheckIn, null);
+        Reservation res = new Reservation(4, LocalDate.of(1990,3,3), LocalDate.of(1990,3,6), 5, false, CheckInStatus.BeforeCheckIn, null);
         ReservedRoom resRoom = new ReservedRoom(res, room);
 
-        Reservation res2 = new Reservation(4, Date.valueOf("1990-03-04"), Date.valueOf("1990-03-07"), 5, false, CheckInStatus.BeforeCheckIn, null);
+        Reservation res2 = new Reservation(4, LocalDate.of(1990,3,4), LocalDate.of(1990,3,7), 5, false, CheckInStatus.BeforeCheckIn, null);
         ReservedRoom resRoom2 = new ReservedRoom(res2, room);
 
         List<ReservedRoom> list = new ArrayList<>();
@@ -126,7 +126,7 @@ public class ReservedRoomTests {
     @Test
     public void testGetReservedRoomById() {
         SpecificRoom room = new SpecificRoom(20, ViewType.Mountain, "sdfs", true, null);
-        Reservation res = new Reservation(4, Date.valueOf("1990-03-03"), Date.valueOf("1990-03-06"), 5, false, CheckInStatus.BeforeCheckIn, null);
+        Reservation res = new Reservation(4, LocalDate.of(1990,3,4), LocalDate.of(1990,3,7), 5, false, CheckInStatus.BeforeCheckIn, null);
         ReservedRoom resRoom = new ReservedRoom(res, room);
 
         when(reservedRoomRepository.findReservedRoomByReservedID(resRoom.getReservedID())).thenReturn(resRoom);
@@ -149,7 +149,7 @@ public class ReservedRoomTests {
     @Test
     public void testGetReservedRoomsByReservationId() {
         SpecificRoom room = new SpecificRoom(20, ViewType.Mountain, "sdfs", true, null);
-        Reservation res = new Reservation(4, Date.valueOf("1990-03-03"), Date.valueOf("1990-03-06"), 5, false, CheckInStatus.BeforeCheckIn, null);
+        Reservation res = new Reservation(4,LocalDate.of(1990,3,3), LocalDate.of(1990,3,6), 5, false, CheckInStatus.BeforeCheckIn, null);
         ReservedRoom resRoom = new ReservedRoom(res, room);
 
         List<ReservedRoom> list = new ArrayList<>();
@@ -175,7 +175,7 @@ public class ReservedRoomTests {
     @Test
     public void testGetReservedRoomsBySpecRoomNumber() {
         SpecificRoom specRoom = new SpecificRoom(20, ViewType.Mountain, "sdfs", true, null);
-        Reservation res = new Reservation(4, Date.valueOf("1990-03-03"), Date.valueOf("1990-03-06"), 5, false, CheckInStatus.BeforeCheckIn, null);
+        Reservation res = new Reservation(4, LocalDate.of(1990,3,3), LocalDate.of(1990,3,6), 5, false, CheckInStatus.BeforeCheckIn, null);
         ReservedRoom resRoom = new ReservedRoom(res, specRoom);
 
         List<ReservedRoom> list = new ArrayList<>();

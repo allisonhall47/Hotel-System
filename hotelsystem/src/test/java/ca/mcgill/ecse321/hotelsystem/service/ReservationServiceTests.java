@@ -11,7 +11,7 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,8 +29,8 @@ public class ReservationServiceTests {
 
     @Test
     public void testGetAllReservations() {
-        Reservation res1 = new Reservation(4, Date.valueOf("1990-03-03"), Date.valueOf("1990-03-06"), 5, false, CheckInStatus.BeforeCheckIn, null);
-        Reservation res2 = new Reservation(5, Date.valueOf("1990-03-04"), Date.valueOf("1990-03-07"), 6, false, CheckInStatus.BeforeCheckIn, null);
+        Reservation res1 = new Reservation(4, LocalDate.of(1990,3,3), LocalDate.of(1990,3,6), 5, false, CheckInStatus.BeforeCheckIn, null);
+        Reservation res2 = new Reservation(5, LocalDate.of(1990,3,4), LocalDate.of(1990,3,7), 6, false, CheckInStatus.BeforeCheckIn, null);
         reservationRepository.save(res1);
         reservationRepository.save(res2);
         List<Reservation> list = new ArrayList<>();
@@ -59,7 +59,7 @@ public class ReservationServiceTests {
 
     @Test
     public void testGetReservationById() {
-        Reservation res1 = new Reservation(4, Date.valueOf("1990-03-03"), Date.valueOf("1990-03-06"), 5, false, CheckInStatus.BeforeCheckIn, null);
+        Reservation res1 = new Reservation(4, LocalDate.of(1990,3,3), LocalDate.of(1990,3,6), 5, false, CheckInStatus.BeforeCheckIn, null);
         when(reservationRepository.findReservationByReservationID(res1.getReservationID())).thenReturn(res1);
 
         Reservation res = reservationService.getReservation(res1.getReservationID());
@@ -83,7 +83,7 @@ public class ReservationServiceTests {
     @Test
     public void testCreateReservation() {
         Customer customer = new Customer("email", "random", null);
-        Reservation res = new Reservation(4, Date.valueOf("1990-03-03"), Date.valueOf("1990-03-06"), 5, false, CheckInStatus.BeforeCheckIn, customer);
+        Reservation res = new Reservation(4, LocalDate.of(1990,3,3), LocalDate.of(1990,3,6), 5, false, CheckInStatus.BeforeCheckIn, customer);
 
         when(reservationRepository.save(res)).thenReturn(res);
 
@@ -97,7 +97,7 @@ public class ReservationServiceTests {
     @Test
     public void testCreateInvalidReservationDate() {
         Customer customer = new Customer("email", "random", null);
-        Reservation res = new Reservation(4, Date.valueOf("1990-03-09"), Date.valueOf("1990-03-06"), 5, false, CheckInStatus.BeforeCheckIn, customer);
+        Reservation res = new Reservation(4, LocalDate.of(1990,3,6), LocalDate.of(1990,3,3), 5, false, CheckInStatus.BeforeCheckIn, customer);
 
         HRSException e = assertThrows(HRSException.class, () -> reservationService.createReservation(res));
         assertEquals(e.getMessage(), "invalid checkIn/checkOut dates");
@@ -107,7 +107,7 @@ public class ReservationServiceTests {
     @Test
     public void testCreateInvalidReservationNegativeValue() {
         Customer customer = new Customer("email", "random", null);
-        Reservation res1 = new Reservation(-4, Date.valueOf("1990-03-03"), Date.valueOf("1990-03-06"), -5, false, CheckInStatus.BeforeCheckIn, customer);
+        Reservation res1 = new Reservation(-4, LocalDate.of(1990,3,3), LocalDate.of(1990,3,6), -5, false, CheckInStatus.BeforeCheckIn, customer);
 
         HRSException e = assertThrows(HRSException.class, () -> reservationService.createReservation(res1));
         assertEquals(e.getMessage(), "invalid integer");
@@ -117,7 +117,7 @@ public class ReservationServiceTests {
     @Test
     public void testGetReservationByCustomer() {
         Customer customer = new Customer("email", "random", null);
-        Reservation res = new Reservation(4, Date.valueOf("1990-03-03"), Date.valueOf("1990-03-06"), 5, false, CheckInStatus.BeforeCheckIn, customer);
+        Reservation res = new Reservation(4, LocalDate.of(1990,3,3), LocalDate.of(1990,3,6), 5, false, CheckInStatus.BeforeCheckIn, customer);
         List<Reservation> list = new ArrayList<>();
         list.add(res);
 
@@ -132,8 +132,8 @@ public class ReservationServiceTests {
     @Test
     public void testPayReservationValid() {
         Customer customer = new Customer("email", "random", null);
-        Reservation res = new Reservation(4, Date.valueOf("1990-03-03"), Date.valueOf("1990-03-06"), 5, false, CheckInStatus.BeforeCheckIn, customer);
-        Reservation res1 = new Reservation(4, Date.valueOf("1990-03-03"), Date.valueOf("1990-03-06"), 5, true, CheckInStatus.BeforeCheckIn, customer);
+        Reservation res = new Reservation(4, LocalDate.of(1990,3,3), LocalDate.of(1990,3,6), 5, false, CheckInStatus.BeforeCheckIn, customer);
+        Reservation res1 = new Reservation(4,LocalDate.of(1990,3,3), LocalDate.of(1990,3,6), 5, true, CheckInStatus.BeforeCheckIn, customer);
 
         when(reservationRepository.findReservationByReservationID(res.getReservationID())).thenReturn(res);
 
@@ -149,7 +149,7 @@ public class ReservationServiceTests {
     @Test
     public void testPayReservationInvalidPaid() {
         Customer customer = new Customer("email", "random", null);
-        Reservation res = new Reservation(4, Date.valueOf("1990-03-03"), Date.valueOf("1990-03-06"), 5, true, CheckInStatus.BeforeCheckIn, customer);
+        Reservation res = new Reservation(4, LocalDate.of(1990,3,3), LocalDate.of(1990,3,6), 5, true, CheckInStatus.BeforeCheckIn, customer);
         //Reservation res1 = new Reservation(4, Date.valueOf("1990-03-03"), Date.valueOf("1990-03-06"), 5, true, CheckInStatus.BeforeCheckIn, customer);
 
         when(reservationRepository.findReservationByReservationID(res.getReservationID())).thenReturn(res);
@@ -170,7 +170,7 @@ public class ReservationServiceTests {
     @Test
     public void testPayReservationInvalidMoney() {
         Customer customer = new Customer("email", "random", null);
-        Reservation res1 = new Reservation(4, Date.valueOf("1990-03-03"), Date.valueOf("1990-03-06"), 5, false, CheckInStatus.BeforeCheckIn, customer);
+        Reservation res1 = new Reservation(4, LocalDate.of(1990,3,3), LocalDate.of(1990,3,6), 5, false, CheckInStatus.BeforeCheckIn, customer);
 
         when(reservationRepository.findReservationByReservationID(res1.getReservationID())).thenReturn(res1);
         HRSException e = assertThrows(HRSException.class, () -> reservationService.payReservation(res1, -5));

@@ -64,7 +64,7 @@ public class ReservationService {
     }
 
     private void isValid(Reservation reservation) {
-        if(reservation.getCheckIn().after(reservation.getCheckOut())){
+        if(reservation.getCheckIn().isAfter(reservation.getCheckOut())){
             throw new HRSException(HttpStatus.BAD_REQUEST, "invalid checkIn/checkOut dates");
         }
         if(reservation.getNumPeople() <= 0 || reservation.getTotalPrice() <= 0) {

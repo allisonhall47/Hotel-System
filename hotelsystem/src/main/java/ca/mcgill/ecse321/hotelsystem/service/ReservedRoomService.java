@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -135,10 +136,10 @@ public class ReservedRoomService {
         for(ReservedRoom resRoom : list) {
             Reservation res = resRoom.getReservation();
             if(res == null) continue; //if res null, then skip no need to check
-            Date checkIn = res.getCheckIn();
-            Date checkOut = res.getCheckOut();
-            if((reservation.getCheckIn().before(checkOut) && reservation.getCheckIn().after(checkIn)) ||
-                    (reservation.getCheckOut().before(checkOut) && reservation.getCheckOut().after(checkIn))) {
+            LocalDate checkIn = res.getCheckIn();
+            LocalDate checkOut = res.getCheckOut();
+            if((reservation.getCheckIn().isBefore(checkOut) && reservation.getCheckIn().isAfter(checkIn)) ||
+                    (reservation.getCheckOut().isBefore(checkOut) && reservation.getCheckOut().isAfter(checkIn))) {
                 throw new HRSException(HttpStatus.CONFLICT, "a reservation with conflicting check-in and check-out dates exists");
             }
         }

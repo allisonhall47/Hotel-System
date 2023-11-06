@@ -4,13 +4,13 @@ import ca.mcgill.ecse321.hotelsystem.Model.CheckInStatus;
 import ca.mcgill.ecse321.hotelsystem.Model.Customer;
 import ca.mcgill.ecse321.hotelsystem.Model.Reservation;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 public class ReservationResponseDto {
     private int reservationId;
     private int numPeople;
-    private Date checkin;
-    private Date checkOut;
+    private LocalDate checkin;
+    private LocalDate checkOut;
     private int totalPrice;
     private Boolean paid;
     private CheckInStatus checkedIn;
@@ -44,19 +44,19 @@ public class ReservationResponseDto {
         this.numPeople = numPeople;
     }
 
-    public Date getCheckin() {
+    public LocalDate getCheckin() {
         return checkin;
     }
 
-    public void setCheckin(Date checkin) {
+    public void setCheckin(LocalDate checkin) {
         this.checkin = checkin;
     }
 
-    public Date getCheckOut() {
+    public LocalDate getCheckOut() {
         return checkOut;
     }
 
-    public void setCheckOut(Date checkOut) {
+    public void setCheckOut(LocalDate checkOut) {
         this.checkOut = checkOut;
     }
 

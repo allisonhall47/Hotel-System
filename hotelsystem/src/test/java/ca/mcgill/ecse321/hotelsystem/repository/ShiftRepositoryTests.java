@@ -9,11 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.util.List;
-import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 

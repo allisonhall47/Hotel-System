@@ -4,22 +4,26 @@ import ca.mcgill.ecse321.hotelsystem.Model.CheckInStatus;
 import ca.mcgill.ecse321.hotelsystem.Model.Customer;
 import ca.mcgill.ecse321.hotelsystem.Model.Reservation;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 
 public class ReservationRequestDto {
 
     //private int reservationId;
     private int numPeople;
-    private Date checkin;
-    private Date checkOut;
+    private LocalDate checkin;
+    private LocalDate checkOut;
     //private int totalPrice; computed when assigning reserved room to reservation for a number of days
     //private Boolean paid; default false
     //private CheckInStatus checkedIn; default not checked in
 
     private String customerEmail;
 
-    public ReservationRequestDto(int numPeople, Date checkin, Date checkOut, String customerEmail){
+    public ReservationRequestDto() {
+
+    }
+
+    public ReservationRequestDto(int numPeople, LocalDate checkin, LocalDate checkOut, String customerEmail){
         //this.reservationId = reservationId;
         this.numPeople = numPeople;
         this.checkin = checkin;
@@ -51,19 +55,19 @@ public class ReservationRequestDto {
         this.numPeople = numPeople;
     }
 
-    public Date getCheckin() {
+    public LocalDate getCheckin() {
         return checkin;
     }
 
-    public void setCheckin(Date checkin) {
+    public void setCheckin(LocalDate checkin) {
         this.checkin = checkin;
     }
 
-    public Date getCheckOut() {
+    public LocalDate getCheckOut() {
         return checkOut;
     }
 
-    public void setCheckOut(Date checkOut) {
+    public void setCheckOut(LocalDate checkOut) {
         this.checkOut = checkOut;
     }
 

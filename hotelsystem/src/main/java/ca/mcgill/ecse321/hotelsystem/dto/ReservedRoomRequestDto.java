@@ -10,6 +10,10 @@ public class ReservedRoomRequestDto {
     private int linkedReservationId;
     private int roomNumber;
 
+    public ReservedRoomRequestDto() {
+
+    }
+
     public ReservedRoomRequestDto(int linkedReservationId, int roomNumber){
         //this.reservedId = reservedId;
         this.linkedReservationId = linkedReservationId;
