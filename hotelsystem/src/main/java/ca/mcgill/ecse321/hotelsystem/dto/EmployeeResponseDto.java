@@ -18,6 +18,8 @@ public class EmployeeResponseDto {
 
     }
 
+    public EmployeeResponseDto() {}
+
     public String getName() {
         return name;
     }
