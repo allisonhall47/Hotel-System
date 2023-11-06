@@ -37,7 +37,7 @@ public class RepairController {
         return new RepairResponseDto(repair);
     }
 
-    @PatchMapping ("repair/{id}") //TODO: Completion status in requestBody? (make dto?)
+    @PostMapping ("repair/status/{id}") //TODO: Completion status in requestBody? (make dto?)
     public RepairResponseDto changeRepairStatus(@PathVariable int id, @RequestBody CompletionStatus status) {
         return new RepairResponseDto(service.changeRepairStatus(id, status));
     }

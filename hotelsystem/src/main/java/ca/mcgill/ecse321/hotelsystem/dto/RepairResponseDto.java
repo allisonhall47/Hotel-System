@@ -7,13 +7,13 @@ import ca.mcgill.ecse321.hotelsystem.Model.Repair;
 public class RepairResponseDto {
     private int repairId;
     private String description;
-    private String employeeEmail;
+    private Employee employee;
     private CompletionStatus status;
 
     public RepairResponseDto(Repair repair){
         this.repairId = repair.getRepairId();
         this.description = repair.getDescription();
-        if (repair.getEmployee() != null) this.employeeEmail = repair.getEmployee().getEmail();
+        employee = repair.getEmployee();
         this.status = repair.getStatus();
     }
 
@@ -33,12 +33,12 @@ public class RepairResponseDto {
         this.description = description;
     }
 
-    public String getEmployeeEmail() {
-        return employeeEmail;
+    public Employee getEmployee() {
+        return employee;
     }
 
-    public void setEmployeeEmail(String employeeEmail) {
-        this.employeeEmail = employeeEmail;
+    public void setEmployee(Employee employeeEmail) {
+        this.employee = employee;
     }
 
     public CompletionStatus getStatus() {
