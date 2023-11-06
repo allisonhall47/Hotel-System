@@ -17,6 +17,8 @@ public class RepairResponseDto {
         this.status = repair.getStatus();
     }
 
+    public RepairResponseDto() {}
+
     public int getRepairId() {
         return repairId;
     }
@@ -37,7 +39,7 @@ public class RepairResponseDto {
         return employee;
     }
 
-    public void setEmployee(Employee employeeEmail) {
+    public void setEmployee(Employee employee) {
         this.employee = employee;
     }
 

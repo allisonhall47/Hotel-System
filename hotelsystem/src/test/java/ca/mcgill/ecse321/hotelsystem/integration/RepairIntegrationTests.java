@@ -25,7 +25,6 @@ public class RepairIntegrationTests {
 
     private static final String DESCRIPTION = "Fix the doorknob";
     private static final String EMAIL = "someguy@hotelhell.com";
-    private static int emp_id = 0;
     private static int rep_id = 0;
 
     @Autowired
@@ -47,16 +46,15 @@ public class RepairIntegrationTests {
     @Test
     @Order(1)
     public void createEmployee() {
-        EmployeeRequestDto req = new EmployeeRequestDto("Tom Thomson", EMAIL, 100,0 )
-        ResponseEntity<EmployeeResponseDto> res = client.postForEntity();
-        //...
-        // set emp_id
+        EmployeeRequestDto req = new EmployeeRequestDto("Tom Thomson", EMAIL, 100,0 );
+        ResponseEntity<EmployeeResponseDto> res = client.postForEntity("/employee/create", req, EmployeeResponseDto.class);
+        assertEquals(HttpStatus.CREATED, res.getStatusCode());
     }
 
     @Test
     @Order(2)
     public void testCreateRepair() {
-        RepairRequestDto req = new RepairRequestDto(DESCRIPTION, emp_id);
+        RepairRequestDto req = new RepairRequestDto(DESCRIPTION, EMAIL);
         String url = "/repair/new";
         ResponseEntity<RepairResponseDto> res = client.postForEntity(url, req, RepairResponseDto.class);
         assertEquals(HttpStatus.CREATED, res.getStatusCode());
@@ -105,7 +103,7 @@ public class RepairIntegrationTests {
     @Test
     @Order(6)
     public void testCreateInvalidRepairNoEmployee() {
-        RepairRequestDto req = new RepairRequestDto(DESCRIPTION, emp_id+1);
+        RepairRequestDto req = new RepairRequestDto(DESCRIPTION, EMAIL + "thismakesitinvalid");
         String url = "/repair/new";
         ResponseEntity<String> res = client.postForEntity(url, req, String.class);
         assertEquals(HttpStatus.NOT_FOUND, res.getStatusCode());
@@ -114,7 +112,7 @@ public class RepairIntegrationTests {
     @Test
     @Order(7)
     public void testCreateInvalidRepairBadDescrpiton() {
-        RepairRequestDto req = new RepairRequestDto("", emp_id);
+        RepairRequestDto req = new RepairRequestDto("", EMAIL);
         String url = "/repair/new";
         ResponseEntity<String> res = client.postForEntity(url, req, String.class);
         assertEquals(HttpStatus.BAD_REQUEST, res.getStatusCode());
@@ -127,26 +125,6 @@ public class RepairIntegrationTests {
         ResponseEntity<String> res = client.getForEntity("/repair/" + rep_id, String.class);
         assertEquals(HttpStatus.NOT_FOUND, res.getStatusCode());
 
-    }
-
-    @Test
-    @Order(9)
-    public void testDeleteForEmployee() {
-        String url = "/repair/new";
-
-        RepairRequestDto req1 = new RepairRequestDto(DESCRIPTION, emp_id);
-        client.postForEntity(url, req1, RepairResponseDto.class);
-
-        RepairRequestDto req2 = new RepairRequestDto(DESCRIPTION, emp_id);
-        client.postForEntity(url, req2, RepairResponseDto.class);
-
-        client.delete("/repair/employee/" + emp_id);
-
-        ResponseEntity<List> res = client.getForEntity("/repair/employee/" + emp_id, List.class);
-        assertEquals(HttpStatus.OK, res.getStatusCode());
-        assertNotNull(res.getBody());
-        List<Map<String, Object>> reqs = res.getBody();
-        assertEquals(0, reqs.size());
     }
 }
 

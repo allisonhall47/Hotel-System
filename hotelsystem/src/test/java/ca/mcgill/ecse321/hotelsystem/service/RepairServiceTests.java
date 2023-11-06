@@ -33,7 +33,6 @@ public class RepairServiceTests {
     private static final String EMAIL = "abc@gmail.com";
     private static final String NAME = "Tom";
     private static final int SALARY = 2500;
-    private static final int ACC_ID = 432;
 
     @Mock
     private RepairRepository repairDao;
@@ -46,22 +45,21 @@ public class RepairServiceTests {
 
     @BeforeEach
     public void setMockOutput() {
-        lenient().when(employeeDao.findEmployeeByAccount_AccountNumber(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
-            Employee emp = new Employee(EMAIL, NAME, SALARY, new Account());
-            emp.getAccount().setAccountNumber(ACC_ID);
+        lenient().when(employeeDao.findEmployeeByEmail(EMAIL)).thenAnswer((InvocationOnMock invocation) -> {
+            Employee emp = new Employee(EMAIL, NAME, SALARY, null);
             return emp;
         });
 
         lenient().when(repairDao.findRepairByRepairId(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
             if (invocation.getArgument(0).equals(VALID_REPAIR_KEY)) {
-                return new Repair(CompletionStatus.Pending, REPAIR_DESCRIPTION, employeeDao.findEmployeeByAccount_AccountNumber(ACC_ID));
+                return new Repair(CompletionStatus.Pending, REPAIR_DESCRIPTION, employeeDao.findEmployeeByEmail(EMAIL));
             } else {
                 return null;
             }
         });
         lenient().when(repairDao.findRepairsByEmployee_Email(anyString())).thenAnswer((InvocationOnMock invocation) -> {
             if (invocation.getArgument(0).equals(EMAIL)) {
-                return List.of(new Repair(CompletionStatus.Pending, REPAIR_DESCRIPTION, employeeDao.findEmployeeByAccount_AccountNumber(ACC_ID)));
+                return List.of(new Repair(CompletionStatus.Pending, REPAIR_DESCRIPTION, employeeDao.findEmployeeByEmail(EMAIL)));
             } else {
                 return List.of();
             }
@@ -76,7 +74,7 @@ public class RepairServiceTests {
 
     @Test
     public void testCreateValidRepair() {
-        Repair rep = service.createRepair(ACC_ID, REPAIR_DESCRIPTION);
+        Repair rep = service.createRepair(EMAIL, REPAIR_DESCRIPTION);
         assertNotNull(rep);
         assertEquals(EMAIL, rep.getEmployee().getEmail());
         assertEquals(REPAIR_DESCRIPTION, rep.getDescription());
@@ -85,7 +83,7 @@ public class RepairServiceTests {
 
     @Test
     public void testCreateInvalidRepair() {
-        HRSException ex = assertThrows(HRSException.class, () -> service.createRepair(ACC_ID, null));
+        HRSException ex = assertThrows(HRSException.class, () -> service.createRepair(EMAIL, null));
         assertEquals(HttpStatus.BAD_REQUEST, ex.getStatus());
     }
 

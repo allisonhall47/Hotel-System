@@ -23,16 +23,16 @@ public class RepairService {
     private EmployeeRepository employeeRepository;
 
     @Transactional
-    public Repair createRepair(int employeeAccountId, String description) {
+    public Repair createRepair(String employeeEmail, String description) {
         if (description == null || description.isBlank()) {
             throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid repair description: Empty");
         } else if (description.length() < 10) {
             throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid repair description: Too short");
         }
 
-        Employee emp = employeeRepository.findEmployeeByAccount_AccountNumber(employeeAccountId);
+        Employee emp = employeeRepository.findEmployeeByEmail(employeeEmail);
         if (emp == null) {
-            throw new HRSException(HttpStatus.NOT_FOUND, String.format("No employee with account id %d", employeeAccountId));
+            throw new HRSException(HttpStatus.NOT_FOUND, "No employee with email address " + employeeEmail);
         }
         return repairRepository.save(new Repair(CompletionStatus.Pending, description, emp));
     }
