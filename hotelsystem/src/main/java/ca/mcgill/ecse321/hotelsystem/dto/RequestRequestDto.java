@@ -6,28 +6,12 @@ import ca.mcgill.ecse321.hotelsystem.Model.Reservation;
 
 public class RequestRequestDto {
 
-    private int requestId;
     private String description;
     private int reservationId;
-    private CompletionStatus status;
 
-    public RequestRequestDto(int requestId, String description, int room, int reservationId, CompletionStatus status){
-        this.requestId = requestId;
+    public RequestRequestDto(String description, int reservationId){
         this.description = description;
         this.reservationId = reservationId;
-        this.status = status;
-    }
-
-    public Request toModel(Reservation r){
-        return new Request(status, description, r);
-    }
-
-    public int getRequestId() {
-        return requestId;
-    }
-
-    public void setRequestId(int requestId) {
-        this.requestId = requestId;
     }
 
     public String getDescription() {
@@ -44,14 +28,6 @@ public class RequestRequestDto {
 
     public void setReservationId(int reservationId) {
         this.reservationId = reservationId;
-    }
-
-    public CompletionStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(CompletionStatus status) {
-        this.status = status;
     }
 
 }

@@ -7,13 +7,13 @@ import ca.mcgill.ecse321.hotelsystem.Model.Reservation;
 public class RequestResponseDto {
     private int requestId;
     private String description;
-    private int reservationId;
+    private Reservation reservation;
     private CompletionStatus status;
 
     public RequestResponseDto(Request request){
         this.requestId = request.getRequestId();
         this.description = request.getDescription();
-        if (request.getReservation() != null) this.reservationId = request.getReservation().getReservationID();
+        this.reservation = request.getReservation();
         this.status = request.getStatus();
     }
 
@@ -37,12 +37,12 @@ public class RequestResponseDto {
         this.description = description;
     }
 
-    public int getReservationId() {
-        return reservationId;
+    public Reservation getReservation() {
+        return reservation;
     }
 
-    public void setReservationId(int reservationId) {
-        this.reservationId = reservationId;
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
     }
 
     public CompletionStatus getStatus() {
