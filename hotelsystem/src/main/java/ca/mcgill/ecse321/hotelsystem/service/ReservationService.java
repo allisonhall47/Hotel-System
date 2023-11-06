@@ -1,10 +1,10 @@
 package ca.mcgill.ecse321.hotelsystem.service;
 
-import ca.mcgill.ecse321.hotelsystem.Model.CheckInStatus;
-import ca.mcgill.ecse321.hotelsystem.Model.Customer;
-import ca.mcgill.ecse321.hotelsystem.Model.Reservation;
+import ca.mcgill.ecse321.hotelsystem.Model.*;
 import ca.mcgill.ecse321.hotelsystem.exception.HRSException;
+import ca.mcgill.ecse321.hotelsystem.repository.RequestRepository;
 import ca.mcgill.ecse321.hotelsystem.repository.ReservationRepository;
+import ca.mcgill.ecse321.hotelsystem.repository.ReservedRoomRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +17,12 @@ public class ReservationService {
 
     @Autowired
     ReservationRepository reservationRepository;
+
+    @Autowired
+    ReservedRoomRepository reservedRoomRepository;
+
+    @Autowired
+    RequestRepository requestRepository;
 
     /**
      * GetAllReservations: service method to fetch all existing reservations in the database
@@ -82,6 +88,13 @@ public class ReservationService {
 //        if(reservation == null) {
 //            throw new HRSException(HttpStatus.NOT_FOUND, "reservation does not exist");
 //        }
+        for(ReservedRoom room: reservedRoomRepository.findReservedRoomsByReservation_ReservationID(reservation.getReservationID())) {
+            reservedRoomRepository.delete(room);
+        }
+
+        for(Request request: requestRepository.findRequestsByReservation_ReservationID(reservation.getReservationID())) {
+            requestRepository.delete(request);
+        }
         reservationRepository.delete(reservation);
     }
 
