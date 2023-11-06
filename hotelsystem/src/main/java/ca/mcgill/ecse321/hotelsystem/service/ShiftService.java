@@ -82,7 +82,7 @@ public class ShiftService {
     public List<Shift> getShiftsByDate(LocalDate date) {
         List<Shift> sdList = shiftRepository.findShiftsByDate(date);
         if (sdList == null) {
-            throw new HRSException(HttpStatus.NOT_FOUND, "Shift list for this date not found. ");
+            throw new HRSException(HttpStatus.NOT_FOUND, "Shift list for this date not found.");
         }
         return sdList;
     }

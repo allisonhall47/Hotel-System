@@ -80,7 +80,7 @@ public class ShiftController {
             return dtos;
       }
 
-      @GetMapping("/shifts/date/st/get/{date},{startTime}")
+      @GetMapping("/shifts/date/st/get/{date}/{startTime}")
       public List<ShiftResponseDto> getShiftsByDateAndStartTime(@PathVariable LocalDate date, @PathVariable Time startTime) {
             Iterable<Shift> dtShifts = shiftService.getShiftsByDateAndStartTime(date,startTime);
             List<ShiftResponseDto> dtos = new ArrayList<ShiftResponseDto>();
