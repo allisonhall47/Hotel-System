@@ -63,7 +63,7 @@ public class ReservedRoomController {
         return dtos;
     }
 
-    @GetMapping("/reservedRoom/reservation/{specRoomNumber}")
+    @GetMapping("/reservedRoom/specificRoom/{specRoomNumber}")
     public List<ReservedRoomResponseDto> getReservedRoomBySpecRoom(@PathVariable("specRoomNumber") int number) {
         SpecificRoom specRoom = specificRoomService.findSpecificRoomByNumber(number);
         List<ReservedRoom> list = reservedRoomService.getReservedRoomsBySpecRoom(specRoom);
@@ -76,10 +76,9 @@ public class ReservedRoomController {
 
     //TODO idk wtf im doing here, review
     @DeleteMapping("/reservedRoom/{id}")
-    public String deleteReservedRoom(@PathVariable("id") int id) {
+    public void deleteReservedRoom(@PathVariable("id") int id) {
         ReservedRoom room = reservedRoomService.getReservedRoomById(id);
         reservedRoomService.deleteReservedRoom(room);
-        return "redirect:/reservedRoom";
     }
 }
 

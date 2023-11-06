@@ -43,7 +43,8 @@ public class ReservationController {
 
     @GetMapping("/reservation/{reservationId}")
     public ReservationResponseDto getReservationById(@PathVariable(value = "reservationId") int id) {
-        return new ReservationResponseDto(reservationService.getReservation(id));
+        Reservation res = reservationService.getReservation(id);
+        return new ReservationResponseDto(res);
     }
 
     @GetMapping("/reservation/customer/{customerEmail}")
@@ -59,17 +60,16 @@ public class ReservationController {
 
     //TODO idk wtf im doing here, review
     @DeleteMapping("/reservation/{reservationId}")
-    public String deleteReservation(@PathVariable("reservationId") int id) {
+    public void deleteReservation(@PathVariable("reservationId") int id) {
         Reservation reservation = reservationService.getReservation(id);
         reservationService.deleteReservation(reservation);
-        return "redirect:/reservation";
     }
 
     @PutMapping("/reservation/{reservationId}")
-    public ResponseEntity<Reservation> payReservation(@PathVariable("reservationId") int id, @RequestBody int money) {
+    public ResponseEntity<ReservationResponseDto> payReservation(@PathVariable("reservationId") int id, @RequestParam int money) {
         Reservation reservation = reservationService.getReservation(id);
         Reservation newRes = reservationService.payReservation(reservation, money);
-        return new ResponseEntity<Reservation>(newRes, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(new ReservationResponseDto(newRes), HttpStatus.OK);
     }
 
 }
