@@ -31,7 +31,7 @@ During the development process for this application, our team will follow the ma
 | Wasif Somji |Software Developer |15 | | | | |
 
 # Sprint 1 🏃 
-# Effort Table
+## Effort Table
 | Name  | Contributions | Hours |
 | ------------- | ------------- | ------------- |
 | Erica Campagna  |Domain Model Drafting, Requirements, Use Case Diagram, Use Case Specifications, Write Repo Files, Write Testing Files, Wiki  |15 |
@@ -54,6 +54,9 @@ During the development process for this application, our team will follow the ma
 | Yassine Mimet  | | |
 | Patrick Ohl | | |
 | Wasif Somji | | |
+
+# Project Report
+[Sprint 2 Project Report](https://github.com/McGill-ECSE321-Fall2023/project-group-01/wiki/9.-Project-Report-II)
 
 # Sprint 3 🏃 
 ## Effort Table
