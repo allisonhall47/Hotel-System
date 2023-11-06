@@ -5,26 +5,27 @@ import ca.mcgill.ecse321.hotelsystem.Model.Shift;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
 
 public class ShiftRequestDto {
 
     private Time startTime;
     private Time endTime;
-    private Date date;
-    private int shiftId;
+    private LocalDate date;
 
     private String employeeEmail;
 
-    public ShiftRequestDto(Time startTime, Time endTime, Date date, int shiftId, String employeeEmail){
+    public ShiftRequestDto(Time startTime, Time endTime, LocalDate date) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.date = date;
-        this.shiftId = shiftId;
-        this.employeeEmail = employeeEmail;
+    }
+    public ShiftRequestDto() {
+        // NO FIELDS CONSTRUCTOR
     }
 
     public Shift toModel(Employee employee){
-        return new Shift(shiftId, startTime, endTime, date, employee);
+        return new Shift(startTime, endTime, date, employee);
     }
 
     public Time getStartTime() {
@@ -35,13 +36,10 @@ public class ShiftRequestDto {
         return endTime;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public int getShiftId() {
-        return shiftId;
-    }
 
     public void setStartTime(Time startTime) {
         this.startTime = startTime;
@@ -51,9 +49,10 @@ public class ShiftRequestDto {
         this.endTime = endTime;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
+
 
     public String getEmployeeEmail() {
         return employeeEmail;

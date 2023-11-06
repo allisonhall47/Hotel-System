@@ -11,7 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
 import java.util.List;
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -37,7 +39,7 @@ public class ShiftRepositoryTests {
 
         String password = "harrysmith1234";
         String address = "123 snowy road";
-        Date dob = Date.valueOf("1980-04-03");
+        LocalDate dob = LocalDate.of(1980,4,3);
         Account account = new Account();
         account.setPassword(password);
         account.setAddress(address);
@@ -56,7 +58,7 @@ public class ShiftRepositoryTests {
         employee = employeeRepository.save(employee);
 
         // Create Shift
-        Date shiftDate = Date.valueOf("2023-10-04");
+        LocalDate shiftDate = LocalDate.of(2023,10,4);
         Time startTime = new Time(7, 0, 0);
         Time endTime = new Time(7, 0, 0);
 
@@ -90,7 +92,7 @@ public class ShiftRepositoryTests {
         // Create Account
         String password = "harrysmith1234";
         String address = "123 snowy road";
-        Date dob = Date.valueOf("1980-04-03");
+        LocalDate dob = LocalDate.of(1980,4,3);
         Account account = new Account();
         account.setPassword(password);
         account.setAddress(address);
@@ -110,7 +112,7 @@ public class ShiftRepositoryTests {
         employee = employeeRepository.save(employee);
 
         // Create Shift
-        Date shiftDate = Date.valueOf("2023-10-04");
+        LocalDate shiftDate = LocalDate.of(2023,10,4);
         Time startTime = new Time(7, 0, 0);
         Time endTime = new Time(12, 0, 0);
 
@@ -154,7 +156,7 @@ public class ShiftRepositoryTests {
         // Create Account
         String password = "harrysmith1234";
         String address = "123 snowy road";
-        Date dob = Date.valueOf("1980-04-03");
+        LocalDate dob = LocalDate.of(1980,4,3);
         Account account = new Account();
         account.setPassword(password);
         account.setAddress(address);
@@ -173,7 +175,7 @@ public class ShiftRepositoryTests {
         employee = employeeRepository.save(employee);
 
         // Create Shift
-        Date shiftDate = Date.valueOf("2023-10-04");
+        LocalDate shiftDate = LocalDate.of(2023,10,4);
         Time startTime = new Time(7, 0, 0);
         Time endTime = new Time(12, 0, 0);
 
@@ -209,7 +211,7 @@ public class ShiftRepositoryTests {
         // Create Account
         String password = "harrysmith1234";
         String address = "123 snowy road";
-        Date dob = Date.valueOf("1980-04-03");
+        LocalDate dob = LocalDate.of(1980,4,3);
         Account account = new Account();
         account.setPassword(password);
         account.setAddress(address);
@@ -228,7 +230,7 @@ public class ShiftRepositoryTests {
         employee = employeeRepository.save(employee);
 
         // Create Shift
-        Date shiftDate = Date.valueOf("2023-10-04");
+        LocalDate shiftDate = LocalDate.of(2023,10,4);
         Time startTime = new Time(7, 0, 0);
         Time endTime = new Time(12, 0, 0);
 
@@ -267,7 +269,7 @@ public class ShiftRepositoryTests {
         // Create Account
         String password = "harrysmith1234";
         String address = "123 snowy road";
-        Date dob = Date.valueOf("1980-04-03");
+        LocalDate dob = LocalDate.of(1980,4,3);
         Account account = new Account();
         account.setPassword(password);
         account.setAddress(address);
@@ -286,7 +288,7 @@ public class ShiftRepositoryTests {
         employee = employeeRepository.save(employee);
 
         // Create Shift
-        Date shiftDate = Date.valueOf("2023-10-04");
+        LocalDate shiftDate = LocalDate.of(2023,10,4);
         Time startTime = new Time(7, 0, 0);
         Time endTime = new Time(12, 0, 0);
 

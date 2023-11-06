@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -26,7 +28,7 @@ public class AccountService {
     @Transactional
     public List<Account> getAllAccounts() {
         List<Account> accounts = accountRepository.findAll();
-        if(accounts.size() == 0){
+        if(accounts.isEmpty()){
             throw new HRSException(HttpStatus.NOT_FOUND, "There are no accounts in the system.");
         }
         return accounts;
@@ -62,14 +64,15 @@ public class AccountService {
     /**
      * UpdateAccount: service method to update information in an account
      * @param account: account with new information
+     * @param accountNumber: number for account to update
      * @return updated account
      * @throws HRSException if the account is not found
      */
     @Transactional
-    public Account updateAccount(Account account){
+    public Account updateAccount(Account account, int accountNumber){
         isValidAccount(account);
 
-        Account oldAccount = getAccountByAccountNumber(account.getAccountNumber());
+        Account oldAccount = getAccountByAccountNumber(accountNumber);
         if (oldAccount == null){
             throw new HRSException(HttpStatus.NOT_FOUND, "Account not found.");
         }
@@ -78,6 +81,20 @@ public class AccountService {
         oldAccount.setPassword(account.getPassword());
         oldAccount.setAddress(account.getAddress());
         return accountRepository.save(oldAccount);
+    }
+
+    /**
+     * DeleteAccount: service method to delete an account
+     * @param accountNumber: account number for the account to delete
+     * @throws HRSException if the account is not found
+     */
+    @Transactional
+    public void deleteAccount(int accountNumber){
+        Account account = accountRepository.findAccountByAccountNumber(accountNumber);
+        if(account == null){
+            throw new HRSException(HttpStatus.NOT_FOUND, "Account not found.");
+        }
+        accountRepository.deleteAccountByAccountNumber(accountNumber);
     }
 
     /**
@@ -92,6 +109,14 @@ public class AccountService {
         if(!Pattern.compile("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$").matcher(account.getPassword()).find()){
             throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid Password");
         }
+        if(account.getDob().isAfter(LocalDate.now())){
+            throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid date of birth.");
+
+        }
+
+//        if(account.getDob().after(new Date(System.currentTimeMillis()))){
+//            throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid date of birth.");
+//        }
     }
 
 }

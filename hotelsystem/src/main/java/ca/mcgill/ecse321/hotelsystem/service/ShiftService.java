@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.sql.Date;
 import java.sql.Time;
@@ -38,6 +39,8 @@ public class ShiftService {
         }
         return shifts;
     }
+
+
     /**
      * getShiftByShiftID: service ID to get the shift corresponding to the shift ID
      * @param shiftID: shift ID of the employee
@@ -76,7 +79,7 @@ public class ShiftService {
      * @throws HRSException if the list doesn't exist
      */
     @Transactional
-    public List<Shift> getShiftsByDate(Date date) {
+    public List<Shift> getShiftsByDate(LocalDate date) {
         List<Shift> sdList = shiftRepository.findShiftsByDate(date);
         if (sdList == null) {
             throw new HRSException(HttpStatus.NOT_FOUND, "Shift list for this date not found. ");
@@ -85,7 +88,7 @@ public class ShiftService {
     }
 
     @Transactional
-    public List<Shift> getShiftsByDateAndStartTime(Date date, Time startTime) {
+    public List<Shift> getShiftsByDateAndStartTime(LocalDate date, Time startTime) {
         List<Shift> stList = shiftRepository.findShiftsByDateAndStartTime(date, startTime);
         if (stList == null) {
             throw new HRSException(HttpStatus.NOT_FOUND, "Shift list for this date and time does not exist.");
@@ -95,10 +98,11 @@ public class ShiftService {
     @Transactional
     public Shift createShift(Shift shift) {
         isValidShift(shift);
-        if ((shiftRepository.findShiftByShiftId(shift.getShiftId()) == null)) {
-            return shiftRepository.save(shift);
-        }
-        throw new HRSException(HttpStatus.CONFLICT, "A shift with this ID already exists.");
+//        if ((shiftRepository.findShiftByShiftId(shift.getShiftId()) == null)) {
+//            return shiftRepository.save(shift);
+//        }
+//        throw new HRSException(HttpStatus.CONFLICT, "A shift with this ID already exists.");
+        return shiftRepository.save(shift);
     }
 
     @Transactional
@@ -117,7 +121,7 @@ public class ShiftService {
             throw new HRSException(HttpStatus.NOT_FOUND, "Shift not found.");
         }
         // setters and getters to test
-        previousShift.setShiftId(shift.getShiftId());
+//      previousShift.setShiftId(shift.getShiftId());
         previousShift.setDate(shift.getDate());
         previousShift.setStartTime(shift.getStartTime());
         previousShift.setShiftId(shift.getShiftId());

@@ -10,10 +10,11 @@ public class CustomerRequestDto {
 
     private int accountNumber;
 
-    public CustomerRequestDto(String name, String email, int accountNumber){
+    public CustomerRequestDto(){}
+
+    public CustomerRequestDto(String name, String email){
         this.name = name;
         this.email = email;
-        this.accountNumber = accountNumber;
     }
 
     public Customer toModel(Account account){

@@ -3,13 +3,16 @@ package ca.mcgill.ecse321.hotelsystem.dto;
 import ca.mcgill.ecse321.hotelsystem.Model.Account;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 public class AccountResponseDto {
 
     private String password;
     private String address;
-    private Date dob;
+    private LocalDate dob;
     private int accountNumber;
+
+    public AccountResponseDto(){}
 
     public AccountResponseDto(Account account){
         this.password = account.getPassword();
@@ -26,7 +29,7 @@ public class AccountResponseDto {
         return address;
     }
 
-    public Date getdob() {
+    public LocalDate getdob() {
         return dob;
     }
 
@@ -42,7 +45,7 @@ public class AccountResponseDto {
         this.address = address;
     }
 
-    public void setdob(Date dob) {
+    public void setdob(LocalDate dob) {
         this.dob = dob;
     }
 }
