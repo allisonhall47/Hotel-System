@@ -17,6 +17,8 @@ public class RequestResponseDto {
         this.status = request.getStatus();
     }
 
+    public RequestResponseDto() {}
+
     public Request toModel(Reservation r){
         return new Request(status, description, r);
     }

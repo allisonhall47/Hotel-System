@@ -42,7 +42,7 @@ public class RequestController {
         return new RequestResponseDto(request);
     }
 
-    @PatchMapping ("request/{id}")
+    @PostMapping ("request/status/{id}")
     @ResponseStatus(HttpStatus.OK)
     public RequestResponseDto changeRequestStatus(@PathVariable int id, @RequestBody CompletionStatus status) {
         return new RequestResponseDto(service.changeRequestStatus(id, status));

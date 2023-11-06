@@ -14,6 +14,8 @@ public class RequestRequestDto {
         this.reservationId = reservationId;
     }
 
+    public RequestRequestDto() {}
+
     public String getDescription() {
         return description;
     }

@@ -1,19 +1,14 @@
 package ca.mcgill.ecse321.hotelsystem.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import ca.mcgill.ecse321.hotelsystem.Model.CheckInStatus;
-import ca.mcgill.ecse321.hotelsystem.Model.Customer;
-import ca.mcgill.ecse321.hotelsystem.Model.Reservation;
+import ca.mcgill.ecse321.hotelsystem.Model.CompletionStatus;
 import ca.mcgill.ecse321.hotelsystem.dto.*;
 
 import ca.mcgill.ecse321.hotelsystem.repository.CustomerRepository;
 import ca.mcgill.ecse321.hotelsystem.repository.RequestRepository;
 import ca.mcgill.ecse321.hotelsystem.repository.ReservationRepository;
-import ca.mcgill.ecse321.hotelsystem.service.ReservationService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,7 +17,9 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.sql.Date;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -61,7 +58,7 @@ public class RequestIntegrationTests {
         ResponseEntity<CustomerResponseDto> response = client.postForEntity("/customer/create", request, CustomerResponseDto.class);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
 
-        ReservationRequestDto resReq = new ReservationRequestDto(2, Date.valueOf("2024-04-05"), Date.valueOf("2024-05-05"), CUSTOMER_EMAIL);
+        ReservationRequestDto resReq = new ReservationRequestDto(2, LocalDate.parse("2024-04-05"), LocalDate.parse("2024-05-05"), CUSTOMER_EMAIL);
         String url = "/reservation/customer/" + CUSTOMER_EMAIL + "/new";
         ResponseEntity<ReservationResponseDto> res = client.postForEntity(url, resReq, ReservationResponseDto.class);
         assertEquals(2, res.getBody().getNumPeople());
@@ -71,9 +68,9 @@ public class RequestIntegrationTests {
 
     @Test
     @Order(2)
-    public void testCreateRepair() {
+    public void testCreateRequest() {
         RequestRequestDto req = new RequestRequestDto(REQ_DESCRIPTION, res_id);
-        String url = "request/new";
+        String url = "/request/new";
         ResponseEntity<RequestResponseDto> res = client.postForEntity(url, req, RequestResponseDto.class);
         assertEquals(HttpStatus.CREATED, res.getStatusCode());
         RequestResponseDto resBody = res.getBody();
@@ -86,12 +83,84 @@ public class RequestIntegrationTests {
 
     @Test
     @Order(3)
-    public void testGetRepair() {
-        ResponseEntity<RequestResponseDto> res = client.getForEntity("request/" + req_id, RequestResponseDto.class);
+    public void testGetRequest() {
+        ResponseEntity<RequestResponseDto> res = client.getForEntity("/request/" + req_id, RequestResponseDto.class);
         assertEquals(HttpStatus.OK, res.getStatusCode());
         assertNotNull(res.getBody());
         assertEquals(REQ_DESCRIPTION, res.getBody().getDescription());
+        assertEquals(CompletionStatus.Pending, res.getBody().getStatus());
         assertEquals(CUSTOMER_EMAIL, res.getBody().getReservation().getCustomer().getEmail());
+    }
+
+    @Test
+    @Order(4)
+    public void testChangeRequestStatus() {
+        ResponseEntity<RequestResponseDto> res = client.postForEntity("/request/status/" + req_id, CompletionStatus.Done, RequestResponseDto.class);
+        assertEquals(HttpStatus.OK, res.getStatusCode());
+        assertNotNull(res.getBody());
+        assertEquals(CompletionStatus.Done, res.getBody().getStatus());
+    }
+
+    @Test
+    @Order(5)
+    public void testGetRequestsForReservation() {
+        ResponseEntity<List> res = client.getForEntity("/request/reservation/" + res_id, List.class);
+        assertEquals(HttpStatus.OK, res.getStatusCode());
+        assertNotNull(res.getBody());
+        List<Map<String, Object>> reqs = res.getBody();
+        assertEquals(1, reqs.size());
+        assertEquals(REQ_DESCRIPTION, reqs.get(0).get("description"));
+        assertEquals(CompletionStatus.Done.toString(), reqs.get(0).get("status"));
+        Map<String, Object> reservation = (Map<String, Object>) reqs.get(0).get("reservation");
+        Map<String, Object> customer = (Map<String, Object>) reservation.get("customer");
+        assertEquals(CUSTOMER_EMAIL, customer.get("email"));
+    }
+
+    @Test
+    @Order(6)
+    public void testCreateInvalidRequestNoReservation() {
+        RequestRequestDto req = new RequestRequestDto(REQ_DESCRIPTION, res_id+1);
+        String url = "/request/new";
+        ResponseEntity<String> res = client.postForEntity(url, req, String.class);
+        assertEquals(HttpStatus.NOT_FOUND, res.getStatusCode());
+    }
+
+    @Test
+    @Order(7)
+    public void testCreateInvalidRequestBadDescription() {
+        RequestRequestDto req = new RequestRequestDto("", res_id);
+        String url = "/request/new";
+        ResponseEntity<String> res = client.postForEntity(url, req, String.class);
+        assertEquals(HttpStatus.BAD_REQUEST, res.getStatusCode());
+    }
+
+    @Test
+    @Order(8)
+    public void testDeleteRequest() {
+        client.delete("/request/" + req_id);
+        ResponseEntity<String> res = client.getForEntity("/request/" + req_id, String.class);
+        assertEquals(HttpStatus.NOT_FOUND, res.getStatusCode());
+
+    }
+
+    @Test
+    @Order(9)
+    public void testDeleteForReservation() {
+        String url = "/request/new";
+
+        RequestRequestDto req1 = new RequestRequestDto(REQ_DESCRIPTION, res_id);
+        client.postForEntity(url, req1, RequestResponseDto.class);
+
+        RequestRequestDto req2 = new RequestRequestDto(REQ_DESCRIPTION, res_id);
+        client.postForEntity(url, req2, RequestResponseDto.class);
+
+        client.delete("/request/reservation/" + res_id);
+
+        ResponseEntity<List> res = client.getForEntity("/request/reservation/" + res_id, List.class);
+        assertEquals(HttpStatus.OK, res.getStatusCode());
+        assertNotNull(res.getBody());
+        List<Map<String, Object>> reqs = res.getBody();
+        assertEquals(0, reqs.size());
     }
 }
 
