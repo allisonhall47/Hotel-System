@@ -82,7 +82,7 @@ public class ShiftService {
     public List<Shift> getShiftsByDate(LocalDate date) {
         List<Shift> sdList = shiftRepository.findShiftsByDate(date);
         if (sdList == null) {
-            throw new HRSException(HttpStatus.NOT_FOUND, "Shift list for this date not found. ");
+            throw new HRSException(HttpStatus.NOT_FOUND, "Shift list for this date not found.");
         }
         return sdList;
     }
@@ -98,10 +98,6 @@ public class ShiftService {
     @Transactional
     public Shift createShift(Shift shift) {
         isValidShift(shift);
-//        if ((shiftRepository.findShiftByShiftId(shift.getShiftId()) == null)) {
-//            return shiftRepository.save(shift);
-//        }
-//        throw new HRSException(HttpStatus.CONFLICT, "A shift with this ID already exists.");
         return shiftRepository.save(shift);
     }
 

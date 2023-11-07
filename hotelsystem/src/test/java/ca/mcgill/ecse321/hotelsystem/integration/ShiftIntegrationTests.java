@@ -2,7 +2,9 @@ package ca.mcgill.ecse321.hotelsystem.integration;
 
 import ca.mcgill.ecse321.hotelsystem.Model.Account;
 import ca.mcgill.ecse321.hotelsystem.Model.Employee;
+import ca.mcgill.ecse321.hotelsystem.Model.Shift;
 import ca.mcgill.ecse321.hotelsystem.dto.AccountRequestDto;
+import ca.mcgill.ecse321.hotelsystem.dto.EmployeeResponseDto;
 import ca.mcgill.ecse321.hotelsystem.dto.ShiftRequestDto;
 import ca.mcgill.ecse321.hotelsystem.dto.ShiftResponseDto;
 import ca.mcgill.ecse321.hotelsystem.repository.EmployeeRepository;
@@ -97,13 +99,15 @@ public class ShiftIntegrationTests {
 
       private ShiftSet shiftSet;
 
+      private Shift shiftResponseComplete;
+
       @Autowired
       private TestRestTemplate client;
       @Autowired
       private ShiftRepository shiftRepository;
 
       @Autowired
-      private EmployeeRepository EmployeeRepository;
+      private EmployeeRepository employeeRepository;
 
 
       @BeforeAll
@@ -113,8 +117,15 @@ public class ShiftIntegrationTests {
       @AfterAll
       public void clearDatabase() {
             shiftRepository.deleteAll();
+            employeeRepository.deleteAll();
       }
-
+      @BeforeEach
+      public void setupTest() {
+            Employee employee = new Employee();
+            employee.setEmail("janegill@gmail.com");
+            employeeRepository.save(employee);
+            shiftSet.setEmployeeEmail(employee.getEmail());
+      }
       /*
        * Test that gets all empty shifts.
        */
@@ -133,6 +144,7 @@ public class ShiftIntegrationTests {
       @Order(1)
       public void testCreateValidShift() {
             ShiftRequestDto shiftRequest = new ShiftRequestDto(shiftSet.startTime,shiftSet.endTime,shiftSet.date);
+            shiftRequest.setEmployeeEmail(shiftSet.getEmployeeEmail());
             ResponseEntity<ShiftResponseDto> shiftResponse = client.postForEntity("/shift/create", shiftRequest, ShiftResponseDto.class);
 
             assertEquals(HttpStatus.CREATED,shiftResponse.getStatusCode());
@@ -238,38 +250,64 @@ public class ShiftIntegrationTests {
       @Test
       @Order(9)
       public void testGetValidShiftsByEmployeeEmail() {
-            // TO DO
+            ResponseEntity<List> response = client.getForEntity("/shifts/get/"+shiftSet.getEmployeeEmail(), List.class);
+            assertEquals(HttpStatus.OK, response.getStatusCode());
+            assertEquals(1, response.getBody().size()); // this is returning 0
+            List<Map<String,Object>> shift = response.getBody();
+            assertEquals(shift.get(0).get("startTime"), shiftSet.getStartTime().toString());
+            assertEquals(shift.get(0).get("date"), shiftSet.getDate().toString());
+            assertEquals(shift.get(0).get("endTime"), shiftSet.getEndTime().toString());
+            assertEquals(shift.get(0).get("shiftId"), shiftSet.getShiftID());
       }
 
+      /*
+       * Asserts the size of the list for a email with no shift sis 0.
+       */
       @Test
       @Order(10)
-      public void testGetInvalidShiftsByEmployeeEmail() {
-            // TO DO
-
+      public void testGetEmptyShiftsByEmployeeEmail() {
+            ResponseEntity<List> response = client.getForEntity("/shifts/get/" + "johndoe@gmail.com", List.class);
+            assertEquals(0, response.getBody().size());
       }
 
       @Test
       @Order(11)
       public void testGetValidShiftsByDate() {
-            // TO DO
+            ResponseEntity<List> response = client.getForEntity("/shifts/date/get/" + shiftSet.getDate(), List.class);
+            assertEquals(HttpStatus.OK, response.getStatusCode());
+            assertEquals(1, response.getBody().size());
+            List<Map<String,Object>> shift = response.getBody();
+            assertEquals(shift.get(0).get("startTime"), shiftSet.getStartTime().toString());
+            assertEquals(shift.get(0).get("date"), shiftSet.getDate().toString());
+            assertEquals(shift.get(0).get("endTime"), shiftSet.getEndTime().toString());
+            assertEquals(shift.get(0).get("shiftId"), shiftSet.getShiftID());
       }
 
       @Test
       @Order(12)
-      public void testGetInvalidShiftsByDate() {
-            // TO DO
+      public void testGetEmptyShiftsByDate() {
+            ResponseEntity<List> response = client.getForEntity("/shifts/date/get/" + LocalDate.of(1994,3,06), List.class);
+            assertEquals(0, response.getBody().size());
       }
 
       @Test
       @Order(13)
-      public void testGetValidShiftsByStartDateAndTime() {
-            // TO DO
+      public void testGetValidShiftsByDateAndStartTime() {
+            ResponseEntity<List> response = client.getForEntity("/shifts/date/st/get/" + shiftSet.getDate() + "/" + shiftSet.getStartTime(), List.class);
+            assertEquals(HttpStatus.OK, response.getStatusCode());
+            assertEquals(1, response.getBody().size());
+            List<Map<String,Object>> shift = response.getBody();
+            assertEquals(shift.get(0).get("startTime"), shiftSet.getStartTime().toString());
+            assertEquals(shift.get(0).get("date"), shiftSet.getDate().toString());
+            assertEquals(shift.get(0).get("endTime"), shiftSet.getEndTime().toString());
+            assertEquals(shift.get(0).get("shiftId"), shiftSet.getShiftID());
       }
 
       @Test
       @Order(14)
-      public void testGetInvalidShiftsByStartDateAndTime() {
-            // TO DO
+      public void testGetEmptyShiftsByDateAndStartTime() {
+            ResponseEntity<List> response = client.getForEntity("/shifts/date/st/get/" + LocalDate.of(1995,6,9) + "/" + Time.valueOf("06:30:00"), List.class);
+            assertEquals(0, response.getBody().size());
       }
       /*
        * Test that gets all shifts in the system.
