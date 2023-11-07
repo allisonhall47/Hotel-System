@@ -1,6 +1,8 @@
 package ca.mcgill.ecse321.hotelsystem.integration;
 
 import ca.mcgill.ecse321.hotelsystem.Model.Account;
+import ca.mcgill.ecse321.hotelsystem.dto.AccountRequestDto;
+import ca.mcgill.ecse321.hotelsystem.dto.AccountResponseDto;
 import ca.mcgill.ecse321.hotelsystem.dto.CustomerRequestDto;
 import ca.mcgill.ecse321.hotelsystem.dto.CustomerResponseDto;
 import ca.mcgill.ecse321.hotelsystem.repository.CustomerRepository;
@@ -229,6 +231,26 @@ public class CustomerIntegrationTests {
         assertEquals(HttpStatus.NOT_FOUND, response2.getStatusCode());
         assertEquals(response2.getBody(),  "Customer not found.");
     }
+
+    @Test
+    @Order (14)
+    public void testValidCreateCustomerWithAccount(){
+        AccountRequestDto a = new AccountRequestDto("Password123", "123 Road", LocalDate.of(1990, 3, 3));
+        ResponseEntity<AccountResponseDto> a_response = client.postForEntity("/account/create", a, AccountResponseDto.class);
+
+        CustomerRequestDto request = new CustomerRequestDto(customerFixture.name, customerFixture.email);
+        request.setAccountNumber(a_response.getBody().getAccountNumber());
+
+        ResponseEntity<CustomerResponseDto> response = client.postForEntity("/customer/create", request, CustomerResponseDto.class);
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertNotNull(response.getBody());
+        customerFixture.setAccountNumber(a_response.getBody().getAccountNumber());
+        assertTrue(equals(response.getBody(), customerFixture));
+        customerFixture.setAccountNumber(response.getBody().getAccountNumber());
+    }
+
+
+
 
     private boolean equals(CustomerResponseDto response, CustomerFixture a){
         boolean b = response.getEmail().equals(a.getEmail());

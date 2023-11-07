@@ -36,8 +36,28 @@ tasks.named('jacocoTestReport') {
 	dependsOn test
 }
 
+tasks.named('jacocoTestCoverageVerification') {
+	violationRules {
+		rule {
+			limit {
+				minimum = 0.8
+			}
+		}
+	}
+	dependsOn test
+}
+
 task integrationTest(type: Test){
 	include '**/ca/mcgill/ecse321/hotelsystem/integration/*'
+	useJUnitPlatform()
+	testLogging {
+		exceptionFormat "full"
+		events "failed", "skipped", "passed"
+	}
+}
+
+task serviceTest(type: Test){
+	include '**/ca/mcgill/ecse321/hotelsystem/service/*'
 	useJUnitPlatform()
 	testLogging {
 		exceptionFormat "full"
