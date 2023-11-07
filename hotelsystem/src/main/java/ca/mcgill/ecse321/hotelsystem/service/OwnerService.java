@@ -70,17 +70,14 @@ public class OwnerService {
      * @throws HRSException if an owner already exists or a user with the email already exist
      */
     @Transactional
-    public Owner createOwner(Owner owner){
+    public Owner createOwner(Owner owner) {
         isValidOwner(owner);
-        if (getAllOwners().size() == 0){
-            if ((ownerRepository.findOwnerByEmail(owner.getEmail()) == null) && (employeeRepository.findEmployeeByEmail(owner.getEmail()) == null) && (customerRepository.findCustomerByEmail(owner.getEmail()) == null)) {
-                return ownerRepository.save(owner);
-            } else {
-                throw new HRSException(HttpStatus.CONFLICT, "A user with this email already exists.");
-            }
-        } else {
-            throw new HRSException(HttpStatus.CONFLICT, "An owner already exists in the system.");
+        if (ownerRepository.findOwnerByEmail(owner.getEmail()) != null ||
+                employeeRepository.findEmployeeByEmail(owner.getEmail()) != null ||
+                customerRepository.findCustomerByEmail(owner.getEmail()) != null) {
+            throw new HRSException(HttpStatus.CONFLICT, "A user with this email already exists.");
         }
+        return ownerRepository.save(owner);
     }
 
 

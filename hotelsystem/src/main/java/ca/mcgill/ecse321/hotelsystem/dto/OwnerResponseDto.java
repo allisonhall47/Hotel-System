@@ -9,12 +9,15 @@ public class OwnerResponseDto {
 
     private int accountNumber;
 
+
     public OwnerResponseDto(Owner owner){
         this.name = owner.getName();
         this.email = owner.getEmail();
         if (owner.getAccount() != null) this.accountNumber = owner.getAccount().getAccountNumber();
 
     }
+
+    public OwnerResponseDto() {}
 
     public String getName() {
         return name;
