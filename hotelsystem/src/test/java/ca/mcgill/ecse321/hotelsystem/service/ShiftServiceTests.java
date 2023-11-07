@@ -147,8 +147,25 @@ public class ShiftServiceTests {
             assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
             assertEquals(e.getMessage(), "Invalid shift ID.");
       }
+
       @Test
-      public void testGetInvalidShiftByEmail() {
+      public void testGetShiftsByEmployeeEmail() {
+            Time startTime = Time.valueOf("7:30:00");
+            Time endTime = Time.valueOf("9:30:00");
+            LocalDate date = LocalDate.of(1993,4,20);
+            Employee employee = new Employee();
+            String email = "johndoe@gmail.com";
+            employee.setEmail(email);
+            Shift shift = new Shift(startTime,endTime,date,employee);
+            List<Shift> expectedShifts = new ArrayList<>();
+            expectedShifts.add(shift);
+            when(employeeRepository.findEmployeeByEmail(email)).thenReturn(employee);
+            when(shiftRepository.findShiftsByEmployeeEmail(email)).thenReturn(expectedShifts);
+            List<Shift> actualShifts = shiftService.getShiftsByEmployeeEmail(email);
+            assertEquals(expectedShifts,actualShifts);
+      }
+      @Test
+      public void testGetInvalidShiftsByEmail() {
             String email = "johndoe@gmail.com";
 
             when(shiftRepository.findShiftsByEmployeeEmail(email)).thenReturn(null);
@@ -157,6 +174,19 @@ public class ShiftServiceTests {
             assertEquals(e.getMessage(), "Shift list for this email not found.");
       }
 
+      @Test
+      public void testGetShiftsByDate() {
+            Time startTime = Time.valueOf("7:30:00");
+            Time endTime = Time.valueOf("9:30:00");
+            LocalDate date = LocalDate.of(1993,4,20);
+            Employee employee = new Employee();
+            Shift shift = new Shift(startTime,endTime,date,employee);
+            List<Shift> expectedShifts = new ArrayList<>();
+            expectedShifts.add(shift);
+            when(shiftRepository.findShiftsByDate(date)).thenReturn(expectedShifts);
+            List<Shift> actualShifts = shiftService.getShiftsByDate(date);
+            assertEquals(expectedShifts,actualShifts);
+      }
       @Test
       public void testGetInvalidShiftByDate() {
             LocalDate date = LocalDate.of(2000,4,20);
@@ -169,6 +199,19 @@ public class ShiftServiceTests {
 
       @Test
       public void testGetShiftsByDateAndStartTime() {
+            Time startTime = Time.valueOf("7:30:00");
+            Time endTime = Time.valueOf("9:30:00");
+            LocalDate date = LocalDate.of(1993,4,20);
+            Employee employee = new Employee();
+            Shift shift = new Shift(startTime,endTime,date,employee);
+            List<Shift> expectedShifts = new ArrayList<>();
+            expectedShifts.add(shift);
+            when(shiftRepository.findShiftsByDateAndStartTime(date,startTime)).thenReturn(expectedShifts);
+            List<Shift> actualShifts = shiftService.getShiftsByDateAndStartTime(date,startTime);
+            assertEquals(expectedShifts,actualShifts);
+      }
+      @Test
+      public void testGetInvalidShiftsByDateAndStartTime() {
             LocalDate date = LocalDate.of(2000,4,20);
             Time time = Time.valueOf("06:30:00");
 

@@ -98,10 +98,6 @@ public class ShiftService {
     @Transactional
     public Shift createShift(Shift shift) {
         isValidShift(shift);
-//        if ((shiftRepository.findShiftByShiftId(shift.getShiftId()) == null)) {
-//            return shiftRepository.save(shift);
-//        }
-//        throw new HRSException(HttpStatus.CONFLICT, "A shift with this ID already exists.");
         return shiftRepository.save(shift);
     }
 
