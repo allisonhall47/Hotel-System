@@ -74,7 +74,7 @@ public class ShiftService {
     }
     /**
      * getShiftsByEmployeeEmail: service email to fetch an existing shift list corresponding to an certain date
-     * @param date: date of the shift
+     * @param date: date of the shifts
      * @return list of shifts
      * @throws HRSException if the list doesn't exist
      */
@@ -87,6 +87,13 @@ public class ShiftService {
         return sdList;
     }
 
+    /**
+     * getShiftsByDateAndStartTime: service method to fetch an existing shift list corresponding to a certain date and start time
+     * @param date: date of the shifts
+     * @param startTime: start time of the shifts
+     * @return list of shifts
+     * @throws HRSException if list doesn't exist
+     */
     @Transactional
     public List<Shift> getShiftsByDateAndStartTime(LocalDate date, Time startTime) {
         List<Shift> stList = shiftRepository.findShiftsByDateAndStartTime(date, startTime);
@@ -95,6 +102,7 @@ public class ShiftService {
         }
         return stList;
     }
+
     @Transactional
     public Shift createShift(Shift shift) {
         isValidShift(shift);
