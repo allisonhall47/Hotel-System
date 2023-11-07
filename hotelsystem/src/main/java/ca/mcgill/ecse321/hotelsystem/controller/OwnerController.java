@@ -3,6 +3,7 @@ package ca.mcgill.ecse321.hotelsystem.controller;
 import ca.mcgill.ecse321.hotelsystem.Model.Owner;
 import ca.mcgill.ecse321.hotelsystem.dto.OwnerRequestDto;
 import ca.mcgill.ecse321.hotelsystem.dto.OwnerResponseDto;
+import ca.mcgill.ecse321.hotelsystem.exception.HRSException;
 import ca.mcgill.ecse321.hotelsystem.service.AccountService;
 import ca.mcgill.ecse321.hotelsystem.service.OwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,13 +71,19 @@ public class OwnerController {
      * @return A ResponseEntity containing the updated OwnerResponseDto if the update is successful, otherwise HttpStatus.NOT_FOUND.
      */
     @PutMapping(value = {"/update", "/update/"})
-    public ResponseEntity<OwnerResponseDto> updateOwner(@RequestBody OwnerRequestDto ownerRequest) {
-        Owner currentOwner = ownerService.getOwnerByEmail(ownerRequest.getEmail());
-        if (currentOwner == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<?> updateOwner(@RequestBody OwnerRequestDto ownerRequest) {
+        // Validate the request before proceeding
+        if (ownerRequest.getEmail() == null || ownerRequest.getEmail().isEmpty()) {
+            return ResponseEntity.badRequest().body("Empty field in the owner.");
         }
-        Owner updatedOwner = ownerService.updateOwnerInformation(ownerRequest.toModel(currentOwner.getAccount()));
-        return new ResponseEntity<>(new OwnerResponseDto(updatedOwner), HttpStatus.OK);
+
+        try {
+            Owner currentOwner = ownerService.getOwnerByEmail(ownerRequest.getEmail());
+            Owner updatedOwner = ownerService.updateOwnerInformation(ownerRequest.toModel(currentOwner.getAccount()));
+            return new ResponseEntity<>(new OwnerResponseDto(updatedOwner), HttpStatus.OK);
+        } catch (HRSException ex) {
+            return ResponseEntity.status(ex.getStatus()).body(ex.getMessage());
+        }
     }
 
 }
