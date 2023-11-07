@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.hotelsystem.integration;
 
+import ca.mcgill.ecse321.hotelsystem.Model.CheckInStatus;
 import ca.mcgill.ecse321.hotelsystem.dto.CustomerRequestDto;
 import ca.mcgill.ecse321.hotelsystem.dto.CustomerResponseDto;
 import ca.mcgill.ecse321.hotelsystem.dto.ReservationRequestDto;
@@ -107,6 +108,18 @@ public class ReservationIntegrationTests {
 
     @Test
     @Order(6)
+    public void testGetAllNonPaidReservations() {
+        ResponseEntity<List> reservationResponse = client.getForEntity("/reservation/not-paid", List.class);
+
+        assertEquals(HttpStatus.OK, reservationResponse.getStatusCode());
+        assertEquals(1, reservationResponse.getBody().size());
+        List<Map<String,Object>> reservation =reservationResponse.getBody();
+        assertEquals(reservation.get(0).get("reservationId"), reservationId);
+        assertEquals(reservation.get(0).get("paid"), false);
+    }
+
+    @Test
+    @Order(7)
     public void testPayReservationValid() {
         ResponseEntity<ReservationResponseDto> response = client.exchange("/reservation/"+reservationId+"?money=5", HttpMethod.PUT,null,ReservationResponseDto.class);
 
@@ -115,7 +128,16 @@ public class ReservationIntegrationTests {
     }
 
     @Test
-    @Order(7)
+    @Order(8)
+    public void testCheckInReservationValid() {
+        ResponseEntity<ReservationResponseDto> response = client.exchange("/reservation/"+reservationId+"/checkIn", HttpMethod.PUT,null,ReservationResponseDto.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(CheckInStatus.CheckedIn, response.getBody().getCheckedIn());
+    }
+
+    @Test
+    @Order(9)
     public void testPayReservationInValid() {
         ResponseEntity<String> response = client.exchange("/reservation/"+reservationId+"?money=5",HttpMethod.PUT, null, String.class);
 
@@ -125,7 +147,7 @@ public class ReservationIntegrationTests {
     }
 
     @Test
-    @Order(8)
+    @Order(10)
     public void testDeleteReservation() {
         ResponseEntity<String> response = client.exchange("/reservation/"+reservationId, HttpMethod.DELETE, null, String.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
