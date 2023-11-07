@@ -89,7 +89,6 @@ public class ReservedRoomService {
      */
     @Transactional
     public List<ReservedRoom> getReservedRoomsBySpecRoom(SpecificRoom specRoom) {
-        //SpecificRoom specRoom = specificRoomService.findSpecificRoomByNumber(room.getNumber());
         if(specRoom == null) {
             throw new HRSException(HttpStatus.NOT_FOUND, "specific room does not exist");
         }
@@ -102,10 +101,9 @@ public class ReservedRoomService {
      */
     @Transactional
     public void deleteReservedRoom(ReservedRoom reservedRoom) {
-        int id = reservedRoom.getReservedID();
-        reservedRoom = reservedRoomRepository.findReservedRoomByReservedID(id);
+        reservedRoom = reservedRoomRepository.findReservedRoomByReservedID(reservedRoom.getReservedID());
         if(reservedRoom == null) {
-            throw new HRSException(HttpStatus.NOT_FOUND, "no reserved room with id: " + id);
+            throw new HRSException(HttpStatus.NOT_FOUND, "no reserved room with id doesn't exist");
         }
         reservedRoomRepository.delete(reservedRoom);
     }
@@ -119,16 +117,6 @@ public class ReservedRoomService {
     @Transactional
     public ReservedRoom assignReservedRoomToReservation(Reservation reservation, ReservedRoom room) {
         //2 reserved rooms cant be reserved at the same time, when assigning a room to a reservation
-        //TODO no need to check input??
-//        reservation = reservationRepository.findReservationByReservationID(reservation.getReservationID());
-//        if(reservation == null) {
-//            throw new HRSException(HttpStatus.NOT_FOUND, "reservation does not exist");
-//        }
-//        room = reservedRoomRepository.findReservedRoomByReservedID(room.getReservedID());
-//        if(room == null) {
-//            throw new HRSException(HttpStatus.NOT_FOUND, "reservedRoom with id does not exist");
-//        }
-
         //get all reservations for specRoom and check checkIn and checkOut dates to make sure no overlap for the same room
         SpecificRoom specRoom = room.getSpecificRoom(); //TODO assume specRoom is not null and is already assigned to reservedRoom
         //get reservedRooms for specRoom, and check the dates
@@ -139,11 +127,11 @@ public class ReservedRoomService {
             LocalDate checkIn = res.getCheckIn();
             LocalDate checkOut = res.getCheckOut();
             if((reservation.getCheckIn().isBefore(checkOut) && reservation.getCheckIn().isAfter(checkIn)) ||
-                    (reservation.getCheckOut().isBefore(checkOut) && reservation.getCheckOut().isAfter(checkIn))) {
+                    (reservation.getCheckOut().isBefore(checkOut) && reservation.getCheckOut().isAfter(checkIn)) ||
+                    (reservation.getCheckIn().isBefore(checkOut) && reservation.getCheckOut().isAfter(checkIn))) {
                 throw new HRSException(HttpStatus.CONFLICT, "a reservation with conflicting check-in and check-out dates exists");
             }
         }
-
         room.setReservation(reservation);
         return reservedRoomRepository.save(room);
     }

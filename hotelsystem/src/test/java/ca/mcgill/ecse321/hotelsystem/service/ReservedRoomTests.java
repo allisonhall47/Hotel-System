@@ -69,7 +69,7 @@ public class ReservedRoomTests {
         Reservation res = new Reservation(4, LocalDate.of(1990,3,3), LocalDate.of(1990,3,6), 5, false, CheckInStatus.BeforeCheckIn, null);
         ReservedRoom resRoom2 = new ReservedRoom(res, room);
 
-        Reservation res2 = new Reservation(4, LocalDate.of(1990,3,3), LocalDate.of(1990,3,6), 5, false, CheckInStatus.BeforeCheckIn, null);
+        Reservation res2 = new Reservation(4, LocalDate.of(1990,3,7), LocalDate.of(1990,3,10), 5, false, CheckInStatus.BeforeCheckIn, null);
         List<ReservedRoom> list = new ArrayList<>();
         list.add(resRoom2);
         list.add(resRoom);
@@ -199,8 +199,22 @@ public class ReservedRoomTests {
         assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
     }
 
-//    @Test
-//    public void testDeleteReservedRoom() {
-//
-//    }
+    @Test
+    public void testDeleteReservedRoom() {
+        ReservedRoom room = new ReservedRoom(null, null);
+
+        when(reservedRoomRepository.findReservedRoomByReservedID(room.getReservedID())).thenReturn(room);
+        assertDoesNotThrow(() -> reservedRoomService.deleteReservedRoom(room));
+    }
+
+    @Test
+    public void testDeleteInvalidReservedRoom() {
+        ReservedRoom room = new ReservedRoom(null, null);
+
+        when(reservedRoomRepository.findReservedRoomByReservedID(room.getReservedID())).thenReturn(null);
+
+        HRSException e = assertThrows(HRSException.class, () -> reservedRoomService.deleteReservedRoom(room));
+        assertEquals(e.getMessage(), "no reserved room with id doesn't exist");
+        assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
+    }
 }

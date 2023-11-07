@@ -31,11 +31,7 @@ public class ReservationService {
      */
     @Transactional
     public List<Reservation> getAllReservations(){
-        List<Reservation> reservations = reservationRepository.findAll();
-//        if (reservations == null || reservations.isEmpty()){
-//            throw new HRSException(HttpStatus.NOT_FOUND, "There are no reservations in the system.");
-//        }
-        return reservations;
+        return reservationRepository.findAll();
     }
 
     /**
@@ -85,15 +81,15 @@ public class ReservationService {
     @Transactional
     public void deleteReservation(Reservation reservation) {
         reservation = reservationRepository.findReservationByReservationID(reservation.getReservationID());
-//        if(reservation == null) {
-//            throw new HRSException(HttpStatus.NOT_FOUND, "reservation does not exist");
-//        }
+        if(reservation == null) {
+            throw new HRSException(HttpStatus.NOT_FOUND, "reservation does not exist");
+        }
         for(ReservedRoom room: reservedRoomRepository.findReservedRoomsByReservation_ReservationID(reservation.getReservationID())) {
-            reservedRoomRepository.delete(room);
+            reservedRoomRepository.deleteByReservedID(room.getReservedID());
         }
 
         for(Request request: requestRepository.findRequestsByReservation_ReservationID(reservation.getReservationID())) {
-            requestRepository.delete(request);
+            requestRepository.deleteRequestByRequestId(request.getRequestId());
         }
         reservationRepository.delete(reservation);
     }
@@ -107,13 +103,8 @@ public class ReservationService {
     public List<Reservation> getReservationsByCustomer(Customer customer) {
         //no need to if check customer is valid
         //already checked when we use customerService.getCustomerByEmail(customerEmail) in the controller
-        List<Reservation> list = reservationRepository.getReservationByCustomerEmail(customer.getEmail());
-        if(list == null || list.isEmpty()) {
-            throw new HRSException(HttpStatus.NOT_FOUND, "no reservation for customer with email: " + customer.getEmail());
-        }
-        return list;
+        return reservationRepository.getReservationByCustomerEmail(customer.getEmail());
     }
-
     /**
      * payReservation: method to pay a reservation and returns change
      * @param reservation reservation to be paid
@@ -122,14 +113,7 @@ public class ReservationService {
      */
     @Transactional
     public Reservation payReservation(Reservation reservation, int money) {
-        if(reservation == null) {
-            throw new HRSException(HttpStatus.BAD_REQUEST, "reservation cannot be null");
-        }
-
         reservation = reservationRepository.findReservationByReservationID(reservation.getReservationID());
-        if(reservation == null) {
-            throw new HRSException(HttpStatus.NOT_FOUND, "reservation does not exist");
-        }
         if(reservation.isPaid()) {
             throw new HRSException(HttpStatus.BAD_REQUEST, "already paid");
         }
@@ -144,21 +128,16 @@ public class ReservationService {
     @Transactional
     public Reservation checkIn(Reservation reservation) {
         reservation = reservationRepository.findReservationByReservationID(reservation.getReservationID());
-        if(reservation == null) {
-            throw new HRSException(HttpStatus.NOT_FOUND, "reservation does not exist");
+        if(reservation.getCheckedIn() == CheckInStatus.CheckedIn) {
+            throw new HRSException(HttpStatus.BAD_REQUEST, "already checked in");
         }
-
         reservation.setCheckedIn(CheckInStatus.CheckedIn);
         return reservationRepository.save(reservation);
     }
 
     @Transactional
     public List<Reservation> getReservationsNotPaid() {
-        List<Reservation> list = reservationRepository.getReservationByPaidIs(false);
-        if(list == null || list.isEmpty()) {
-            throw new HRSException(HttpStatus.NOT_FOUND, "all reservations are paid");
-        }
-        return list;
+        return reservationRepository.getReservationByPaidIs(false);
     }
 
     //TODO if other methods are needed, add

@@ -41,10 +41,26 @@ public class ReservationController {
         return dtos;
     }
 
+    @GetMapping("/reservation/not-paid")
+    public List<ReservationResponseDto> getAllReservationsNotPaid() {
+        List<Reservation> list = reservationService.getReservationsNotPaid();
+        List<ReservationResponseDto> dtos = new ArrayList<>();
+        for(Reservation res: list) {
+            dtos.add(new ReservationResponseDto(res));
+        }
+        return dtos;
+    }
+
     @GetMapping("/reservation/{reservationId}")
     public ReservationResponseDto getReservationById(@PathVariable(value = "reservationId") int id) {
         Reservation res = reservationService.getReservation(id);
         return new ReservationResponseDto(res);
+    }
+
+    @PutMapping ("/reservation/{reservationId}/checkIn")
+    public ReservationResponseDto checkInReservationById(@PathVariable(value = "reservationId") int id) {
+        Reservation res = reservationService.getReservation(id);
+        return new ReservationResponseDto(reservationService.checkIn(res));
     }
 
     @GetMapping("/reservation/customer/{customerEmail}")
