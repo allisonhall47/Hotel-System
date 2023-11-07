@@ -10,6 +10,7 @@ public class EmployeeRequestDto {
 
     private int accountNumber;
 
+    public EmployeeRequestDto(){}
     public EmployeeRequestDto(String name, String email, int salary, int accountNumber){
         this.name = name;
         this.email = email;
