@@ -111,12 +111,8 @@ public class AccountService {
         }
         if(account.getDob().isAfter(LocalDate.now())){
             throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid date of birth.");
-
         }
 
-//        if(account.getDob().after(new Date(System.currentTimeMillis()))){
-//            throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid date of birth.");
-//        }
     }
 
 }

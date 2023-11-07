@@ -202,6 +202,30 @@ public class CustomerServiceTests {
     }
 
     /**
+     * Test creating a customer without a name
+     */
+    @Test
+    public void testCreateInvalidEmpty2Customer(){
+        String email = "janewhite@gmail.com";
+        Customer c = new Customer(null, email, null);
+        HRSException e = assertThrows(HRSException.class, () -> customerService.createCustomer(c));
+        assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
+        assertEquals(e.getMessage(), "Empty field in the customer.");
+    }
+
+    /**
+     * Test creating a customer without an email
+     */
+    @Test
+    public void testCreateInvalidEmpty3Customer(){
+        String name = "Jane White";
+        Customer c = new Customer(name, null, null);
+        HRSException e = assertThrows(HRSException.class, () -> customerService.createCustomer(c));
+        assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
+        assertEquals(e.getMessage(), "Empty field in the customer.");
+    }
+
+    /**
      * Test update customer with valid information
      */
     @Test
@@ -246,7 +270,7 @@ public class CustomerServiceTests {
     }
 
     /**
-     * Test deleting a customer with invalid account number
+     * Test deleting a customer with invalid email
      */
     @Test
     public void testInvalidDelete(){
@@ -256,6 +280,20 @@ public class CustomerServiceTests {
         HRSException e = assertThrows(HRSException.class, () -> customerService.deleteCustomer(email));
         assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
         assertEquals(e.getMessage(), "Customer not found.");
+    }
+
+    /**
+     * Test deleting a customer with a valid email
+     */
+    @Test
+    public void testValidDeleteAccount(){
+        String name = "Jane White";
+        String email = "jane@gmail.com";
+        Customer c = new Customer(email, name, null);
+
+        when(customerRepository.findCustomerByEmail(email)).thenReturn(c);
+
+        assertDoesNotThrow(() -> customerService.deleteCustomer(email));
     }
 
 }
