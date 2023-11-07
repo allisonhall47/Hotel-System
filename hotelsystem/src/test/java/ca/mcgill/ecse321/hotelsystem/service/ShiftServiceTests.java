@@ -413,6 +413,51 @@ public class ShiftServiceTests {
             assertEquals(e.getMessage(), "Shift not found.");
       }
 
+      @Test
+      public void testInvalidFieldUpdateShift() {
+            int shiftID = 450;
+            Time oldStartTime = Time.valueOf("7:30:00");
+            Time newStartTime = Time.valueOf("9:30:00");
+            Time endTime = Time.valueOf("14:30:00");
+            LocalDate oldDate = LocalDate.of(1993,4,19);
+            LocalDate newDate = LocalDate.of(1993,4,20);
+            String email = "johnbrown@gmail.com";
+            String name = "John Brown";
+            int salary = 6500;
+            Account account = new Account();
+            Employee employee = new Employee(email, name, salary, account);
+            // Previous shift
+            Shift oldShift = new Shift(oldStartTime, endTime, oldDate, employee);
+            Shift newShift = new Shift(null, endTime, newDate, employee);
+
+            HRSException e = assertThrows(HRSException.class, () -> shiftService.updateShift(newShift, oldShift.getShiftId()));
+            assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
+            assertEquals(e.getMessage(), "Empty fields are present.");
+      }
+
+      @Test
+      public void testInvalidTimesUpdateShift() {
+            int shiftID = 450;
+            Time oldStartTime = Time.valueOf("7:30:00");
+            Time newStartTime = Time.valueOf("16:30:00");
+            Time endTime = Time.valueOf("14:30:00");
+            LocalDate oldDate = LocalDate.of(1993,4,19);
+            LocalDate newDate = LocalDate.of(1993,4,20);
+            String email = "johnbrown@gmail.com";
+            String name = "John Brown";
+            int salary = 6500;
+            Account account = new Account();
+            Employee employee = new Employee(email, name, salary, account);
+            // Previous shift
+            Shift oldShift = new Shift(oldStartTime, endTime, oldDate, employee);
+            when(shiftRepository.findShiftByShiftId(oldShift.getShiftId())).thenReturn(oldShift);
+            Shift newShift = new Shift(newStartTime, endTime, newDate, employee);
+            when(shiftRepository.save(oldShift)).thenReturn(oldShift);
+            HRSException e = assertThrows(HRSException.class, () -> shiftService.updateShift(newShift, oldShift.getShiftId()));
+            assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
+            assertEquals(e.getMessage(), "Invalid start/end times.");
+      }
+
 
 
 }

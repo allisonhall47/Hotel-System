@@ -10,6 +10,8 @@ public class OwnerRequestDto {
 
     private int accountNumber;
 
+    public OwnerRequestDto(){};
+
     public OwnerRequestDto(String name, String email, int accountNumber){
         this.name = name;
         this.email = email;

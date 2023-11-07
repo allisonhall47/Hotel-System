@@ -186,6 +186,7 @@ public class EmployeeIntegrationTests {
         assertNotNull(response.getBody());
         Assertions.assertEquals(response.getBody().getName(), "Austin Bill Grey");
         Assertions.assertEquals(response.getBody().getEmail(), employeeFixture.getEmail());
+        Assertions.assertEquals(response.getBody().getSalary(), employeeFixture.getSalary());
         employeeFixture.setName(response.getBody().getName());
     }
 
@@ -200,6 +201,7 @@ public class EmployeeIntegrationTests {
         assertNotNull(response.getBody());
         Assertions.assertEquals(response.getBody().getName(), employeeFixture.getName());
         Assertions.assertEquals(response.getBody().getEmail(), employeeFixture.getEmail());
+        Assertions.assertEquals(response.getBody().getSalary(), employeeFixture.getSalary());
         Assertions.assertEquals(response.getBody().getAccountNumber(), account.getAccountNumber());
     }
 
@@ -250,6 +252,7 @@ public class EmployeeIntegrationTests {
         List<Map<String, Object>> employees = response.getBody();
         Assertions.assertEquals(employees.get(0).get("name"), employeeFixture.getName());
         Assertions.assertEquals(employees.get(0).get("email"), employeeFixture.getEmail());
+        Assertions.assertEquals(employees.get(0).get("salary"), employeeFixture.getSalary());
         Assertions.assertEquals(employees.get(0).get("accountNumber"), employeeFixture.getAccountNumber());
     }
 
