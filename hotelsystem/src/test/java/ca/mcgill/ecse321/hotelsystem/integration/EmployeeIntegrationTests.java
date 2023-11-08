@@ -123,17 +123,17 @@ public class EmployeeIntegrationTests {
         this.employeeFixture = new EmployeeIntegrationTests.EmployeeFixture();
 
         Account savedAccount = accountRepository.save(account);
-        // Set the account number in your fixture
+        // Set the account number in fixture
         this.employeeFixture.setAccountNumber(savedAccount.getAccountNumber());
     }
 
     @BeforeEach
     public void setupForEachTest() {
-        // Clear the repository before each test if needed
+        // Clear the repository before each test
         employeeRepository.deleteAll();
         // Re-save the account before each test
         Account savedAccount = accountRepository.save(account);
-        // Ensure the account number is updated in your fixture
+
         this.employeeFixture.setAccountNumber(savedAccount.getAccountNumber());
     }
 
@@ -418,7 +418,7 @@ public class EmployeeIntegrationTests {
         assertNotNull(createResponse.getBody());
 
         // Define a new salary to update the employee with
-        int newSalary = employeeFixture.getSalary() + 10000; // Increase salary by 10,000 for the test
+        int newSalary = employeeFixture.getSalary() + 10000; // Increase salary by 10,000
 
         // Create a request to update the employee's salary
         EmployeeRequestDto updateRequest = new EmployeeRequestDto(
