@@ -138,6 +138,9 @@ public class EmployeeService {
         if (employee.getSalary() <= 0) {
             throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid salary amount.");
         }
+        if (employee.getAccount() == null) {
+            throw new HRSException(HttpStatus.BAD_REQUEST, "Employee account information cannot be null.");
+        }
         if (!Pattern.compile("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@" + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$").matcher(employee.getEmail()).find()) {
             throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid email address.");
         }
