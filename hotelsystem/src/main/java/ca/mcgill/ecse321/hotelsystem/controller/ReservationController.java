@@ -23,9 +23,9 @@ public class ReservationController {
     @Autowired
     CustomerService customerService;
 
-    @PostMapping("/reservation/customer/{customerEmail}/new")
-    public ReservationResponseDto createReservation(@PathVariable("customerEmail") String customerEmail, @RequestBody ReservationRequestDto reservation) {
-        Customer customer = customerService.getCustomerByEmail(customerEmail);
+    @PostMapping("/reservation/new")
+    public ReservationResponseDto createReservation(@RequestBody ReservationRequestDto reservation) {
+        Customer customer = customerService.getCustomerByEmail(reservation.getCustomerEmail());
         Reservation res = reservation.toModel(customer);
         res = reservationService.createReservation(res);
         return new ReservationResponseDto(res);

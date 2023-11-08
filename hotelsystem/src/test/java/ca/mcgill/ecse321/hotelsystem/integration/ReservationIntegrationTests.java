@@ -44,7 +44,7 @@ public class ReservationIntegrationTests {
     @Order(0)
     public void testCreateValidReservation() {
         ResponseEntity<CustomerResponseDto> customerResponse = client.postForEntity("/customer/create", new CustomerRequestDto("john", EMAIL), CustomerResponseDto.class);
-        ResponseEntity<ReservationResponseDto> reservationResponse = client.postForEntity("/reservation/customer/"+customerResponse.getBody().getEmail()+"/new", new ReservationRequestDto(2,LocalDate.of(2023,9,1),LocalDate.of(2023,9,4), EMAIL), ReservationResponseDto.class);
+        ResponseEntity<ReservationResponseDto> reservationResponse = client.postForEntity("/reservation/new", new ReservationRequestDto(2,LocalDate.of(2023,9,1),LocalDate.of(2023,9,4), EMAIL), ReservationResponseDto.class);
 
         assertEquals(HttpStatus.OK, reservationResponse.getStatusCode());
         assertNotNull(reservationResponse.getBody());
@@ -57,7 +57,7 @@ public class ReservationIntegrationTests {
     @Test
     @Order(1)
     public void testCreateInValidReservation() {
-        ResponseEntity<String> response = client.postForEntity("/reservation/customer/"+EMAIL+"/new", new ReservationRequestDto(-2,LocalDate.of(2023,9,1),LocalDate.of(2023,9,4), EMAIL), String.class);
+        ResponseEntity<String> response = client.postForEntity("/reservation/new", new ReservationRequestDto(-2,LocalDate.of(2023,9,1),LocalDate.of(2023,9,4), EMAIL), String.class);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals(response.getBody(), "invalid integer");
