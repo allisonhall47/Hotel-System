@@ -67,8 +67,8 @@ public class ShiftService {
     @Transactional
     public List<Shift> getShiftsByEmployeeEmail(String email) {
         List<Shift> shiftList = shiftRepository.findShiftsByEmployeeEmail(email);
-        if (shiftList == null) {
-            throw new HRSException(HttpStatus.NOT_FOUND, "Shift list for this email not found.");
+        if (shiftList.size() == 0) {
+            throw new HRSException(HttpStatus.NOT_FOUND, "No shifts found for this email.");
         }
         return shiftList;
     }
@@ -81,8 +81,8 @@ public class ShiftService {
     @Transactional
     public List<Shift> getShiftsByDate(LocalDate date) {
         List<Shift> sdList = shiftRepository.findShiftsByDate(date);
-        if (sdList == null) {
-            throw new HRSException(HttpStatus.NOT_FOUND, "Shift list for this date not found.");
+        if (sdList.size() == 0) {
+            throw new HRSException(HttpStatus.NOT_FOUND, "No shifts found for this date.");
         }
         return sdList;
     }
@@ -97,18 +97,29 @@ public class ShiftService {
     @Transactional
     public List<Shift> getShiftsByDateAndStartTime(LocalDate date, Time startTime) {
         List<Shift> stList = shiftRepository.findShiftsByDateAndStartTime(date, startTime);
-        if (stList == null) {
-            throw new HRSException(HttpStatus.NOT_FOUND, "Shift list for this date and time does not exist.");
+        if (stList.size() == 0) {
+            throw new HRSException(HttpStatus.NOT_FOUND, "No shifts found for this date and start time.");
         }
         return stList;
     }
 
+    /**
+     * createShift: creates a shift
+     * @param shift: shift to create
+     * checks for validity of shift
+     * @return shift is created
+     */
     @Transactional
     public Shift createShift(Shift shift) {
         isValidShift(shift);
         return shiftRepository.save(shift);
     }
 
+    /**
+     * deleteShift: deletes a shift
+     * @param shiftID: shiftID of shift to be deleted
+     * @throws HRSException if shiftID is invalid or no shift exists with that shift ID
+     */
     @Transactional
     public void deleteShift(int shiftID) {
         if (shiftID < 0) {
@@ -121,6 +132,13 @@ public class ShiftService {
         shiftRepository.delete(shift);
     }
 
+    /**
+     * updateShift: updates a shift
+     * @param shift : shift to update to
+     * @param shiftID : old shift that needs updating
+     * @throws HRSException if either shift is null, fields are null, or new shift's timing is invalid
+     * @return updated shift
+     */
     @Transactional
     public Shift updateShift(Shift shift, int shiftID) {
         if (shift == null) {
@@ -146,7 +164,10 @@ public class ShiftService {
         return shiftRepository.save(previousShift);
     }
 
-
+    /**
+     * isValidShift: helper method used in service methods to check if a shift is valid
+     * @param shift : shift that needs checking
+     */
     private void isValidShift(Shift shift) {
         if (shift == null) {
             throw new HRSException(HttpStatus.NOT_FOUND, "Shift not found.");

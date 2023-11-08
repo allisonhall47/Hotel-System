@@ -33,6 +33,9 @@ public class ShiftServiceTests {
       @InjectMocks
       private ShiftService shiftService;
 
+      /**
+       * tests getting all shifts in system
+       */
       @Test
       public void testGetAllShifts() {
             int shiftId1 = 372;
@@ -59,6 +62,10 @@ public class ShiftServiceTests {
             assertEquals(shift1,shiftIterator.next());
             assertEquals(shift2,shiftIterator.next());
       }
+
+      /**
+       * tests getting all empty shifts in system
+       */
       @Test
       public void testGetAllEmptyShifts() {
             List<Shift> shiftList = new ArrayList<>();
@@ -69,6 +76,9 @@ public class ShiftServiceTests {
             assertEquals(se.getMessage(), "There are no shifts in the system.");
       }
 
+      /**
+       * tests getting a valid shift
+       */
       @Test
       public void testGetValidShift() {
             int shiftID = 425;
@@ -83,6 +93,9 @@ public class ShiftServiceTests {
             assertEquals(outputShift, shift);
       }
 
+      /**
+       * tests creating a valid shift without an employee object
+       */
       @Test
       public void testCreateValidShiftWithoutEmployee() {
             int shiftID = 425;
@@ -99,7 +112,7 @@ public class ShiftServiceTests {
             verify(shiftRepository,times(1)).save(shift);
       }
 
-      /*
+      /**
        * Test creating a shift with the end time being after the start time
        */
       @Test
@@ -115,6 +128,9 @@ public class ShiftServiceTests {
             assertEquals(e.getMessage(), "Invalid start/end times.");
       }
 
+      /**
+       * Test creating an invalid shift
+       */
       @Test
       public void testCreateInvalidShift() {
             Shift shift = new Shift();
@@ -123,6 +139,9 @@ public class ShiftServiceTests {
             assertEquals(e.getMessage(),"Empty fields are present.");
       }
 
+      /**
+       * Test getting shift by the shiftID
+       */
       @Test
       public void testGetShiftByShiftID() {
             int shiftID = 430;
@@ -137,6 +156,9 @@ public class ShiftServiceTests {
             assertEquals(outputShift,shift);
       }
 
+      /**
+       * Test getting shift by an invalid shiftID
+       */
       @Test
       public void testGetShiftByInvalidShiftID() {
             int shiftID = -430;
@@ -148,6 +170,9 @@ public class ShiftServiceTests {
             assertEquals(e.getMessage(), "Invalid shift ID.");
       }
 
+      /**
+       * Test getting shifts by an employee email
+       */
       @Test
       public void testGetShiftsByEmployeeEmail() {
             Time startTime = Time.valueOf("7:30:00");
@@ -164,16 +189,22 @@ public class ShiftServiceTests {
             List<Shift> actualShifts = shiftService.getShiftsByEmployeeEmail(email);
             assertEquals(expectedShifts,actualShifts);
       }
+
+      /**
+       * Test getting shifts by an employee email with no shifts associated
+       */
       @Test
       public void testGetInvalidShiftsByEmail() {
             String email = "johndoe@gmail.com";
 
-            when(shiftRepository.findShiftsByEmployeeEmail(email)).thenReturn(null);
             HRSException e = assertThrows(HRSException.class, () -> shiftService.getShiftsByEmployeeEmail(email));
             assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
-            assertEquals(e.getMessage(), "Shift list for this email not found.");
+            assertEquals(e.getMessage(), "No shifts found for this email.");
       }
 
+      /**
+       * Test getting shifts by date
+       */
       @Test
       public void testGetShiftsByDate() {
             Time startTime = Time.valueOf("7:30:00");
@@ -187,16 +218,22 @@ public class ShiftServiceTests {
             List<Shift> actualShifts = shiftService.getShiftsByDate(date);
             assertEquals(expectedShifts,actualShifts);
       }
+
+      /**
+       * Test getting shifts by date with no shifts associated
+       */
       @Test
       public void testGetInvalidShiftByDate() {
             LocalDate date = LocalDate.of(2000,4,20);
 
-            when(shiftRepository.findShiftsByDate(date)).thenReturn(null);
             HRSException e = assertThrows(HRSException.class, () -> shiftService.getShiftsByDate(date));
             assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
-            assertEquals(e.getMessage(), "Shift list for this date not found.");
+            assertEquals(e.getMessage(), "No shifts found for this date.");
       }
 
+      /**
+       * Test getting shifts by date and start time
+       */
       @Test
       public void testGetShiftsByDateAndStartTime() {
             Time startTime = Time.valueOf("7:30:00");
@@ -210,36 +247,24 @@ public class ShiftServiceTests {
             List<Shift> actualShifts = shiftService.getShiftsByDateAndStartTime(date,startTime);
             assertEquals(expectedShifts,actualShifts);
       }
+
+      /**
+       * Test getting shifts by date and time with no shifts associated
+       */
       @Test
       public void testGetInvalidShiftsByDateAndStartTime() {
             LocalDate date = LocalDate.of(2000,4,20);
             Time time = Time.valueOf("06:30:00");
 
-            when(shiftRepository.findShiftsByDateAndStartTime(date,time)).thenReturn(null);
             HRSException e = assertThrows(HRSException.class, () -> shiftService.getShiftsByDateAndStartTime(date,time));
             assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
-            assertEquals(e.getMessage(), "Shift list for this date and time does not exist.");
+            assertEquals(e.getMessage(), "No shifts found for this date and start time.");
       }
 
-//      @Test
-//      public void testCreateShiftWithInvalidRepeatedShiftID() {
-//            int shiftID = 430;
-//            Time startTime = Time.valueOf("7:30:00");
-//            Time endTime = Time.valueOf("9:30:00");
-//            Date date = Date.valueOf("1993-04-20");
-//
-//            Shift s1 = new Shift(startTime, endTime, date, null);
-//            s1.setShiftId(shiftID);
-//            when(shiftRepository.findShiftByShiftId(shiftID)).thenReturn(s1);
-//
-//            Shift s2 = new Shift(startTime, endTime, date, null);
-//            s2.setShiftId(shiftID);
-//
-//            HRSException e = assertThrows(HRSException.class, () -> shiftService.createShift(s2));
-//            assertEquals(e.getStatus(),HttpStatus.CONFLICT);
-//            assertEquals(e.getMessage(), "A shift with this ID already exists.");
-//      }
 
+      /**
+       * Creates a valid shift with an employee.
+       */
       @Test
       public void testCreateValidShiftWithEmployee() {
             int shiftID = 425;
@@ -262,7 +287,7 @@ public class ShiftServiceTests {
             assertEquals(shift,outputShift);
             verify(shiftRepository,times(1)).save(shift);
       }
-      /*
+      /**
        * Tests if there is an existing shift with the same employee, date and start time
        */
       @Test
@@ -289,7 +314,9 @@ public class ShiftServiceTests {
             assertEquals(e.getMessage(), "A shift with this start date, start time, and employee already exists.");
       }
 
-      // write a test to determine overlapping shifts
+      /**
+       * Test to test if overlapping times on shifts throw an error for same employee
+       */
       @Test
       public void testCreateShiftWithOverlappingTimes() {
             int shiftID1 = 430;
@@ -315,6 +342,9 @@ public class ShiftServiceTests {
             assertEquals(e.getMessage(), "The employee has an overlapping shift on this date.");
       }
 
+      /**
+       * Tests creating a shift with a employee that doesn't exist in the system
+       */
       @Test
       public void testCreateShiftWithNonExistentEmployee() {
             int shiftID = 440;
@@ -339,20 +369,25 @@ public class ShiftServiceTests {
             assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
             assertEquals(e.getMessage(), "Employee does not exist.");
       }
+
+      /**
+       * Tests deleting an existing shift
+       */
       @Test
       public void testDeleteExistingShift() {
             Shift shift = new Shift(Time.valueOf("06:30:00"), Time.valueOf("08:30:00"), LocalDate.of(2003,11,20), new Employee());
             int shiftID = 649;
             shift.setShiftId(shiftID);
             shiftRepository.save(shift);
-//            when(shiftRepository.findShiftByShiftId(shiftID)).thenReturn(shift);
-//            shiftService.deleteShift(shiftID);
-//            verify(shiftRepository,times(1)).delete(shift);
+
             when(shiftRepository.existsById(shiftID)).thenReturn(true);
             when(shiftRepository.findShiftByShiftId(shiftID)).thenReturn(shift);
             assertDoesNotThrow(() -> shiftService.deleteShift(shiftID));
       }
 
+      /**
+       * Tests deletion of a shift that doesn't exist
+       */
       @Test
       public void testDeleteNonExistentShift() {
             Shift shift = new Shift();
@@ -366,6 +401,9 @@ public class ShiftServiceTests {
             assertEquals(e.getMessage(), "Shift does not exist.");
       }
 
+      /**
+       * Tests valid updating of a shift
+       */
       @Test
       public void testValidUpdateShift() {
             Time oldStartTime = Time.valueOf("7:30:00");
@@ -391,7 +429,10 @@ public class ShiftServiceTests {
             assertEquals(output.getEndTime(), newShift.getEndTime());
 
       }
-      // tests an invalid update when the first shift is null / didn't save it
+
+      /**
+       * Tests invalid updating, with the first shift not actually existing
+       */
       @Test
       public void testInvalidUpdateShift() {
             int shiftID = 450;
@@ -413,6 +454,9 @@ public class ShiftServiceTests {
             assertEquals(e.getMessage(), "Shift not found.");
       }
 
+      /**
+       * Tests invalid updating, with empty fields in the new shift
+       */
       @Test
       public void testInvalidFieldUpdateShift() {
             int shiftID = 450;
@@ -435,6 +479,9 @@ public class ShiftServiceTests {
             assertEquals(e.getMessage(), "Empty fields are present.");
       }
 
+      /**
+       * Tests invalid updating, with invalid times in the new shift
+       */
       @Test
       public void testInvalidTimesUpdateShift() {
             int shiftID = 450;
