@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.hotelsystem.service;
 
 
+import ca.mcgill.ecse321.hotelsystem.Model.Account;
 import ca.mcgill.ecse321.hotelsystem.Model.Employee;
 import ca.mcgill.ecse321.hotelsystem.exception.HRSException;
 import ca.mcgill.ecse321.hotelsystem.repository.CustomerRepository;
@@ -13,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -104,7 +106,8 @@ public class EmployeeServiceTests {
      */
     @Test
     public void testGetEmployeeByEmail_Valid() {
-        Employee e = new Employee("john@email.com", "John Doe", 30000, null);
+        Account account = new Account("Password5", "123 Rich Road", LocalDate.of(2002, 4, 9));
+        Employee e = new Employee("john@email.com", "John Doe", 30000, account);
         when(employeeRepository.findEmployeeByEmail("john@email.com")).thenReturn(e);
 
 
@@ -135,7 +138,8 @@ public class EmployeeServiceTests {
      */
     @Test
     public void testCreateEmployee_Valid() {
-        Employee e = new Employee("john@email.com", "John Doe", 30000, null);
+        Account account = new Account("Password5", "123 Rich Road", LocalDate.of(2002, 4, 9));
+        Employee e = new Employee("john@email.com", "John Doe", 30000, account);
         when(employeeRepository.findEmployeeByEmail(e.getEmail())).thenReturn(null);
         when(customerRepository.findCustomerByEmail(e.getEmail())).thenReturn(null);
         when(ownerRepository.findOwnerByEmail(e.getEmail())).thenReturn(null);
@@ -154,7 +158,8 @@ public class EmployeeServiceTests {
      */
     @Test
     public void testCreateEmployee_EmailExists() {
-        Employee e = new Employee("john@email.com", "John Doe", 30000, null);
+        Account account = new Account("Password5", "123 Rich Road", LocalDate.of(2002, 4, 9));
+        Employee e = new Employee("john@email.com", "John Doe", 30000, account);
         when(employeeRepository.findEmployeeByEmail(e.getEmail())).thenReturn(e);
 
 
@@ -171,9 +176,11 @@ public class EmployeeServiceTests {
      */
     @Test
     public void testUpdateEmployeeInformation_Valid() {
+        Account account = new Account("Password5", "123 Rich Road", LocalDate.of(2002, 4, 9));
+
 // Create old and new employee objects
-        Employee oldEmployee = new Employee("john@email.com", "John Doe", 30000, null);
-        Employee newEmployeeInfo = new Employee("john@email.com", "John Smith", 32000, null);
+        Employee oldEmployee = new Employee("john@email.com", "John Doe", 30000, account);
+        Employee newEmployeeInfo = new Employee("john@email.com", "John Smith", 32000, account);
 
 
 // Mock repository methods
@@ -202,7 +209,8 @@ public class EmployeeServiceTests {
      */
     @Test
     public void testUpdateEmployeeInformation_NotFound() {
-        Employee newInfo = new Employee("john@email.com", "John Smith", 32000, null);
+        Account account = new Account("Password5", "123 Rich Road", LocalDate.of(2002, 4, 9));
+        Employee newInfo = new Employee("john@email.com", "John Smith", 32000, account);
         when(employeeRepository.findEmployeeByEmail(newInfo.getEmail())).thenReturn(null);
 
 
@@ -255,9 +263,10 @@ public class EmployeeServiceTests {
     @Test
     public void testIsValidEmployee_InvalidEmail() {
 
+        Account account = new Account("Password5", "123 Rich Road", LocalDate.of(2002, 4, 9));
 
         String invalidEmail = "john.doe.com"; // no '@' symbol, so it's invalid
-        Employee employeeWithInvalidEmail = new Employee(invalidEmail, "John Doe", 30000, null);
+        Employee employeeWithInvalidEmail = new Employee(invalidEmail, "John Doe", 30000, account);
 
 
         HRSException e = assertThrows(HRSException.class,
@@ -267,4 +276,44 @@ public class EmployeeServiceTests {
         assertEquals(HttpStatus.BAD_REQUEST, e.getStatus());
         assertEquals("Invalid email address.", e.getMessage());
     }
+
+    @Test
+    public void testCreateEmployee_NullAccount() {
+        // Given
+        String email = "newemployee@example.com";
+        String name = "New Employee";
+        int salary = 40000;
+        Employee newEmployee = new Employee(email, name, salary, null); // Note the null account
+
+        // When
+        when(employeeRepository.findEmployeeByEmail(email)).thenReturn(null);
+        when(customerRepository.findCustomerByEmail(email)).thenReturn(null);
+        when(ownerRepository.findOwnerByEmail(email)).thenReturn(null);
+
+        // Then
+        HRSException exception = assertThrows(HRSException.class, () -> employeeService.createEmployee(newEmployee));
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+        assertEquals("Employee account information cannot be null.", exception.getMessage());
+    }
+
+    @Test
+    public void testCreateEmployee_InvalidSalary() {
+
+        String email = "newemployee@example.com";
+        String name = "New Employee";
+        int invalidSalary = -10000; // Invalid salary
+        Account account = new Account("Password123", "123 Wealth Blvd", LocalDate.of(1990, 1, 1));
+        Employee newEmployee = new Employee(email, name, invalidSalary, account);
+
+
+        when(employeeRepository.findEmployeeByEmail(email)).thenReturn(null);
+        when(customerRepository.findCustomerByEmail(email)).thenReturn(null);
+        when(ownerRepository.findOwnerByEmail(email)).thenReturn(null);
+
+
+        HRSException exception = assertThrows(HRSException.class, () -> employeeService.createEmployee(newEmployee));
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+        assertEquals("Invalid salary amount.", exception.getMessage());
+    }
+
 }

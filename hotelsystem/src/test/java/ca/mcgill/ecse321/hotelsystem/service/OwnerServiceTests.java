@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.hotelsystem.service;
 
 
+import ca.mcgill.ecse321.hotelsystem.Model.Account;
 import ca.mcgill.ecse321.hotelsystem.Model.Employee;
 import ca.mcgill.ecse321.hotelsystem.Model.Owner;
 import ca.mcgill.ecse321.hotelsystem.exception.HRSException;
@@ -14,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -116,44 +118,36 @@ public class OwnerServiceTests {
      */
     @Test
     public void testCreateOwner_Valid() {
-        Owner existingOwner = new Owner("existing@email.com", "Existing Owner", null); // An existing owner
-        List<Owner> existingOwners = Arrays.asList(existingOwner); // List containing existing owner
+        Account account = new Account("SecurePass1", "456 Wealthy Ave", LocalDate.of(1995, 12, 17));
+        Owner newOwner = new Owner("unique@email.com", "Unique User", account);
 
+        when(ownerRepository.findOwnerByEmail(newOwner.getEmail())).thenReturn(null);
+        when(employeeRepository.findEmployeeByEmail(newOwner.getEmail())).thenReturn(null);
+        when(customerRepository.findCustomerByEmail(newOwner.getEmail())).thenReturn(null);
 
-        Owner o = new Owner("john@email.com", "John Doe", null); // New owner to be created
+        when(ownerRepository.save(newOwner)).thenReturn(newOwner);
 
+        Owner createdOwner = ownerService.createOwner(newOwner);
 
-        when(ownerRepository.findAll()).thenReturn(existingOwners); // Mock existing owner in the system
-        when(ownerRepository.findOwnerByEmail(o.getEmail())).thenReturn(null);
-        when(employeeRepository.findEmployeeByEmail(o.getEmail())).thenReturn(null);
-        when(customerRepository.findCustomerByEmail(o.getEmail())).thenReturn(null);
-
-
-// Since an owner already exists in the system, the createOwner method should throw the HRSException
-        Exception exception = assertThrows(HRSException.class, () -> {
-            ownerService.createOwner(o);
-        });
-
-
-        assertEquals("An owner already exists in the system.", exception.getMessage());
+        assertEquals(newOwner, createdOwner);
     }
 
 
 
 
     /**
-     * Checks if the createOwner method throws an HRSException when
-     * trying to create an owner but an owner already exists in the system.
+     * Tests that createOwner method throws HRSException when an owner with the same email already exists.
      */
     @Test
     public void testCreateOwner_AlreadyExists() {
-        Owner o = new Owner("john@email.com", "John Doe", null);
-        when(ownerRepository.findAll()).thenReturn(List.of(o));
 
+        Owner existingOwner = new Owner("john@email.com", "John Doe", new Account("Password5", "123 Rich Road", LocalDate.of(2002, 4, 9)));
+        when(ownerRepository.findOwnerByEmail(existingOwner.getEmail())).thenReturn(existingOwner);
 
-        HRSException e = assertThrows(HRSException.class, () -> ownerService.createOwner(o));
-        assertEquals(e.getStatus(), HttpStatus.CONFLICT);
-        assertEquals(e.getMessage(), "An owner already exists in the system.");
+        HRSException exception = assertThrows(HRSException.class, () -> ownerService.createOwner(existingOwner));
+
+        assertEquals(HttpStatus.CONFLICT, exception.getStatus());
+        assertEquals("A user with this email already exists.", exception.getMessage());
     }
 
 
@@ -165,8 +159,10 @@ public class OwnerServiceTests {
      */
     @Test
     public void testUpdateOwnerInformation_Valid() {
-        Owner oldInfo = new Owner("john@email.com", "John Doe", null);
-        Owner newInfo = new Owner("john@email.com", "Johnathan Doe", null);
+        Account account = new Account("Password5", "123 Rich Road", LocalDate.of(2002, 4, 9));
+
+        Owner oldInfo = new Owner("john@email.com", "John Doe", account);
+        Owner newInfo = new Owner("john@email.com", "Johnathan Doe", account);
         when(ownerRepository.findOwnerByEmail("john@email.com")).thenReturn(oldInfo);
         when(ownerRepository.save(oldInfo)).thenReturn(newInfo);
 
@@ -182,7 +178,9 @@ public class OwnerServiceTests {
      */
     @Test
     public void testUpdateOwnerInformation_NotFound() {
-        Owner newInfo = new Owner("john@email.com", "Johnathan Doe", null);
+        Account account = new Account("Password5", "123 Rich Road", LocalDate.of(2002, 4, 9));
+
+        Owner newInfo = new Owner("john@email.com", "Johnathan Doe", account);
         when(ownerRepository.findOwnerByEmail("john@email.com")).thenReturn(null);
 
 
@@ -200,8 +198,10 @@ public class OwnerServiceTests {
      */
     @Test
     public void testIsValidOwner_InvalidEmail() {
+        Account account = new Account("Password5", "123 Rich Road", LocalDate.of(2002, 4, 9));
+
         String invalidEmail = "john.doe.com"; // no '@' symbol, so it's invalid
-        Owner ownerWithInvalidEmail = new Owner(invalidEmail, "John Doe", null);
+        Owner ownerWithInvalidEmail = new Owner(invalidEmail, "John Doe", account);
 
 
         HRSException e = assertThrows(HRSException.class,
@@ -210,5 +210,20 @@ public class OwnerServiceTests {
 
         assertEquals(HttpStatus.BAD_REQUEST, e.getStatus());
         assertEquals("Invalid email address.", e.getMessage());
+    }
+
+    @Test
+    public void testCreateOwner_NullAccount() {
+        String email = "newowner@example.com";
+        String name = "New Owner";
+        Owner newOwner = new Owner(email, name, null); // Note the null account
+
+        when(ownerRepository.findOwnerByEmail(email)).thenReturn(null);
+        when(customerRepository.findCustomerByEmail(email)).thenReturn(null);
+        when(ownerRepository.findOwnerByEmail(email)).thenReturn(null);
+
+        HRSException exception = assertThrows(HRSException.class, () -> ownerService.createOwner(newOwner));
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+        assertEquals("Owner account information cannot be null.", exception.getMessage());
     }
 }

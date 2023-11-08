@@ -118,6 +118,9 @@ public class OwnerService {
         if (owner.getName() == null || owner.getEmail() == null) {
             throw new HRSException(HttpStatus.BAD_REQUEST, "Empty field in the owner.");
         }
+        if (owner.getAccount() == null) {
+            throw new HRSException(HttpStatus.BAD_REQUEST, "Owner account information cannot be null.");
+        }
         if (!Pattern.compile("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@" + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$").matcher(owner.getEmail()).find()) {
             throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid email address.");
         }

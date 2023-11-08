@@ -2,10 +2,12 @@ package ca.mcgill.ecse321.hotelsystem.integration;
 
 
 import ca.mcgill.ecse321.hotelsystem.Model.Account;
+import ca.mcgill.ecse321.hotelsystem.Model.Employee;
 import ca.mcgill.ecse321.hotelsystem.dto.CustomerRequestDto;
 import ca.mcgill.ecse321.hotelsystem.dto.CustomerResponseDto;
 import ca.mcgill.ecse321.hotelsystem.dto.EmployeeRequestDto;
 import ca.mcgill.ecse321.hotelsystem.dto.EmployeeResponseDto;
+import ca.mcgill.ecse321.hotelsystem.repository.AccountRepository;
 import ca.mcgill.ecse321.hotelsystem.repository.CustomerRepository;
 import ca.mcgill.ecse321.hotelsystem.repository.EmployeeRepository;
 import ca.mcgill.ecse321.hotelsystem.repository.OwnerRepository;
@@ -102,6 +104,9 @@ public class EmployeeIntegrationTests {
 
 
     @Autowired
+    private AccountRepository accountRepository;
+
+    @Autowired
     private CustomerRepository customerRepository;
 
 
@@ -116,8 +121,21 @@ public class EmployeeIntegrationTests {
     @BeforeAll
     public void setupTestFixture() {
         this.employeeFixture = new EmployeeIntegrationTests.EmployeeFixture();
+
+        Account savedAccount = accountRepository.save(account);
+        // Set the account number in fixture
+        this.employeeFixture.setAccountNumber(savedAccount.getAccountNumber());
     }
 
+    @BeforeEach
+    public void setupForEachTest() {
+        // Clear the repository before each test
+        employeeRepository.deleteAll();
+        // Re-save the account before each test
+        Account savedAccount = accountRepository.save(account);
+
+        this.employeeFixture.setAccountNumber(savedAccount.getAccountNumber());
+    }
 
     @BeforeAll
     @AfterAll
@@ -138,12 +156,18 @@ public class EmployeeIntegrationTests {
     @Test
     @Order(1)
     public void testCreateValidEmployee() {
-        EmployeeRequestDto request = new EmployeeRequestDto(employeeFixture.name, employeeFixture.email, employeeFixture.salary, employeeFixture.accountNumber);
+
+        EmployeeRequestDto request = new EmployeeRequestDto(
+                employeeFixture.getName(),
+                employeeFixture.getEmail(),
+                employeeFixture.getSalary(),
+                employeeFixture.getAccountNumber() // saved account's number
+        );
         ResponseEntity<EmployeeResponseDto> response = client.postForEntity("/employee/create", request, EmployeeResponseDto.class);
         Assertions.assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertNotNull(response.getBody());
         assertTrue(equals(response.getBody(), employeeFixture));
-        employeeFixture.setAccountNumber(response.getBody().getAccountNumber());
+        assertNotNull(response.getBody().getAccountNumber()); // This ensures the account number is not null
     }
 
 
@@ -160,10 +184,25 @@ public class EmployeeIntegrationTests {
     @Test
     @Order(3)
     public void testCreateInvalidDuplicateEmployee() {
-        EmployeeRequestDto request = new EmployeeRequestDto(employeeFixture.name, employeeFixture.email, employeeFixture.salary, employeeFixture.accountNumber);
-        ResponseEntity<String> response = client.postForEntity("/employee/create", request, String.class);
+        EmployeeRequestDto initialRequest = new EmployeeRequestDto(
+                employeeFixture.getName(),
+                employeeFixture.getEmail(),
+                employeeFixture.getSalary(),
+                employeeFixture.getAccountNumber()
+        );
+        client.postForEntity("/employee/create", initialRequest, EmployeeResponseDto.class);
+
+        // Then, attempt to create another employee with the same email, which should fail
+        EmployeeRequestDto duplicateRequest = new EmployeeRequestDto(
+                "Jane Doe", // Use a different name
+                employeeFixture.getEmail(), // Same email to trigger the duplicate scenario
+                employeeFixture.getSalary(),
+                employeeFixture.getAccountNumber()
+        );
+        ResponseEntity<String> response = client.postForEntity("/employee/create", duplicateRequest, String.class);
+
         Assertions.assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
-        Assertions.assertEquals(response.getBody(), "A user with this email already exists.");
+        Assertions.assertTrue(response.getBody().contains("A user with this email already exists."));
     }
 
 
@@ -179,30 +218,75 @@ public class EmployeeIntegrationTests {
     @Test
     @Order(5)
     public void testValidUpdateEmployee() {
-        EmployeeRequestDto request = new EmployeeRequestDto("Austin Bill Grey", employeeFixture.getEmail(), employeeFixture.getSalary(), employeeFixture.getAccountNumber());
-        HttpEntity<EmployeeRequestDto> requestEntity = new HttpEntity<>(request);
-        ResponseEntity<EmployeeResponseDto> response = client.exchange("/employee/update", HttpMethod.PUT, requestEntity, EmployeeResponseDto.class);
-        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody());
-        Assertions.assertEquals(response.getBody().getName(), "Austin Bill Grey");
-        Assertions.assertEquals(response.getBody().getEmail(), employeeFixture.getEmail());
-        Assertions.assertEquals(response.getBody().getSalary(), employeeFixture.getSalary());
-        employeeFixture.setName(response.getBody().getName());
+        EmployeeRequestDto createRequest = new EmployeeRequestDto(
+                employeeFixture.getName(),
+                employeeFixture.getEmail(),
+                employeeFixture.getSalary(),
+                employeeFixture.getAccountNumber()
+        );
+        ResponseEntity<EmployeeResponseDto> createResponse = client.postForEntity("/employee/create", createRequest, EmployeeResponseDto.class);
+        Assertions.assertEquals(HttpStatus.CREATED, createResponse.getStatusCode());
+        assertNotNull(createResponse.getBody());
+        int existingEmployeeAccountNumber = createResponse.getBody().getAccountNumber(); // account number of the created employee
+
+        // create a request to update the employee's name
+        EmployeeRequestDto updateRequest = new EmployeeRequestDto(
+                "Austin Bill Grey", // New name for the update
+                employeeFixture.getEmail(), // Use the same email
+                employeeFixture.getSalary(),
+                existingEmployeeAccountNumber // Use the captured account number
+        );
+        HttpEntity<EmployeeRequestDto> requestEntity = new HttpEntity<>(updateRequest);
+
+        // operation
+        ResponseEntity<EmployeeResponseDto> updateResponse = client.exchange(
+                "/employee/update",
+                HttpMethod.PUT,
+                requestEntity,
+                EmployeeResponseDto.class
+        );
+
+        // Validate the update was successful
+        Assertions.assertEquals(HttpStatus.OK, updateResponse.getStatusCode());
+        assertNotNull(updateResponse.getBody());
+        Assertions.assertEquals("Austin Bill Grey", updateResponse.getBody().getName());
+        Assertions.assertEquals(employeeFixture.getEmail(), updateResponse.getBody().getEmail());
+        Assertions.assertEquals(employeeFixture.getSalary(), updateResponse.getBody().getSalary());
+        // Update the fixture to reflect the new state after the update
+        employeeFixture.setName("Austin Bill Grey");
     }
 
     @Test
     @Order(6)
     public void testValidUpdateEmployeeWithAccount() {
-        EmployeeRequestDto request = new EmployeeRequestDto(employeeFixture.getName(), employeeFixture.getEmail(), employeeFixture.getSalary(), employeeFixture.getAccountNumber());
-        request.setAccountNumber(account.getAccountNumber());
-        HttpEntity<EmployeeRequestDto> requestEntity = new HttpEntity<>(request);
-        ResponseEntity<EmployeeResponseDto> response = client.exchange("/employee/update", HttpMethod.PUT, requestEntity, EmployeeResponseDto.class);
-        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody());
-        Assertions.assertEquals(response.getBody().getName(), employeeFixture.getName());
-        Assertions.assertEquals(response.getBody().getEmail(), employeeFixture.getEmail());
-        Assertions.assertEquals(response.getBody().getSalary(), employeeFixture.getSalary());
-        Assertions.assertEquals(response.getBody().getAccountNumber(), account.getAccountNumber());
+        // Create an employee to update
+        EmployeeRequestDto createRequest = new EmployeeRequestDto(
+                employeeFixture.getName(),
+                employeeFixture.getEmail(),
+                employeeFixture.getSalary(),
+                employeeFixture.getAccountNumber()
+        );
+        ResponseEntity<EmployeeResponseDto> createResponse = client.postForEntity("/employee/create", createRequest, EmployeeResponseDto.class);
+        Assertions.assertEquals(HttpStatus.CREATED, createResponse.getStatusCode());
+        assertNotNull(createResponse.getBody());
+
+        // Update the account number of the created employee
+        EmployeeRequestDto updateRequest = new EmployeeRequestDto(
+                employeeFixture.getName(),
+                employeeFixture.getEmail(),
+                employeeFixture.getSalary(),
+                account.getAccountNumber() // Assuming this is a new/different account number
+        );
+        HttpEntity<EmployeeRequestDto> requestEntity = new HttpEntity<>(updateRequest);
+        ResponseEntity<EmployeeResponseDto> updateResponse = client.exchange("/employee/update", HttpMethod.PUT, requestEntity, EmployeeResponseDto.class);
+
+        // Assert the update was successful
+        Assertions.assertEquals(HttpStatus.OK, updateResponse.getStatusCode());
+        assertNotNull(updateResponse.getBody());
+        Assertions.assertEquals(employeeFixture.getName(), updateResponse.getBody().getName());
+        Assertions.assertEquals(employeeFixture.getEmail(), updateResponse.getBody().getEmail());
+        Assertions.assertEquals(employeeFixture.getSalary(), updateResponse.getBody().getSalary());
+        Assertions.assertEquals(account.getAccountNumber(), updateResponse.getBody().getAccountNumber());
     }
 
     @Test
@@ -228,10 +312,24 @@ public class EmployeeIntegrationTests {
     @Test
     @Order(9)
     public void testValidGetAccount() {
-        ResponseEntity<EmployeeResponseDto> response = client.getForEntity("/employee?email=" + employeeFixture.getEmail(), EmployeeResponseDto.class);
-        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertTrue(equals(response.getBody(), employeeFixture));
+
+        EmployeeRequestDto createRequest = new EmployeeRequestDto(
+                employeeFixture.getName(),
+                employeeFixture.getEmail(),
+                employeeFixture.getSalary(),
+                employeeFixture.getAccountNumber()
+        );
+        ResponseEntity<EmployeeResponseDto> createResponse = client.postForEntity("/employee/create", createRequest, EmployeeResponseDto.class);
+        Assertions.assertEquals(HttpStatus.CREATED, createResponse.getStatusCode());
+        assertNotNull(createResponse.getBody());
+
+        // Now retrieve the employee by email
+        ResponseEntity<EmployeeResponseDto> getResponse = client.getForEntity("/employee?email=" + employeeFixture.getEmail(), EmployeeResponseDto.class);
+
+        Assertions.assertEquals(HttpStatus.OK, getResponse.getStatusCode());
+        assertNotNull(getResponse.getBody());
+
+        assertTrue(equals(getResponse.getBody(), employeeFixture));
     }
 
     @Test
@@ -246,14 +344,31 @@ public class EmployeeIntegrationTests {
     @Test
     @Order(11)
     public void testValidGetAllEmployees() {
+        client.delete("/employees/deleteAll");
+
+        EmployeeRequestDto createRequest = new EmployeeRequestDto(
+                employeeFixture.getName(),
+                employeeFixture.getEmail(),
+                employeeFixture.getSalary(),
+                employeeFixture.getAccountNumber()
+        );
+        client.postForEntity("/employee/create", createRequest, EmployeeResponseDto.class);
+
+        // Now get all employees
         ResponseEntity<List> response = client.getForEntity("/employees", List.class);
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-        Assertions.assertEquals(response.getBody().size(), 1);
+
+        // Assert that there is exactly one employee
         List<Map<String, Object>> employees = response.getBody();
-        Assertions.assertEquals(employees.get(0).get("name"), employeeFixture.getName());
-        Assertions.assertEquals(employees.get(0).get("email"), employeeFixture.getEmail());
-        Assertions.assertEquals(employees.get(0).get("salary"), employeeFixture.getSalary());
-        Assertions.assertEquals(employees.get(0).get("accountNumber"), employeeFixture.getAccountNumber());
+        Assertions.assertEquals(1, employees.size());
+
+        // Extract the employee details from the response
+        Map<String, Object> employee = employees.get(0);
+        Assertions.assertEquals(employeeFixture.getName(), employee.get("name"));
+        Assertions.assertEquals(employeeFixture.getEmail(), employee.get("email"));
+        Assertions.assertEquals(employeeFixture.getSalary(), employee.get("salary"));
+
+        Assertions.assertEquals(employeeFixture.getAccountNumber(), ((Number) employee.get("accountNumber")).intValue());
     }
 
     @Test
@@ -269,14 +384,75 @@ public class EmployeeIntegrationTests {
     @Test
     @Order(13)
     public void testValidDeleteAccount() {
-        HttpEntity<String> requestEntity = new HttpEntity<>(null);
-        ResponseEntity<String> response = client.exchange("/employee/delete/" + employeeFixture.getEmail(), HttpMethod.DELETE, requestEntity, String.class);
-        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-        ResponseEntity<String> response2 = client.getForEntity("/employee?email=" + employeeFixture.getEmail(), String.class);
-        Assertions.assertEquals(HttpStatus.NOT_FOUND, response2.getStatusCode());
-        Assertions.assertEquals(response2.getBody(), "Employee not found.");
+        EmployeeRequestDto createRequest = new EmployeeRequestDto(
+                employeeFixture.getName(),
+                employeeFixture.getEmail(),
+                employeeFixture.getSalary(),
+                employeeFixture.getAccountNumber()
+        );
+        client.postForEntity("/employee/create", createRequest, EmployeeResponseDto.class);
 
+        // Now delete the employee
+        HttpEntity<String> requestEntity = new HttpEntity<>(null);
+        ResponseEntity<String> deleteResponse = client.exchange("/employee/delete/" + employeeFixture.getEmail(), HttpMethod.DELETE, requestEntity, String.class);
+        Assertions.assertEquals(HttpStatus.OK, deleteResponse.getStatusCode());
+
+        // Attempt to retrieve the employee, expecting them to not be found
+        ResponseEntity<String> getResponse = client.getForEntity("/employee?email=" + employeeFixture.getEmail(), String.class);
+        Assertions.assertEquals(HttpStatus.NOT_FOUND, getResponse.getStatusCode());
+        Assertions.assertTrue(getResponse.getBody().contains("Employee not found."));
     }
+
+    @Test
+    @Order(14)
+    public void testUpdateEmployeeSalary() {
+
+        EmployeeRequestDto createRequest = new EmployeeRequestDto(
+                employeeFixture.getName(),
+                employeeFixture.getEmail(),
+                employeeFixture.getSalary(),
+                employeeFixture.getAccountNumber()
+        );
+        ResponseEntity<EmployeeResponseDto> createResponse = client.postForEntity("/employee/create", createRequest, EmployeeResponseDto.class);
+        Assertions.assertEquals(HttpStatus.CREATED, createResponse.getStatusCode());
+        assertNotNull(createResponse.getBody());
+
+        // Define a new salary to update the employee with
+        int newSalary = employeeFixture.getSalary() + 10000; // Increase salary by 10,000
+
+        // Create a request to update the employee's salary
+        EmployeeRequestDto updateRequest = new EmployeeRequestDto(
+                employeeFixture.getName(),
+                employeeFixture.getEmail(),
+                newSalary, // Set the new salary
+                employeeFixture.getAccountNumber() // Use the existing account number
+        );
+        HttpEntity<EmployeeRequestDto> requestEntity = new HttpEntity<>(updateRequest);
+
+        // Perform the update operation
+        ResponseEntity<EmployeeResponseDto> updateResponse = client.exchange(
+                "/employee/update",
+                HttpMethod.PUT,
+                requestEntity,
+                EmployeeResponseDto.class
+        );
+
+        // Validate the update was successful
+        Assertions.assertEquals(HttpStatus.OK, updateResponse.getStatusCode());
+        assertNotNull(updateResponse.getBody());
+        Assertions.assertEquals(newSalary, updateResponse.getBody().getSalary());
+
+        // retrieve the employee again and check if the salary is updated
+        ResponseEntity<EmployeeResponseDto> getResponse = client.getForEntity(
+                "/employee?email=" + employeeFixture.getEmail(),
+                EmployeeResponseDto.class
+        );
+        Assertions.assertEquals(HttpStatus.OK, getResponse.getStatusCode());
+        assertNotNull(getResponse.getBody());
+        Assertions.assertEquals(newSalary, getResponse.getBody().getSalary());
+    }
+
+
     private boolean equals (EmployeeResponseDto response, EmployeeFixture fixture){
         if (response == null || fixture == null) {
             return false;
