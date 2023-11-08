@@ -285,13 +285,14 @@ public class ShiftIntegrationTests {
       }
 
       /**
-       * Asserts that the size of the list for a email with no shifts is 0.
+       * Asserts an error when there are no shifts associated with a email.
        */
       @Test
       @Order(10)
       public void testGetEmptyShiftsByEmployeeEmail() {
-            ResponseEntity<List> response = client.getForEntity("/shifts/get/" + "johndoe@gmail.com", List.class);
-            assertEquals(0, response.getBody().size());
+            ResponseEntity<String> response = client.getForEntity("/shifts/get/" + "johndoe@gmail.com", String.class);
+            assertEquals(HttpStatus.NOT_FOUND,response.getStatusCode());
+            assertEquals(response.getBody(), "No shifts found for this email.");
       }
 
       /**
@@ -310,13 +311,14 @@ public class ShiftIntegrationTests {
             assertEquals(shift.get(0).get("shiftId"), shiftSet.getShiftID());
       }
       /**
-       * Asserts that the size of the list for a date with no shifts is 0.
+       * Asserts an error when there are no shifts associated with a date.
        */
       @Test
       @Order(12)
       public void testGetEmptyShiftsByDate() {
-            ResponseEntity<List> response = client.getForEntity("/shifts/date/get/" + LocalDate.of(1994,3,06), List.class);
-            assertEquals(0, response.getBody().size());
+            ResponseEntity<String> response = client.getForEntity("/shifts/date/get/" + LocalDate.of(1994,3,06), String.class);
+            assertEquals(HttpStatus.NOT_FOUND,response.getStatusCode());
+            assertEquals(response.getBody(),"No shifts found for this date.");
       }
 
       /**
@@ -335,13 +337,14 @@ public class ShiftIntegrationTests {
             assertEquals(shift.get(0).get("shiftId"), shiftSet.getShiftID());
       }
       /**
-       * Asserts that the size of the list for a date and start time with no shifts is 0.
+       * Asserts an error when there are no shifts associated with a date and start time.
        */
       @Test
       @Order(14)
       public void testGetEmptyShiftsByDateAndStartTime() {
-            ResponseEntity<List> response = client.getForEntity("/shifts/date/st/get/" + LocalDate.of(1995,6,9) + "/" + Time.valueOf("06:30:00"), List.class);
-            assertEquals(0, response.getBody().size());
+            ResponseEntity<String> response = client.getForEntity("/shifts/date/st/get/" + LocalDate.of(1995,6,9) + "/" + Time.valueOf("06:30:00"), String.class);
+            assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+            assertEquals(response.getBody(), "No shifts found for this date and start time.");
       }
       /*
        * Test that gets all shifts in the system.

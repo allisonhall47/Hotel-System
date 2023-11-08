@@ -197,10 +197,9 @@ public class ShiftServiceTests {
       public void testGetInvalidShiftsByEmail() {
             String email = "johndoe@gmail.com";
 
-            when(shiftRepository.findShiftsByEmployeeEmail(email)).thenReturn(null);
             HRSException e = assertThrows(HRSException.class, () -> shiftService.getShiftsByEmployeeEmail(email));
             assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
-            assertEquals(e.getMessage(), "Shift list for this email not found.");
+            assertEquals(e.getMessage(), "No shifts found for this email.");
       }
 
       /**
@@ -227,10 +226,9 @@ public class ShiftServiceTests {
       public void testGetInvalidShiftByDate() {
             LocalDate date = LocalDate.of(2000,4,20);
 
-            when(shiftRepository.findShiftsByDate(date)).thenReturn(null);
             HRSException e = assertThrows(HRSException.class, () -> shiftService.getShiftsByDate(date));
             assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
-            assertEquals(e.getMessage(), "Shift list for this date not found.");
+            assertEquals(e.getMessage(), "No shifts found for this date.");
       }
 
       /**
@@ -258,10 +256,9 @@ public class ShiftServiceTests {
             LocalDate date = LocalDate.of(2000,4,20);
             Time time = Time.valueOf("06:30:00");
 
-            when(shiftRepository.findShiftsByDateAndStartTime(date,time)).thenReturn(null);
             HRSException e = assertThrows(HRSException.class, () -> shiftService.getShiftsByDateAndStartTime(date,time));
             assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
-            assertEquals(e.getMessage(), "Shift list for this date and time does not exist.");
+            assertEquals(e.getMessage(), "No shifts found for this date and start time.");
       }
 
 

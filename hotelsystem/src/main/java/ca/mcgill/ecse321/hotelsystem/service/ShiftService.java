@@ -67,8 +67,8 @@ public class ShiftService {
     @Transactional
     public List<Shift> getShiftsByEmployeeEmail(String email) {
         List<Shift> shiftList = shiftRepository.findShiftsByEmployeeEmail(email);
-        if (shiftList == null) {
-            throw new HRSException(HttpStatus.NOT_FOUND, "Shift list for this email not found.");
+        if (shiftList.size() == 0) {
+            throw new HRSException(HttpStatus.NOT_FOUND, "No shifts found for this email.");
         }
         return shiftList;
     }
@@ -81,8 +81,8 @@ public class ShiftService {
     @Transactional
     public List<Shift> getShiftsByDate(LocalDate date) {
         List<Shift> sdList = shiftRepository.findShiftsByDate(date);
-        if (sdList == null) {
-            throw new HRSException(HttpStatus.NOT_FOUND, "Shift list for this date not found.");
+        if (sdList.size() == 0) {
+            throw new HRSException(HttpStatus.NOT_FOUND, "No shifts found for this date.");
         }
         return sdList;
     }
@@ -97,8 +97,8 @@ public class ShiftService {
     @Transactional
     public List<Shift> getShiftsByDateAndStartTime(LocalDate date, Time startTime) {
         List<Shift> stList = shiftRepository.findShiftsByDateAndStartTime(date, startTime);
-        if (stList == null) {
-            throw new HRSException(HttpStatus.NOT_FOUND, "Shift list for this date and time does not exist.");
+        if (stList.size() == 0) {
+            throw new HRSException(HttpStatus.NOT_FOUND, "No shifts found for this date and start time.");
         }
         return stList;
     }
