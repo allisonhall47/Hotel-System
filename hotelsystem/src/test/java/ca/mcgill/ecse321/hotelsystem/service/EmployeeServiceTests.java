@@ -231,7 +231,6 @@ public class EmployeeServiceTests {
 
 
         when(employeeRepository.findEmployeeByEmail(email)).thenReturn(e);
-// You can also verify that the delete method was called if needed using Mockito's verify() method
 
 
         assertDoesNotThrow(() -> employeeService.deleteEmployee(email)); // Ensure no exceptions are thrown
