@@ -194,7 +194,7 @@ public class EmployeeIntegrationTests {
         );
         client.postForEntity("/employee/create", initialRequest, EmployeeResponseDto.class);
 
-        // Then, attempt to create another employee with the same email, which should fail
+        // Then, attempt to create another employee with the same email
         EmployeeRequestDto duplicateRequest = new EmployeeRequestDto(
                 "Jane Doe", // Use a different name
                 employeeFixture.getEmail(), // Same email to trigger the duplicate scenario
@@ -475,17 +475,17 @@ public class EmployeeIntegrationTests {
     @Test
     @Order(16)
     public void testDeleteNonExistentEmployeeShouldReturnNotFoundStatus() {
-        // Arrange: A non-existent email address that we are sure is not in the database
+        // A non-existent email address that we are sure is not in the database
         String nonExistentEmail = "nonexistentemail@example.com";
 
-        // Act: Attempt to delete an employee by a non-existent email address
+        // Attempt to delete an employee by a non-existent email address
         ResponseEntity<Void> response = client.exchange(
                 "/employee/delete/" + nonExistentEmail,
                 HttpMethod.DELETE,
                 null,
                 Void.class);
 
-        // Assert: Check for NOT_FOUND status code
+        // Check for NOT_FOUND status code
         Assertions.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode(), "Employee should not be found.");
     }
 
