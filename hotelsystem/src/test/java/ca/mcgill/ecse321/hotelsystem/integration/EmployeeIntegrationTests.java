@@ -28,6 +28,8 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 
 
@@ -452,15 +454,69 @@ public class EmployeeIntegrationTests {
         Assertions.assertEquals(newSalary, getResponse.getBody().getSalary());
     }
 
+    @Test
+    @Order(15)
+    public void testCreateEmployeeWithInvalidSalary() {
 
-    private boolean equals (EmployeeResponseDto response, EmployeeFixture fixture){
-        if (response == null || fixture == null) {
-            return false;
-        }
-        return response.getName().equals(fixture.getName())
-                && response.getEmail().equals(fixture.getEmail())
-                && response.getSalary() == fixture.getSalary()
-                && response.getAccountNumber() == fixture.getAccountNumber();
+        int invalidSalary = 0; // or any negative value to represent an invalid salary
+        EmployeeRequestDto request = new EmployeeRequestDto(
+                employeeFixture.getName(),
+                employeeFixture.getEmail(),
+                invalidSalary,
+                employeeFixture.getAccountNumber()
+        );
+
+        ResponseEntity<String> response = client.postForEntity("/employee/create", request, String.class);
+
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        Assertions.assertTrue(response.getBody().contains("Invalid salary amount."));
     }
+
+    @Test
+    @Order(16)
+    public void testDeleteNonExistentEmployeeShouldReturnNotFoundStatus() {
+        // Arrange: A non-existent email address that we are sure is not in the database
+        String nonExistentEmail = "nonexistentemail@example.com";
+
+        // Act: Attempt to delete an employee by a non-existent email address
+        ResponseEntity<Void> response = client.exchange(
+                "/employee/delete/" + nonExistentEmail,
+                HttpMethod.DELETE,
+                null,
+                Void.class);
+
+        // Assert: Check for NOT_FOUND status code
+        Assertions.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode(), "Employee should not be found.");
+    }
+
+    @Test
+    @Order(17)
+    public void testDeleteNonExistentEmployee() {
+        String nonExistentEmail = "noone@nowhere.com";
+        HttpEntity<String> requestEntity = new HttpEntity<>(null);
+
+        ResponseEntity<String> response = client.exchange(
+                "/employee/delete/" + nonExistentEmail,
+                HttpMethod.DELETE,
+                requestEntity,
+                String.class
+        );
+
+        Assertions.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        Assertions.assertTrue(response.getBody().contains("Employee not found."));
+    }
+
+
+
+        private boolean equals (EmployeeResponseDto response, EmployeeFixture fixture){
+            if (response == null || fixture == null) {
+                return false;
+            }
+            return response.getName().equals(fixture.getName())
+                    && response.getEmail().equals(fixture.getEmail())
+                    && response.getSalary() == fixture.getSalary()
+                    && response.getAccountNumber() == fixture.getAccountNumber();
+        }
+
 }
 

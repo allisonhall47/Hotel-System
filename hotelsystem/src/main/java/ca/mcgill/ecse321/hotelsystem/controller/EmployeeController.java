@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.hotelsystem.controller;
 
 import ca.mcgill.ecse321.hotelsystem.Model.Employee;
+import ca.mcgill.ecse321.hotelsystem.dto.CustomerResponseDto;
 import ca.mcgill.ecse321.hotelsystem.dto.EmployeeRequestDto;
 import ca.mcgill.ecse321.hotelsystem.dto.EmployeeResponseDto;
 import ca.mcgill.ecse321.hotelsystem.service.AccountService;
@@ -61,12 +62,7 @@ public class EmployeeController {
      */
     @GetMapping(value = {"/employee", "/employee/"})
     public ResponseEntity<EmployeeResponseDto> getEmployeeByEmail(@RequestParam String email) {
-        Employee employee = employeeService.getEmployeeByEmail(email);
-        if(employee != null) {
-            return new ResponseEntity<>(new EmployeeResponseDto(employee), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<EmployeeResponseDto>(new EmployeeResponseDto(employeeService.getEmployeeByEmail(email)), HttpStatus.OK);
     }
 
     /**
@@ -87,19 +83,11 @@ public class EmployeeController {
     }
 
     /**
-     * Deletes an employee by their email address.
-     *
-     * @param email The email address of the employee to be deleted.
-     * @return a ResponseEntity with HTTP OK status if the employee is successfully deleted, otherwise HTTP NOT_FOUND status.
+     * DeleteEmployee: delete an employee from the system
+     * @param email: email of the employee to delete
      */
     @DeleteMapping(value = {"/employee/delete/{email}"})
-    public ResponseEntity<Void> deleteEmployee(@PathVariable String email) {
-        Employee employee = employeeService.getEmployeeByEmail(email);
-        if(employee != null) {
-            employeeService.deleteEmployee(email);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public void deleteEmployee(@PathVariable String email){
+        employeeService.deleteEmployee(email);
     }
 }
