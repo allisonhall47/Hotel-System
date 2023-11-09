@@ -16,6 +16,9 @@ public class RoomResponseDto {
         this.capacity = room.getCapacity();
     }
 
+    public RoomResponseDto() {
+    }
+
     public String getType() {
         return type;
     }
