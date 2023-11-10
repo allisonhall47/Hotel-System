@@ -191,5 +191,32 @@ public class RequestIntegrationTests {
         List<Map<String, Object>> reqs = res.getBody();
         assertEquals(0, reqs.size());
     }
+
+    @Test
+    @Order(14)
+    public void testCreateInvalidRequestDescrBlanks() {
+        RequestRequestDto req = new RequestRequestDto("  ", res_id);
+        String url = "/request/new";
+        ResponseEntity<String> res = client.postForEntity(url, req, String.class);
+        assertEquals(HttpStatus.BAD_REQUEST, res.getStatusCode());
+    }
+
+    @Test
+    @Order(15)
+    public void testCreateInvalidRequestDescrNull() {
+        RequestRequestDto req = new RequestRequestDto(null, res_id);
+        String url = "/request/new";
+        ResponseEntity<String> res = client.postForEntity(url, req, String.class);
+        assertEquals(HttpStatus.BAD_REQUEST, res.getStatusCode());
+    }
+
+    @Test
+    @Order(16)
+    public void testCreateInvalidRequestDescrTooShort() {
+        RequestRequestDto req = new RequestRequestDto("                    ", res_id);
+        String url = "/request/new";
+        ResponseEntity<String> res = client.postForEntity(url, req, String.class);
+        assertEquals(HttpStatus.BAD_REQUEST, res.getStatusCode());
+    }
 }
 

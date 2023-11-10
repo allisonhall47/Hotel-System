@@ -213,6 +213,34 @@ public class RepairIntegrationTests {
     @Order(16)
     public void testDeleteInvalidRepair() {
         ResponseEntity<String> response = client.exchange("/repair/"+rep_id, HttpMethod.DELETE, new HttpEntity<>(null), String.class);
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());    }
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    @Order(17)
+    public void testCreateInvalidRepairDescriptionTooShort() {
+        RepairRequestDto req = new RepairRequestDto("too short", EMAIL);
+        String url = "/repair/new";
+        ResponseEntity<String> res = client.postForEntity(url, req, String.class);
+        assertEquals(HttpStatus.BAD_REQUEST, res.getStatusCode());
+    }
+
+    @Test
+    @Order(18)
+    public void testCreateInvalidRepairDescriptionBlanks() {
+        RepairRequestDto req = new RepairRequestDto("                    ", EMAIL);
+        String url = "/repair/new";
+        ResponseEntity<String> res = client.postForEntity(url, req, String.class);
+        assertEquals(HttpStatus.BAD_REQUEST, res.getStatusCode());
+    }
+
+    @Test
+    @Order(19)
+    public void testCreateInvalidRepairDescriptionNull() {
+        RepairRequestDto req = new RepairRequestDto(null, EMAIL);
+        String url = "/repair/new";
+        ResponseEntity<String> res = client.postForEntity(url, req, String.class);
+        assertEquals(HttpStatus.BAD_REQUEST, res.getStatusCode());
+    }
 }
 
