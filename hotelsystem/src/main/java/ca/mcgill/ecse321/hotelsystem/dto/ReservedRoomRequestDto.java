@@ -6,7 +6,6 @@ import ca.mcgill.ecse321.hotelsystem.Model.SpecificRoom;
 
 public class ReservedRoomRequestDto {
 
-    //private int reservedId;
     private int linkedReservationId;
     private int roomNumber;
 
@@ -15,7 +14,6 @@ public class ReservedRoomRequestDto {
     }
 
     public ReservedRoomRequestDto(int linkedReservationId, int roomNumber){
-        //this.reservedId = reservedId;
         this.linkedReservationId = linkedReservationId;
         this.roomNumber = roomNumber;
     }
@@ -24,13 +22,6 @@ public class ReservedRoomRequestDto {
         return new ReservedRoom(r, s);
     }
 
-//    public int getReservedId() {
-//        return reservedId;
-//    }
-//
-//    public void setReservedId(int reservedId) {
-//        this.reservedId = reservedId;
-//    }
 
     public int getLinkedReservationId() {
         return linkedReservationId;

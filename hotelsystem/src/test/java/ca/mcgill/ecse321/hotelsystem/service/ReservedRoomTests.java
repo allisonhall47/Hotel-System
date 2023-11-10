@@ -25,7 +25,6 @@ public class ReservedRoomTests {
     @InjectMocks
     private ReservedRoomService reservedRoomService;
 
-    //TODO maybe change arguments to the service method, make it just reservedRoom object
     @Test
     public void testCreateValidReservedRoom() {
         SpecificRoom room = new SpecificRoom(20, ViewType.Mountain, "sdfs", true, null);
@@ -43,23 +42,8 @@ public class ReservedRoomTests {
         assertEquals(resRoom, out);
         verify(reservedRoomRepository, times(2)).save(resRoom);
 
-
-        //when(reservedRoomService.save()).thenReturn();
-
     }
 
-    //already tested in specificRoom
-//    @Test
-//    public void testCreateInValidReservationReservedRoom() {
-//        SpecificRoom room = new SpecificRoom(20, ViewType.Mountain, "sdfs", true, null);
-//        Reservation res = new Reservation(4, Date.valueOf("1990-03-03"), Date.valueOf("1990-03-06"), 5, false, CheckInStatus.BeforeCheckIn, null);
-//    }
-//
-//    @Test
-//    public void testCreateInValidSpecRoomReservedRoom() {
-//        SpecificRoom room = new SpecificRoom(20, ViewType.Mountain, "sdfs", true, null);
-//        Reservation res = new Reservation(4, Date.valueOf("1990-03-03"), Date.valueOf("1990-03-06"), 5, false, CheckInStatus.BeforeCheckIn, null);
-//    }
 
     @Test
     public void testAssignValidReservedRoomToReservation() {
@@ -190,9 +174,6 @@ public class ReservedRoomTests {
     @Test
     public void testGetReservedRoomsByInvalidSpecRoomNumber() {
         SpecificRoom specRoom = null;
-
-        //when(specificRoomRepository.findSpecificRoomByNumber(number)).thenReturn(null);
-        //when(reservedRoomRepository.findReservedRoomsBySpecificRoom_Number(specRoom.getNumber())).thenReturn(list);
 
         HRSException e = assertThrows(HRSException.class, () -> reservedRoomService.getReservedRoomsBySpecRoom(specRoom));
         assertEquals(e.getMessage(), "specific room does not exist");
