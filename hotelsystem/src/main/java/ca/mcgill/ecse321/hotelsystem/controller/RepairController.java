@@ -48,6 +48,12 @@ public class RepairController {
         return new RepairResponseDto(service.changeRepairStatus(id, status));
     }
 
+    @PostMapping ("repair/employee/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public RepairResponseDto changeRepairStatus(@PathVariable int id, @RequestBody String employeeEmail) {
+        return new RepairResponseDto(service.changeRepairAssignedEmployee(id, employeeEmail));
+    }
+
     @DeleteMapping("repair/{id}")
     @ResponseStatus(HttpStatus.OK)
     public String deleteRepair(@PathVariable int id) {

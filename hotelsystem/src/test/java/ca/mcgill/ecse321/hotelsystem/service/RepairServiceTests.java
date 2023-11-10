@@ -1,9 +1,6 @@
 package ca.mcgill.ecse321.hotelsystem.service;
 
-import ca.mcgill.ecse321.hotelsystem.Model.Account;
-import ca.mcgill.ecse321.hotelsystem.Model.CompletionStatus;
-import ca.mcgill.ecse321.hotelsystem.Model.Employee;
-import ca.mcgill.ecse321.hotelsystem.Model.Repair;
+import ca.mcgill.ecse321.hotelsystem.Model.*;
 import ca.mcgill.ecse321.hotelsystem.exception.HRSException;
 import ca.mcgill.ecse321.hotelsystem.repository.EmployeeRepository;
 import ca.mcgill.ecse321.hotelsystem.repository.RepairRepository;
@@ -57,6 +54,7 @@ public class RepairServiceTests {
                 return null;
             }
         });
+        lenient().when(repairDao.findAll()).thenAnswer((InvocationOnMock invocation) -> List.of(new Repair(CompletionStatus.Pending, REPAIR_DESCRIPTION, employeeDao.findEmployeeByEmail(EMAIL))));
         lenient().when(repairDao.findRepairsByEmployee_Email(anyString())).thenAnswer((InvocationOnMock invocation) -> {
             if (invocation.getArgument(0).equals(EMAIL)) {
                 return List.of(new Repair(CompletionStatus.Pending, REPAIR_DESCRIPTION, employeeDao.findEmployeeByEmail(EMAIL)));
@@ -96,9 +94,16 @@ public class RepairServiceTests {
     }
 
     @Test
-    public void testGetByEmail() {
-        List<Repair> reps = service.getRepairsByEmployeeEmail(EMAIL);
+    public void testReadInvalidRepair() {
+        HRSException ex = assertThrows(HRSException.class, () -> service.readRepairById(VALID_REPAIR_KEY + 1));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatus());
+    }
+
+    @Test
+    public void testGetAllRepairs() {
+        List<Repair> reps = service.getAllRepairs();
         assertEquals(1, reps.size());
+        assertEquals(REPAIR_DESCRIPTION, reps.get(0).getDescription());
     }
 
     @Test
@@ -129,8 +134,8 @@ public class RepairServiceTests {
 
     @Test
     public void testGetRepairsByInvalidEmployeeEmail() {
-        List<Repair> reps = service.getRepairsByEmployeeEmail(EMAIL + "okoek");
-        assertEquals(0, reps.size());
+        HRSException ex = assertThrows(HRSException.class, () -> service.getRepairsByEmployeeEmail(EMAIL + "invalid"));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatus());
     }
 
     @Test
@@ -145,4 +150,22 @@ public class RepairServiceTests {
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatus());
     }
 
+    @Test
+    public void testChangeRepairEmployee() {
+        Repair rep = service.changeRepairAssignedEmployee(VALID_REPAIR_KEY, EMAIL);
+        assertNotNull(rep);
+        assertEquals(EMAIL, rep.getEmployee().getEmail());
+    }
+
+    @Test
+    public void testChangeInvalidRepairEmployee() {
+        HRSException ex = assertThrows(HRSException.class, () -> service.changeRepairAssignedEmployee(VALID_REPAIR_KEY+ 1, EMAIL));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatus());
+    }
+
+    @Test
+    public void testChangeRepairInvalidEmployee() {
+        HRSException ex = assertThrows(HRSException.class, () -> service.changeRepairAssignedEmployee(VALID_REPAIR_KEY, EMAIL+"invalid"));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatus());
+    }
 }

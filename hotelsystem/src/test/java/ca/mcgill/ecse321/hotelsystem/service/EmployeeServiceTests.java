@@ -231,7 +231,6 @@ public class EmployeeServiceTests {
 
 
         when(employeeRepository.findEmployeeByEmail(email)).thenReturn(e);
-// You can also verify that the delete method was called if needed using Mockito's verify() method
 
 
         assertDoesNotThrow(() -> employeeService.deleteEmployee(email)); // Ensure no exceptions are thrown
@@ -277,6 +276,10 @@ public class EmployeeServiceTests {
         assertEquals("Invalid email address.", e.getMessage());
     }
 
+    /**
+     * Validates createEmployee method's response to null account scenarios. Ensures it throws an HRSException with
+     * appropriate status and message, confirming correct error handling for Employee creation with missing account details.
+     */
     @Test
     public void testCreateEmployee_NullAccount() {
         // Given
@@ -295,6 +298,12 @@ public class EmployeeServiceTests {
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         assertEquals("Employee account information cannot be null.", exception.getMessage());
     }
+
+    /**
+     * Tests the createEmployee method for handling cases with invalid salary values. It checks that an HRSException is thrown
+     * with the correct status and message when an Employee is created with a negative salary value. The test involves setting
+     * up an Employee object with an invalid salary and mocking repository responses to focus on this specific validation scenario.
+     */
 
     @Test
     public void testCreateEmployee_InvalidSalary() {

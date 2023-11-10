@@ -54,6 +54,8 @@ public class RequestServiceTests {
             }
         });
 
+        lenient().when(requestDao.findAll()).thenAnswer((InvocationOnMock i) -> List.of(new Request(status, REQUEST_DESCRIPTION, reservationDao.findReservationByReservationID(VALID_RESERVATION_ID))));
+
         lenient().when(requestDao.findRequestByRequestId(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
             if (invocation.getArgument(0).equals(VALID_REQUEST_KEY)) {
                 return new Request(status, REQUEST_DESCRIPTION, reservationDao.findReservationByReservationID(VALID_RESERVATION_ID));
@@ -120,8 +122,8 @@ public class RequestServiceTests {
 
     @Test
     public void testGetRequestsForNonexistingReservation() {
-        List<Request> reqs = service.getRequestsForReservationWithId(VALID_RESERVATION_ID+1);
-        assertEquals(0, reqs.size());
+        HRSException ex = assertThrows(HRSException.class, () -> service.getRequestsForReservationWithId(VALID_RESERVATION_ID+1));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatus());
     }
 
     @Test
@@ -147,6 +149,29 @@ public class RequestServiceTests {
     public void testDeleteInvalidRequest() {
         HRSException ex = assertThrows(HRSException.class, () -> service.deleteRequest(VALID_REQUEST_KEY+ 1));
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatus());
+    }
+
+    @Test
+    public void testDeleteValidRequest() {
+        assertDoesNotThrow(() -> service.deleteRequest(VALID_REQUEST_KEY));
+    }
+
+    @Test
+    public void testDeleteRequestsForValidReservation() {
+        assertDoesNotThrow(() -> service.deleteRequestsForReservationWithId(VALID_RESERVATION_ID));
+    }
+
+    @Test
+    public void testDeleteRequestsForInvalidReservation() {
+        HRSException ex = assertThrows(HRSException.class, () -> service.deleteRequestsForReservationWithId(VALID_RESERVATION_ID+1));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatus());
+    }
+
+    @Test
+    public void testGetAllRequests() {
+        List<Request> reqs = service.getAllRequests();
+        assertEquals(1, reqs.size());
+        assertEquals(REQUEST_DESCRIPTION, reqs.get(0).getDescription());
     }
 
 }

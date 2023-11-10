@@ -59,6 +59,9 @@ public class RequestService {
 
     @Transactional
     public List<Request> getRequestsForReservationWithId(int id) {
+        if (reservationRepository.findReservationByReservationID(id)== null) {
+            throw new HRSException(HttpStatus.NOT_FOUND, String.format("No reservation with id %d", id));
+        }
         return requestRepository.findRequestsByReservation_ReservationID(id);
     }
 
@@ -73,6 +76,9 @@ public class RequestService {
 
     @Transactional
     public void deleteRequestsForReservationWithId(int id) {
+        if (reservationRepository.findReservationByReservationID(id) == null) {
+            throw new HRSException(HttpStatus.NOT_FOUND, String.format("No reservation with id %d", id));
+        }
         requestRepository.deleteRequestsByReservation_ReservationID(id);
     }
 

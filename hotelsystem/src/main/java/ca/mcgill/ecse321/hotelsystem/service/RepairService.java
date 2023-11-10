@@ -30,10 +30,7 @@ public class RepairService {
             throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid repair description: Too short");
         }
 
-        Employee emp = employeeRepository.findEmployeeByEmail(employeeEmail);
-        if (emp == null) {
-            throw new HRSException(HttpStatus.NOT_FOUND, "No employee with email address " + employeeEmail);
-        }
+        Employee emp = isValidEmployee(employeeEmail);
         return repairRepository.save(new Repair(CompletionStatus.Pending, description, emp));
     }
 
@@ -42,10 +39,7 @@ public class RepairService {
         if (status == null) {
             throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid repair status (null)");
         }
-        Repair rep = repairRepository.findRepairByRepairId(id);
-        if (rep == null) {
-            throw new HRSException(HttpStatus.NOT_FOUND, String.format("No repair with id %d", id));
-        }
+        Repair rep = isValidRepair(id);
 
         rep.setStatus(status);
         rep = repairRepository.save(rep);
@@ -54,31 +48,30 @@ public class RepairService {
     }
 
     @Transactional
+    public Repair changeRepairAssignedEmployee(int id, String email) {
+        isValidEmployee(email);
+        Repair rep = isValidRepair(id);
+        Employee newEmp = isValidEmployee(email);
+        rep.setEmployee(newEmp);
+        repairRepository.save(rep);
+        return rep;
+    }
+
+    @Transactional
     public void deleteRepair(int id) {
-        Repair rep = repairRepository.findRepairByRepairId(id);
-        if (rep == null) {
-            throw new HRSException(HttpStatus.NOT_FOUND, String.format("No repair with id %d", id));
-        }
+        isValidRepair(id);
         repairRepository.deleteRepairByRepairId(id);
     }
 
     @Transactional
     public List<Repair> getRepairsByEmployeeEmail(String email) {
-        if (email == null) {
-            throw new HRSException(HttpStatus.BAD_REQUEST, "Email can't be null");
-        }
+        isValidEmployee(email);
         return repairRepository.findRepairsByEmployee_Email(email);
     }
 
-
-
     @Transactional
     public Repair readRepairById(int id) {
-        Repair repair = repairRepository.findRepairByRepairId(id);
-        if (repair == null) {
-            throw new HRSException(HttpStatus.NOT_FOUND, String.format("No repair with id %d", id));
-        }
-        return repair;
+        return isValidRepair(id);
     }
 
     /**
@@ -91,4 +84,22 @@ public class RepairService {
         return repairs;
     }
 
+    private Employee isValidEmployee(String email) {
+        if (email == null) {
+            throw new HRSException(HttpStatus.BAD_REQUEST, "Email can't be null");
+        }
+        Employee emp = employeeRepository.findEmployeeByEmail(email);
+        if (emp == null) {
+            throw new HRSException(HttpStatus.NOT_FOUND, "No employee with email " + email);
+        }
+        return emp;
+    }
+
+    private Repair isValidRepair(int id) {
+        Repair repair = repairRepository.findRepairByRepairId(id);
+        if (repair == null) {
+            throw new HRSException(HttpStatus.NOT_FOUND, String.format("No repair with id %d", id));
+        }
+        return repair;
+    }
 }
