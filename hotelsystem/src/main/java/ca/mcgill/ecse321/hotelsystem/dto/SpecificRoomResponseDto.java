@@ -1,6 +1,5 @@
 package ca.mcgill.ecse321.hotelsystem.dto;
 
-import ca.mcgill.ecse321.hotelsystem.Model.Room;
 import ca.mcgill.ecse321.hotelsystem.Model.SpecificRoom;
 import ca.mcgill.ecse321.hotelsystem.Model.ViewType;
 
