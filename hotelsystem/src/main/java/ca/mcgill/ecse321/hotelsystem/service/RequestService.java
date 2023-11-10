@@ -20,36 +20,45 @@ public class RequestService {
     @Autowired
     private ReservationRepository reservationRepository;
 
+    /**
+     * Create a new request in the databse
+     * @param description Description of the request
+     * @param reservationId Id of the reservation associated with this request
+     * @throws HRSException if the description is invalid or no reservation with the given id exists
+     * @return Newly created request
+     */
     @Transactional
     public Request createRequest(String description, int reservationId) {
-        if (description == null || description.length() == 0) {
-            throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid request description (empty)");
+        if (description == null || description.isBlank() || description.length() < 10) {
+            throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid request description");
         }
-        Reservation res = reservationRepository.findReservationByReservationID(reservationId);
-        if (res == null) {
-            throw new HRSException(HttpStatus.NOT_FOUND, String.format("No reservation with id %d", reservationId));
-        }
+        Reservation res = checkReservationExistance(reservationId);
         return requestRepository.save(new Request(CompletionStatus.Pending, description, res));
     }
 
+    /**
+     * Get the request with the given id
+     * @param id Id of the request
+     * @throws HRSException if no request with the given id exists
+     * @return request
+     */
     @Transactional
     public Request getRequest(int id) {
-        Request req = requestRepository.findRequestByRequestId(id);
-        if (req == null) {
-            throw new HRSException(HttpStatus.NOT_FOUND, String.format("No request with id %d", id));
-        }
-        return req;
+        return checkRequestExistance(id);
     }
 
+    /**
+     * Change the status of a request
+     * @param id Id of the request
+     * @param status New status of the request
+     * @return Updated request
+     */
     @Transactional
     public Request changeRequestStatus(int id, CompletionStatus status) {
         if (status == null) {
             throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid request status (null)");
         }
-        Request req = requestRepository.findRequestByRequestId(id);
-        if (req == null) {
-            throw new HRSException(HttpStatus.NOT_FOUND, String.format("No request with id %d", id));
-        }
+        Request req = checkRequestExistance(id);
 
         req.setStatus(status);
         requestRepository.save(req);
@@ -57,38 +66,63 @@ public class RequestService {
         return req;
     }
 
+    /**
+     * Get all requests associated with the given reservation
+     * @param id Id of the reservation
+     * @throws HRSException if no reservation with the given id exists
+     * @return List of requests associated with the reservation
+     */
     @Transactional
     public List<Request> getRequestsForReservationWithId(int id) {
-        if (reservationRepository.findReservationByReservationID(id)== null) {
-            throw new HRSException(HttpStatus.NOT_FOUND, String.format("No reservation with id %d", id));
-        }
+        checkReservationExistance(id);
         return requestRepository.findRequestsByReservation_ReservationID(id);
     }
 
+    /**
+     * Delete the given request
+     * @param id Id of the request
+     * @throws HRSException if no request with the given id exists
+     */
     @Transactional
     public void deleteRequest(int id) {
-        Request req = requestRepository.findRequestByRequestId(id);
-        if (req == null) {
-            throw new HRSException(HttpStatus.NOT_FOUND, String.format("No request with id %d", id));
-        }
+        checkRequestExistance(id);
         requestRepository.deleteRequestByRequestId(id);
     }
 
+    /**
+     * Delete all requests for the given reservation
+     * @param id Id of the reservation
+     * @throws HRSException if no reservation with the given id exists
+     */
     @Transactional
     public void deleteRequestsForReservationWithId(int id) {
-        if (reservationRepository.findReservationByReservationID(id) == null) {
-            throw new HRSException(HttpStatus.NOT_FOUND, String.format("No reservation with id %d", id));
-        }
+        checkReservationExistance(id);
         requestRepository.deleteRequestsByReservation_ReservationID(id);
     }
 
     /**
-     * GetAllRequests: service method to fetch all existing request in the database
+     * Get all requests from the database
      * @return List of requests
      */
     @Transactional
     public List<Request> getAllRequests(){
         List<Request> requests = requestRepository.findAll();
         return requests;
+    }
+
+    private Request checkRequestExistance(int id) {
+        Request req = requestRepository.findRequestByRequestId(id);
+        if (req == null) {
+            throw new HRSException(HttpStatus.NOT_FOUND, String.format("No request with id %d", id));
+        }
+        return req;
+    }
+
+    private Reservation checkReservationExistance(int id) {
+        Reservation res = reservationRepository.findReservationByReservationID(id);
+        if (res == null) {
+            throw new HRSException(HttpStatus.NOT_FOUND, String.format("No reservation with id %d", id));
+        }
+        return res;
     }
 }

@@ -22,6 +22,13 @@ public class RepairService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
+    /**
+     * Create new repair in databse
+     * @param employeeEmail Email of the assigned employee
+     * @param description Description of what needs to be done
+     * @throws HRSException if no employee with the given email exists or if the description is invalid (<10 characters)
+     * @return Newly created repair
+     */
     @Transactional
     public Repair createRepair(String employeeEmail, String description) {
         if (description == null || description.isBlank()) {
@@ -34,6 +41,13 @@ public class RepairService {
         return repairRepository.save(new Repair(CompletionStatus.Pending, description, emp));
     }
 
+    /**
+     * Change the status of a repair
+     * @param id Id of the repair whose status should be changed
+     * @param status New status of the repair
+     * @throws HRSException if no repair with the given id exists or if the status is null
+     * @return Updated repair
+     */
     @Transactional
     public Repair changeRepairStatus(int id, CompletionStatus status) {
         if (status == null) {
@@ -47,6 +61,13 @@ public class RepairService {
         return rep;
     }
 
+    /**
+     * Changed the assigned employee of a reservation
+     * @param id Id of the repair whose employee should be changed
+     * @param email Email of the newly assigned employee
+     * @throws HRSException if no repair with the given id or no employee with the given email exists
+     * @return Updated repair
+     */
     @Transactional
     public Repair changeRepairAssignedEmployee(int id, String email) {
         isValidEmployee(email);
@@ -57,25 +78,42 @@ public class RepairService {
         return rep;
     }
 
+    /**
+     * Delete repair with the given id
+     * @throws HRSException if no repair with the given id exists
+     * @param id Id of the repair to delete
+     */
     @Transactional
     public void deleteRepair(int id) {
         isValidRepair(id);
         repairRepository.deleteRepairByRepairId(id);
     }
 
+    /**
+     * Get all repairs assigned to the given employee
+     * @param email Email of the employee whose assigned tasks should be returned
+     * @throws HRSException if no employee with the given email exists
+     * @return List of repairs assigned to the employee email
+     */
     @Transactional
     public List<Repair> getRepairsByEmployeeEmail(String email) {
         isValidEmployee(email);
         return repairRepository.findRepairsByEmployee_Email(email);
     }
 
+    /**
+     * Get the repair with the given id
+     * @param id Id of the repair
+     * @throws HRSException if no repair with the given id exists
+     * @return the repair with the given id
+     */
     @Transactional
     public Repair readRepairById(int id) {
         return isValidRepair(id);
     }
 
     /**
-     * GetAllRepairs: service method to fetch all existing repairs in the database
+     * Get all the repairs that are currently in the database
      * @return List of repairs
      */
     @Transactional
