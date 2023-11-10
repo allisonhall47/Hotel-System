@@ -31,6 +31,10 @@ public class ReservedRoomController {
     @Autowired
     CustomerService customerService;
 
+    /**
+     * get all reserved rooms
+     * @return list of dto objects
+     */
     @GetMapping("/reservedRoom")
     public List<ReservedRoomResponseDto> getAllReservedRooms() {
         List<ReservedRoom> list = reservedRoomService.getAllReservedRooms();
@@ -41,6 +45,11 @@ public class ReservedRoomController {
         return dtos;
     }
 
+    /**
+     * create new reserved room
+     * @param resRoom info of new reserved room
+     * @return new dto object
+     */
     @PostMapping("/reservedRoom/new")
     public ReservedRoomResponseDto createReservedRoom(@RequestBody ReservedRoomRequestDto resRoom) {
         ReservedRoom room = resRoom.toModel(reservationService.getReservation(resRoom.getLinkedReservationId()), specificRoomService.findSpecificRoomByNumber(resRoom.getRoomNumber()));
@@ -48,11 +57,21 @@ public class ReservedRoomController {
         return new ReservedRoomResponseDto(newRoom);
     }
 
+    /**
+     * get reserved rooom by id
+     * @param id id
+     * @return dto object
+     */
     @GetMapping("/reservedRoom/{id}")
     public ReservedRoomResponseDto getReservedRoomById(@PathVariable(value = "id") int id){
         return new ReservedRoomResponseDto(reservedRoomService.getReservedRoomById(id));
     }
 
+    /**
+     * get reserved rooms for a reservation
+     * @param id reservation id
+     * @return list of dto object
+     */
     @GetMapping("/reservedRoom/reservation/{reservationId}")
     public List<ReservedRoomResponseDto> getReservedRoomsByReservation(@PathVariable("reservationId") int id) {
         List<ReservedRoom> list = reservedRoomService.getReservedRoomsByReservation(id);
@@ -63,6 +82,11 @@ public class ReservedRoomController {
         return dtos;
     }
 
+    /**
+     * get reserved rooms by specific room
+     * @param number room number
+     * @return list of dto objects
+     */
     @GetMapping("/reservedRoom/specificRoom/{specRoomNumber}")
     public List<ReservedRoomResponseDto> getReservedRoomBySpecRoom(@PathVariable("specRoomNumber") int number) {
         SpecificRoom specRoom = specificRoomService.findSpecificRoomByNumber(number);
@@ -74,7 +98,10 @@ public class ReservedRoomController {
         return dtos;
     }
 
-    //TODO idk wtf im doing here, review
+    /**
+     * delete reserved room
+     * @param id id
+     */
     @DeleteMapping("/reservedRoom/{id}")
     public void deleteReservedRoom(@PathVariable("id") int id) {
         ReservedRoom room = reservedRoomService.getReservedRoomById(id);

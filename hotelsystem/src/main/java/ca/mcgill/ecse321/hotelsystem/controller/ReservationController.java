@@ -23,6 +23,11 @@ public class ReservationController {
     @Autowired
     CustomerService customerService;
 
+    /**
+     * create a new reservation
+     * @param reservation info about the new reservation
+     * @return dto of the new object
+     */
     @PostMapping("/reservation/new")
     public ReservationResponseDto createReservation(@RequestBody ReservationRequestDto reservation) {
         Customer customer = customerService.getCustomerByEmail(reservation.getCustomerEmail());
@@ -31,6 +36,10 @@ public class ReservationController {
         return new ReservationResponseDto(res);
     }
 
+    /**
+     * get all reservations
+     * @return list of dto reservation objects
+     */
     @GetMapping("/reservation")
     public List<ReservationResponseDto> getAllReservations() {
         List<Reservation> list = reservationService.getAllReservations();
@@ -41,6 +50,10 @@ public class ReservationController {
         return dtos;
     }
 
+    /**
+     * get non Paid reservations
+     * @return list of dto objects
+     */
     @GetMapping("/reservation/not-paid")
     public List<ReservationResponseDto> getAllReservationsNotPaid() {
         List<Reservation> list = reservationService.getReservationsNotPaid();
@@ -51,18 +64,33 @@ public class ReservationController {
         return dtos;
     }
 
+    /**
+     * get reservation by id
+     * @param id id of res
+     * @return dto object
+     */
     @GetMapping("/reservation/{reservationId}")
     public ReservationResponseDto getReservationById(@PathVariable(value = "reservationId") int id) {
         Reservation res = reservationService.getReservation(id);
         return new ReservationResponseDto(res);
     }
 
+    /**
+     * check in for a reservation
+     * @param id id
+     * @return updated dto object
+     */
     @PutMapping ("/reservation/{reservationId}/checkIn")
     public ReservationResponseDto checkInReservationById(@PathVariable(value = "reservationId") int id) {
         Reservation res = reservationService.getReservation(id);
         return new ReservationResponseDto(reservationService.checkIn(res));
     }
 
+    /**
+     * get all reservations for customer
+     * @param customerEmail email
+     * @return list of dto objects
+     */
     @GetMapping("/reservation/customer/{customerEmail}")
     public List<ReservationResponseDto> getAllReservationsCustomer(@PathVariable(value = "customerEmail") String customerEmail) {
         Customer customer = customerService.getCustomerByEmail(customerEmail);
@@ -74,13 +102,22 @@ public class ReservationController {
         return dtos;
     }
 
-    //TODO idk wtf im doing here, review
+    /**
+     * delete reservation with id
+     * @param id id
+     */
     @DeleteMapping("/reservation/{reservationId}")
     public void deleteReservation(@PathVariable("reservationId") int id) {
         Reservation reservation = reservationService.getReservation(id);
         reservationService.deleteReservation(reservation);
     }
 
+    /**
+     * Pay reservation
+     * @param id id
+     * @param money amount of money
+     * @return updated dto object
+     */
     @PutMapping("/reservation/{reservationId}")
     public ResponseEntity<ReservationResponseDto> payReservation(@PathVariable("reservationId") int id, @RequestParam int money) {
         Reservation reservation = reservationService.getReservation(id);
