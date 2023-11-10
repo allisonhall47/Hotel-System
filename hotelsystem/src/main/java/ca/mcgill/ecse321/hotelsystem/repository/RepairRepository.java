@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface RepairRepository extends CrudRepository<Repair, Integer> {
     Repair findRepairByRepairId(int repairId);
-    List<Repair> findRepairsByEmployeeEmail(String email);
+    List<Repair> findRepairsByEmployee_Email(String email);
     void deleteRepairByRepairId(int repairId);
 }

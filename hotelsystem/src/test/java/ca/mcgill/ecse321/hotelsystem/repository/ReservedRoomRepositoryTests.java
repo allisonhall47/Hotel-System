@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -38,7 +39,7 @@ public class ReservedRoomRepositoryTests {
     //test read by Id
     @Test
     public void testCreateAndReadReservedRoom() {
-        Reservation res = new Reservation(2, Date.valueOf("1884-11-23"), Date.valueOf("1992-11-23"),23,false, CheckInStatus.BeforeCheckIn, null);
+        Reservation res = new Reservation(2, LocalDate.of(1884,11,23), LocalDate.of(1992,11,23),23,false, CheckInStatus.BeforeCheckIn, null);
         res = reservationRepository.save(res);
 
         SpecificRoom specificRoom = new SpecificRoom(24,ViewType.Mountain, "{[=p0P_-;", true, null);
@@ -61,7 +62,7 @@ public class ReservedRoomRepositoryTests {
     @Test
     @Transactional
     public void testCreateAndDeleteReservedRoomById() {
-        Reservation res = new Reservation(2, Date.valueOf("1884-11-23"), Date.valueOf("1992-11-23"),23,false, CheckInStatus.BeforeCheckIn, null);
+        Reservation res = new Reservation(2, LocalDate.of(1884,11,23), LocalDate.of(1992,11,23),23,false, CheckInStatus.BeforeCheckIn, null);
         res = reservationRepository.save(res);
 
         SpecificRoom specificRoom = new SpecificRoom(24,ViewType.Mountain, "{[=p0P_-;", true, null);
@@ -89,7 +90,7 @@ public class ReservedRoomRepositoryTests {
     //test write new attributes to an already existing row in table
     @Test
     public void testCreateAndWriteReservedRoom() {
-        Reservation res = new Reservation(2, Date.valueOf("1884-11-23"), Date.valueOf("1992-11-23"),23,false, CheckInStatus.BeforeCheckIn, null);
+        Reservation res = new Reservation(2, LocalDate.of(1884,11,23), LocalDate.of(1992,11,23),23,false, CheckInStatus.BeforeCheckIn, null);
         res = reservationRepository.save(res);
 
         SpecificRoom specificRoom = new SpecificRoom(24,ViewType.Mountain, "desc", true, null);
@@ -99,7 +100,7 @@ public class ReservedRoomRepositoryTests {
         reservedRoom = repo.save(reservedRoom);
 
         //create new attributes
-        Reservation res2 = new Reservation(3, Date.valueOf("1984-11-23"), Date.valueOf("2003-11-23"),23,false, CheckInStatus.CheckedIn, null);
+        Reservation res2 = new Reservation(3, LocalDate.of(1884,11,23), LocalDate.of(1992,11,23),23,false, CheckInStatus.CheckedIn, null);
         res2 = reservationRepository.save(res2);
 
         SpecificRoom specificRoom2 = new SpecificRoom(26,ViewType.Mountain, "test", false, null);
@@ -124,7 +125,7 @@ public class ReservedRoomRepositoryTests {
     //test read by foreign key reservation
     @Test
     public void testCreateAndReadReservedRoomByReservation_ReservationID() {
-        Reservation res = new Reservation(2, Date.valueOf("1884-11-23"), Date.valueOf("1992-11-23"),23,false, CheckInStatus.BeforeCheckIn, null);
+        Reservation res = new Reservation(2, LocalDate.of(1884,11,23), LocalDate.of(1992,11,23),23,false, CheckInStatus.BeforeCheckIn, null);
         res = reservationRepository.save(res);
 
         SpecificRoom specificRoom1 = new SpecificRoom(24,ViewType.Mountain, "{[=p0P_-;", true, null);
@@ -158,10 +159,10 @@ public class ReservedRoomRepositoryTests {
     //test read by foreign key specific room
     @Test
     public void testCreateAndReadReservedRoomBySpecificRoom_Number() {
-        Reservation res1 = new Reservation(2, Date.valueOf("1884-11-23"), Date.valueOf("1992-11-23"),23,false, CheckInStatus.BeforeCheckIn, null);
+        Reservation res1 = new Reservation(2, LocalDate.of(1884,11,23), LocalDate.of(1992,11,23),23,false, CheckInStatus.BeforeCheckIn, null);
         res1 = reservationRepository.save(res1);
 
-        Reservation res2 = new Reservation(3, Date.valueOf("1984-11-23"), Date.valueOf("2003-11-23"),230,true, CheckInStatus.CheckedOut, null);
+        Reservation res2 = new Reservation(3, LocalDate.of(1884,11,23), LocalDate.of(1992,11,23),230,true, CheckInStatus.CheckedOut, null);
         res2 = reservationRepository.save(res2);
 
         SpecificRoom specificRoom = new SpecificRoom(24,ViewType.Mountain, "{[=p0P_-;", true, null);

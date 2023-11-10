@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,7 +33,7 @@ public class ReservationRepositoryTests {
         Customer customer = new Customer("bill@gmail.com", "Bill", null);
         customer = customerRepository.save(customer);
 
-        Reservation reservation = new Reservation(2, Date.valueOf("2023-10-23"), Date.valueOf("2023-11-01"), 1400, false, CheckInStatus.BeforeCheckIn, customer);
+        Reservation reservation = new Reservation(2, LocalDate.of(2023,10,23), LocalDate.of(2023,11,01), 1400, false, CheckInStatus.BeforeCheckIn, customer);
         reservation = reservationRepository.save(reservation);
 
         // retrieves reservation from reservation ID
@@ -53,13 +53,13 @@ public class ReservationRepositoryTests {
         customer = customerRepository.save(customer);
 
 
-        Date checkInDate = Date.valueOf("2023-10-23");
-        Date checkOutDate = Date.valueOf("2023-11-01");
+        LocalDate checkInDate = LocalDate.of(2023,10,23);
+        LocalDate checkOutDate = LocalDate.of(2023,11,1);
         Reservation reservation = new Reservation(2, checkInDate, checkOutDate, 1400, false, CheckInStatus.BeforeCheckIn, customer);
         reservation = reservationRepository.save(reservation);
 
 
-        checkOutDate = Date.valueOf("2023-11-05");
+        checkOutDate = LocalDate.of(2023,10,5);
         Reservation reservation2 = new Reservation(2, checkInDate, checkOutDate, 1700, false, CheckInStatus.BeforeCheckIn, customer);
 
         reservation2 = reservationRepository.save(reservation2);
@@ -69,8 +69,8 @@ public class ReservationRepositoryTests {
 
         // asserts reservations' repository, as well as properties of the reservations
         assertEquals(2, reservations.size());
-        assertEquals(Date.valueOf("2023-11-01"), reservations.get(0).getCheckOut());
-        assertEquals(Date.valueOf("2023-11-05"), reservations.get(1).getCheckOut());
+        assertEquals(LocalDate.of(2023,11,1), reservations.get(0).getCheckOut());
+        assertEquals(LocalDate.of(2023,10,5), reservations.get(1).getCheckOut());
     }
 
 
@@ -79,12 +79,12 @@ public class ReservationRepositoryTests {
         Customer customer = new Customer("bill@gmail.com", "Bill", null);
         customer = customerRepository.save(customer);
 
-        Date checkInDate = Date.valueOf("2023-10-23");
-        Date checkOutDate = Date.valueOf("2023-11-01");
+        LocalDate checkInDate = LocalDate.of(2023,10,23);
+        LocalDate checkOutDate = LocalDate.of(2023,11,1);
         Reservation reservation = new Reservation(2, checkInDate, checkOutDate, 1400, false, CheckInStatus.BeforeCheckIn, customer);
         reservation = reservationRepository.save(reservation);
 
-        checkOutDate = Date.valueOf("2023-11-05");
+        checkOutDate = LocalDate.of(2023,10,5);
         Reservation reservation2 = new Reservation(2, checkInDate, checkOutDate, 1700, false, CheckInStatus.BeforeCheckIn, customer);
         reservation2 = reservationRepository.save(reservation2);
 
@@ -93,8 +93,8 @@ public class ReservationRepositoryTests {
 
         // asserts reservations' repository, as well as properties of the reservations
         assertEquals(2, reservations.size());
-        assertEquals(Date.valueOf("2023-11-01"), reservations.get(0).getCheckOut());
-        assertEquals(Date.valueOf("2023-11-05"), reservations.get(1).getCheckOut());
+        assertEquals(LocalDate.of(2023,11,1), reservations.get(0).getCheckOut());
+        assertEquals(LocalDate.of(2023,10,5), reservations.get(1).getCheckOut());
     }
 
     @Test
@@ -103,8 +103,8 @@ public class ReservationRepositoryTests {
         Customer customer = new Customer("bill@gmail.com", "Bill", null);
         customer = customerRepository.save(customer);
 
-        Date checkInDate = Date.valueOf("2023-10-23");
-        Date checkOutDate = Date.valueOf("2023-11-01");
+        LocalDate checkInDate = LocalDate.of(2023,10,23);
+        LocalDate checkOutDate = LocalDate.of(2023,11,1);
         Reservation reservation = new Reservation(2, checkInDate, checkOutDate, 1400, false, CheckInStatus.BeforeCheckIn, customer);
         reservation = reservationRepository.save(reservation);
         int reservationID = reservation.getReservationID();

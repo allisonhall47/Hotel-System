@@ -2,7 +2,7 @@ package ca.mcgill.ecse321.hotelsystem.Model;
 
 import jakarta.persistence.*;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 @Entity
 public class Reservation {
@@ -10,8 +10,8 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int reservationID;
     private int numPeople;
-    private Date checkin;
-    private Date checkOut;
+    private LocalDate checkin;
+    private LocalDate checkOut;
     private int totalPrice;
     private boolean paid;
     private CheckInStatus checkedIn;
@@ -20,7 +20,7 @@ public class Reservation {
     private Customer customer;
 
 
-    public Reservation( int numPeople, Date checkin, Date checkOut, int totalPrice, boolean paid, CheckInStatus checkedIn, Customer customer) {
+    public Reservation( int numPeople, LocalDate checkin, LocalDate checkOut, int totalPrice, boolean paid, CheckInStatus checkedIn, Customer customer) {
         this.numPeople = numPeople;
         this.checkin = checkin;
         this.checkOut = checkOut;
@@ -45,19 +45,19 @@ public class Reservation {
         this.numPeople = numPeople;
     }
 
-    public Date getCheckIn() {
+    public LocalDate getCheckIn() {
         return checkin;
     }
 
-    public void setCheckIn(Date checkIn) {
+    public void setCheckIn(LocalDate checkIn) {
         this.checkin = checkIn;
     }
 
-    public Date getCheckOut() {
+    public LocalDate getCheckOut() {
         return checkOut;
     }
 
-    public void setCheckOut(Date checkOut) {
+    public void setCheckOut(LocalDate checkOut) {
         this.checkOut = checkOut;
     }
 

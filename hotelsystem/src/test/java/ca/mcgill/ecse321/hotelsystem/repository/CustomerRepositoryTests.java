@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.Date;
 import java.util.List;
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,7 +29,7 @@ public class CustomerRepositoryTests {
     }
     @Test
     public void testPersistAndLoad(){
-        Account account = new Account("bestpassword", "1234 idk street", Date.valueOf("2002-10-23"));
+        Account account = new Account("bestpassword", "1234 idk street", LocalDate.of(2002, 3, 3));
         account = accountRepository.save(account);
 
         Customer customer = new Customer("bill@gmail.com", "Bill", account);
@@ -40,15 +41,15 @@ public class CustomerRepositoryTests {
         // Asserting that the retrieved customer is not null and its properties match the expected value
         assertNotNull(customerRep);
         assertEquals("Bill", customerRep.getName());
-        assertEquals(Date.valueOf("2002-10-23"), customerRep.getAccount().getDob());
+        assertEquals(LocalDate.of(2002, 3, 3), customerRep.getAccount().getDob());
     }
 
     @Test
     public void testFindCustomersByName(){ // tests method to check retrieval of customers by name
-        Account account1 = new Account("bestpassword", "1234 idk street", Date.valueOf("2002-10-23"));
+        Account account1 = new Account("bestpassword", "1234 idk street", LocalDate.of(2002, 3, 3));
         account1 = accountRepository.save(account1);
 
-        Account account2 = new Account("badpassword", "1234 nvm street", Date.valueOf("2002-12-05"));
+        Account account2 = new Account("badpassword", "1234 nvm street", LocalDate.of(2002, 3, 3));
         account2 = accountRepository.save(account2);
 
         Customer customer1 = new Customer("bill@gmail.com", "Bill", account1);
@@ -68,7 +69,7 @@ public class CustomerRepositoryTests {
 
     @Test
     public void testFindCustomerByAccountId(){
-        Account account1 = new Account("bestpassword", "1234 idk street", Date.valueOf("2002-10-23"));
+        Account account1 = new Account("bestpassword", "1234 idk street", LocalDate.of(2002, 3, 3));
         account1 = accountRepository.save(account1);
 
         Customer customer1 = new Customer("bill@gmail.com", "Bill", account1);
@@ -104,7 +105,7 @@ public class CustomerRepositoryTests {
     @Test
     @Transactional
     public void testDeleteCustomerByEmail(){
-        Account account1 = new Account("bestpassword", "1234 idk street", Date.valueOf("2002-10-23"));
+        Account account1 = new Account("bestpassword", "1234 idk street", LocalDate.of(2002, 3, 3));
         account1 = accountRepository.save(account1);
 
         Customer customer1 = new Customer("bill@gmail.com", "Bill", account1);
