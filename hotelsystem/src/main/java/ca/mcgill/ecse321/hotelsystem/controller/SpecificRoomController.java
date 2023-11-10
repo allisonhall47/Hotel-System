@@ -24,35 +24,63 @@ public class SpecificRoomController {
     @Autowired
     private RoomService roomService;
 
+    /**
+     * getAllRooms: get a list of all specific rooms in the system
+     * @return a list of SpecificRoomResponseDto
+     */
     @GetMapping(value = "/specificRooms")
     public List<SpecificRoomResponseDto> getAllRooms(){
         return specificRoomService.getAllSpecificRooms().stream().map(SpecificRoomResponseDto::new).collect(Collectors.toList());
     }
 
+    /**
+     * getAllRooms: get a list of all specific rooms in the system by type
+     * @param type: type of room
+     * @return a list of SpecificRoomResponseDto
+     */
     @GetMapping(value = "/specificRoom/type/{type}")
     public List<SpecificRoomResponseDto> getSpecificRoomsByRoomType(@PathVariable String type){
         List<SpecificRoom> specificRooms = specificRoomService.findSpecificRoomsByRoomType(type);
         return specificRooms.stream().map(SpecificRoomResponseDto::new).collect(Collectors.toList());
     }
 
+    /**
+     * getAllRooms: get a list of all specific rooms in the system by view
+     * @param view: type of room
+     * @return a list of SpecificRoomResponseDto
+     */
     @GetMapping(value = "/specificRoom/view/{view}")
     public List<SpecificRoomResponseDto> getSpecificRoomsByRoomType(@PathVariable ViewType view){
         List<SpecificRoom> specificRooms = specificRoomService.findSpecificRoomsByView(view);
         return specificRooms.stream().map(SpecificRoomResponseDto::new).collect(Collectors.toList());
     }
 
+    /**
+     * getAllRooms: get a list of all specific rooms in the system open for use
+     * @return a list of SpecificRoomResponseDto
+     */
     @GetMapping(value = "/specificRoom/openForUse")
     public List<SpecificRoomResponseDto> getSpecificRoomsByRoomType(){
         List<SpecificRoom> specificRooms = specificRoomService.findSpecificRoomsOpenForUse();
         return specificRooms.stream().map(SpecificRoomResponseDto::new).collect(Collectors.toList());
     }
 
+    /**
+     * getAllRooms: get a specific room in the system by number
+     * @param number: number of room
+     * @return a SpecificRoomResponseDto
+     */
     @GetMapping(value = "/specificRoom/number/{number}")
     public ResponseEntity<SpecificRoomResponseDto> getSpecificRoomsByRoomType(@PathVariable int number){
         SpecificRoom specificRoom = specificRoomService.findSpecificRoomByNumber(number);
         return new ResponseEntity<>(new SpecificRoomResponseDto(specificRoom), HttpStatus.OK);
     }
 
+    /**
+     * createSpecificRoom: create new specificRoom
+     * @param specificRoomRequestDto: new room details
+     * @return a SpecificRoomResponseDto
+     */
     @PostMapping(value = "/specificRoom/create")
     public ResponseEntity<SpecificRoomResponseDto> createSpecificRoom(@RequestBody SpecificRoomRequestDto specificRoomRequestDto){
         String type = specificRoomRequestDto.getRoomType();
@@ -62,6 +90,11 @@ public class SpecificRoomController {
         return new ResponseEntity<>(new SpecificRoomResponseDto(specificRoom), HttpStatus.CREATED);
     }
 
+    /**
+     * createSpecificRoom: update a specificRoom
+     * @param specificRoomRequestDto: new details
+     * @return a SpecificRoomResponseDto
+     */
     @PutMapping(value = "/specificRoom/update")
     public ResponseEntity<SpecificRoomResponseDto> updateSpecificRoom(@RequestBody SpecificRoomRequestDto specificRoomRequestDto){
         String type = specificRoomRequestDto.getRoomType();
@@ -71,6 +104,10 @@ public class SpecificRoomController {
         return new ResponseEntity<>(new SpecificRoomResponseDto(specificRoom), HttpStatus.OK);
     }
 
+    /**
+     * createSpecificRoom: delete a specificRoom by number
+     * @param number: number of room
+     */
     @DeleteMapping(value = "/specificRoom/delete/{number}")
     public void deleteSpecificRoom(@PathVariable int number){
         specificRoomService.deleteSpecificRoomByNumber(number);

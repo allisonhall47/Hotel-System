@@ -18,17 +18,30 @@ public class RoomController {
     @Autowired
     private RoomService roomService;
 
+    /**
+     * getAllRooms: get a list of all rooms in the system
+     * @return a list of RoomResponseDto
+     */
     @GetMapping(value = "/rooms")
     public List<RoomResponseDto> getAllRooms(){
         return roomService.getAllRooms().stream().map(RoomResponseDto::new).collect(Collectors.toList());
     }
 
+    /**
+     * getRoomByType: get a list of all rooms in the system by type
+     * @return a list of RoomResponseDto
+     */
     @GetMapping(value = "/room/{type}")
     public ResponseEntity<RoomResponseDto> getRoomByType(@PathVariable String type){
         Room room = roomService.getRoomByType(type);
         return new ResponseEntity<>(new RoomResponseDto(room), HttpStatus.OK);
     }
 
+    /**
+     * createRoom: create a room
+     * @param roomRequestDto: information for new room
+     * @return a RoomResponseDto
+     */
     @PostMapping(value = "/room/create")
     public ResponseEntity<RoomResponseDto> createRoom(@RequestBody RoomRequestDto roomRequestDto){
         Room room = roomRequestDto.toModel();
@@ -36,6 +49,11 @@ public class RoomController {
         return new ResponseEntity<>(new RoomResponseDto(room), HttpStatus.CREATED);
     }
 
+    /**
+     * updateRoom: update a room
+     * @param roomRequestDto: information for updated room
+     * @return a RoomResponseDto
+     */
     @PutMapping(value = "/room/update")
     public ResponseEntity<RoomResponseDto> updateRoom(@RequestBody RoomRequestDto roomRequestDto){
         Room room = roomRequestDto.toModel();

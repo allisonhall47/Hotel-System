@@ -30,6 +30,12 @@ public class RoomService {
         return rooms;
     }
 
+    /**
+     * createRoom: service method that creates a room and adds it to the database
+     * @param room: new room
+     * @return room
+     * @throws HRSException if the room is invalid
+     */
     @Transactional
     public Room createRoom(Room room){
         isValidRoom(room);
@@ -37,6 +43,12 @@ public class RoomService {
         return room;
     }
 
+    /**
+     * updateRoom: service method that updates a room
+     * @param room: new room details
+     * @return room
+     * @throws HRSException if the room is invalid or room is not found in the database
+     */
     @Transactional
     public Room updateRoom(Room room){
         isValidRoom(room);
@@ -50,6 +62,12 @@ public class RoomService {
         return roomRepository.save(oldRoom);
     }
 
+    /**
+     * updateRoom: service method that get a room by type
+     * @param type: type of room
+     * @return room
+     * @throws HRSException if type is invalid or room not found
+     */
     @Transactional
     public Room getRoomByType(String type){
         if(type == null || type.isEmpty()){
@@ -62,6 +80,11 @@ public class RoomService {
         return room;
     }
 
+    /**
+     * isValidRoom: service method that updates a room
+     * @param room: room
+     * @throws HRSException if the room is invalid
+     */
     public void isValidRoom(Room room){
         if(!room.getType().equals("Suite") && !room.getType().equals("Deluxe") && !room.getType().equals("Luxury") && !room.getType().equals("Regular")){
             throw new HRSException(HttpStatus.BAD_REQUEST, "Invalid room type.");
