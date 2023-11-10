@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -27,6 +29,8 @@ public class RepairIntegrationTests {
 
     private static final String DESCRIPTION = "Fix the doorknob";
     private static final String EMAIL = "someguy@hotelhell.com";
+    private static final String EMAIL2 = "thenewguy@gmail.com.com";
+
     private static int rep_id = 0;
 
     @Autowired
@@ -51,7 +55,7 @@ public class RepairIntegrationTests {
 
     @Test
     @Order(1)
-    public void createEmployee() {
+    public void createEmployees() {
         AccountRequestDto accReq = new AccountRequestDto("Password123", "17 builder street", LocalDate.parse("1990-10-10"));
         ResponseEntity<AccountResponseDto> accRes = client.postForEntity("/account/create", accReq, AccountResponseDto.class);
         assertEquals(HttpStatus.CREATED, accRes.getStatusCode());
@@ -60,6 +64,15 @@ public class RepairIntegrationTests {
         EmployeeRequestDto req = new EmployeeRequestDto("Tom Thomson", EMAIL, 100,accId );
         ResponseEntity<EmployeeResponseDto> res = client.postForEntity("/employee/create", req, EmployeeResponseDto.class);
         assertEquals(HttpStatus.CREATED, res.getStatusCode());
+
+        AccountRequestDto accReq2 = new AccountRequestDto("Password1232", "9 baker street", LocalDate.parse("1968-01-01"));
+        ResponseEntity<AccountResponseDto> accRes2 = client.postForEntity("/account/create", accReq2, AccountResponseDto.class);
+        assertEquals(HttpStatus.CREATED, accRes2.getStatusCode());
+        int accId2 = accRes2.getBody().getAccountNumber();
+
+        EmployeeRequestDto req2 = new EmployeeRequestDto("Tom Thomson", EMAIL2, 100,accId2 );
+        ResponseEntity<EmployeeResponseDto> res2 = client.postForEntity("/employee/create", req2, EmployeeResponseDto.class);
+        assertEquals(HttpStatus.CREATED, res2.getStatusCode());
     }
 
     @Test
@@ -104,6 +117,13 @@ public class RepairIntegrationTests {
 
     @Test
     @Order(5)
+    public void testGetInvalidRepair() {
+        ResponseEntity<String> res = client.getForEntity("/repair/" + (rep_id+1), String.class);
+        assertEquals(HttpStatus.NOT_FOUND, res.getStatusCode());
+    }
+
+    @Test
+    @Order(6)
     public void testChangeRepairStatus() {
         ResponseEntity<RepairResponseDto> res = client.postForEntity("/repair/status/" + rep_id, CompletionStatus.Done, RepairResponseDto.class);
         assertEquals(HttpStatus.OK, res.getStatusCode());
@@ -112,9 +132,39 @@ public class RepairIntegrationTests {
     }
 
     @Test
-    @Order(6)
+    @Order(7)
+    public void testChangeInvalidRepairStatus() {
+        ResponseEntity<String> res = client.postForEntity("/repair/status/" + (rep_id+1), CompletionStatus.Done, String.class);
+        assertEquals(HttpStatus.NOT_FOUND, res.getStatusCode());
+    }
+
+    @Test
+    @Order(8)
+    public void testChangeRepairEmployee() {
+        ResponseEntity<RepairResponseDto> res = client.postForEntity("/repair/employee/" + rep_id, EMAIL2, RepairResponseDto.class);
+        assertEquals(HttpStatus.OK, res.getStatusCode());
+        assertNotNull(res.getBody());
+        assertEquals(EMAIL2, res.getBody().getEmployee().getEmail());
+    }
+
+    @Test
+    @Order(9)
+    public void testChangeInvalidRepairEmployee() {
+        ResponseEntity<String> res = client.postForEntity("/repair/employee/" + (rep_id+1), EMAIL, String.class);
+        assertEquals(HttpStatus.NOT_FOUND, res.getStatusCode());
+    }
+
+    @Test
+    @Order(10)
+    public void testChangeRepairInvalidEmployee() {
+        ResponseEntity<String> res = client.postForEntity("/repair/employee/" + rep_id, EMAIL2+"invalid", String.class);
+        assertEquals(HttpStatus.NOT_FOUND, res.getStatusCode());
+    }
+
+    @Test
+    @Order(11)
     public void testGetRepairsForEmployee() {
-        ResponseEntity<List> res = client.getForEntity("/repair/employee/" + EMAIL, List.class);
+        ResponseEntity<List> res = client.getForEntity("/repair/employee/" + EMAIL2, List.class);
         assertEquals(HttpStatus.OK, res.getStatusCode());
         assertNotNull(res.getBody());
         List<Map<String, Object>> reqs = res.getBody();
@@ -122,11 +172,18 @@ public class RepairIntegrationTests {
         assertEquals(DESCRIPTION, reqs.get(0).get("description"));
         assertEquals(CompletionStatus.Done.toString(), reqs.get(0).get("status"));
         Map<String, Object> employee = (Map<String, Object>) reqs.get(0).get("employee");
-        assertEquals(EMAIL, employee.get("email"));
+        assertEquals(EMAIL2, employee.get("email"));
     }
 
     @Test
-    @Order(7)
+    @Order(12)
+    public void testGetRepairsForInvalidEmployee() {
+        ResponseEntity<String> res = client.getForEntity("/repair/employee/" + EMAIL + "invalid", String.class);
+        assertEquals(HttpStatus.NOT_FOUND, res.getStatusCode());
+    }
+
+    @Test
+    @Order(13)
     public void testCreateInvalidRepairNoEmployee() {
         RepairRequestDto req = new RepairRequestDto(DESCRIPTION, EMAIL + "thismakesitinvalid");
         String url = "/repair/new";
@@ -135,8 +192,8 @@ public class RepairIntegrationTests {
     }
 
     @Test
-    @Order(8)
-    public void testCreateInvalidRepairBadDescrpiton() {
+    @Order(14)
+    public void testCreateInvalidRepairBadDescription() {
         RepairRequestDto req = new RepairRequestDto("", EMAIL);
         String url = "/repair/new";
         ResponseEntity<String> res = client.postForEntity(url, req, String.class);
@@ -144,12 +201,18 @@ public class RepairIntegrationTests {
     }
 
     @Test
-    @Order(9)
+    @Order(15)
     public void testDeleteRepair() {
-        client.delete("/repair/" + rep_id);
+        ResponseEntity<String> response = client.exchange("/repair/"+rep_id, HttpMethod.DELETE, new HttpEntity<>(null), String.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         ResponseEntity<String> res = client.getForEntity("/repair/" + rep_id, String.class);
         assertEquals(HttpStatus.NOT_FOUND, res.getStatusCode());
-
     }
+
+    @Test
+    @Order(16)
+    public void testDeleteInvalidRepair() {
+        ResponseEntity<String> response = client.exchange("/repair/"+rep_id, HttpMethod.DELETE, new HttpEntity<>(null), String.class);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());    }
 }
 
