@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -115,6 +117,21 @@ public class RequestIntegrationTests {
 
     @Test
     @Order(7)
+    public void tetGetAllRequests() {
+        ResponseEntity<List> res = client.getForEntity("/request", List.class);
+        assertEquals(HttpStatus.OK, res.getStatusCode());
+        assertNotNull(res.getBody());
+        List<Map<String, Object>> reqs = res.getBody();
+        assertEquals(1, reqs.size());
+        assertEquals(REQ_DESCRIPTION, reqs.get(0).get("description"));
+        assertEquals(CompletionStatus.Done.toString(), reqs.get(0).get("status"));
+        Map<String, Object> reservation = (Map<String, Object>) reqs.get(0).get("reservation");
+        Map<String, Object> customer = (Map<String, Object>) reservation.get("customer");
+        assertEquals(CUSTOMER_EMAIL, customer.get("email"));
+    }
+
+    @Test
+    @Order(8)
     public void testCreateInvalidRequestNoReservation() {
         RequestRequestDto req = new RequestRequestDto(REQ_DESCRIPTION, res_id+1);
         String url = "/request/new";
@@ -123,7 +140,7 @@ public class RequestIntegrationTests {
     }
 
     @Test
-    @Order(8)
+    @Order(9)
     public void testCreateInvalidRequestBadDescription() {
         RequestRequestDto req = new RequestRequestDto("", res_id);
         String url = "/request/new";
@@ -132,16 +149,30 @@ public class RequestIntegrationTests {
     }
 
     @Test
-    @Order(9)
+    @Order(10)
     public void testDeleteRequest() {
-        client.delete("/request/" + req_id);
+        ResponseEntity<String> response = client.exchange("/request/"+req_id, HttpMethod.DELETE, new HttpEntity<>(null), String.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         ResponseEntity<String> res = client.getForEntity("/request/" + req_id, String.class);
         assertEquals(HttpStatus.NOT_FOUND, res.getStatusCode());
-
     }
 
     @Test
-    @Order(9)
+    @Order(11)
+    public void testDeleteInvalidRequest() {
+        ResponseEntity<String> response = client.exchange("/request/"+req_id, HttpMethod.DELETE, new HttpEntity<>(null), String.class);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    @Order(12)
+    public void testDeleteForInvalidReservation() {
+        ResponseEntity<String> response = client.exchange("/request/reservation/"+(res_id+1), HttpMethod.DELETE, new HttpEntity<>(null), String.class);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    @Order(13)
     public void testDeleteForReservation() {
         String url = "/request/new";
 
@@ -151,7 +182,8 @@ public class RequestIntegrationTests {
         RequestRequestDto req2 = new RequestRequestDto(REQ_DESCRIPTION, res_id);
         client.postForEntity(url, req2, RequestResponseDto.class);
 
-        client.delete("/request/reservation/" + res_id);
+        ResponseEntity<String> response = client.exchange("/request/reservation/"+res_id, HttpMethod.DELETE, new HttpEntity<>(null), String.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         ResponseEntity<List> res = client.getForEntity("/request/reservation/" + res_id, List.class);
         assertEquals(HttpStatus.OK, res.getStatusCode());
