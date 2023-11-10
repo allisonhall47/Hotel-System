@@ -212,6 +212,12 @@ public class OwnerServiceTests {
         assertEquals("Invalid email address.", e.getMessage());
     }
 
+    /**
+     * Tests the createOwner method's handling of null account scenarios. It verifies that creating an Owner with a null
+     * account correctly triggers an HRSException with the expected HTTP status and error message, ensuring proper error
+     * handling for null account cases in the owner creation process.
+     */
+
     @Test
     public void testCreateOwner_NullAccount() {
         String email = "newowner@example.com";
