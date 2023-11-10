@@ -94,7 +94,7 @@ public class RepairController {
      * Delete repair with the given id
      * @param id Id of the repair to delete
      * @throws ca.mcgill.ecse321.hotelsystem.exception.HRSException if repair with given id does not exist
-     * @return Redirection cmd to list of all repairs
+     * @return Redirection to list of all repairs: "redirect:/repair"
      */
     @DeleteMapping("repair/{id}")
     @ResponseStatus(HttpStatus.OK)
