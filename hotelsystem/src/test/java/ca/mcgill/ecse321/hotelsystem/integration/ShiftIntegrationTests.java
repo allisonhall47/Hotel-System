@@ -1,15 +1,11 @@
 package ca.mcgill.ecse321.hotelsystem.integration;
 
-import ca.mcgill.ecse321.hotelsystem.Model.Account;
 import ca.mcgill.ecse321.hotelsystem.Model.Employee;
 import ca.mcgill.ecse321.hotelsystem.Model.Shift;
-import ca.mcgill.ecse321.hotelsystem.dto.AccountRequestDto;
-import ca.mcgill.ecse321.hotelsystem.dto.EmployeeResponseDto;
 import ca.mcgill.ecse321.hotelsystem.dto.ShiftRequestDto;
 import ca.mcgill.ecse321.hotelsystem.dto.ShiftResponseDto;
 import ca.mcgill.ecse321.hotelsystem.repository.EmployeeRepository;
 import ca.mcgill.ecse321.hotelsystem.repository.ShiftRepository;
-import org.apache.coyote.Response;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

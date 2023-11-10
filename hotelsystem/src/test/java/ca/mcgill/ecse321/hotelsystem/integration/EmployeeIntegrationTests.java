@@ -2,9 +2,6 @@ package ca.mcgill.ecse321.hotelsystem.integration;
 
 
 import ca.mcgill.ecse321.hotelsystem.Model.Account;
-import ca.mcgill.ecse321.hotelsystem.Model.Employee;
-import ca.mcgill.ecse321.hotelsystem.dto.CustomerRequestDto;
-import ca.mcgill.ecse321.hotelsystem.dto.CustomerResponseDto;
 import ca.mcgill.ecse321.hotelsystem.dto.EmployeeRequestDto;
 import ca.mcgill.ecse321.hotelsystem.dto.EmployeeResponseDto;
 import ca.mcgill.ecse321.hotelsystem.repository.AccountRepository;
@@ -28,9 +25,6 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.util.AssertionErrors.assertEquals;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)

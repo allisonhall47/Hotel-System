@@ -1,26 +1,19 @@
 package ca.mcgill.ecse321.hotelsystem.controller;
 
-import ca.mcgill.ecse321.hotelsystem.Model.Employee;
 import ca.mcgill.ecse321.hotelsystem.dto.ShiftRequestDto;
 import ca.mcgill.ecse321.hotelsystem.dto.ShiftResponseDto;
-import ca.mcgill.ecse321.hotelsystem.exception.HRSException;
 import ca.mcgill.ecse321.hotelsystem.service.EmployeeService;
 import ca.mcgill.ecse321.hotelsystem.service.ShiftService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ca.mcgill.ecse321.hotelsystem.dto.ShiftRequestDto;
-import ca.mcgill.ecse321.hotelsystem.dto.ShiftResponseDto;
 import ca.mcgill.ecse321.hotelsystem.Model.Shift;
-import ca.mcgill.ecse321.hotelsystem.service.ShiftService;
 
 import java.sql.Time;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.sql.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @CrossOrigin(origins="*")
 @RestController

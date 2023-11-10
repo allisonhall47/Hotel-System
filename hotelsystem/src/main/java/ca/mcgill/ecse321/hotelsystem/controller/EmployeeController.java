@@ -1,7 +1,6 @@
 package ca.mcgill.ecse321.hotelsystem.controller;
 
 import ca.mcgill.ecse321.hotelsystem.Model.Employee;
-import ca.mcgill.ecse321.hotelsystem.dto.CustomerResponseDto;
 import ca.mcgill.ecse321.hotelsystem.dto.EmployeeRequestDto;
 import ca.mcgill.ecse321.hotelsystem.dto.EmployeeResponseDto;
 import ca.mcgill.ecse321.hotelsystem.service.AccountService;
