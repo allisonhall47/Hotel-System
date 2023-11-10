@@ -19,7 +19,7 @@ public class SpecificRoomRequestDto {
     }
 
     public SpecificRoom toModel(Room room){
-        return new SpecificRoom(number, view, description, Boolean.FALSE, room);
+        return new SpecificRoom(number, view, description, Boolean.TRUE, room);
     }
 
     public int getNumber() {

@@ -27,11 +27,6 @@ public class RoomIntegrationTests {
     @Autowired
     private TestRestTemplate client;
 
-    @BeforeAll
-    @AfterAll
-    public void clearDatabase() {
-        roomRepository.deleteAll();
-    }
 
     @Test
     @Order(0)

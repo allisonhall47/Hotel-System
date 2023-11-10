@@ -29,13 +29,13 @@ public class SpecificRoomController {
         return specificRoomService.getAllSpecificRooms().stream().map(SpecificRoomResponseDto::new).collect(Collectors.toList());
     }
 
-    @GetMapping(value = "/specificRoom/{type}")
+    @GetMapping(value = "/specificRoom/type/{type}")
     public List<SpecificRoomResponseDto> getSpecificRoomsByRoomType(@PathVariable String type){
         List<SpecificRoom> specificRooms = specificRoomService.findSpecificRoomsByRoomType(type);
         return specificRooms.stream().map(SpecificRoomResponseDto::new).collect(Collectors.toList());
     }
 
-    @GetMapping(value = "/specificRoom/{view}")
+    @GetMapping(value = "/specificRoom/view/{view}")
     public List<SpecificRoomResponseDto> getSpecificRoomsByRoomType(@PathVariable ViewType view){
         List<SpecificRoom> specificRooms = specificRoomService.findSpecificRoomsByView(view);
         return specificRooms.stream().map(SpecificRoomResponseDto::new).collect(Collectors.toList());
@@ -47,7 +47,7 @@ public class SpecificRoomController {
         return specificRooms.stream().map(SpecificRoomResponseDto::new).collect(Collectors.toList());
     }
 
-    @GetMapping(value = "/specificRoom/{number}")
+    @GetMapping(value = "/specificRoom/number/{number}")
     public ResponseEntity<SpecificRoomResponseDto> getSpecificRoomsByRoomType(@PathVariable int number){
         SpecificRoom specificRoom = specificRoomService.findSpecificRoomByNumber(number);
         return new ResponseEntity<>(new SpecificRoomResponseDto(specificRoom), HttpStatus.OK);
