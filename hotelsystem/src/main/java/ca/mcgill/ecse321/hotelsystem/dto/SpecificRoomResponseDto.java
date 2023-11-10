@@ -19,6 +19,9 @@ public class SpecificRoomResponseDto {
         if (specificRoom.getRoom() != null) this.roomType = specificRoom.getRoom().getType();
     }
 
+    public SpecificRoomResponseDto() {
+    }
+
     public int getNumber() {
         return number;
     }
