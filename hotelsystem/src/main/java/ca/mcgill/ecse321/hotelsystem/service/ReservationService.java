@@ -125,6 +125,11 @@ public class ReservationService {
         return reservationRepository.save(reservation);
     }
 
+    /**
+     * check in for a reservation
+     * @param reservation reservation
+     * @return updated reservation
+     */
     @Transactional
     public Reservation checkIn(Reservation reservation) {
         reservation = reservationRepository.findReservationByReservationID(reservation.getReservationID());
@@ -135,6 +140,10 @@ public class ReservationService {
         return reservationRepository.save(reservation);
     }
 
+    /**
+     * get non paid reservations
+     * @return list of reservations
+     */
     @Transactional
     public List<Reservation> getReservationsNotPaid() {
         return reservationRepository.getReservationByPaidIs(false);
