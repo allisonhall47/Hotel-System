@@ -86,6 +86,18 @@ public class RepairServiceTests {
     }
 
     @Test
+    public void testCreateInvalidRepair2() {
+        HRSException ex = assertThrows(HRSException.class, () -> service.createRepair(EMAIL, "                   "));
+        assertEquals(HttpStatus.BAD_REQUEST, ex.getStatus());
+    }
+
+    @Test
+    public void testCreateInvalidRepair3() {
+        HRSException ex = assertThrows(HRSException.class, () -> service.createRepair(EMAIL, "too short"));
+        assertEquals(HttpStatus.BAD_REQUEST, ex.getStatus());
+    }
+
+    @Test
     public void testReadRepair() {
         Repair rep = service.readRepairById(VALID_REPAIR_KEY);
         assertNotNull(rep);

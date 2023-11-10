@@ -94,6 +94,18 @@ public class RequestServiceTests {
     }
 
     @Test
+    public void testCreateInvalidRequest2() {
+        HRSException ex = assertThrows(HRSException.class, () -> service.createRequest("             ", VALID_RESERVATION_ID));
+        assertEquals(HttpStatus.BAD_REQUEST, ex.getStatus());
+    }
+
+    @Test
+    public void testCreateInvalidRequest3() {
+        HRSException ex = assertThrows(HRSException.class, () -> service.createRequest("too short", VALID_RESERVATION_ID));
+        assertEquals(HttpStatus.BAD_REQUEST, ex.getStatus());
+    }
+
+    @Test
     public void testCreateRequestForInvalidReservation() {
         HRSException ex = assertThrows(HRSException.class, () -> service.createRequest(REQUEST_DESCRIPTION, VALID_RESERVATION_ID + 1));
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatus());
