@@ -1,6 +1,9 @@
 package ca.mcgill.ecse321.hotelsystem.controller;
 
+import ca.mcgill.ecse321.hotelsystem.Model.Customer;
 import ca.mcgill.ecse321.hotelsystem.Model.Owner;
+import ca.mcgill.ecse321.hotelsystem.dto.CustomerRequestDto;
+import ca.mcgill.ecse321.hotelsystem.dto.CustomerResponseDto;
 import ca.mcgill.ecse321.hotelsystem.dto.OwnerRequestDto;
 import ca.mcgill.ecse321.hotelsystem.dto.OwnerResponseDto;
 import ca.mcgill.ecse321.hotelsystem.exception.HRSException;
@@ -42,12 +45,15 @@ public class OwnerController {
      * @return A ResponseEntity containing the newly created OwnerResponseDto and HttpStatus.CREATED.
      */
     @PostMapping(value = {"/create", "/create/"})
-    public ResponseEntity<OwnerResponseDto> createOwner(@RequestBody OwnerRequestDto ownerRequest) {
-        Owner owner = ownerRequest.getAccountNumber() == 0 ?
-                ownerRequest.toModel(null) :
-                ownerRequest.toModel(accountService.getAccountByAccountNumber(ownerRequest.getAccountNumber()));
+    public ResponseEntity<OwnerResponseDto> createOwner(@RequestBody OwnerRequestDto ownerRequest){
+        Owner owner;
+        if(ownerRequest.getAccountNumber() == 0){
+            owner = ownerRequest.toModel(null);
+        } else {
+            owner = ownerRequest.toModel(accountService.getAccountByAccountNumber(ownerRequest.getAccountNumber()));
+        }
         owner = ownerService.createOwner(owner);
-        return new ResponseEntity<>(new OwnerResponseDto(owner), HttpStatus.CREATED);
+        return new ResponseEntity<OwnerResponseDto>(new OwnerResponseDto(owner), HttpStatus.CREATED);
     }
 
     /**
@@ -58,10 +64,7 @@ public class OwnerController {
      */
     @GetMapping(value = {"/email", "/email/"})
     public ResponseEntity<OwnerResponseDto> getOwnerByEmail(@RequestParam String email) {
-        Owner owner = ownerService.getOwnerByEmail(email);
-        return owner != null ?
-                new ResponseEntity<>(new OwnerResponseDto(owner), HttpStatus.OK) :
-                new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<OwnerResponseDto>(new OwnerResponseDto(ownerService.getOwnerByEmail(email)), HttpStatus.OK);
     }
 
     /**
@@ -72,18 +75,14 @@ public class OwnerController {
      */
     @PutMapping(value = {"/update", "/update/"})
     public ResponseEntity<?> updateOwner(@RequestBody OwnerRequestDto ownerRequest) {
-        // Validate the request before proceeding
-        if (ownerRequest.getEmail() == null || ownerRequest.getEmail().isEmpty()) {
-            return ResponseEntity.badRequest().body("Empty field in the owner.");
+        Owner owner;
+        if(ownerRequest.getAccountNumber() == 0){
+            owner = ownerRequest.toModel(null);
+        } else {
+            owner = ownerRequest.toModel(accountService.getAccountByAccountNumber(ownerRequest.getAccountNumber()));
         }
-
-        try {
-            Owner currentOwner = ownerService.getOwnerByEmail(ownerRequest.getEmail());
-            Owner updatedOwner = ownerService.updateOwnerInformation(ownerRequest.toModel(currentOwner.getAccount()));
-            return new ResponseEntity<>(new OwnerResponseDto(updatedOwner), HttpStatus.OK);
-        } catch (HRSException ex) {
-            return ResponseEntity.status(ex.getStatus()).body(ex.getMessage());
-        }
+        owner = ownerService.updateOwnerInformation(owner);
+        return new ResponseEntity<OwnerResponseDto>(new OwnerResponseDto(owner), HttpStatus.OK);
     }
 
 }

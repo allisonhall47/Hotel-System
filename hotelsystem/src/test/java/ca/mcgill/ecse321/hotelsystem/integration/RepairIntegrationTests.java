@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import ca.mcgill.ecse321.hotelsystem.Model.CompletionStatus;
 import ca.mcgill.ecse321.hotelsystem.dto.*;
+import ca.mcgill.ecse321.hotelsystem.repository.AccountRepository;
 import ca.mcgill.ecse321.hotelsystem.repository.EmployeeRepository;
 import ca.mcgill.ecse321.hotelsystem.repository.RepairRepository;
 import org.junit.jupiter.api.*;
@@ -15,6 +16,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -36,17 +38,26 @@ public class RepairIntegrationTests {
     @Autowired
     private EmployeeRepository employeeRepo;
 
+    @Autowired
+    private AccountRepository accountRepo;
+
     @BeforeAll
     @AfterAll
     public void clearDatabase() {
         repairRepo.deleteAll();
         employeeRepo.deleteAll();
+        accountRepo.deleteAll();
     }
 
     @Test
     @Order(1)
     public void createEmployee() {
-        EmployeeRequestDto req = new EmployeeRequestDto("Tom Thomson", EMAIL, 100,0 );
+        AccountRequestDto accReq = new AccountRequestDto("Password123", "17 builder street", LocalDate.parse("1990-10-10"));
+        ResponseEntity<AccountResponseDto> accRes = client.postForEntity("/account/create", accReq, AccountResponseDto.class);
+        assertEquals(HttpStatus.CREATED, accRes.getStatusCode());
+        int accId = accRes.getBody().getAccountNumber();
+
+        EmployeeRequestDto req = new EmployeeRequestDto("Tom Thomson", EMAIL, 100,accId );
         ResponseEntity<EmployeeResponseDto> res = client.postForEntity("/employee/create", req, EmployeeResponseDto.class);
         assertEquals(HttpStatus.CREATED, res.getStatusCode());
     }
@@ -68,6 +79,20 @@ public class RepairIntegrationTests {
 
     @Test
     @Order(3)
+    public void testGetAllRepairs() {
+        ResponseEntity<List> res = client.getForEntity("/repair", List.class);
+        assertEquals(HttpStatus.OK, res.getStatusCode());
+        assertNotNull(res.getBody());
+        List<Map<String, Object>> reqs = res.getBody();
+        assertEquals(1, reqs.size());
+        assertEquals(DESCRIPTION, reqs.get(0).get("description"));
+        assertEquals(CompletionStatus.Pending.toString(), reqs.get(0).get("status"));
+        Map<String, Object> employee = (Map<String, Object>) reqs.get(0).get("employee");
+        assertEquals(EMAIL, employee.get("email"));
+    }
+
+    @Test
+    @Order(4)
     public void testGetRepair() {
         ResponseEntity<RepairResponseDto> res = client.getForEntity("/repair/" + rep_id, RepairResponseDto.class);
         assertEquals(HttpStatus.OK, res.getStatusCode());
@@ -78,7 +103,7 @@ public class RepairIntegrationTests {
     }
 
     @Test
-    @Order(4)
+    @Order(5)
     public void testChangeRepairStatus() {
         ResponseEntity<RepairResponseDto> res = client.postForEntity("/repair/status/" + rep_id, CompletionStatus.Done, RepairResponseDto.class);
         assertEquals(HttpStatus.OK, res.getStatusCode());
@@ -87,7 +112,7 @@ public class RepairIntegrationTests {
     }
 
     @Test
-    @Order(5)
+    @Order(6)
     public void testGetRepairsForEmployee() {
         ResponseEntity<List> res = client.getForEntity("/repair/employee/" + EMAIL, List.class);
         assertEquals(HttpStatus.OK, res.getStatusCode());
@@ -101,7 +126,7 @@ public class RepairIntegrationTests {
     }
 
     @Test
-    @Order(6)
+    @Order(7)
     public void testCreateInvalidRepairNoEmployee() {
         RepairRequestDto req = new RepairRequestDto(DESCRIPTION, EMAIL + "thismakesitinvalid");
         String url = "/repair/new";
@@ -110,7 +135,7 @@ public class RepairIntegrationTests {
     }
 
     @Test
-    @Order(7)
+    @Order(8)
     public void testCreateInvalidRepairBadDescrpiton() {
         RepairRequestDto req = new RepairRequestDto("", EMAIL);
         String url = "/repair/new";
@@ -119,7 +144,7 @@ public class RepairIntegrationTests {
     }
 
     @Test
-    @Order(8)
+    @Order(9)
     public void testDeleteRepair() {
         client.delete("/repair/" + rep_id);
         ResponseEntity<String> res = client.getForEntity("/repair/" + rep_id, String.class);

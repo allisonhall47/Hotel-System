@@ -54,20 +54,17 @@ public class RequestIntegrationTests {
     @Test
     @Order(1)
     public void createCustomerAndReservation() {
-        CustomerRequestDto request = new CustomerRequestDto("John", CUSTOMER_EMAIL);
-        ResponseEntity<CustomerResponseDto> response = client.postForEntity("/customer/create", request, CustomerResponseDto.class);
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        ResponseEntity<CustomerResponseDto> customerResponse = client.postForEntity("/customer/create", new CustomerRequestDto("john", CUSTOMER_EMAIL), CustomerResponseDto.class);
+        assertEquals(HttpStatus.CREATED, customerResponse.getStatusCode());
+        ResponseEntity<ReservationResponseDto> reservationResponse = client.postForEntity("/reservation/new", new ReservationRequestDto(2,LocalDate.of(2023,9,1),LocalDate.of(2023,9,4), CUSTOMER_EMAIL), ReservationResponseDto.class);
+        assertEquals(HttpStatus.OK, reservationResponse.getStatusCode());
+        assertEquals(2, reservationResponse.getBody().getNumPeople());
 
-        ReservationRequestDto resReq = new ReservationRequestDto(2, LocalDate.parse("2024-04-05"), LocalDate.parse("2024-05-05"), CUSTOMER_EMAIL);
-        String url = "/reservation/customer/" + CUSTOMER_EMAIL + "/new";
-        ResponseEntity<ReservationResponseDto> res = client.postForEntity(url, resReq, ReservationResponseDto.class);
-        assertEquals(2, res.getBody().getNumPeople());
-
-        res_id = res.getBody().getReservationId();
+        res_id = reservationResponse.getBody().getReservationId();
     }
 
     @Test
-    @Order(2)
+    @Order(3)
     public void testCreateRequest() {
         RequestRequestDto req = new RequestRequestDto(REQ_DESCRIPTION, res_id);
         String url = "/request/new";
@@ -82,7 +79,7 @@ public class RequestIntegrationTests {
     }
 
     @Test
-    @Order(3)
+    @Order(4)
     public void testGetRequest() {
         ResponseEntity<RequestResponseDto> res = client.getForEntity("/request/" + req_id, RequestResponseDto.class);
         assertEquals(HttpStatus.OK, res.getStatusCode());
@@ -93,7 +90,7 @@ public class RequestIntegrationTests {
     }
 
     @Test
-    @Order(4)
+    @Order(5)
     public void testChangeRequestStatus() {
         ResponseEntity<RequestResponseDto> res = client.postForEntity("/request/status/" + req_id, CompletionStatus.Done, RequestResponseDto.class);
         assertEquals(HttpStatus.OK, res.getStatusCode());
@@ -102,7 +99,7 @@ public class RequestIntegrationTests {
     }
 
     @Test
-    @Order(5)
+    @Order(6)
     public void testGetRequestsForReservation() {
         ResponseEntity<List> res = client.getForEntity("/request/reservation/" + res_id, List.class);
         assertEquals(HttpStatus.OK, res.getStatusCode());
@@ -117,7 +114,7 @@ public class RequestIntegrationTests {
     }
 
     @Test
-    @Order(6)
+    @Order(7)
     public void testCreateInvalidRequestNoReservation() {
         RequestRequestDto req = new RequestRequestDto(REQ_DESCRIPTION, res_id+1);
         String url = "/request/new";
@@ -126,7 +123,7 @@ public class RequestIntegrationTests {
     }
 
     @Test
-    @Order(7)
+    @Order(8)
     public void testCreateInvalidRequestBadDescription() {
         RequestRequestDto req = new RequestRequestDto("", res_id);
         String url = "/request/new";
@@ -135,7 +132,7 @@ public class RequestIntegrationTests {
     }
 
     @Test
-    @Order(8)
+    @Order(9)
     public void testDeleteRequest() {
         client.delete("/request/" + req_id);
         ResponseEntity<String> res = client.getForEntity("/request/" + req_id, String.class);
