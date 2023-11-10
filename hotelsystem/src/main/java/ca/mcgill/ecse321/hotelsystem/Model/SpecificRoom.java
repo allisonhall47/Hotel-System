@@ -11,8 +11,7 @@ public class SpecificRoom {
     private String description;
     private Boolean openForUse;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "type")
+    @ManyToOne
     private Room room;
 
     public SpecificRoom(int number, ViewType view, String description, Boolean openForUse, Room room) {

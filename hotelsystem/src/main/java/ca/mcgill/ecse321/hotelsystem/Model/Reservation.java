@@ -10,24 +10,24 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int reservationID;
     private int numPeople;
-    private Date checkIn;
+    private Date checkin;
     private Date checkOut;
     private int totalPrice;
     private boolean paid;
     private CheckInStatus checkedIn;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "email")
+    @ManyToOne
     private Customer customer;
 
 
-    public Reservation(int numPeople, Date checkIn, Date checkOut, int totalPrice, boolean paid, CheckInStatus checkedIn) {
+    public Reservation( int numPeople, Date checkin, Date checkOut, int totalPrice, boolean paid, CheckInStatus checkedIn, Customer customer) {
         this.numPeople = numPeople;
-        this.checkIn = checkIn;
+        this.checkin = checkin;
         this.checkOut = checkOut;
         this.totalPrice = totalPrice;
         this.paid = paid;
         this.checkedIn = checkedIn;
+        this.customer = customer;
     }
 
     public Reservation() {
@@ -46,11 +46,11 @@ public class Reservation {
     }
 
     public Date getCheckIn() {
-        return checkIn;
+        return checkin;
     }
 
     public void setCheckIn(Date checkIn) {
-        this.checkIn = checkIn;
+        this.checkin = checkIn;
     }
 
     public Date getCheckOut() {

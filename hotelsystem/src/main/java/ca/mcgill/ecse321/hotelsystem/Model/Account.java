@@ -7,15 +7,13 @@ import java.sql.Date;
 @Entity
 public class Account {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int accountNumber;
     private String password;
     private String address;
     private Date dob;
 
-
-    public Account(int accountNumber, String password, String address, Date dob) {
-        this.accountNumber = accountNumber;
+    public Account(String password, String address, Date dob) {
         this.password = password;
         this.address = address;
         this.dob = dob;
