@@ -15,6 +15,7 @@ public class HRSExceptionHandler {
         return new ResponseEntity<String>(e.getMessage(), e.getStatus());
     }
 
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<String> handleValidationException(MethodArgumentNotValidException e) {
         String message = "";
