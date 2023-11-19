@@ -1,22 +1,25 @@
 <!-- Save this as home.vue -->
 <template>
   <div>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="color: white">
-      <div class="container">
-        <a class="navbar-brand" href="#" style="margin-right: auto;">
-          <img src="../../assets/marwaniottLogo.png" alt="Marwaniott Hotel Logo" class="logo">
-        </a>
-        <div class="navbar-nav ml-auto" style="margin-right: 0px;">
-          <button v-if="!isLoggedIn" class="btn btn-secondary btn-outline-light custom-login-button" @click="showLoginModal">Login</button>
-          <button v-if="!isLoggedIn" class="btn btn-secondary ml-2 btn-outline-light custom-login-button" @click="showSignupModal">Sign Up</button>
-        </div>
-      </div>
-    </nav>
 
     <div class="hero-section">
       <div class="container">
         <div class="row">
-          <div class="col-md-6 mx-auto text-center"> <!-- Updated the column to use mx-auto and text-center for centering -->
+          <!-- Logo in the top left corner -->
+          <div class="col-md-6 d-flex align-items-center">
+            <a class="navbar-brand" href="#">
+              <img src="../../assets/marwaniottNoBG.png" alt="Marwaniott Hotel Logo" class="logo">
+            </a>
+          </div>
+          <!-- Buttons in the top right corner -->
+          <div class="col-md-6 text-right">
+            <div class="navbar-nav">
+              <button v-if="!isLoggedIn" class="btn btn-secondary btn-outline-light custom-login-button" @click="showLoginModal">Login</button>
+              <button v-if="!isLoggedIn" class="btn btn-secondary ml-2 btn-outline-light custom-login-button" @click="showSignupModal">Sign Up</button>
+            </div>
+          </div>
+          <!-- Centered content in the middle -->
+          <div class="col-md-12 mx-auto text-center">
             <h1 class="luxurious-text">The Marwaniott Hotel</h1>
             <p class="luxurious-text">explore. relax. rejuvenate.</p>
             <button class="btn btn-primary btn-lg mt-3 btn-outline-light custom-login-button">Book Your Stay</button>
@@ -24,6 +27,9 @@
         </div>
       </div>
     </div>
+
+
+
 
     <div class="container mt-4">
       <div class="row">
@@ -73,8 +79,8 @@ export default {
 }
 
 .hero-section {
-  background: url('../../assets/hotelview.png') center/cover no-repeat;
-  padding: 150px 0;
+  background: url('../../assets/hotelView.png') center/cover no-repeat;
+  padding: 250px 0;
   text-align: center;
 }
 
@@ -84,7 +90,7 @@ export default {
 }
 
 .logo {
-  max-height: 40px;
+  max-height: 80px;
   margin-left: 0;
 }
 
