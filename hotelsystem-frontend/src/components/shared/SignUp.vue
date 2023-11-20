@@ -196,6 +196,7 @@ export default {
 .signinbutton:hover {
   border: #888888;
   background-color: #888888;
+  border: 2px solid #888888;
   color: white;
 }
 

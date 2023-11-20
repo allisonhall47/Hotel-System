@@ -94,7 +94,6 @@ export default {
   },
   methods: {
     getUser(){
-
     },
     async SignUp() {
       await this.$router.push({name: 'SignUp'})
@@ -136,30 +135,6 @@ export default {
   width: 100%; /* Use 100% for responsiveness */
 }
 
-/*.background {*/
-/*  width: 100%;*/
-/*  height: 100%;*/
-/*  position: absolute;*/
-/*  background: url('../../assets/hotelView.png') center center no-repeat; !* Replace 'your-background-image.jpg' with your image *!*/
-/*  background-size: cover;*/
-/*}*/
-
-/*.login-container {*/
-/*  background-color: rgba(255, 255, 255, 0.5); !* Adjust background color opacity as needed *!*/
-/*  padding: 20px;*/
-/*  border-radius: 10px;*/
-/*  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); !* Add box shadow for a subtle effect *!*/
-/*  position: absolute;*/
-/*  top: 200px;*/
-/*  left: 600px;*/
-/*  right: 600px;*/
-/*  height: 400px;*/
-/*}*/
-
-/*.card {*/
-/*  width: 350px;*/
-/*}*/
-
 .input-group-prepend {
   background-color: transparent;
 }
@@ -187,6 +162,7 @@ export default {
 .signinbutton:hover {
   border: #888888;
   background-color: #888888;
+  border: 2px solid #888888;
   color: white;
 }
 
