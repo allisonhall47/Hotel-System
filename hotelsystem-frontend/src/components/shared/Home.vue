@@ -164,7 +164,7 @@ export default {
 }
 
 .transparent-background {
-  background-color: rgba(255, 255, 255, 0.3); /* You can replace this color code with your desired dark color */
+  background-color: rgba(255, 255, 255, 0.2); /* You can replace this color code with your desired dark color */
 }
 
 .navbar-container {

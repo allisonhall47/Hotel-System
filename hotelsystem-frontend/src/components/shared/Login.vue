@@ -116,25 +116,49 @@ export default {
   width: 100%;
   height: 100%;
   position: absolute;
-  background: url('../../assets/hotelView.png') center center no-repeat; /* Replace 'your-background-image.jpg' with your image */
+  background: url('../../assets/hotelView.png') center center no-repeat;
   background-size: cover;
 }
 
 .login-container {
-  background-color: rgba(255, 255, 255, 0.5); /* Adjust background color opacity as needed */
-  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 2%; /* Use a percentage for padding */
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add box shadow for a subtle effect */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   position: absolute;
-  top: 200px;
-  left: 600px;
-  right: 600px;
-  height: 400px;
+  top: 25%; /* Use a percentage for top positioning */
+  left: 30%; /* Use a percentage for left positioning */
+  right: 30%; /* Use a percentage for right positioning */
+  min-height: 300px; /* Set a minimum height if needed */
 }
 
 .card {
-  width: 350px;
+  width: 100%; /* Use 100% for responsiveness */
 }
+
+/*.background {*/
+/*  width: 100%;*/
+/*  height: 100%;*/
+/*  position: absolute;*/
+/*  background: url('../../assets/hotelView.png') center center no-repeat; !* Replace 'your-background-image.jpg' with your image *!*/
+/*  background-size: cover;*/
+/*}*/
+
+/*.login-container {*/
+/*  background-color: rgba(255, 255, 255, 0.5); !* Adjust background color opacity as needed *!*/
+/*  padding: 20px;*/
+/*  border-radius: 10px;*/
+/*  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); !* Add box shadow for a subtle effect *!*/
+/*  position: absolute;*/
+/*  top: 200px;*/
+/*  left: 600px;*/
+/*  right: 600px;*/
+/*  height: 400px;*/
+/*}*/
+
+/*.card {*/
+/*  width: 350px;*/
+/*}*/
 
 .input-group-prepend {
   background-color: transparent;

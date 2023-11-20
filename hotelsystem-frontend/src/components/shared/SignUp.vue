@@ -77,15 +77,15 @@
 </template>
 
 <script>
-
-// import axios from 'axios'
-// var config = require('../../../config')
-// var frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
-// var backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort
-// var axiosClient = axios.create({
-//   baseURL: backendUrl,
-//   headers: { 'Access-Control-Allow-Origin': frontendUrl }
-// })
+//
+//import axios from 'axios'
+//var config = require('../../../config')
+//var frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
+//var backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort
+//var axiosClient = axios.create({
+//  baseURL: backendUrl,
+//  headers: { 'Access-Control-Allow-Origin': frontendUrl }
+//})
 
 export default {
   name: 'SignUp',
@@ -155,18 +155,18 @@ export default {
 
 .login-container {
   background-color: rgba(255, 255, 255, 0.5);
-  padding: 20px;
+  padding: 2%; /* Use a percentage for padding */
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   position: absolute;
-  top: 200px;
-  left: 600px;
-  right: 600px;
-  height: 450px;
+  top: 25%; /* Use a percentage for top positioning */
+  left: 30%; /* Use a percentage for left positioning */
+  right: 30%; /* Use a percentage for right positioning */
+  min-height: 300px; /* Set a minimum height if needed */
 }
 
 .card {
-  width: 350px;
+  width: 100%; /* Use 100% for responsiveness */
 }
 
 .input-group-prepend {
