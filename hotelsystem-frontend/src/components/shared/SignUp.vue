@@ -77,13 +77,7 @@
 </template>
 
 <script>
-// import axios from 'axios';
-// const config = require('../../../config');
-// const frontendUrl = config.dev.host + ':' + config.dev.port;
-// const axiosClient = axios.create({
-//   baseURL: config.dev.backendBaseUrl,
-//   headers: { 'Access-Control-Allow-Origin': frontendUrl }
-// });
+
 import axios from 'axios'
 var config = require('../../../config')
 var frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
@@ -110,30 +104,30 @@ export default {
   },
   methods: {
     createCustomer(){
-      this.email = document.getElementById("email").value;
-      this.password = document.getElementById("password").value;
-      this.name = document.getElementById("name").value;
-      this.address = document.getElementById("address").value;
-      this.dob = document.getElementById("date").value;
-      const account_request = {password: this.password, address: this.address, dob: this.dob};
-      axiosClient.post("/account/create", account_request)
-        .then((account_response) => {
-          this.accountNumber = account_response.data.map(account => account.accountNumber);
-          const customer_request = {name: this.name, email: this.email, accountNumber: this.accountNumber};
-          axiosClient.post("/customer/create", customer_request)
-            .then((customer_response) => {
-              alert("Customer with email " + this.email + " has been created.")
-              this.logged_user = customer_response
-            })
-            .catch((err) => {
-              this.errorMsg = `Failed to create: ${err.customer_response.data}`
-              alert(this.errorMsg)
-            })
-        })
-        .catch((err) => {
-          this.errorMsg = `Failed to create: ${err.account_response.data}`
-          alert(this.errorMsg)
-        })
+      // this.email = document.getElementById("email").value;
+      // this.password = document.getElementById("password").value;
+      // this.name = document.getElementById("name").value;
+      // this.address = document.getElementById("address").value;
+      // this.dob = document.getElementById("date").value;
+      // const account_request = {password: this.password, address: this.address, dob: this.dob};
+      // axiosClient.post("/account/create", account_request)
+      //   .then((account_response) => {
+      //     this.accountNumber = account_response.data.map(account => account.accountNumber);
+      //     const customer_request = {name: this.name, email: this.email, accountNumber: this.accountNumber};
+      //     axiosClient.post("/customer/create", customer_request)
+      //       .then((customer_response) => {
+      //         alert("Customer with email " + this.email + " has been created.")
+      //         this.logged_user = customer_response
+      //       })
+      //       .catch((err) => {
+      //         this.errorMsg = `Failed to create: ${err.customer_response.data}`
+      //         alert(this.errorMsg)
+      //       })
+      //   })
+      //   .catch((err) => {
+      //     this.errorMsg = `Failed to create: ${err.account_response.data}`
+      //     alert(this.errorMsg)
+      //   })
     },
     async Login() {
       await this.$router.push({name: 'Login'})
