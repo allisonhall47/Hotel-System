@@ -63,7 +63,7 @@
 <!--                    <button v-bind:disabled="createUserButtonDisabled" @click="getUser()" type="button" class="btn btn-primary btn-block mb-4 signinbutton">Sign in</button>-->
 <!--                </div>-->
                 <div class="form-group">
-                  <button v-bind:disabled="createUserButtonDisabled" @click="getUser()" type="button"
+                  <button @click="getUser()" type="button"
                           class="btn btn-primary btn-block mb-4 signinbutton">Sign in</button>
                 </div>
               </form>
@@ -83,6 +83,15 @@
 
 <script>
 
+import axios from 'axios'
+var config = require('../../../config')
+var frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
+var backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort
+var axiosClient = axios.create({
+  baseURL: backendUrl,
+  headers: { 'Access-Control-Allow-Origin': frontendUrl }
+})
+
 export default {
   name: 'Login',
   data() {
@@ -90,10 +99,50 @@ export default {
       email: '',
       password: '',
       user: '',
+      logged_user: [],
+      errorMsg: '',
     };
   },
   methods: {
     getUser(){
+      if(this.user === "Customer"){
+        axiosClient.get("/customer?email=" + this.email)
+          .then((response) => {
+            if(response.data.accountNumber !== 0){
+              this.logged_user = response
+              alert("Successfully logged in.")
+              this.$router.push({name: 'CustomerHome', params: {email: this.email}})
+            } else {
+              alert("No account exists with this email.")
+            }
+          })
+          .catch((err) => {
+            this.errorMsg = `Failure: ${err.response.data}`
+            alert(this.errorMsg)
+          })
+      }
+      else if (this.user === "Employee"){
+        alert("Employee")
+      }
+      else if (this.user === "Owner"){
+        axiosClient("/owner/email?email=" + this.email)
+          .then((response) => {
+            this.logged_user = response
+            alert("Successfully logged in.")
+            // this.$router.push({name: 'CustomerHome', params: {email: this.email}})
+          })
+          .catch((err) => {
+            this.errorMsg = `Failure: ${err.response.data}`
+            alert(this.errorMsg)
+          })
+      }
+      else {
+        alert("Please select account log in type.")
+      }
+
+
+
+
     },
     async SignUp() {
       await this.$router.push({name: 'SignUp'})
@@ -102,11 +151,6 @@ export default {
       await this.$router.push({name: 'Home'})
     },
   },
-  computed: {
-    createUserButtonDisabled() {
-      return !this.email.trim() || !this.password.trim() || !this.user.trim()
-    }
-  }
 };
 </script>
 
@@ -165,6 +209,7 @@ export default {
   border: 2px solid #888888;
   color: white;
 }
+
 
 
 </style>

@@ -55,6 +55,12 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text"><i class="fas fa-key"></i></span>
                   </div>
+                  <input id="passwordConfirm" v-model="password_confirm" type="password" class="form-control" style="font-family: 'Georgia', sans-serif" placeholder="confirm password">
+                </div>
+                <div class="input-group form-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-key"></i></span>
+                  </div>
                   <input id="address" v-model="address" type="text" class="form-control" style="font-family: 'Georgia', sans-serif" placeholder="address">
                 </div>
                 <div class="input-group form-group">
@@ -64,7 +70,8 @@
                   <input id="dob" v-model="dob" type="date" class="form-control" style="font-family: 'Georgia', sans-serif">
                 </div>
                 <div class="form-group">
-                  <button v-bind:disabled="createCustomerButtonDisabled" @click="createCustomer()" type="button"
+<!--                  <button v-bind:disabled="createCustomerButtonDisabled" @click="createCustomer()" type="button"-->
+                  <button @click="createCustomer()" type="button"
                           class="btn btn-primary btn-block mb-4 signinbutton">Sign Up</button>
                 </div>
               </form>
@@ -77,15 +84,15 @@
 </template>
 
 <script>
-//
-//import axios from 'axios'
-//var config = require('../../../config')
-//var frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
-//var backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort
-//var axiosClient = axios.create({
-//  baseURL: backendUrl,
-//  headers: { 'Access-Control-Allow-Origin': frontendUrl }
-//})
+
+import axios from 'axios'
+var config = require('../../../config')
+var frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
+var backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort
+var axiosClient = axios.create({
+ baseURL: backendUrl,
+ headers: { 'Access-Control-Allow-Origin': frontendUrl }
+})
 
 export default {
   name: 'SignUp',
@@ -93,41 +100,54 @@ export default {
     return {
       email: '',
       password: '',
+      password_confirm: '',
       name: '',
       address: '',
       user: '',
       dob: '',
       errorMsg: '',
-      logged_user: [],
+      new_customer: [],
+      new_account: [],
       accountNumber: 0,
     };
   },
   methods: {
     createCustomer(){
-      // this.email = document.getElementById("email").value;
-      // this.password = document.getElementById("password").value;
-      // this.name = document.getElementById("name").value;
-      // this.address = document.getElementById("address").value;
-      // this.dob = document.getElementById("date").value;
-      // const account_request = {password: this.password, address: this.address, dob: this.dob};
-      // axiosClient.post("/account/create", account_request)
-      //   .then((account_response) => {
-      //     this.accountNumber = account_response.data.map(account => account.accountNumber);
-      //     const customer_request = {name: this.name, email: this.email, accountNumber: this.accountNumber};
-      //     axiosClient.post("/customer/create", customer_request)
-      //       .then((customer_response) => {
-      //         alert("Customer with email " + this.email + " has been created.")
-      //         this.logged_user = customer_response
-      //       })
-      //       .catch((err) => {
-      //         this.errorMsg = `Failed to create: ${err.customer_response.data}`
-      //         alert(this.errorMsg)
-      //       })
-      //   })
-      //   .catch((err) => {
-      //     this.errorMsg = `Failed to create: ${err.account_response.data}`
-      //     alert(this.errorMsg)
-      //   })
+      this.email = document.getElementById("email").value;
+      this.password = document.getElementById("password").value;
+      this.password_confirm = document.getElementById("passwordConfirm").value;
+      this.name = document.getElementById("name").value;
+      this.address = document.getElementById("address").value;
+      this.dob = document.getElementById("dob").value;
+
+      if(this.password === this.password_confirm){
+        const account_request = {password: this.password, address: this.address, dob: this.dob};
+        axiosClient.post("/account/create", account_request)
+          .then((response) => {
+            this.accountNumber = response.data.accountNumber
+            this.new_account = response
+
+            const customer_request = {name: this.name, email: this.email, accountNumber: this.accountNumber}
+            axiosClient.post("/customer/create", customer_request)
+              .then((response) => {
+                alert('Account successfully created.')
+                this.new_customer = response
+                this.$router.push({name: 'Login'})
+              })
+              .catch((err) => {
+                this.errorMsg = `Failure: ${err.response.data}`
+                alert(this.errorMsg)
+              })
+
+          })
+          .catch((err) => {
+            this.errorMsg = `Failure: ${err.response.data}`
+            alert(this.errorMsg)
+          })
+      } else {
+        alert('Passwords do not match.')
+      }
+
     },
     async Login() {
       await this.$router.push({name: 'Login'})

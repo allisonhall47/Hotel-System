@@ -87,6 +87,12 @@
 
 export default {
   name: 'CustomerHome',
+  props: {
+    email: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
       isLoggedIn: false,
@@ -94,7 +100,7 @@ export default {
   },
   methods: {
     async Account() {
-      await this.$router.push({name: 'Account'})
+      await this.$router.push({name: 'CustomerAccount'})
     },
     showLoginModal() {
       console.log('Show login modal');
