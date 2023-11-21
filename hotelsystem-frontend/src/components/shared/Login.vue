@@ -165,14 +165,14 @@ export default {
 
 .login-container {
   background-color: rgba(255, 255, 255, 0.5);
-  padding: 2%; /* Use a percentage for padding */
+  padding: 2%;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   position: absolute;
-  top: 25%; /* Use a percentage for top positioning */
-  left: 30%; /* Use a percentage for left positioning */
-  right: 30%; /* Use a percentage for right positioning */
-  min-height: 300px; /* Set a minimum height if needed */
+  top: 25%;
+  left: 30%;
+  right: 30%;
+  min-height: 300px;
 }
 
 .card {

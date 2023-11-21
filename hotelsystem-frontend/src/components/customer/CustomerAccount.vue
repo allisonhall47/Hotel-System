@@ -11,11 +11,14 @@
           </button>
           <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
-              <li class="nav-item active">
+              <li class="nav-item">
                 <a class="nav-link" @click="Home">Home</a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item active">
                 <a class="nav-link" href="#">Account<span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" @click="LogOut">Log Out</a>
               </li>
             </ul>
           </div>
@@ -23,29 +26,64 @@
       </div>
 
       <div class="profile-box">
-        <div class="container rounded bg-white mt-5 mb-5">
-          <div class="row">
-            <div class="col-md-3 border-right">
-              <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-                <img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
-                <span class="font-weight-bold">Edogaru</span>
-                <span class="text-black-50">edogaru@mail.com.my</span>
-                <span> </span>
-              </div>
+        <div class="container rounded bg-white mt-5 mb-5 account-box shadow">
+        <div class="row">
+          <div class="col-md-3 border-right">
+            <div class="d-flex flex-column align-items-center justify-content-center text-center p-3 py-5 image-pos">
+              <img class="rounded-circle" width="200px" src="../../assets/anonymousicon.png" alt="Profile Photo">
             </div>
-            <div class="col-md-9"> <!-- Removed the third column (col-md-9 instead of col-md-12) -->
+          </div>
+            <div class="col-md-9">
               <div class="p-3 py-5">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                   <h4 class="text-right" style="font-family: 'Montserrat', serif; color: #888; letter-spacing: 2px">ACCOUNT</h4>
                 </div>
-                <div class="row mt-2">
-                  <div class="col-md-6"><label class="labels">Name</label><input type="text" class="form-control" placeholder="name" value=""></div>
+
+                <div class="image-pos">
+                  <div class="row mt-3">
+                    <div class="col-md-6">
+                      <label class="labels">Name</label>
+                      <!--                    <input type="text" class="form-control" placeholder="name" value=email>-->
+                      <input class="form-control" id="name" v-model="name" readonly>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="labels">Email</label>
+                      <!--                    <input type="text" class="form-control" placeholder="email" value="">-->
+                      <input class="form-control" id="email" :value="email" readonly>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="labels">Password</label>
+                      <!--                    <input type="text" class="form-control" placeholder="***********" value="">-->
+                      <input class="form-control" id="password" v-model="hiddenPassword" readonly>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="labels">Address</label>
+                      <!--                    <input type="text" class="form-control" placeholder="enter address" value="">-->
+                      <input class="form-control" id="address" v-model="address" readonly>
+                    </div>
+                    <div class="col-md-12">
+                      <label class="labels">Date of Birth</label>
+                      <!--                    <input type="date" class="form-control" value="">-->
+                      <input class="form-control" id="address" v-model="dob" readonly>
+                    </div>
+                  </div>
                 </div>
-                <div class="row mt-3">
-                  <div class="col-md-12"><label class="labels">Address</label><input type="text" class="form-control" placeholder="enter address" value=""></div>
-                  <div class="col-md-12"><label class="labels">Email ID</label><input type="text" class="form-control" placeholder="enter email" value=""></div>
+<!--                <div class="mt-5 text-center">-->
+<!--                  <button @click="editInfo" type="button"-->
+<!--                          class="btn btn-primary btn-block mb-4 editbutton">Edit Profile</button>-->
+<!--                  <button @click="saveInfo" type="button"-->
+<!--                          class="btn btn-primary btn-block mb-4 editbutton">Save Profile</button>-->
+<!--                </div>-->
+                <div class="mt-5 text-center">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <button @click="editInfo" type="button" class="btn btn-primary btn-block mb-2 editbutton">Edit Profile</button>
+                    </div>
+                    <div class="col-md-6">
+                      <button @click="saveInfo" type="button" class="btn btn-primary btn-block mb-2 savebutton">Save Profile</button>
+                    </div>
+                  </div>
                 </div>
-                <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button">Save Profile</button></div>
               </div>
             </div>
           </div>
@@ -56,15 +94,108 @@
 </template>
 
 <script>
+import axios from 'axios'
+var config = require('../../../config')
+var frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
+var backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort
+var axiosClient = axios.create({
+  baseURL: backendUrl,
+  headers: { 'Access-Control-Allow-Origin': frontendUrl }
+})
+
 export default {
   name: 'CustomerAccount',
+  props: {
+    email: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
+      password: '',
+      name: '',
+      address: '',
+      dob: '',
+      errorMsg: '',
+      hiddenPassword: '',
+      accountNumber: 0,
     };
   },
+  created(){
+    axiosClient.get("/customer?email=" + this.email)
+      .then((response) => {
+        this.name = response.data.name;
+        this.accountNumber = response.data.accountNumber;
+
+        axiosClient.get("/account/?accountNumber=" + this.accountNumber)
+          .then((response) => {
+            this.address = response.data.address;
+            this.dob = response.data.dob;
+            this.password = response.data.password;
+            this.hiddenPassword = '*'.repeat(this.password.length);
+          })
+          .catch((err) => {
+            this.errorMsg = `Failure: ${err.response.data}`
+            alert(this.errorMsg)
+          })
+
+      })
+      .catch((err) => {
+        this.errorMsg = `Failure: ${err.response.data}`
+        alert(this.errorMsg)
+      })
+  },
   methods: {
+    async saveInfo(){
+      this.password = document.getElementById("password").value;
+      this.name = document.getElementById("name").value;
+      this.address = document.getElementById("address").value;
+
+      axiosClient.get("/customer?email=" + this.email)
+        .then((response) => {
+          this.accountNumber = response.data.accountNumber;
+        })
+        .catch((err) => {
+          this.errorMsg = `Failure: ${err.response.data}`
+          alert(this.errorMsg)
+        })
+
+      const account_request = {password: this.password, address: this.address, dob: this.dob};
+      axiosClient.put("/account/" + this.accountNumber, account_request)
+        .then((response) => {
+          this.password = response.data.password;
+          this.address = response.data.address;
+        })
+        .catch((err) => {
+          this.errorMsg = `Failure: ${err.response.data}`
+          alert(this.errorMsg)
+        })
+
+      const customer_request = {name: this.name, email: this.email, accountNumber: this.accountNumber}
+      axiosClient.put("/customer/update", customer_request)
+        .then((response) => {
+          this.name = response.data.name;
+        })
+        .catch((err) => {
+          this.errorMsg = `Failure: ${err.response.data}`
+          alert(this.errorMsg)
+        })
+
+      document.getElementById('name').setAttribute('readonly', 'true');
+      document.getElementById('password').setAttribute('readonly', 'true');
+      document.getElementById('address').setAttribute('readonly', 'true');
+    },
+    async editInfo(){
+      document.getElementById('name').removeAttribute('readonly');
+      document.getElementById('password').removeAttribute('readonly');
+      document.getElementById('address').removeAttribute('readonly');
+    },
     async Home() {
-      await this.$router.push({name: 'CustomerHome'})
+      await this.$router.push({name: 'CustomerHome', params: {email: this.email}})
+    },
+    async LogOut() {
+      await this.$router.push({name: 'Home'})
     },
 
   }
@@ -88,36 +219,55 @@ export default {
   height: 100vh;
 }
 
-.container {
+.account-box {
   background-color: rgba(255, 255, 255, 0.8);
   padding: 20px;
   border-radius: 10px;
-  top: 50%; /* Adjust this value to move the profile box down */
+  top: 50%;
+}
+
+.image-pos {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .form-control:focus {
   box-shadow: none;
-  border-color: #BA68C8
+  border-color: #888
 }
 
-.profile-button {
-  background: rgb(99, 39, 120);
-  box-shadow: none;
-  border: none
+.editbutton {
+  width: 40%;
+  margin-top: 5%;
+  margin-left: 60%;
+  background-color: white;
+  border: 2px solid #888888;
+  color: #888888;
+}
+.savebutton {
+  width: 40%;
+  margin-top: 5%;
+  margin-right: 60%;
+  background-color: white;
+  border: 2px solid #888888;
+  color: #888888;
 }
 
-.profile-button:hover {
-  background: #682773
+.editbutton:hover {
+  border: #888888;
+  background-color: #888888;
+  border: 2px solid #888888;
+  color: white;
 }
 
-.profile-button:focus {
-  background: #682773;
-  box-shadow: none
-}
-
-.profile-button:active {
-  background: #682773;
-  box-shadow: none
+.savebutton:hover {
+  border: #888888;
+  background-color: #888888;
+  border: 2px solid #888888;
+  color: white;
 }
 
 .labels {
@@ -141,68 +291,6 @@ export default {
   right: 20%;
   left: 20%;
 }
-/*.background {*/
-/*  width: 100%;*/
-/*  height: 100%;*/
-/*  position: absolute;*/
-/*  background: url('../../assets/hotelView.png') center center no-repeat;*/
-/*  background-size: cover;*/
-/*}*/
-
-/*.customerAccount {*/
-/*  display: flex;*/
-/*  justify-content: center;*/
-/*  align-items: center;*/
-/*  height: 100vh;*/
-/*}*/
-
-/*.container {*/
-/*  background-color: rgba(255, 255, 255, 0.8);*/
-/*  padding: 20px;*/
-/*  border-radius: 10px;*/
-/*  top: 25%;*/
-/*}*/
-
-/*.form-control:focus {*/
-/*  box-shadow: none;*/
-/*  border-color: #BA68C8*/
-/*}*/
-
-/*.profile-button {*/
-/*  background: rgb(99, 39, 120);*/
-/*  box-shadow: none;*/
-/*  border: none*/
-/*}*/
-
-/*.profile-button:hover {*/
-/*  background: #682773*/
-/*}*/
-
-/*.profile-button:focus {*/
-/*  background: #682773;*/
-/*  box-shadow: none*/
-/*}*/
-
-/*.profile-button:active {*/
-/*  background: #682773;*/
-/*  box-shadow: none*/
-/*}*/
-
-/*.labels {*/
-/*  font-size: 11px*/
-/*}*/
-
-
-/*.transparent-background {*/
-/*  background-color: rgba(255, 255, 255, 0.2); !* You can replace this color code with your desired dark color *!*/
-/*}*/
-
-/*.navbar-container {*/
-/*  position: absolute;*/
-/*  top: 0;*/
-/*  left: 0;*/
-/*  right: 0;*/
-/*}*/
 
 
 </style>

@@ -19,21 +19,26 @@
               <li class="nav-item">
                 <a class="nav-link" @click="Account">Account</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" @click="LogOut">Log Out</a>
+              </li>
             </ul>
           </div>
         </nav>
       </div>
 
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12 mx-auto text-center">
-            <h1 class="text-center" style="font-family: 'Montserrat', serif; color: #888; letter-spacing: 5px; font-size: 45px" >THE MARWANIOTT HOTEL</h1>
-            <p class="luxurious-text" style="font-weight: normal; color: #888;">explore. relax. rejuvenate.</p>
-            <button class="btn btn-lg mt-3 custom-login-button" @click="showLoginModal">Book Your Stay</button>
+      <div class="main-container">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12 mx-auto text-center">
+              <h1 class="text-center" style="font-family: 'Montserrat', serif; color: #888; letter-spacing: 5px; font-size: 45px" >THE MARWANIOTT HOTEL</h1>
+              <p class="luxurious-text" style="font-weight: normal; color: #888;">explore. relax. rejuvenate.</p>
+              <button class="btn btn-lg mt-3 custom-login-button" @click="showLoginModal">Book Your Stay</button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      </div>
 
     <div id = "intro"></div>
     <div class="custom-box">
@@ -100,7 +105,10 @@ export default {
   },
   methods: {
     async Account() {
-      await this.$router.push({name: 'CustomerAccount'})
+      await this.$router.push({name: 'CustomerAccount', params: {email: this.email}})
+    },
+    async LogOut() {
+      await this.$router.push({name: 'Home'})
     },
     showLoginModal() {
       console.log('Show login modal');
@@ -120,6 +128,10 @@ export default {
   background: url('../../assets/hotelView.png') center/cover no-repeat;
   padding: 300px 0;
   text-align: center;
+}
+
+.main-container{
+  background-color: transparent;
 }
 
 .luxurious-text {

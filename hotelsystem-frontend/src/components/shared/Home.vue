@@ -129,11 +129,6 @@ export default {
   color: black;
 }
 
-.logo {
-  max-height: 80px;
-  margin-left: 0;
-}
-
 .custom-login-button {
   background-color: transparent;
   color: #fff;
@@ -144,17 +139,6 @@ export default {
 .custom-login-button:hover {
   background-color: #fff;
   color: #888;
-}
-.custom-login-button2 {
-  background-color: transparent;
-  color: #888;
-  border: 1px solid #888;
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.custom-login-button2:hover {
-  background-color: #888;
-  color: white;
 }
 
 .custom-box {

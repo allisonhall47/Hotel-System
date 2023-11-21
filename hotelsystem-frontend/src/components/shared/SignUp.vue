@@ -14,7 +14,7 @@
               <li class="nav-item">
                 <a class="nav-link" @click="Home">Home</a>
               </li>
-              <li class="nav-item active">
+              <li class="nav-item">
                 <a class="nav-link" @click="Login">LogIn</a>
               </li>
               <li class="nav-item active">
@@ -179,9 +179,9 @@ export default {
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   position: absolute;
-  top: 25%; /* Use a percentage for top positioning */
-  left: 30%; /* Use a percentage for left positioning */
-  right: 30%; /* Use a percentage for right positioning */
+  top: 20%; /* Use a percentage for top positioning */
+  left: 32%; /* Use a percentage for left positioning */
+  right: 32%; /* Use a percentage for right positioning */
   min-height: 300px; /* Set a minimum height if needed */
 }
 
