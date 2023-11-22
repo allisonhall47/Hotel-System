@@ -31,3 +31,49 @@
     </div>
   </div>
 </template>
+
+<script>
+
+export default {
+  name: 'EmployeeHome',
+  props: {
+    email: {
+      type: String,
+      required: true
+    }
+  },
+  data() {
+    return {
+
+    };
+  },
+  methods: {
+
+  }
+};
+</script>
+
+<style scoped>
+
+.navbar-brand {
+  margin-right: 0;
+}
+
+.hero-section {
+  background: url('../../assets/hotelView.png') center/cover no-repeat;
+  padding: 300px 0;
+  text-align: center;
+}
+
+.transparent-background {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.navbar-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+</style>

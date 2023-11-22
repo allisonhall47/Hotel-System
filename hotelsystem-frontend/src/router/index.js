@@ -37,5 +37,11 @@ export default new Router({
       component: CustomerAccount,
       props: true
     },
+    {
+      path: '/',
+      name: 'EmployeeHome',
+      component: CustomerHome,
+      props: true
+    },
   ]
 })

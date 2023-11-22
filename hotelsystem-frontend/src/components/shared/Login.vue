@@ -122,7 +122,20 @@ export default {
           })
       }
       else if (this.user === "Employee"){
-        alert("Employee")
+        axiosClient.get("/employee?email=" + this.email)
+          .then((response) => {
+            if(response.data.accountNumber !== 0){
+              this.logged_user = response
+              alert("Successfully logged in.")
+              this.$router.push({name: 'EmployeeHome', params: {email: this.email}})
+            } else {
+              alert("No account exists with this email.")
+            }
+          })
+          .catch((err) => {
+            this.errorMsg = `Failure: ${err.response.data}`
+            alert(this.errorMsg)
+          })
       }
       else if (this.user === "Owner"){
         axiosClient("/owner/email?email=" + this.email)
@@ -139,10 +152,6 @@ export default {
       else {
         alert("Please select account log in type.")
       }
-
-
-
-
     },
     async SignUp() {
       await this.$router.push({name: 'SignUp'})
