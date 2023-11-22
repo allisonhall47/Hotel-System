@@ -5,6 +5,8 @@ import SignUp from "../components/shared/SignUp"
 import Login from "../components/shared/Login"
 import CustomerHome from "../components/customer/CustomerHome"
 import CustomerAccount from "../components/customer/CustomerAccount"
+import ReservationGuest from "../components/shared/ReservationGuest"
+import CreateAccountSuggestion from "../components/shared/CreateAccountSuggestion"
 
 Vue.use(Router)
 
@@ -24,6 +26,16 @@ export default new Router({
       path: '/',
       name: 'Login',
       component: Login
+    },
+    {
+      path: '/',
+      name: 'ReservationGuest',
+      component: ReservationGuest
+    },
+    {
+      path: '/',
+      name: 'CreateAccountSuggestion',
+      component: CreateAccountSuggestion
     },
     {
       path: '/',
