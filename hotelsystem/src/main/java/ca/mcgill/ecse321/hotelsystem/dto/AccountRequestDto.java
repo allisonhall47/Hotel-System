@@ -2,7 +2,6 @@ package ca.mcgill.ecse321.hotelsystem.dto;
 
 import ca.mcgill.ecse321.hotelsystem.Model.Account;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
 public class AccountRequestDto {

@@ -1,12 +1,8 @@
 package ca.mcgill.ecse321.hotelsystem.controller;
 
-import ca.mcgill.ecse321.hotelsystem.Model.Customer;
 import ca.mcgill.ecse321.hotelsystem.Model.Owner;
-import ca.mcgill.ecse321.hotelsystem.dto.CustomerRequestDto;
-import ca.mcgill.ecse321.hotelsystem.dto.CustomerResponseDto;
 import ca.mcgill.ecse321.hotelsystem.dto.OwnerRequestDto;
 import ca.mcgill.ecse321.hotelsystem.dto.OwnerResponseDto;
-import ca.mcgill.ecse321.hotelsystem.exception.HRSException;
 import ca.mcgill.ecse321.hotelsystem.service.AccountService;
 import ca.mcgill.ecse321.hotelsystem.service.OwnerService;
 import org.springframework.beans.factory.annotation.Autowired;

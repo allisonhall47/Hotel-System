@@ -9,13 +9,10 @@ import java.time.LocalDate;
 
 public class ReservationRequestDto {
 
-    //private int reservationId;
     private int numPeople;
     private LocalDate checkin;
     private LocalDate checkOut;
-    //private int totalPrice; computed when assigning reserved room to reservation for a number of days
-    //private Boolean paid; default false
-    //private CheckInStatus checkedIn; default not checked in
+
 
     private String customerEmail;
 
@@ -24,28 +21,16 @@ public class ReservationRequestDto {
     }
 
     public ReservationRequestDto(int numPeople, LocalDate checkin, LocalDate checkOut, String customerEmail){
-        //this.reservationId = reservationId;
         this.numPeople = numPeople;
         this.checkin = checkin;
         this.checkOut = checkOut;
-//        this.totalPrice = totalPrice;
-//        this.paid = paid;
-//        this.checkedIn = checkedIn;
         this.customerEmail = customerEmail;
     }
 
-    //have to get customer from customer email first
     public Reservation toModel(Customer c){
         return new Reservation(numPeople, checkin, checkOut, 0, false, CheckInStatus.BeforeCheckIn, c);
     }
 
-//    public int getReservationId() {
-//        return reservationId;
-//    }
-//
-//    public void setReservationId(int reservationId) {
-//        this.reservationId = reservationId;
-//    }
 
     public int getNumPeople() {
         return numPeople;
@@ -70,30 +55,6 @@ public class ReservationRequestDto {
     public void setCheckOut(LocalDate checkOut) {
         this.checkOut = checkOut;
     }
-
-//    public int getTotalPrice() {
-//        return totalPrice;
-//    }
-//
-//    public void setTotalPrice(int totalPrice) {
-//        this.totalPrice = totalPrice;
-//    }
-//
-//    public Boolean getPaid() {
-//        return paid;
-//    }
-//
-//    public void setPaid(Boolean paid) {
-//        this.paid = paid;
-//    }
-//
-//    public CheckInStatus getCheckedIn() {
-//        return checkedIn;
-//    }
-//
-//    public void setCheckedIn(CheckInStatus checkedIn) {
-//        this.checkedIn = checkedIn;
-//    }
 
     public String getCustomerEmail() {
         return customerEmail;

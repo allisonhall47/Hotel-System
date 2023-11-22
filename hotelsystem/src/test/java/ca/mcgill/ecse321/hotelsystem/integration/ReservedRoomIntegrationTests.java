@@ -9,7 +9,6 @@ import ca.mcgill.ecse321.hotelsystem.dto.ReservedRoomResponseDto;
 import ca.mcgill.ecse321.hotelsystem.repository.ReservationRepository;
 import ca.mcgill.ecse321.hotelsystem.repository.ReservedRoomRepository;
 import ca.mcgill.ecse321.hotelsystem.repository.SpecificRoomRepository;
-import ca.mcgill.ecse321.hotelsystem.service.SpecificRoomService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

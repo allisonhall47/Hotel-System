@@ -3,7 +3,6 @@ package ca.mcgill.ecse321.hotelsystem.dto;
 import ca.mcgill.ecse321.hotelsystem.Model.Employee;
 import ca.mcgill.ecse321.hotelsystem.Model.Shift;
 
-import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
 

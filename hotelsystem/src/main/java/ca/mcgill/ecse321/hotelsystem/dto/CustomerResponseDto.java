@@ -1,6 +1,5 @@
 package ca.mcgill.ecse321.hotelsystem.dto;
 
-import ca.mcgill.ecse321.hotelsystem.Model.Account;
 import ca.mcgill.ecse321.hotelsystem.Model.Customer;
 
 public class CustomerResponseDto {

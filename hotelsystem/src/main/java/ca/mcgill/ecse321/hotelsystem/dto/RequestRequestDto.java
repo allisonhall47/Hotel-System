@@ -1,9 +1,5 @@
 package ca.mcgill.ecse321.hotelsystem.dto;
 
-import ca.mcgill.ecse321.hotelsystem.Model.CompletionStatus;
-import ca.mcgill.ecse321.hotelsystem.Model.Request;
-import ca.mcgill.ecse321.hotelsystem.Model.Reservation;
-
 public class RequestRequestDto {
 
     private String description;

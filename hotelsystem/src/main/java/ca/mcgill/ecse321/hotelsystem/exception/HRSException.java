@@ -7,6 +7,7 @@ public class HRSException extends RuntimeException{
 
     private HttpStatus status;
 
+
     public HRSException(HttpStatus status, String message){
         super(message);
         this.status = status;

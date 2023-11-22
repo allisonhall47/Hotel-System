@@ -71,17 +71,6 @@ public class ReservationServiceTests {
         assertEquals(reservations.get(1), list.get(1));
     }
 
-    //unnecessary test
-//    @Test
-//    public void testGetAllEmptyReservation(){
-//        List<Reservation> res = new ArrayList<>();
-//        when(reservationRepository.findAll()).thenReturn(res);
-//
-//        HRSException e = assertThrows(HRSException.class, () -> reservationService.getAllReservations());
-//        assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
-//        assertEquals(e.getMessage(), "There are no reservations in the system.");
-//    }
-
     @Test
     public void testGetReservationById() {
         Reservation res1 = new Reservation(4, LocalDate.of(1990,3,3), LocalDate.of(1990,3,6), 5, false, CheckInStatus.BeforeCheckIn, null);
@@ -91,7 +80,6 @@ public class ReservationServiceTests {
 
         assertNotNull(res);
         assertEquals(res1, res);
-        //verify(reservationRepository, times(1)).save(res);
     }
 
     @Test
@@ -200,21 +188,12 @@ public class ReservationServiceTests {
     public void testPayReservationInvalidPaid() {
         Customer customer = new Customer("email", "random", null);
         Reservation res = new Reservation(4, LocalDate.of(1990,3,3), LocalDate.of(1990,3,6), 5, true, CheckInStatus.BeforeCheckIn, customer);
-        //Reservation res1 = new Reservation(4, Date.valueOf("1990-03-03"), Date.valueOf("1990-03-06"), 5, true, CheckInStatus.BeforeCheckIn, customer);
 
         when(reservationRepository.findReservationByReservationID(res.getReservationID())).thenReturn(res);
 
         HRSException e = assertThrows(HRSException.class, () -> reservationService.payReservation(res, 5));
         assertEquals(e.getMessage(), "already paid");
         assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
-
-        //when(reservationRepository.save(res)).thenReturn(res);
-
-//        Reservation out = reservationService.payReservation(res, 5);
-//
-//        assertEquals(res1.isPaid(), out.isPaid());
-
-        //reservationRepository.delete(res);
     }
 
     @Test
@@ -227,12 +206,6 @@ public class ReservationServiceTests {
         assertEquals(e.getMessage(), "money not sufficient");
         assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
     }
-
-//    @Test
-//    public void testCreateReservationInvalidCustomer() {
-//
-//    }
-
 
     @Test
     public void testDeleteReservation() {

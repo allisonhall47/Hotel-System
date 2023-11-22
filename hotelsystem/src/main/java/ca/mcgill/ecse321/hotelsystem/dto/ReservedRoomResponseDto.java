@@ -14,8 +14,6 @@ public class ReservedRoomResponseDto {
 
     public ReservedRoomResponseDto(ReservedRoom reservedRoom){
         this.reservedId = reservedRoom.getReservedID();
-        //if (reservedRoom.getReservation() != null) this.linkedReservationId = reservedRoom.getReservation().getReservationID();
-        //if (reservedRoom.getSpecificRoom() != null) this.roomNumber = reservedRoom.getSpecificRoom().getNumber();
         this.room = reservedRoom.getSpecificRoom();
         this.reservation = reservedRoom.getReservation();
     }
@@ -27,22 +25,6 @@ public class ReservedRoomResponseDto {
     public void setReservedId(int reservedId) {
         this.reservedId = reservedId;
     }
-
-//    public int getLinkedReservationId() {
-//        return linkedReservationId;
-//    }
-//
-//    public void setLinkedReservationId(int linkedReservationId) {
-//        this.linkedReservationId = linkedReservationId;
-//    }
-//
-//    public int getRoomNumber() {
-//        return roomNumber;
-//    }
-//
-//    public void setRoomNumber(int roomNumber) {
-//        this.roomNumber = roomNumber;
-//    }
 
 
     public Reservation getReservation() {

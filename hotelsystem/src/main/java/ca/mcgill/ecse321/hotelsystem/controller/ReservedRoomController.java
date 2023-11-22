@@ -1,12 +1,9 @@
 package ca.mcgill.ecse321.hotelsystem.controller;
 
-import ca.mcgill.ecse321.hotelsystem.Model.Reservation;
 import ca.mcgill.ecse321.hotelsystem.Model.ReservedRoom;
 import ca.mcgill.ecse321.hotelsystem.Model.SpecificRoom;
-import ca.mcgill.ecse321.hotelsystem.dto.ReservationRequestDto;
 import ca.mcgill.ecse321.hotelsystem.dto.ReservedRoomRequestDto;
 import ca.mcgill.ecse321.hotelsystem.dto.ReservedRoomResponseDto;
-import ca.mcgill.ecse321.hotelsystem.dto.SpecificRoomRequestDto;
 import ca.mcgill.ecse321.hotelsystem.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

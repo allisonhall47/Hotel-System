@@ -2,7 +2,6 @@ package ca.mcgill.ecse321.hotelsystem.service;
 
 
 import ca.mcgill.ecse321.hotelsystem.Model.Account;
-import ca.mcgill.ecse321.hotelsystem.Model.Employee;
 import ca.mcgill.ecse321.hotelsystem.Model.Owner;
 import ca.mcgill.ecse321.hotelsystem.exception.HRSException;
 import ca.mcgill.ecse321.hotelsystem.repository.CustomerRepository;
@@ -17,7 +16,6 @@ import org.springframework.http.HttpStatus;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 

@@ -6,16 +6,13 @@ import ca.mcgill.ecse321.hotelsystem.Model.Shift;
 import ca.mcgill.ecse321.hotelsystem.exception.HRSException;
 import ca.mcgill.ecse321.hotelsystem.repository.ShiftRepository;
 import ca.mcgill.ecse321.hotelsystem.repository.EmployeeRepository;
-import org.aspectj.apache.bcel.Repository;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 
-import java.sql.Date;
 import java.sql.Time;
-import java.sql.Wrapper;
 import java.time.LocalDate;
 import java.util.*;
 
