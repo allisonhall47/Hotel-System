@@ -5,6 +5,7 @@ import SignUp from "../components/shared/SignUp"
 import Login from "../components/shared/Login"
 import CustomerHome from "../components/customer/CustomerHome"
 import CustomerAccount from "../components/customer/CustomerAccount"
+import OwnerViewSchedule from "../components/owner/OwnerViewSchedule"
 
 Vue.use(Router)
 
@@ -35,6 +36,12 @@ export default new Router({
       path: '/',
       name: 'CustomerAccount',
       component: CustomerAccount,
+      props: true
+    },
+    {
+      path: '/',
+      name: 'OwnerViewSchedule',
+      component: OwnerViewSchedule,
       props: true
     },
   ]
