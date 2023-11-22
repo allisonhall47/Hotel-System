@@ -6,6 +6,7 @@ import Login from "../components/shared/Login"
 import CustomerHome from "../components/customer/CustomerHome"
 import CustomerAccount from "../components/customer/CustomerAccount"
 import OwnerHome from "../components/owner/OwnerHome"
+import OwnerAccount from "../components/owner/OwnerAccount"
 
 Vue.use(Router)
 
@@ -42,6 +43,12 @@ export default new Router({
      path: '/owner-home',
      name: 'OwnerHome',
      component: OwnerHome,
+     props: true
+    },
+    {
+     path: '/owner-account',
+     name: 'OwnerAccount',
+     component: OwnerAccount,
      props: true
     },
   ]
