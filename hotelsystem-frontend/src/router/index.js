@@ -45,5 +45,11 @@ export default new Router({
       component: EmployeeHome,
       props: true
     },
+    {
+      path: '/',
+      name: 'EmployeeAccount',
+      component: EmployeeAccount,
+      props: true
+    },
   ]
 })

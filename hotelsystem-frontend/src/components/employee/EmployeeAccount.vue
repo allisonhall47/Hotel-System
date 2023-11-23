@@ -118,6 +118,7 @@ export default {
     };
   },
   created(){
+    console.log('Email received:', this.email);
     axiosClient.get("/employee?email=" + this.email)
       .then((response) => {
         this.name = response.data.name;
@@ -146,7 +147,7 @@ export default {
       this.password = document.getElementById("password").value;
       this.dob = document.getElementById("dob").value;
 
-      axiosClient.get("/customer?email=" + this.email)
+      axiosClient.get("/employee?email=" + this.email)
         .then((response) => {
           this.accountNumber = response.data.accountNumber;
         })
@@ -162,8 +163,8 @@ export default {
           this.address = response.data.address;
           this.dob = response.data.dob;
 
-          const customer_request = {name: this.name, email: this.email, accountNumber: this.accountNumber}
-          axiosClient.put("/customer/update", customer_request)
+          const employee_request = {name: this.name, email: this.email, accountNumber: this.accountNumber}
+          axiosClient.put("/employee/update", employee_request)
             .then((response) => {
               this.name = response.data.name;
               alert("Account successfully updated.")
