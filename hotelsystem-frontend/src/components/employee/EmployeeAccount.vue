@@ -23,7 +23,8 @@
               </li>
               <li class="nav-item">
                 <a class="nav-link" @click="">View Schedule</a> <!--view employee schedule-->
-              <li>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link" @click="LogOut">Log Out</a>
               </li>
             </ul>
@@ -118,7 +119,6 @@ export default {
     };
   },
   created(){
-    console.log('Email received:', this.email);
     axiosClient.get("/employee?email=" + this.email)
       .then((response) => {
         this.name = response.data.name;
