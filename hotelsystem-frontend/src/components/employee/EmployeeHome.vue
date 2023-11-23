@@ -50,6 +50,8 @@
 
 <script>
 
+import EmployeeRepair from "./EmployeeRepair.vue";
+
 export default {
   name: 'EmployeeHome',
   props: {

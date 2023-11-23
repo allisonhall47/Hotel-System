@@ -7,6 +7,7 @@ import CustomerHome from "../components/customer/CustomerHome"
 import CustomerAccount from "../components/customer/CustomerAccount"
 import EmployeeHome from "../components/employee/EmployeeHome"
 import EmployeeAccount from "../components/employee/EmployeeAccount"
+import EmployeeRepair from "../components/employee/EmployeeRepair.vue";
 
 Vue.use(Router)
 
@@ -51,5 +52,11 @@ export default new Router({
       component: EmployeeAccount,
       props: true
     },
+    {
+      path: '/',
+      name: 'EmployeeRepair',
+      component: EmployeeRepair,
+      props: true
+    }
   ]
 })

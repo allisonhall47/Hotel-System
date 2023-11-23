@@ -12,14 +12,14 @@
           </button>
           <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
-              <li class="nav-item active">
+              <li class="nav-item">
                 <a class="nav-link" href="#">Home<span class="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="Login">Account</a> <!--employee account-->
+                <a class="nav-link" @click="EmployeeAccount">Account</a> <!--employee account-->
               </li>
-              <li class="nav-item">
-                <a class="nav-link" @click="SignUp">Log Repair</a> <!--employee repair-->
+              <li class="nav-item active">
+                <a class="nav-link" href="#">Log Repair<span class ="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" @click="">View Schedule</a> <!--view employee schedule-->
@@ -39,8 +39,15 @@
 </template>
 
 <script>
+import EmployeeAccount from "./EmployeeAccount.vue";
+
 export default {
   name: "EmployeeRepair",
+  computed: {
+    EmployeeAccount() {
+      return EmployeeAccount
+    }
+  },
   props: {
     email: {
       type: String,

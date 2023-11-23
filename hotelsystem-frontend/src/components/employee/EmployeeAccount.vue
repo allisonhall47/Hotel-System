@@ -12,10 +12,10 @@
           </button>
           <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
-              <li class="nav-item active">
+              <li class="nav-item">
                 <a class="nav-link" @click="Home">Home</a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item active">
                 <a class="nav-link" href="#">Account<span class="sr-only">(current)</span></a> <!--employee account-->
               </li>
               <li class="nav-item">
@@ -65,19 +65,23 @@
                       <label class="labels">Address</label>
                       <input class="form-control" id="address" v-model="address" readonly>
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-md-6">
+                      <label class="labels">Salary</label>
+                      <input class="form-control" id="salary" :value="salary" readonly>
+                    </div>
+                    <div class="col-md-6">
                       <label class="labels">Date of Birth</label>
                       <input class="form-control" id="dob" type="date" v-model="dob" readonly>
                     </div>
                   </div>
                 </div>
-                <div class="mt-5 text-center">
+                <div class="mt-5 text-center button-container">
                   <div class="row">
                     <div class="col-md-6">
-                      <button @click="editInfo" type="button" class="btn btn-primary btn-block mb-2 editbutton">Edit Profile</button>
+                      <button @click="editInfo" type="button" class="btn btn-primary btn-block mb-2 profile-button">Edit Profile</button>
                     </div>
                     <div class="col-md-6">
-                      <button @click="saveInfo" type="button" class="btn btn-primary btn-block mb-2 savebutton">Save Profile</button>
+                      <button @click="saveInfo" type="button" class="btn btn-primary btn-block mb-2 profile-button">Save Profile</button>
                     </div>
                   </div>
                 </div>
@@ -120,6 +124,7 @@ export default {
       name: '',
       address: '',
       dob: '',
+      salary: '',
       errorMsg: '',
       accountNumber: 0,
     };
@@ -129,6 +134,7 @@ export default {
       .then((response) => {
         this.name = response.data.name;
         this.accountNumber = response.data.accountNumber;
+        this.salary = response.data.salary;
 
         axiosClient.get("/account/?accountNumber=" + this.accountNumber)
           .then((response) => {
@@ -169,7 +175,7 @@ export default {
           this.address = response.data.address;
           this.dob = response.data.dob;
 
-          const employee_request = {name: this.name, email: this.email, accountNumber: this.accountNumber}
+          const employee_request = {name: this.name, email: this.email, accountNumber: this.accountNumber, salary: this.salary}
           axiosClient.put("/employee/update", employee_request)
             .then((response) => {
               this.name = response.data.name;
@@ -198,7 +204,7 @@ export default {
       document.getElementById('dob').removeAttribute('readonly');
     },
     async Home() {
-      await this.$router.push({name: 'EmployeeHome', params: {email: this.email}})
+      await this.$router.push({name: 'EmployeeHome', params: {email: this.email, name: this.name}})
     },
     async LogOut() {
       await this.$router.push({name: 'Home'})
@@ -293,6 +299,29 @@ export default {
   top: 15%;
   right: 20%;
   left: 20%;
+}
+
+.profile-button {
+  width: 70%;
+  margin-top: 5%;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: white;
+  border: 2px solid #888888;
+  color: #888888;
+}
+
+.profile-button:hover {
+  border: #888888;
+  background-color: #888888;
+  color: white;
+}
+
+/* Container for buttons */
+.button-container {
+  display: flex;
+  justify-content: space-around; /* Adjust as necessary for your layout */
+  margin: 0 auto;
 }
 
 </style>
