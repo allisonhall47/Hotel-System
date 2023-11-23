@@ -92,6 +92,7 @@
 
 <script>
 import axios from 'axios'
+import SignUp from "../shared/SignUp.vue";
 var config = require('../../../config')
 var frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
 var backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort
@@ -102,6 +103,11 @@ var axiosClient = axios.create({
 
 export default {
   name: "EmployeeAccount",
+  computed: {
+    SignUp() {
+      return SignUp
+    }
+  },
   props: {
     email: {
       type: String,
