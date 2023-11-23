@@ -13,13 +13,19 @@
           <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item active">
-                <a class="nav-link" href="#">Home<span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="#">Home<span class="sr-only">(current)</span></a> <!--CURRENT-->
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="Login">LogIn</a>
+                <a class="nav-link" @click="Employee">Account</a> <!--employee account-->
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="SignUp">SignUp</a>
+                <a class="nav-link" @click="">Log Repair</a> <!--employee repair-->
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" @click="">View Schedule</a> <!--view employee schedule-->
+              </li>
+              <li>
+                <a class="nav-link" @click="LogOut">Log Out</a>
               </li>
             </ul>
           </div>
@@ -27,6 +33,16 @@
       </div>
 
       <!--start rest of page here-->
+      <div class="main-container">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12 mx-auto text-center">
+              <h1 class="text-center" style="font-family: 'Montserrat', serif; color: #888; letter-spacing: 5px; font-size: 45px" >Marwaniott Hotel Employee Portal</h1>
+              <p class="luxurious-text" style="font-weight: normal; color: #888; font-size: 20px;">Welcome, {{name}}! </p>
+            </div>
+          </div>
+        </div>
+      </div>
 
     </div>
   </div>
@@ -40,6 +56,10 @@ export default {
     email: {
       type: String,
       required: true
+    },
+    name: {
+      type: String,
+      required: true
     }
   },
   data() {
@@ -48,7 +68,12 @@ export default {
     };
   },
   methods: {
-
+    async Employee() {
+      await this.$router.push({name: "EmployeeAccount", params: {email: this.email}})
+    },
+    async LogOut() {
+      await this.$router.push({name: 'Home'})
+    },
   }
 };
 </script>
@@ -60,13 +85,13 @@ export default {
 }
 
 .hero-section {
-  background: url('../../assets/hotelView.png') center/cover no-repeat;
+  background: white;
   padding: 300px 0;
   text-align: center;
 }
 
 .transparent-background {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(169, 169, 169, 0.2);
 }
 
 .navbar-container {

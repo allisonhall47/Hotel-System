@@ -127,7 +127,8 @@ export default {
             if(response.data.accountNumber !== 0){
               this.logged_user = response
               alert("Successfully logged in.")
-              this.$router.push({name: 'EmployeeHome', params: {email: this.email}})
+              var employeeName = response.data.name;
+              this.$router.push({name: 'EmployeeHome', params: {email: this.email, name: employeeName}})
             } else {
               alert("No account exists with this email.")
             }

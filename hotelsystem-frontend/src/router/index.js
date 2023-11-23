@@ -5,6 +5,8 @@ import SignUp from "../components/shared/SignUp"
 import Login from "../components/shared/Login"
 import CustomerHome from "../components/customer/CustomerHome"
 import CustomerAccount from "../components/customer/CustomerAccount"
+import EmployeeHome from "../components/employee/EmployeeHome"
+import EmployeeAccount from "../components/employee/EmployeeAccount"
 
 Vue.use(Router)
 
@@ -40,7 +42,7 @@ export default new Router({
     {
       path: '/',
       name: 'EmployeeHome',
-      component: CustomerHome,
+      component: EmployeeHome,
       props: true
     },
   ]
