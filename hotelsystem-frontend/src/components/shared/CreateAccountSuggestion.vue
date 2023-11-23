@@ -76,12 +76,6 @@ export default{
   margin-right: 0; /* Reset the margin for the navbar-brand */
 }
 
-.hero-section {
-  background: url('../../assets/hotelView.png') center/cover no-repeat;
-  padding: 300px 0;
-  text-align: center;
-}
-
 .luxurious-text {
   font-family: 'Georgia', sans-serif;
   font-weight: bold;

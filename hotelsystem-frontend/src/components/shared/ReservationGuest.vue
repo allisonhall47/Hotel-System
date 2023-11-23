@@ -24,6 +24,39 @@
           </div>
         </nav>
       </div>
+
+      <div class="container mt-5">
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Hotel Room Reservation</h5>
+
+                <!-- Number of Guests -->
+                <div class="form-group">
+                  <label for="guests">Number of Guests:</label>
+                  <input type="number" class="form-control" v-model="numberOfGuests" id="guests">
+                </div>
+
+                <!-- Start Date -->
+                <div class="form-group">
+                  <label for="startDate">Start Date:</label>
+                  <input type="date" class="form-control" v-model="startDate" id="startDate">
+                </div>
+
+                <!-- End Date -->
+                <div class="form-group">
+                  <label for="endDate">End Date:</label>
+                  <input type="date" class="form-control" v-model="endDate" id="endDate">
+                </div>
+
+                <!-- Reservation Button -->
+                <button class="btn btn-primary" @click="">Reserve Room</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
