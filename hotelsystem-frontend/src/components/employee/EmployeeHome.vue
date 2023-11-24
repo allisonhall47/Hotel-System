@@ -22,7 +22,7 @@
                 <a class="nav-link" @click="Repair">Log Repair</a> <!--employee repair-->
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="">View Schedule</a> <!--view employee schedule-->
+                <a class="nav-link" @click="ViewSchedule">View Schedule</a> <!--view employee schedule-->
               </li>
               <li>
                 <a class="nav-link" @click="LogOut">Log Out</a>
@@ -79,6 +79,9 @@ export default {
     },
     async Repair() {
       await this.$router.push({name: "EmployeeRepair", params: {email: this.email, name: this.name}})
+    },
+    async ViewSchedule() {
+      await this.$router.push({name: "EmployeeViewSchedule", params: {email: this.email, name: this.name}})
     }
   }
 };

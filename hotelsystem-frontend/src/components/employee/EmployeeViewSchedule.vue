@@ -13,7 +13,19 @@
           <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link" @click="LogOut">LogOut</a>
+                <a class="nav-link" @click="Home">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" @click="Employee">Account</a> <!--employee account-->
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" @click="Repairs">Log Repair</a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="#">View Schedule<span class="sr-only">(current)</span></a>
+              </li>
+              <li>
+                <a class="nav-link" @click="LogOut">Log Out</a>
               </li>
             </ul>
           </div>
@@ -68,9 +80,18 @@ function Shift(shiftId, date, startTime, endTime, employeeEmail) {
 
 export default {
   name: 'EmployeeViewSchedule',
+  props: {
+    email: {
+        type: String,
+          required: true
+    },
+    name: {
+      type: String,
+        required: true
+    }
+  },
   data() {
     return {
-      employeeEmail: 'tim@gmail.com', //TODO: !!!!
       shifts: [],
       errorShift: '',
     }
@@ -83,7 +104,7 @@ export default {
       axios.request({
         method: 'get',
         maxBodyLength: Infinity,
-        url: backendUrl+'/shifts/get/'+this.employeeEmail, //TODO:!!!
+        url: backendUrl+'/shifts/get/'+this.email,
         headers: { },
         data : ''
       })
@@ -106,10 +127,18 @@ export default {
           }
         });
     },
+    async Home() {
+      await this.$router.push({name: "EmployeeHome", params: {email: this.email, name: this.name}})
+    },
+    async Repairs() {
+      await this.$router.push({name: "EmployeeRepair", params: {email: this.email, name: this.name}})
+    },
+    async Employee() {
+      await this.$router.push({name: "EmployeeAccount", params: {email: this.email, name: this.name}})
+    },
     async LogOut() {
-      //TODO: logout
       await this.$router.push({name: 'Home'})
-    }
+    },
   },
 }
 
