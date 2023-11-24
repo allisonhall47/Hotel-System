@@ -49,7 +49,7 @@
           </tr>
 
           <tr v-for="shift in shifts" :key="shift.id">
-            <td>{{shift.employeeEmail}}
+            <td>{{shift.employeeName}}
             </td>
             <td>{{ shift.date }}</td>
             <td>{{ shift.startTime }}</td>
@@ -125,7 +125,7 @@ function Shift(shiftId, date, startTime, endTime, employeeEmail) {
   this.startTime = startTime
   this.endTime = endTime
   this.employeeEmail = employeeEmail
-
+  this.employeeName = ''
 }
 
 export default {
@@ -169,6 +169,17 @@ export default {
           shifts.forEach(shift => {
             shift.startTime = shift.startTime.substr(0, 5)
             shift.endTime = shift.endTime.substr(0, 5)
+            axios.request({
+              method: 'get',
+              maxBodyLength: Infinity,
+              url: backendUrl+'/employee?email='+shift.employeeEmail,
+              headers: { },
+              data : ''
+            }).then((response) => {
+              shift.employeeName = response.data.name
+            }).catch((error) => {
+              shift.employeeName = shift.employeeEmail
+            })
           })
           this.shifts = shifts
           this.errorShift = ''
