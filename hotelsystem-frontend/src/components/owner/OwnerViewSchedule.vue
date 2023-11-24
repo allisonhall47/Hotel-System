@@ -6,7 +6,8 @@
           <a class="navbar-brand" href="#">
             <img src="../../assets/marwaniottNoBG.png" alt="Your Logo" height="60">
           </a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                  aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
@@ -20,7 +21,7 @@
       </div>
       <div class="table-container">
         <div class="buttons-container">
-          <button @click="openCreateShiftPopup" class = "prettybutton">Create Shift</button>
+          <button @click="openCreateShiftPopup" class="prettybutton">Create Shift</button>
 
           <div class="dropdown">
             <button class="prettybutton">Filter</button>
@@ -31,8 +32,10 @@
             </div>
           </div>
 
-            <input v-if="scheduleFilter==1" type="date" id="scheduleDateFilter" name="scheduleDateFilter" class="styledinput">
-            <input v-model="filteredEmployeeName" v-if="scheduleFilter==2" type="text" id="scheduleEmployeeFilter" name="scheduleEmployeeFilter" class="styledinput" @keyup.enter="filterByEmployee(filteredEmployeeName)" placeholder="Employee Name">
+          <input v-model="filteredDate" v-if="scheduleFilter==1" type="date" id="scheduleDateFilter" name="scheduleDateFilter"
+                 class="styledinput" @input="getShifts">
+          <input v-model="filteredEmployeeEmail" v-if="scheduleFilter==2" type="text" id="scheduleEmployeeFilter" name="scheduleEmployeeFilter" class="styledinput"
+                 @keyup.enter="getShifts" placeholder="Employee Email">
         </div>
 
         <table>
@@ -41,42 +44,62 @@
             <th>Date</th>
             <th>Start time</th>
             <th>End time</th>
+            <th>Update</th>
+            <th>Delete</th>
           </tr>
 
           <tr v-for="shift in shifts" :key="shift.id">
-            <td>{{ shift.employeeName }}</td>
+            <td>{{shift.employeeEmail}}
+            </td>
             <td>{{ shift.date }}</td>
             <td>{{ shift.startTime }}</td>
             <td>{{ shift.endTime }}</td>
+            <td>
+              <button @click="openUpdateShiftPopup(shift.shiftId)" class="prettybutton2">Update</button>
+            </td>
+            <td>
+              <button @click="deleteShift(shift.shiftId)" class="prettybutton">Delete</button>
+            </td>
           </tr>
         </table>
+        <div class="centerbuttoncontainer">
+          <label class="prettylabel" v-if="shifts.length == 0">{{errorShift}}</label>
+        </div>
       </div>
     </div>
 
     <div class="popup-container">
       <!-- Popup overlay -->
-      <div class="overlay" v-if="showCreateShiftPopup" @click="closeCreateShiftPopup">
+      <div class="overlay" v-if="showCreateShiftPopup">
         <!-- Popup content -->
-        <div class="popup" @click.stop>
-          <h2 class="prettyheader">Create New Shift</h2>
+        <div class="popup">
+          <h2 v-if="!isUpdatingShift" class="prettyheader">Create New Shift</h2>
+          <h2 v-if="isUpdatingShift" class="prettyheader">Update Shift</h2>
           <div class="inputrow">
             <label class="prettylabel">Employee</label>
-            <input type="text" id="newShiftEmployee" name="New Shift Employee" class="styledinput" placeholder="Employee Name">
+            <input v-model="currShift.employeeEmail" type="text" id="newShiftEmployee" name="New Shift Employee" class="styledinput" placeholder="Employee Email">
           </div>
           <div class="inputrow">
             <label class="prettylabel">Date</label>
-            <input type="date" id="newShiftDate" name="New Shift Date" class="styledinput">
+            <input v-model="currShift.date" type="date" id="newShiftDate" name="New Shift Date" class="styledinput">
           </div>
           <div class="inputrow">
             <label class="prettylabel">Start Time</label>
-            <input type="time" id="newShiftStartTime" name="New Shift Start Time" class="styledinput">
+            <input v-model="currShift.startTime" type="time" id="newShiftStartTime" name="New Shift Start Time"
+                   class="styledinput">
           </div>
           <div class="inputrow">
             <label class="prettylabel">End Time</label>
-            <input type="time" id="newshiftEndTime" name="New Shift End Time" class="styledinput">
+            <input v-model="currShift.endTime" type="time" id="newshiftEndTime" name="New Shift End Time"
+                   class="styledinput">
           </div>
           <div class="centerbuttoncontainer">
-            <button class="centerbutton prettybutton">Create</button>
+            <button v-if="!isUpdatingShift" @click="createShift" class="prettybutton">Create</button>
+            <button v-if="isUpdatingShift" @click="createShift" class="prettybutton">Update</button>
+            <button @click="closeCreateShiftPopup" class="prettybutton2">Close</button>
+          </div>
+          <div class="centerbuttoncontainer">
+            <label>{{ popupErrorShift }}</label>
           </div>
         </div>
       </div>
@@ -87,20 +110,22 @@
 
 <script>
 import axios from 'axios'
+
 var config = require('../../../config')
 var frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
 var backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort
 var axiosClient = axios.create({
   baseURL: backendUrl,
-  headers: { 'Access-Control-Allow-Origin': frontendUrl }
+  headers: {'Access-Control-Allow-Origin': frontendUrl}
 })
 
-function Shift(id, date, startTime, endTime, employeeName) {
-  this.id = id
+function Shift(shiftId, date, startTime, endTime, employeeEmail) {
+  this.shiftId = shiftId
   this.date = date
   this.startTime = startTime
   this.endTime = endTime
-  this.employeeName = employeeName
+  this.employeeEmail = employeeEmail
+
 }
 
 export default {
@@ -110,50 +135,139 @@ export default {
       shifts: [],
       scheduleFilter: 0,
       showCreateShiftPopup: false,
-      filteredEmployeeName: null,
+      filteredEmployeeEmail: null,
       filteredDate: null,
-      newShift: '',
+      isUpdatingShift: false,
+      currShift: null,
+      currShiftId: 0,
       errorShift: '',
-      response: []
+      popupErrorShift: '',
     }
   },
-  created: function() {
-    //Test data
-    const shift1 = new Shift(1, Date.now(), "12:00", "15:00", "Tom")
-    const shift2 = new Shift(2, Date.now(), "17:00", "22:00", "Tim")
-    const shift3 = new Shift(1, Date.now(), "12:00", "15:00", "Tom")
-    const shift4 = new Shift(2, Date.now(), "17:00", "22:00", "Tim")
-    const shift5 = new Shift(1, Date.now(), "12:00", "15:00", "Tom")
-    const shift6 = new Shift(2, Date.now(), "17:00", "22:00", "Tim")
-    const shift7 = new Shift(1, Date.now(), "12:00", "15:00", "Tom")
-    const shift8 = new Shift(2, Date.now(), "17:00", "22:00", "Tim")
-
-    this.shifts = [shift1, shift2, shift3, shift4, shift5, shift6, shift7, shift8, shift1, shift2, shift3, shift4, shift5, shift6, shift7, shift8]
+  created: function () {
+    this.getShifts()
   },
   methods: {
-    openCreateShiftPopup: function() {
+    getShifts() {
+      var url = '/shifts/'
+
+      switch (this.scheduleFilter) {
+        case 1: url = '/shifts/date/get/'+this.filteredDate
+          break
+        case 2: url = '/shifts/get/'+this.filteredEmployeeEmail
+          break
+      }
+      axios.request({
+        method: 'get',
+        maxBodyLength: Infinity,
+        url: backendUrl+url,
+        headers: { },
+        data : ''
+      })
+        .then((response) => {
+          const shifts = response.data
+          shifts.forEach(shift => {
+            shift.startTime = shift.startTime.substr(0, 5)
+            shift.endTime = shift.endTime.substr(0, 5)
+          })
+          this.shifts = shifts
+          this.errorShift = ''
+        })
+        .catch((error) => {
+          const status = error.response.status
+          this.shifts = []
+          if (status == 404) {
+            this.errorShift = "No shifts found!"
+          } else {
+            this.errorShift = "Error loading shifts!"
+          }
+        });
+    },
+    openCreateShiftPopup: function () {
+      this.currShift = {
+        employeeEmail: '',
+        date: new Date().toISOString().split('T')[0],
+        startTime: "08:00",
+        endTime: "13:00"
+      };
+      this.isUpdatingShift = false;
       this.showCreateShiftPopup = true;
     },
-    closeCreateShiftPopup: function() {
+    openUpdateShiftPopup: function (id) {
+      const shift = this.shifts.find(shift => shift.shiftId == id)
+      this.currShift = {
+        employeeEmail: shift.employeeEmail,
+        date: shift.date,
+        startTime: shift.startTime,
+        endTime: shift.endTime
+      }
+      this.currShiftId = id
+      this.isUpdatingShift = true;
+      this.showCreateShiftPopup = true;
+      this.popupErrorShift = ''
+    },
+    closeCreateShiftPopup: function () {
       this.showCreateShiftPopup = false;
     },
     createShift: function () {
-      //TODO ...
+      const url = this.isUpdatingShift ? ('/shift/'+this.currShiftId) : '/shift/create'
+      const cmd = this.isUpdatingShift ? 'put' : 'post'
+
+      axios.request({
+        method: cmd,
+        maxBodyLength: Infinity,
+        url: backendUrl+url,
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        data : {
+          employeeEmail: this.currShift.employeeEmail,
+          date: this.currShift.date,
+          startTime: this.currShift.startTime + ":00",
+          endTime: this.currShift.endTime + ":00"
+        }
+      })
+        .then(response => {
+          this.errorShift = ''
+          this.closeCreateShiftPopup()
+          this.getShifts()
+        })
+        .catch(e => {
+          const status = e.response.status
+          if (status == 400) {
+            this.popupErrorShift = "Check your inputs!"
+          } else if (status == 409) {
+            this.popupErrorShift = "Employee already has this shift!"
+          } else if (status == 404) {
+            this.popupErrorShift = "Employee does not exist!"
+          } else {
+            this.popupErrorShift = "Internal error!"
+          }
+        })
+    },
+    deleteShift(id) {
+      let config = {
+        method: 'delete',
+        maxBodyLength: Infinity,
+        url: backendUrl + '/shift/delete/' + id,
+        headers: { }
+      };
+
+      axios.request(config)
+        .then((response) => this.getShifts())
+        .catch((error) => {
+          console.log(error)
+        });
     },
     SelectNoFilter() {
       this.scheduleFilter = 0
+      this.getShifts()
     },
     SelectEmployeeFilter() {
       this.scheduleFilter = 2
     },
     SelectDateFilter() {
       this.scheduleFilter = 1
-    },
-    filterByEmployee(filteredEmployeeName) {
-      //TODO: make http request
-    },
-    filterByDate(filteredDate) {
-      //TODO: make http request
     },
     async LogOut() {
       //TODO: logout
@@ -227,21 +341,32 @@ th {
   color: #721c24;
 }
 
-.centerbutton {
-  margin: 0 auto;
-}
-
-.centerbuttoncontainer {
-  margin-top: 5%;
-  text-align: center;
+.prettybutton2 {
+  border-radius: 5px;
+  background-color: white;
+  border: 1px solid #888888;
+  color: #888888;
 }
 
 .prettybutton:hover {
+  border-radius: 5px;
+  border: #721c24;
+  background-color: #721c24;
+  border: 1px solid #721c24;
+  color: white;
+}
+
+.prettybutton2:hover {
   border-radius: 5px;
   border: #888888;
   background-color: #888888;
   border: 1px solid #888888;
   color: white;
+}
+
+.centerbuttoncontainer {
+  margin-top: 5%;
+  text-align: center;
 }
 
 .inputrow {
@@ -270,7 +395,7 @@ th {
   position: absolute;
   background-color: #f9f9f9;
   min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
   border-radius: 5px;
 }
@@ -330,8 +455,8 @@ th {
 
 /* Styles for the popup */
 .popup {
-  width: 30%;
-  height: 45%;
+  width: 350px;
+  height: 350px;
   background-color: #fff;
   padding: 20px;
   border-radius: 10px;
