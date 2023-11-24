@@ -327,14 +327,4 @@ export default {
   margin: 0 auto;
 }
 
-</template>
-
-<script>
-export default {
-  name: "EmployeeAccount"
-}
-</script>
-
-<style scoped>
-
 </style>
