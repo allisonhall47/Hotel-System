@@ -5,6 +5,8 @@ import SignUp from "../components/shared/SignUp"
 import Login from "../components/shared/Login"
 import CustomerHome from "../components/customer/CustomerHome"
 import CustomerAccount from "../components/customer/CustomerAccount"
+import OwnerAddShift from "../components/owner/OwnerAddShift";
+import ownerManageRooms from "../components/owner/ownerManageRooms";
 
 Vue.use(Router)
 
@@ -36,6 +38,16 @@ export default new Router({
       name: 'CustomerAccount',
       component: CustomerAccount,
       props: true
+    },
+    {
+      path: '/owner',
+      name: 'OwnerAddShift',
+      component: OwnerAddShift
+    },
+    {
+      path: '/owner/manage_rooms',
+      name: 'ownerManageRooms',
+      component: ownerManageRooms
     },
   ]
 })
