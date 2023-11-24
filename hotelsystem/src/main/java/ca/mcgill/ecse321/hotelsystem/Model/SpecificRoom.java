@@ -8,6 +8,7 @@ public class SpecificRoom {
     @Id
     private int number;
     private ViewType view;
+    @Column(columnDefinition="TEXT")
     private String description;
     private Boolean openForUse;
 

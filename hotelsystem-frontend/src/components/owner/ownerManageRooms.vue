@@ -30,10 +30,10 @@
                   <td class="text-center" style="background: white"><input class="form-control text-center" :id="'view'.concat(r.number)" :value="r.view" readonly></td>
                   <td class="text-center" style="background: white">
                     <div class="column-content">
-                      <input class="form-control text-center" :id="'description'.concat(r.number)" :value="r.description" readonly>
+                      <textarea class="form-control text-center" :id="'description'.concat(r.number)" :value="r.description" readonly></textarea>
                     </div>
                   </td>
-                  <td class="text-center" style="background: white"><input class="form-control text-center" :id="'openForUse'.concat(r.number)" :value="r.openForUse ? 'Yes' : 'No'" readonly></td>
+                  <td class="text-center" style="background: white"><input class="form-control text-center" :id="'openForUse'.concat(r.number)" :value="r.openForUse" readonly></td>
                   <td class="text-center" style="background: white"><input class="form-control text-center" :id="'roomType'.concat(r.number)" :value="r.roomType" readonly></td>
                   <td :id="'edit'.concat(r.number)" class="text-center" style="background: white">
                     <button type="button" @click="editInfo(r.number)" class="btn btn-primary btn-block mb-4 editButton">Edit</button>
@@ -87,7 +87,8 @@ export default {
     axiosClient.get('/specificRooms')
       .then(response => {
         this.specificRooms = response.data
-        this.filteredRooms = response.data
+        this.specificRooms.sort((a, b) => a.number - b.number)
+        this.deepCopy(this.specificRooms)
       })
       .catch(err => {
         this.errorMsg = `Failure: ${err.response.data}`
@@ -96,7 +97,7 @@ export default {
       })
   },
   methods: {
-    saveInfo(number_clicked) {
+    async saveInfo(number_clicked) {
       let n = document.getElementById('number'.concat(number_clicked)).value
       let v = document.getElementById('view'.concat(number_clicked)).value
       let d = document.getElementById('description'.concat(number_clicked)).value
@@ -104,21 +105,9 @@ export default {
       let r = document.getElementById('roomType'.concat(number_clicked)).value
       const room_request = {number: n, view: v, description: d, openForUse: o, roomType: r};
 
-      axiosClient.put("/specificRoom/update", room_request)
+      await axiosClient.put("/specificRoom/update", room_request)
         .then((response) => {
-          //update the specificRooms and filteredRooms lists
-          //too complicated, can't implement
-          //update the lists again, a little redundant but easier
-          axiosClient.get('/specificRooms')
-            .then(response => {
-              this.specificRooms = response.data
-              this.filteredRooms = response.data
-            })
-            .catch(err => {
-              this.errorMsg = `Failure: ${err.response.data}`
-              alert(this.errorMsg)
-              //console.log(err.response.data)
-            })
+
         })
         .catch((err) => {
           //reset input field to what it was before
@@ -131,6 +120,19 @@ export default {
 
           this.errorMsg = `Failure: ${err.response.data}`
           alert(this.errorMsg)
+        })
+
+      await axiosClient.get('/specificRooms')
+        .then(response => {
+          console.log(response.data)
+          this.specificRooms = response.data
+          this.specificRooms.sort((a, b) => a.number - b.number)
+          //this.deepCopy(this.specificRooms)
+        })
+        .catch(err => {
+          this.errorMsg = `Failure: ${err.response.data}`
+          alert(this.errorMsg)
+          //console.log(err.response.data)
         })
 
       //remove
@@ -162,13 +164,22 @@ export default {
     },
     //some methods to filter by Open for use
     filterTrue() {
-      this.filteredRooms = this.specificRooms.filter(room => room.openForUse === true);
+      let tmp = this.specificRooms.filter(room => room.openForUse === true);
+      this.deepCopy(tmp)
     },
     filterFalse() {
-      this.filteredRooms = this.specificRooms.filter(room => room.openForUse === false);
+      let tmp = this.specificRooms.filter(room => room.openForUse === false);
+      this.deepCopy(tmp)
     },
     noFilter() {
-      this.filteredRooms = this.specificRooms
+      this.deepCopy(this.specificRooms)
+    },
+    deepCopy(temp) {
+      const result = []
+      for(const element of temp) {
+        result.push({number: element.number, view: element.view, description: element.description, openForUse: element.openForUse, roomType: element.roomType})
+      }
+      this.filteredRooms = result
     },
   }
 }
@@ -286,5 +297,3 @@ td:nth-child(4){
   color: white;
 }
 </style>
-<!--<script setup>-->
-<!--</script>-->
