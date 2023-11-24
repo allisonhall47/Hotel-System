@@ -19,7 +19,7 @@
                 <a class="nav-link" @click="Employee">Account</a> <!--employee account-->
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="">Log Repair</a> <!--employee repair-->
+                <a class="nav-link" @click="Repair">Log Repair</a> <!--employee repair-->
               </li>
               <li class="nav-item">
                 <a class="nav-link" @click="">View Schedule</a> <!--view employee schedule-->
@@ -71,11 +71,14 @@ export default {
   },
   methods: {
     async Employee() {
-      await this.$router.push({name: "EmployeeAccount", params: {email: this.email}})
+      await this.$router.push({name: "EmployeeAccount", params: {email: this.email, name: this.name}})
     },
     async LogOut() {
       await this.$router.push({name: 'Home'})
     },
+    async Repair() {
+      await this.$router.push({name: "EmployeeRepair", params: {email: this.email}})
+    }
   }
 };
 </script>
