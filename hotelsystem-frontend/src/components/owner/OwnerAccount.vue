@@ -14,8 +14,11 @@
               <li class="nav-item">
                 <a class="nav-link" @click="Home">Home</a>
               </li>
+              <li class="nav-item">
+                 <a class="nav-link" @click="ManageEmployees">Manage Employees</a>
+              </li>
               <li class="nav-item active">
-                <a class="nav-link" href="#">Account<span class="sr-only">(current)</span></a>
+                <a class="nav-link" @click="Account">Account</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" @click="LogOut">Log Out</a>
@@ -191,10 +194,16 @@ export default {
       document.getElementById('password').removeAttribute('readonly');
       document.getElementById('address').removeAttribute('readonly');
     },
-    async Home() {
+    async Home(){
       await this.$router.push({name: 'OwnerHome', params: {email: this.email}})
     },
-    async LogOut() {
+    async ManageEmployees(){
+      await this.$router.push({name: 'OwnerManageEmployees', params: {email: this.email}})
+    },
+    async Account(){
+      await this.$router.push({name: 'OwnerAccount', params: {email: this.email}})
+    },
+    async LogOut(){
       await this.$router.push({name: 'Home'})
     },
 
@@ -290,6 +299,10 @@ export default {
   top: 15%;
   right: 20%;
   left: 20%;
+}
+
+.nav-link:hover {
+  cursor: pointer;
 }
 
 

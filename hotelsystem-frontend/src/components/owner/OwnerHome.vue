@@ -14,7 +14,10 @@
           <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item active">
-                <a class="nav-link" href="#">Home<span class="sr-only">(current)</span></a>
+                <a class="nav-link" @click="Home">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" @click="ManageEmployees">Manage Employees</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" @click="Account">Account</a>
@@ -104,10 +107,19 @@ export default {
     };
   },
   methods: {
-    async Account() {
+    async Login() {
+      await this.$router.push({name: 'Login'})
+    },
+    async Home(){
+      await this.$router.push({name: 'OwnerHome', params: {email: this.email}})
+    },
+    async ManageEmployees(){
+      await this.$router.push({name: 'OwnerManageEmployees', params: {email: this.email}})
+    },
+    async Account(){
       await this.$router.push({name: 'OwnerAccount', params: {email: this.email}})
     },
-    async LogOut() {
+    async LogOut(){
       await this.$router.push({name: 'Home'})
     },
     showLoginModal() {
@@ -167,6 +179,10 @@ export default {
   top: 0;
   left: 0;
   right: 0;
+
+  .nav-link:hover {
+    cursor: pointer;
+  }
 }
 
 </style>
