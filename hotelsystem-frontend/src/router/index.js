@@ -7,6 +7,7 @@ import CustomerHome from "../components/customer/CustomerHome"
 import CustomerAccount from "../components/customer/CustomerAccount"
 import OwnerHome from "../components/owner/OwnerHome"
 import OwnerAccount from "../components/owner/OwnerAccount"
+import OwnerManageEmployees from "../components/owner/OwnerManageEmployees"
 
 Vue.use(Router)
 
@@ -49,6 +50,12 @@ export default new Router({
      path: '/owner-account',
      name: 'OwnerAccount',
      component: OwnerAccount,
+     props: true
+    },
+    {
+     path: '/owner-manage-employees',
+     name: 'OwnerManageEmployees',
+     component: OwnerManageEmployees,
      props: true
     },
   ]
