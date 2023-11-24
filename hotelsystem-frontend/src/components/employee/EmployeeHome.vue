@@ -44,6 +44,7 @@
         </div>
       </div>
 
+
     </div>
   </div>
 </template>
@@ -77,7 +78,7 @@ export default {
       await this.$router.push({name: 'Home'})
     },
     async Repair() {
-      await this.$router.push({name: "EmployeeRepair", params: {email: this.email}})
+      await this.$router.push({name: "EmployeeRepair", params: {email: this.email, name: this.name}})
     }
   }
 };

@@ -207,7 +207,7 @@ export default {
       await this.$router.push({name: 'EmployeeHome', params: {email: this.email, name: this.name}})
     },
     async Repair() {
-      await this.$router.push({name: "EmployeeRepair", params: {email: this.email}})
+      await this.$router.push({name: "EmployeeRepair", params: {email: this.email, name: this.name}})
     },
     async LogOut() {
       await this.$router.push({name: 'Home'})
