@@ -1,7 +1,6 @@
 <template>
-  <div>
-    <div id = "main"></div>
-    <div class="hero-section">
+  <div class="ownerAccount">
+    <div class="background">
       <div class="navbar-container">
         <nav class="navbar navbar-expand-lg navbar-light transparent-background">
           <a class="navbar-brand" href="#">
@@ -15,14 +14,11 @@
               <li class="nav-item">
                 <a class="nav-link" @click="Home">Home</a>
               </li>
+              <li class="nav-item">
+                 <a class="nav-link" @click="ManageEmployees">Manage Employees</a>
+              </li>
               <li class="nav-item active">
-                <a class="nav-link" href="#">Account<span class="sr-only">(current)</span></a> <!--employee account-->
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" @click="Repair">Log Repair</a> <!--employee repair-->
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" @click="">View Schedule</a> <!--view employee schedule-->
+                <a class="nav-link" @click="Account">Account</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" @click="LogOut">Log Out</a>
@@ -32,56 +28,62 @@
         </nav>
       </div>
 
-      <!--start rest of page here-->
       <div class="profile-box">
         <div class="container rounded bg-white mt-5 mb-5 account-box shadow">
-          <div class="row">
-            <div class="col-md-3 border-right">
-              <div class="d-flex flex-column align-items-center justify-content-center text-center p-3 py-5 image-pos">
-                <img class="rounded-circle" width="100%" src="../../assets/anonymousicon.png" alt="Profile Photo">
-              </div>
+        <div class="row">
+          <div class="col-md-3 border-right">
+            <div class="d-flex flex-column align-items-center justify-content-center text-center p-3 py-5 image-pos">
+              <img class="rounded-circle" width="200px" src="../../assets/anonymousicon.png" alt="Profile Photo">
             </div>
+          </div>
             <div class="col-md-9">
               <div class="p-3 py-5">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                  <h4 class="text-right" style="font-family: 'Montserrat', serif; color: #888; letter-spacing: 3px">ACCOUNT</h4>
+                  <h4 class="text-right" style="font-family: 'Montserrat', serif; color: #888; letter-spacing: 2px">ACCOUNT</h4>
                 </div>
 
                 <div class="image-pos">
                   <div class="row mt-3">
                     <div class="col-md-6">
                       <label class="labels">Name</label>
+                      <!--                    <input type="text" class="form-control" placeholder="name" value=email>-->
                       <input class="form-control" id="name" v-model="name" readonly>
                     </div>
                     <div class="col-md-6">
                       <label class="labels">Email</label>
+                      <!--                    <input type="text" class="form-control" placeholder="email" value="">-->
                       <input class="form-control" id="email" :value="email" readonly>
                     </div>
                     <div class="col-md-6">
                       <label class="labels">Password</label>
-                      <input class="form-control" id="password" type="password" v-model="password" readonly>
+                      <!--                    <input type="text" class="form-control" placeholder="***********" value="">-->
+                      <input class="form-control" id="password" v-model="hiddenPassword" readonly>
                     </div>
                     <div class="col-md-6">
                       <label class="labels">Address</label>
+                      <!--                    <input type="text" class="form-control" placeholder="enter address" value="">-->
                       <input class="form-control" id="address" v-model="address" readonly>
                     </div>
-                    <div class="col-md-6">
-                      <label class="labels">Salary</label>
-                      <input class="form-control" id="salary" :value="salary" readonly>
-                    </div>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                       <label class="labels">Date of Birth</label>
-                      <input class="form-control" id="dob" type="date" v-model="dob" readonly>
+                      <!--                    <input type="date" class="form-control" value="">-->
+                      <input class="form-control" id="address" v-model="dob" readonly>
                     </div>
                   </div>
                 </div>
-                <div class="mt-5 text-center button-container">
+<!--                <div class="mt-5 text-center">-->
+<!--                  <button @click="editInfo" type="button"-->
+<!--                          class="btn btn-primary btn-block mb-4 editbutton">Edit Profile</button>-->
+<!--                  <button @click="saveInfo" type="button"-->
+<!--                          class="btn btn-primary btn-block mb-4 editbutton">Save Profile</button>-->
+<!--                </div>-->
+                <div class="mt-5 text-center">
                   <div class="row">
                     <div class="col-md-6">
-                      <button @click="editInfo" type="button" class="btn btn-primary btn-block mb-2 profile-button">Edit Profile</button>
+                      <button @click="editInfo" type="button" class="btn btn-primary btn-block mb-2 editbutton">Edit Profile</button>
                     </div>
                     <div class="col-md-6">
-                      <button @click="saveInfo" type="button" class="btn btn-primary btn-block mb-2 profile-button">Save Profile</button>
+                      <button @click="saveInfo" type="button" class="btn btn-primary btn-block mb-2 savebutton">Save Profile</button>
                     </div>
                   </div>
                 </div>
@@ -96,7 +98,6 @@
 
 <script>
 import axios from 'axios'
-import SignUp from "../shared/SignUp.vue";
 var config = require('../../../config')
 var frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
 var backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort
@@ -106,12 +107,7 @@ var axiosClient = axios.create({
 })
 
 export default {
-  name: "EmployeeAccount",
-  computed: {
-    SignUp() {
-      return SignUp
-    }
-  },
+  name: 'OwnerAccount',
   props: {
     email: {
       type: String,
@@ -124,28 +120,29 @@ export default {
       name: '',
       address: '',
       dob: '',
-      salary: '',
       errorMsg: '',
+      hiddenPassword: '',
       accountNumber: 0,
     };
   },
   created(){
-    axiosClient.get("/employee?email=" + this.email)
+    axiosClient.get("/owner/email?email=" + this.email)
       .then((response) => {
         this.name = response.data.name;
         this.accountNumber = response.data.accountNumber;
-        this.salary = response.data.salary;
 
         axiosClient.get("/account/?accountNumber=" + this.accountNumber)
           .then((response) => {
             this.address = response.data.address;
             this.dob = response.data.dob;
             this.password = response.data.password;
+            this.hiddenPassword = '*'.repeat(this.password.length);
           })
           .catch((err) => {
             this.errorMsg = `Failure: ${err.response.data}`
             alert(this.errorMsg)
           })
+
       })
       .catch((err) => {
         this.errorMsg = `Failure: ${err.response.data}`
@@ -154,12 +151,11 @@ export default {
   },
   methods: {
     async saveInfo(){
+      this.password = document.getElementById("password").value;
       this.name = document.getElementById("name").value;
       this.address = document.getElementById("address").value;
-      this.password = document.getElementById("password").value;
-      this.dob = document.getElementById("dob").value;
 
-      axiosClient.get("/employee?email=" + this.email)
+      axiosClient.get("/owner?email=" + this.email)
         .then((response) => {
           this.accountNumber = response.data.accountNumber;
         })
@@ -173,51 +169,50 @@ export default {
         .then((response) => {
           this.password = response.data.password;
           this.address = response.data.address;
-          this.dob = response.data.dob;
-
-          const employee_request = {name: this.name, email: this.email, accountNumber: this.accountNumber, salary: this.salary}
-          axiosClient.put("/employee/update", employee_request)
-            .then((response) => {
-              this.name = response.data.name;
-              alert("Account successfully updated.")
-
-              document.getElementById('name').setAttribute('readonly', 'true');
-              document.getElementById('password').setAttribute('readonly', 'true');
-              document.getElementById('address').setAttribute('readonly', 'true');
-              document.getElementById('dob').setAttribute('readonly', 'true');
-
-            })
-            .catch((err) => {
-              this.errorMsg = `Failure: ${err.response.data}`
-              alert(this.errorMsg)
-            })
         })
         .catch((err) => {
           this.errorMsg = `Failure: ${err.response.data}`
           alert(this.errorMsg)
         })
+
+      const owner_request = {name: this.name, email: this.email, accountNumber: this.accountNumber}
+      axiosClient.put("/owner/update", owner_request)
+        .then((response) => {
+          this.name = response.data.name;
+        })
+        .catch((err) => {
+          this.errorMsg = `Failure: ${err.response.data}`
+          alert(this.errorMsg)
+        })
+
+      document.getElementById('name').setAttribute('readonly', 'true');
+      document.getElementById('password').setAttribute('readonly', 'true');
+      document.getElementById('address').setAttribute('readonly', 'true');
     },
     async editInfo(){
       document.getElementById('name').removeAttribute('readonly');
       document.getElementById('password').removeAttribute('readonly');
       document.getElementById('address').removeAttribute('readonly');
-      document.getElementById('dob').removeAttribute('readonly');
     },
-    async Home() {
-      await this.$router.push({name: 'EmployeeHome', params: {email: this.email, name: this.name}})
+    async Home(){
+      await this.$router.push({name: 'OwnerHome', params: {email: this.email}})
     },
-    async Repair() {
-      await this.$router.push({name: "EmployeeRepair", params: {email: this.email, name: this.name}})
+    async ManageEmployees(){
+      await this.$router.push({name: 'OwnerManageEmployees', params: {email: this.email}})
     },
-    async LogOut() {
+    async Account(){
+      await this.$router.push({name: 'OwnerAccount', params: {email: this.email}})
+    },
+    async LogOut(){
       await this.$router.push({name: 'Home'})
     },
+
   }
 };
 
 </script>
 
-<style scoped>
+<style>
 .background {
   width: 100%;
   height: 100%;
@@ -226,7 +221,7 @@ export default {
   background-size: cover;
 }
 
-.customerAccount {
+.ownerAccount {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -273,12 +268,14 @@ export default {
 .editbutton:hover {
   border: #888888;
   background-color: #888888;
+  border: 2px solid #888888;
   color: white;
 }
 
 .savebutton:hover {
   border: #888888;
   background-color: #888888;
+  border: 2px solid #888888;
   color: white;
 }
 
@@ -304,37 +301,10 @@ export default {
   left: 20%;
 }
 
-.profile-button {
-  width: 70%;
-  margin-top: 5%;
-  margin-left: auto;
-  margin-right: auto;
-  background-color: white;
-  border: 2px solid #888888;
-  color: #888888;
+.nav-link:hover {
+  cursor: pointer;
 }
 
-.profile-button:hover {
-  border: #888888;
-  background-color: #888888;
-  color: white;
-}
-
-/* Container for buttons */
-.button-container {
-  display: flex;
-  justify-content: space-around; /* Adjust as necessary for your layout */
-  margin: 0 auto;
-}
-
-</template>
-
-<script>
-export default {
-  name: "EmployeeAccount"
-}
-</script>
-
-<style scoped>
 
 </style>
+

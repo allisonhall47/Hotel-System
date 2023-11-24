@@ -143,7 +143,7 @@ export default {
           .then((response) => {
             this.logged_user = response
             alert("Successfully logged in.")
-            // this.$router.push({name: 'CustomerHome', params: {email: this.email}})
+            this.$router.push({name: 'OwnerHome', params: {email: this.email}})
           })
           .catch((err) => {
             this.errorMsg = `Failure: ${err.response.data}`
