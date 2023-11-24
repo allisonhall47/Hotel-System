@@ -5,6 +5,9 @@ import SignUp from "../components/shared/SignUp"
 import Login from "../components/shared/Login"
 import CustomerHome from "../components/customer/CustomerHome"
 import CustomerAccount from "../components/customer/CustomerAccount"
+import EmployeeHome from "../components/employee/EmployeeHome"
+import EmployeeAccount from "../components/employee/EmployeeAccount"
+import EmployeeRepair from "../components/employee/EmployeeRepair.vue";
 import OwnerHome from "../components/owner/OwnerHome"
 import OwnerAccount from "../components/owner/OwnerAccount"
 import OwnerManageEmployees from "../components/owner/OwnerManageEmployees"
@@ -38,6 +41,24 @@ export default new Router({
       path: '/',
       name: 'CustomerAccount',
       component: CustomerAccount,
+      props: true
+    },
+    {
+      path: '/',
+      name: 'EmployeeHome',
+      component: EmployeeHome,
+      props: true
+    },
+    {
+      path: '/',
+      name: 'EmployeeAccount',
+      component: EmployeeAccount,
+      props: true
+    },
+    {
+      path: '/',
+      name: 'EmployeeRepair',
+      component: EmployeeRepair,
       props: true
     },
     {
