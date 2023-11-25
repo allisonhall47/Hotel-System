@@ -92,20 +92,17 @@
 
 export default {
   name: 'CustomerHome',
-  props: {
-    email: {
-      type: String,
-      required: true
-    }
-  },
   data() {
     return {
-      isLoggedIn: false,
+      email: "",
     };
+  },
+  mounted(){
+    this.email = this.$route.params.param1
   },
   methods: {
     async Account() {
-      await this.$router.push({name: 'CustomerAccount', params: {email: this.email}})
+      await this.$router.push({path: '/CustomerAccount/' + this.email})
     },
     async LogOut() {
       alert('Successfully logged out.')

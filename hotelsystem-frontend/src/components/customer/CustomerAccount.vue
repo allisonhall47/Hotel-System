@@ -94,12 +94,6 @@ var axiosClient = axios.create({
 
 export default {
   name: 'CustomerAccount',
-  props: {
-    email: {
-      type: String,
-      required: true
-    }
-  },
   data() {
     return {
       password: '',
@@ -108,9 +102,15 @@ export default {
       dob: '',
       errorMsg: '',
       accountNumber: 0,
+      email: "",
     };
   },
+  mounted(){
+    this.email = this.$route.params.param1
+  },
   created(){
+    this.email = this.$route.params.param1
+
     axiosClient.get("/customer?email=" + this.email)
       .then((response) => {
         this.name = response.data.name;
@@ -184,7 +184,7 @@ export default {
       document.getElementById('dob').removeAttribute('readonly');
     },
     async Home() {
-      await this.$router.push({name: 'CustomerHome', params: {email: this.email}})
+      await this.$router.push({path: '/CustomerHome/' + this.email})
     },
     async LogOut() {
       await this.$router.push({name: 'Home'})

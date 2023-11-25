@@ -34,16 +34,12 @@ export default new Router({
       component: Login
     },
     {
-      path: '/',
-      name: 'CustomerHome',
+      path: '/CustomerHome/:param1',
       component: CustomerHome,
-      props: true
     },
     {
-      path: '/',
-      name: 'CustomerAccount',
+      path: '/CustomerAccount/:param1',
       component: CustomerAccount,
-      props: true
     },
     {
       path: '/',
