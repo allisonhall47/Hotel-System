@@ -134,19 +134,32 @@ export default {
           })
       }
       else if (this.user === "Employee"){
-        alert("Employee")
+        axiosClient.get("/employee?email=" + this.email)
+          .then((response) => {
+            if(response.data.accountNumber !== 0){
+              this.logged_user = response
+              alert("Successfully logged in.")
+              var employeeName = response.data.name;
+              this.$router.push({name: 'EmployeeHome', params: {email: this.email, name: employeeName}})
+            } else {
+              alert("No account exists with this email.")
+            }
+          })
+          .catch((err) => {
+            this.errorMsg = `Failure: ${err.response.data}`
+            alert(this.errorMsg)
+          })
       }
       else if (this.user === "Owner"){
         axiosClient("/owner/email?email=" + this.email)
           .then((response) => {
             if(response.data.accountNumber !== 0){
               if(this.getAccount(response.data.accountNumber) === true){
-                // this.$router.push({name: 'CustomerHome', params: {email: this.email}})
+                this.$router.push({name: 'OwnerHome', params: {email: this.email}})
               }
             } else {
               alert("No owner account exists with this email.")
             }
-
           })
           .catch((err) => {
             this.errorMsg = `Failure: ${err.response.data}`
