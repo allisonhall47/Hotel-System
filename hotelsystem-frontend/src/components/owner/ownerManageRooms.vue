@@ -7,11 +7,35 @@
           <a class="navbar-brand" href="#">
             <img src="../../assets/marwaniottNoBG.png" alt="Your Logo" height="60">
           </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item ">
+                <a class="nav-link" @click="Home">Home</a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" @click="ManageRooms">Manage Rooms</a>
+              </li>
+            </ul>
+          </div>
         </nav>
       </div>
 
       <div class="manage-room-container">
         <div>
+          <div class="filters">
+            <button @click="filterTrue()" type="button" class="btn btn-primary mb-4 filterButton">
+              Open For Use
+            </button>
+            <button @click="filterFalse()" type="button" class="btn btn-primary mb-4 filterButton">
+              Not Open For Use
+            </button>
+            <button @click="noFilter()" type="button" class="btn btn-primary mb-4 filterButton">
+              Show All
+            </button>
+          </div>
           <div class="table-responsive">
             <table class="table table-bordered">
               <thead>
@@ -44,17 +68,6 @@
                 </tr>
               </tbody>
             </table>
-          </div>
-          <div class="filters">
-            <button @click="filterTrue()" type="button" class="btn btn-primary mb-4 filterButton">
-              Open For Use
-            </button>
-            <button @click="filterFalse()" type="button" class="btn btn-primary mb-4 filterButton">
-              Not Open For Use
-            </button>
-            <button @click="noFilter()" type="button" class="btn btn-primary mb-4 filterButton">
-              Show All
-            </button>
           </div>
         </div>
       </div>
@@ -136,7 +149,7 @@ export default {
         })
 
       //remove
-      // this.temporary_data_holder.remove(number_clicked)
+      //this.temporary_data_holder.remove(number_clicked)
 
       document.getElementById('view'.concat(number_clicked)).setAttribute('readonly', 'true');
       document.getElementById('description'.concat(number_clicked)).setAttribute('readonly', 'true');
@@ -181,6 +194,12 @@ export default {
       }
       this.filteredRooms = result
     },
+    async Home(){
+      await this.$router.push({name: 'OwnerHome', params: {email: this.email}})
+    },
+    async ManageRooms() {
+      await this.$router.push({name: 'ownerManageRooms'})
+    }
   }
 }
 </script>
@@ -240,6 +259,9 @@ td:nth-child(4){
 }
 
 .table-responsive {
+  font-family: 'Georgia', sans-serif;
+  font-weight: bold;
+  color: black;
   width: 100%;
   max-width: 100%;
   overflow-x: auto;
@@ -295,5 +317,9 @@ td:nth-child(4){
   background-color: #888888;
   border: 2px solid #888888;
   color: white;
+}
+
+.nav-link:hover {
+  cursor: pointer;
 }
 </style>

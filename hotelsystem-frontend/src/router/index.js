@@ -7,6 +7,7 @@ import CustomerHome from "../components/customer/CustomerHome"
 import CustomerAccount from "../components/customer/CustomerAccount"
 import OwnerAddShift from "../components/owner/OwnerAddShift";
 import ownerManageRooms from "../components/owner/ownerManageRooms";
+import CustomerMakeRequest from "../components/customer/CustomerMakeRequest";
 
 Vue.use(Router)
 
@@ -48,6 +49,11 @@ export default new Router({
       path: '/owner/manage_rooms',
       name: 'ownerManageRooms',
       component: ownerManageRooms
+    },
+    {
+      path: '/customer/make_request',
+      name: 'CustomerMakeRequest',
+      component: CustomerMakeRequest
     },
   ]
 })

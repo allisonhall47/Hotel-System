@@ -27,28 +27,28 @@
       </div>
 
       <div class="add-shift-container">
-          <div class="d-flex justify-content-center h-100">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="text-center" style="font-family: 'Montserrat', serif; color: #888; letter-spacing: 2px">ADD SHIFT</h3>
-              </div>
-              <div class="card-body">
-                <form id="shift_form">
-                  <div class="input-group form-group">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text"><i class="fas fa-user"></i></span>
-                    </div>
-                    <input id="date-shift" v-model="date_shift" type="date" class="form-control" style="font-family: 'Georgia', sans-serif">
+        <div class="d-flex justify-content-center h-100">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="text-center" style="font-family: 'Montserrat', serif; color: #888; letter-spacing: 2px">ADD SHIFT</h3>
+            </div>
+            <div class="card-body">
+              <form id="shift_form">
+                <div class="input-group form-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
                   </div>
-                  <div class="input-group form-group">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text"><i class="fas fa-user"></i></span>
-                    </div>
-                    <select name="employees" id="cars" form="shift_form" class="form-control">
-                      <option v-for="e in employees">{{ e.email }}</option>
-                    </select>
+                  <input id="date-shift" v-model="date_shift" type="date" class="form-control" style="font-family: 'Georgia', sans-serif">
+                </div>
+                <div class="input-group form-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
                   </div>
-                </form>
+                  <select name="employees" id="cars" form="shift_form" class="form-control">
+                    <option v-for="e in employees">{{ e.email }}</option>
+                  </select>
+                </div>
+              </form>
 <!--                <div class="input-group form-group">-->
 <!--                  <select name="employees" id="cars" form="shift_form" class="b-dropdown-form">-->
 <!--                    <option value="volvo">Volvo</option>-->
@@ -57,15 +57,15 @@
 <!--                    <option value="audi">Audi</option>-->
 <!--                  </select>-->
 <!--                </div>-->
-              </div>
-              <div class="card-footer">
-                <div class="d-flex align-items-center links">
-                  <p></p>
-                  <a></a>
-                </div>
+            </div>
+            <div class="card-footer">
+              <div class="d-flex align-items-center links">
+                <p></p>
+                <a></a>
               </div>
             </div>
           </div>
+        </div>
       </div>
     </div>
   </div>
