@@ -149,7 +149,16 @@ public class ReservationService {
         if(reservation.getCheckedIn() == CheckInStatus.BeforeCheckIn) {
             throw new HRSException(HttpStatus.BAD_REQUEST, "pending reservation, not checked in");
         }
-        reservation.setCheckedIn(CheckInStatus.CheckedIn);
+        reservation.setCheckedIn(CheckInStatus.CheckedOut);
+        return reservationRepository.save(reservation);
+    }
+
+    @Transactional
+    public Reservation noShow(Reservation reservation) {
+        if(reservation.getCheckedIn() != CheckInStatus.BeforeCheckIn) {
+            throw new HRSException(HttpStatus.BAD_REQUEST, "customer is checkedIn or already checkedOut");
+        }
+        reservation.setCheckedIn(CheckInStatus.NoShow);
         return reservationRepository.save(reservation);
     }
 

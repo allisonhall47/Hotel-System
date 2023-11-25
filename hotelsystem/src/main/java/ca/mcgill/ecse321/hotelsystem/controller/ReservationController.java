@@ -86,10 +86,16 @@ public class ReservationController {
         return new ReservationResponseDto(reservationService.checkIn(res));
     }
 
-    @PutMapping ("/reservation/{reservationId}/checkIn")
+    @PutMapping ("/reservation/{reservationId}/checkOut")
     public ReservationResponseDto checkOutReservationById(@PathVariable(value = "reservationId") int id) {
         Reservation res = reservationService.getReservation(id);
         return new ReservationResponseDto(reservationService.checkOut(res));
+    }
+
+    @PutMapping ("/reservation/{reservationId}/noShow")
+    public ReservationResponseDto noShowReservationById(@PathVariable(value = "reservationId") int id) {
+        Reservation res = reservationService.getReservation(id);
+        return new ReservationResponseDto(reservationService.noShow(res));
     }
 
     /**
