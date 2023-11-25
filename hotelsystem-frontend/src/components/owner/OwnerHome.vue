@@ -20,6 +20,9 @@
                 <a class="nav-link" @click="ManageEmployees">Manage Employees</a>
               </li>
               <li class="nav-item">
+                <a class="nav-link" @click="Repair">Manage Repairs</a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link" @click="Account">Account</a>
               </li>
               <li class="nav-item">
@@ -93,6 +96,14 @@
 
 <script>
 
+import axios from 'axios'
+var config = require('../../../config')
+var frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
+var backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort
+var axiosClient = axios.create({
+  baseURL: backendUrl,
+  headers: { 'Access-Control-Allow-Origin': frontendUrl }
+})
 export default {
   name: 'OwnerHome',
   props: {
@@ -115,6 +126,9 @@ export default {
     },
     async ManageEmployees(){
       await this.$router.push({name: 'OwnerManageEmployees', params: {email: this.email}})
+    },
+    async Repair(){
+      await this.$router.push({name: 'OwnerRepair', params: {email: this.email}})
     },
     async Account(){
       await this.$router.push({name: 'OwnerAccount', params: {email: this.email}})
@@ -179,10 +193,9 @@ export default {
   top: 0;
   left: 0;
   right: 0;
-
+}
   .nav-link:hover {
     cursor: pointer;
-  }
 }
 
 </style>

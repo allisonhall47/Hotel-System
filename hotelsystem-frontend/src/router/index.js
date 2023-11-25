@@ -12,6 +12,7 @@ import OwnerHome from "../components/owner/OwnerHome"
 import OwnerAccount from "../components/owner/OwnerAccount"
 import OwnerManageEmployees from "../components/owner/OwnerManageEmployees"
 import OwnerViewSchedule from "../components/owner/OwnerViewSchedule"
+import OwnerRepair  from "../components/owner/OwnerRepair.vue";
 import EmployeeViewSchedule from "../components/employee/EmployeeViewSchedule";
 
 Vue.use(Router)
@@ -92,6 +93,12 @@ export default new Router({
      name: 'OwnerManageEmployees',
      component: OwnerManageEmployees,
      props: true
+    },
+    {
+      path: '/',
+      name: 'OwnerRepair',
+      component: OwnerRepair,
+      props: true
     },
   ]
 })
