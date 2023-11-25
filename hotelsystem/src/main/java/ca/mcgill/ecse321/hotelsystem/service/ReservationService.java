@@ -140,6 +140,19 @@ public class ReservationService {
         return reservationRepository.save(reservation);
     }
 
+    @Transactional
+    public Reservation checkOut(Reservation reservation) {
+        reservation = reservationRepository.findReservationByReservationID(reservation.getReservationID());
+        if(reservation.getCheckedIn() == CheckInStatus.CheckedOut) {
+            throw new HRSException(HttpStatus.BAD_REQUEST, "already checked out");
+        }
+        if(reservation.getCheckedIn() == CheckInStatus.BeforeCheckIn) {
+            throw new HRSException(HttpStatus.BAD_REQUEST, "pending reservation, not checked in");
+        }
+        reservation.setCheckedIn(CheckInStatus.CheckedIn);
+        return reservationRepository.save(reservation);
+    }
+
     /**
      * get non paid reservations
      * @return list of reservations

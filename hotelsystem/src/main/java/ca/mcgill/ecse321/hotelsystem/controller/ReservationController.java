@@ -86,6 +86,12 @@ public class ReservationController {
         return new ReservationResponseDto(reservationService.checkIn(res));
     }
 
+    @PutMapping ("/reservation/{reservationId}/checkIn")
+    public ReservationResponseDto checkOutReservationById(@PathVariable(value = "reservationId") int id) {
+        Reservation res = reservationService.getReservation(id);
+        return new ReservationResponseDto(reservationService.checkOut(res));
+    }
+
     /**
      * get all reservations for customer
      * @param customerEmail email
