@@ -101,27 +101,11 @@ export default {
   computed: {
   },
   methods: {
-    getAccount(accountNumber){
-      try{
-        const response = axiosClient.get("/account/?accountNumber=" + accountNumber)
-        if(response.data.password === this.password){
-          return true;
-        } else {
-          alert("Incorrect password.")
-          return false;
-        }
-      } catch (err) {
-        this.errorMsg = `Failure: ${err.response.data}`
-        alert(this.errorMsg)
-      }
-    },
-
     getUser(){
       if(this.user === "Customer"){
         axiosClient.get("/customer?email=" + this.email)
           .then((response) => {
             this.accountNumber = response.data.accountNumber;
-
             if(this.accountNumber !== 0){
               axiosClient.get("/account/?accountNumber=" + this.accountNumber)
                 .then((response) => {
@@ -148,13 +132,24 @@ export default {
       else if (this.user === "Employee"){
         axiosClient.get("/employee?email=" + this.email)
           .then((response) => {
-            if(response.data.accountNumber !== 0){
-              this.logged_user = response
-              alert("Successfully logged in.")
-              var employeeName = response.data.name;
-              this.$router.push({name: 'EmployeeHome', params: {email: this.email, name: employeeName}})
+            this.accountNumber = response.data.accountNumber;
+            if(this.accountNumber !== 0){
+              axiosClient.get("/account/?accountNumber=" + this.accountNumber)
+                .then((response) => {
+                  if(response.data.password === this.password){
+                    alert("Successfully logged in.")
+                    var employeeName = response.data.name;
+                    this.$router.push({name: 'EmployeeHome', params: {email: this.email, name: employeeName}})
+                  } else {
+                    alert("Incorrect Password.")
+                  }
+                })
+                .catch((err) => {
+                  this.errorMsg = `Failure: ${err.response.data}`
+                  alert(this.errorMsg)
+                })
             } else {
-              alert("No account exists with this email.")
+              alert("This email is not linked to an account.");
             }
           })
           .catch((err) => {
@@ -165,12 +160,23 @@ export default {
       else if (this.user === "Owner"){
         axiosClient("/owner/email?email=" + this.email)
           .then((response) => {
-            if(response.data.accountNumber !== 0){
-              if(this.getAccount(response.data.accountNumber) === true){
-                this.$router.push({name: 'OwnerHome', params: {email: this.email}})
-              }
+            this.accountNumber = response.data.accountNumber;
+            if(this.accountNumber !== 0){
+              axiosClient.get("/account/?accountNumber=" + this.accountNumber)
+                .then((response) => {
+                  if(response.data.password === this.password){
+                    alert("Successfully logged in.")
+                    this.$router.push({name: 'OwnerHome', params: {email: this.email}})
+                  } else {
+                    alert("Incorrect Password.")
+                  }
+                })
+                .catch((err) => {
+                  this.errorMsg = `Failure: ${err.response.data}`
+                  alert(this.errorMsg)
+                })
             } else {
-              alert("No owner account exists with this email.")
+              alert("This email is not linked to an account.");
             }
           })
           .catch((err) => {
