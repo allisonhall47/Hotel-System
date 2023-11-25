@@ -13,6 +13,7 @@ import OwnerAccount from "../components/owner/OwnerAccount"
 import OwnerManageEmployees from "../components/owner/OwnerManageEmployees"
 import OwnerViewSchedule from "../components/owner/OwnerViewSchedule"
 import EmployeeViewSchedule from "../components/employee/EmployeeViewSchedule";
+import EmployeeReservation from "../components/employee/EmployeeReservation";
 
 Vue.use(Router)
 
@@ -92,6 +93,12 @@ export default new Router({
      name: 'OwnerManageEmployees',
      component: OwnerManageEmployees,
      props: true
+    },
+    {
+      path: '/employee-manage-reservations',
+      name: 'EmployeeReservation',
+      component: EmployeeReservation,
+      props: true
     },
   ]
 })
