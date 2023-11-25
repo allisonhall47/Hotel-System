@@ -25,57 +25,54 @@
         </nav>
       </div>
 
-      <div class="login-container">
-        <div class="d-flex justify-content-center h-100">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="text-center" style="font-family: 'Montserrat', serif; color: #888; letter-spacing: 2px">SIGN UP</h3>
-            </div>
-            <div class="card-body">
-              <form>
-                <div class="input-group form-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fas fa-key"></i></span>
-                  </div>
-                  <input id="name" v-model="name" type="text" class="form-control" style="font-family: 'Georgia', sans-serif" placeholder="full name">
+      <div class="d-flex justify-content-center h-100">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="text-center" style="font-family: 'Montserrat', sans-serif; color: #888; letter-spacing: 2px">SIGN UP</h3>
+          </div>
+          <div class="card-body">
+            <form>
+              <div class="input-group form-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-key"></i></span>
                 </div>
-                <div class="input-group form-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fas fa-user"></i></span>
-                  </div>
-                  <input id="email" v-model="email" type="email" class="form-control" style="font-family: 'Georgia', sans-serif" placeholder="email">
+                <input id="name" v-model="name" type="text" class="form-control" style="font-family: 'Georgia', sans-serif" placeholder="Full Name">
+              </div>
+              <div class="input-group form-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-user"></i></span>
                 </div>
-                <div class="input-group form-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fas fa-key"></i></span>
-                  </div>
-                  <input id="password" v-model="password" type="password" class="form-control" style="font-family: 'Georgia', sans-serif" placeholder="password">
+                <input id="email" v-model="email" type="email" class="form-control" style="font-family: 'Georgia', sans-serif" placeholder="Email Address">
+              </div>
+              <div class="input-group form-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-key"></i></span>
                 </div>
-                <div class="input-group form-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fas fa-key"></i></span>
-                  </div>
-                  <input id="passwordConfirm" v-model="password_confirm" type="password" class="form-control" style="font-family: 'Georgia', sans-serif" placeholder="confirm password">
+                <input id="password" v-model="password" type="password" class="form-control" style="font-family: 'Georgia', sans-serif" placeholder="Password">
+              </div>
+              <div class="input-group form-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-key"></i></span>
                 </div>
-                <div class="input-group form-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fas fa-key"></i></span>
-                  </div>
-                  <input id="address" v-model="address" type="text" class="form-control" style="font-family: 'Georgia', sans-serif" placeholder="address">
+                <input id="passwordConfirm" v-model="password_confirm" type="password" class="form-control" style="font-family: 'Georgia', sans-serif" placeholder="Confirm Password">
+              </div>
+              <div class="input-group form-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-key"></i></span>
                 </div>
-                <div class="input-group form-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fas fa-key"></i></span>
-                  </div>
-                  <input id="dob" v-model="dob" type="date" class="form-control" style="font-family: 'Georgia', sans-serif">
+                <input id="address" v-model="address" type="text" class="form-control" style="font-family: 'Georgia', sans-serif" placeholder="Address">
+              </div>
+              <div class="input-group form-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-key"></i></span>
                 </div>
-                <div class="form-group">
-<!--                  <button v-bind:disabled="createCustomerButtonDisabled" @click="createCustomer()" type="button"-->
-                  <button @click="createCustomer()" type="button"
-                          class="btn btn-primary btn-block mb-4 signinbutton">Sign Up</button>
-                </div>
-              </form>
-            </div>
+                <input id="dob" v-model="dob" type="date" class="form-control" style="font-family: 'Georgia', sans-serif">
+              </div>
+              <div class="form-group">
+                <button @click="createCustomer()" type="button"
+                        class="btn btn-primary btn-block mb-4 signinbutton">Sign Up</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
@@ -155,11 +152,6 @@ export default {
     async Home(){
       await this.$router.push({name: 'Home'})
     },
-  },
-  computed: {
-    createCustomerButtonDisabled() {
-      return !this.email.trim() || !this.password.trim() || !this.user.trim()
-    }
   }
 };
 </script>
@@ -173,20 +165,14 @@ export default {
   background-size: cover;
 }
 
-.login-container {
-  background-color: rgba(255, 255, 255, 0.5);
-  padding: 2%; /* Use a percentage for padding */
-  border-radius: 10px;
+.card {
+  background-color: white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   position: absolute;
-  top: 20%; /* Use a percentage for top positioning */
-  left: 32%; /* Use a percentage for left positioning */
-  right: 32%; /* Use a percentage for right positioning */
-  min-height: 300px; /* Set a minimum height if needed */
-}
-
-.card {
-  width: 100%; /* Use 100% for responsiveness */
+  top: 20%;
+  left: 32%;
+  right: 32%;
+  min-height: 300px;
 }
 
 .input-group-prepend {
