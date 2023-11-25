@@ -17,10 +17,10 @@
                 <a class="nav-link" href="#">Home<span class="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="Login">LogIn</a>
+                <a class="nav-link clickable-text" @click="Login">LogIn</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="SignUp">SignUp</a>
+                <a class="nav-link clickable-text" @click="SignUp">SignUp</a>
               </li>
             </ul>
           </div>
@@ -175,6 +175,11 @@ export default {
   width: 100%;
   background-color: rgba(136, 136, 136, 0.2);
   padding-top: 15px;
+}
+
+.clickable-text:hover {
+  cursor: pointer;
+  color: white !important;
 }
 
 </style>

@@ -12,13 +12,13 @@
           <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link" @click="Home">Home</a>
+                <a class="nav-link clickable-text" @click="Home">Home</a>
               </li>
               <li class="nav-item active">
                 <a class="nav-link" href="#">Account<span class="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="LogOut">Log Out</a>
+                <a class="nav-link clickable-text" @click="LogOut">Log Out</a>
               </li>
             </ul>
           </div>
@@ -36,7 +36,7 @@
             <div class="col-md-9">
               <div class="p-3 py-5">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                  <h4 class="text-right" style="font-family: 'Montserrat', serif; color: #888; letter-spacing: 3px">ACCOUNT</h4>
+                  <h4 class="text-right" style="font-family: 'Montserrat', sans-serif; color: #888; letter-spacing: 3px">ACCOUNT</h4>
                 </div>
 
                 <div class="image-pos">
@@ -256,7 +256,6 @@ export default {
 }
 
 .savebutton:hover {
-  border: #888888;
   background-color: #888888;
   border: 2px solid #888888;
   color: white;
@@ -267,7 +266,7 @@ export default {
 }
 
 .transparent-background {
-  background-color: rgba(255, 255, 255, 0.2); /* You can replace this color code with your desired dark color */
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .navbar-container {
@@ -282,6 +281,11 @@ export default {
   top: 15%;
   right: 20%;
   left: 20%;
+}
+
+.clickable-text:hover {
+  cursor: pointer;
+  color: white !important;
 }
 
 

@@ -12,13 +12,13 @@
           <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link" @click="Home">Home</a>
+                <a class="nav-link clickable-text" @click="Home">Home</a>
               </li>
               <li class="nav-item active">
                 <a class="nav-link" href="#">LogIn<span class="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="SignUp">SignUp</a>
+                <a class="nav-link clickable-text" @click="SignUp">SignUp</a>
               </li>
             </ul>
           </div>
@@ -95,14 +95,15 @@ export default {
       user: '',
       logged_user: [],
       errorMsg: '',
+      accountNumber: 0,
     };
   },
   computed: {
   },
   methods: {
-    async getAccount(accountNumber){
+    getAccount(accountNumber){
       try{
-        const response = await axiosClient.get("/account/?accountNumber=" + accountNumber)
+        const response = axiosClient.get("/account/?accountNumber=" + accountNumber)
         if(response.data.password === this.password){
           return true;
         } else {
@@ -119,13 +120,24 @@ export default {
       if(this.user === "Customer"){
         axiosClient.get("/customer?email=" + this.email)
           .then((response) => {
-            if(response.data.accountNumber !== 0){
-              if(this.getAccount(response.data.accountNumber) === true){
-                alert("Successfully logged in.")
-                this.$router.push({name: 'CustomerHome', params: {email: this.email}})
-              }
+            this.accountNumber = response.data.accountNumber;
+
+            if(this.accountNumber !== 0){
+              axiosClient.get("/account/?accountNumber=" + this.accountNumber)
+                .then((response) => {
+                  if(response.data.password === this.password){
+                    alert("Successfully logged in.")
+                    this.$router.push({name: 'CustomerHome', params: {email: this.email}})
+                  } else {
+                    alert("Incorrect Password.")
+                  }
+                })
+                .catch((err) => {
+                  this.errorMsg = `Failure: ${err.response.data}`
+                  alert(this.errorMsg)
+                })
             } else {
-              alert("No customer account exists with this email.")
+              alert("This email is not linked to an account.");
             }
           })
           .catch((err) => {
@@ -239,6 +251,11 @@ export default {
   background-color: #888888;
   border: 2px solid #888888;
   color: white;
+}
+
+.clickable-text:hover {
+  cursor: pointer;
+  color: white !important;
 }
 
 </style>

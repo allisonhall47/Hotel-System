@@ -12,10 +12,10 @@
           <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link" @click="Home">Home</a>
+                <a class="nav-link clickable-text" @click="Home">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="Login">LogIn</a>
+                <a class="nav-link clickable-text" @click="Login">LogIn</a>
               </li>
               <li class="nav-item active">
                 <a class="nav-link" href="#">SignUp<span class="sr-only">(current)</span></a>
@@ -204,6 +204,11 @@ export default {
   background-color: #888888;
   border: 2px solid #888888;
   color: white;
+}
+
+.clickable-text:hover {
+  cursor: pointer;
+  color: white !important;
 }
 
 
