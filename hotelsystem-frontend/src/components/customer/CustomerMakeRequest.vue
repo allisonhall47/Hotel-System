@@ -127,7 +127,7 @@ export default {
       axiosClient.post("request/new", this.newRequest)
         .then(response => {
           //add it to the requests list
-          this.requests.push({requestId: response.data.requestId, description: response.data.description, status: response.data.status})
+          this.requests.push({requestId: response.data.requestId, description: response.data.description, reservation: {}, status: response.data.status})
         })
         .catch(err => {
           this.errorMsg = `Failure: ${err.response.data}`
