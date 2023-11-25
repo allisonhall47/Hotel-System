@@ -30,50 +30,39 @@
         <div class="row">
           <div class="col-md-3 border-right">
             <div class="d-flex flex-column align-items-center justify-content-center text-center p-3 py-5 image-pos">
-              <img class="rounded-circle" width="200px" src="../../assets/anonymousicon.png" alt="Profile Photo">
+              <img class="rounded-circle" width="100%" src="../../assets/anonymousicon.png" alt="Profile Photo">
             </div>
           </div>
             <div class="col-md-9">
               <div class="p-3 py-5">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                  <h4 class="text-right" style="font-family: 'Montserrat', serif; color: #888; letter-spacing: 2px">ACCOUNT</h4>
+                  <h4 class="text-right" style="font-family: 'Montserrat', serif; color: #888; letter-spacing: 3px">ACCOUNT</h4>
                 </div>
 
                 <div class="image-pos">
                   <div class="row mt-3">
                     <div class="col-md-6">
                       <label class="labels">Name</label>
-                      <!--                    <input type="text" class="form-control" placeholder="name" value=email>-->
                       <input class="form-control" id="name" v-model="name" readonly>
                     </div>
                     <div class="col-md-6">
                       <label class="labels">Email</label>
-                      <!--                    <input type="text" class="form-control" placeholder="email" value="">-->
                       <input class="form-control" id="email" :value="email" readonly>
                     </div>
                     <div class="col-md-6">
                       <label class="labels">Password</label>
-                      <!--                    <input type="text" class="form-control" placeholder="***********" value="">-->
-                      <input class="form-control" id="password" v-model="hiddenPassword" readonly>
+                      <input class="form-control" id="password" type="password" v-model="password" readonly>
                     </div>
                     <div class="col-md-6">
                       <label class="labels">Address</label>
-                      <!--                    <input type="text" class="form-control" placeholder="enter address" value="">-->
                       <input class="form-control" id="address" v-model="address" readonly>
                     </div>
                     <div class="col-md-12">
                       <label class="labels">Date of Birth</label>
-                      <!--                    <input type="date" class="form-control" value="">-->
-                      <input class="form-control" id="address" v-model="dob" readonly>
+                      <input class="form-control" id="dob" type="date" v-model="dob" readonly>
                     </div>
                   </div>
                 </div>
-<!--                <div class="mt-5 text-center">-->
-<!--                  <button @click="editInfo" type="button"-->
-<!--                          class="btn btn-primary btn-block mb-4 editbutton">Edit Profile</button>-->
-<!--                  <button @click="saveInfo" type="button"-->
-<!--                          class="btn btn-primary btn-block mb-4 editbutton">Save Profile</button>-->
-<!--                </div>-->
                 <div class="mt-5 text-center">
                   <div class="row">
                     <div class="col-md-6">
@@ -118,7 +107,6 @@ export default {
       address: '',
       dob: '',
       errorMsg: '',
-      hiddenPassword: '',
       accountNumber: 0,
     };
   },
@@ -133,13 +121,11 @@ export default {
             this.address = response.data.address;
             this.dob = response.data.dob;
             this.password = response.data.password;
-            this.hiddenPassword = '*'.repeat(this.password.length);
           })
           .catch((err) => {
             this.errorMsg = `Failure: ${err.response.data}`
             alert(this.errorMsg)
           })
-
       })
       .catch((err) => {
         this.errorMsg = `Failure: ${err.response.data}`
@@ -148,9 +134,10 @@ export default {
   },
   methods: {
     async saveInfo(){
-      this.password = document.getElementById("password").value;
       this.name = document.getElementById("name").value;
       this.address = document.getElementById("address").value;
+      this.password = document.getElementById("password").value;
+      this.dob = document.getElementById("dob").value;
 
       axiosClient.get("/customer?email=" + this.email)
         .then((response) => {
@@ -166,30 +153,35 @@ export default {
         .then((response) => {
           this.password = response.data.password;
           this.address = response.data.address;
+          this.dob = response.data.dob;
+
+          const customer_request = {name: this.name, email: this.email, accountNumber: this.accountNumber}
+          axiosClient.put("/customer/update", customer_request)
+            .then((response) => {
+              this.name = response.data.name;
+              alert("Account successfully updated.")
+
+              document.getElementById('name').setAttribute('readonly', 'true');
+              document.getElementById('password').setAttribute('readonly', 'true');
+              document.getElementById('address').setAttribute('readonly', 'true');
+              document.getElementById('dob').setAttribute('readonly', 'true');
+
+            })
+            .catch((err) => {
+              this.errorMsg = `Failure: ${err.response.data}`
+              alert(this.errorMsg)
+            })
         })
         .catch((err) => {
           this.errorMsg = `Failure: ${err.response.data}`
           alert(this.errorMsg)
         })
-
-      const customer_request = {name: this.name, email: this.email, accountNumber: this.accountNumber}
-      axiosClient.put("/customer/update", customer_request)
-        .then((response) => {
-          this.name = response.data.name;
-        })
-        .catch((err) => {
-          this.errorMsg = `Failure: ${err.response.data}`
-          alert(this.errorMsg)
-        })
-
-      document.getElementById('name').setAttribute('readonly', 'true');
-      document.getElementById('password').setAttribute('readonly', 'true');
-      document.getElementById('address').setAttribute('readonly', 'true');
     },
     async editInfo(){
       document.getElementById('name').removeAttribute('readonly');
       document.getElementById('password').removeAttribute('readonly');
       document.getElementById('address').removeAttribute('readonly');
+      document.getElementById('dob').removeAttribute('readonly');
     },
     async Home() {
       await this.$router.push({name: 'CustomerHome', params: {email: this.email}})

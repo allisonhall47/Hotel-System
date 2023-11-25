@@ -108,6 +108,7 @@ export default {
       await this.$router.push({name: 'CustomerAccount', params: {email: this.email}})
     },
     async LogOut() {
+      alert('Successfully logged out.')
       await this.$router.push({name: 'Home'})
     },
     showLoginModal() {
@@ -118,10 +119,9 @@ export default {
 </script>
 
 <style scoped>
-/* Add your custom styles here */
 
 .navbar-brand {
-  margin-right: 0; /* Reset the margin for the navbar-brand */
+  margin-right: 0;
 }
 
 .hero-section {
@@ -159,7 +159,7 @@ export default {
 }
 
 .transparent-background {
-  background-color: rgba(255, 255, 255, 0.2); /* You can replace this color code with your desired dark color */
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .navbar-container {

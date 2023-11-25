@@ -25,54 +25,48 @@
         </nav>
       </div>
 
-      <div class="login-container">
-        <div class="d-flex justify-content-center h-100">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="text-center" style="font-family: 'Montserrat', serif; color: #888; letter-spacing: 2px">LOG IN</h3>
-            </div>
-            <div class="card-body">
-              <form>
-                <div class="input-group form-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fas fa-user"></i></span>
-                  </div>
-                  <input id="email" v-model="email" type="email" class="form-control" style="font-family: 'Georgia', sans-serif" placeholder="email">
+      <div class="d-flex justify-content-center h-100">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="text-center" style="font-family: 'Montserrat', sans-serif; color: #888; letter-spacing: 2px">LOG IN</h3>
+          </div>
+          <div class="card-body">
+            <form>
+              <div class="input-group form-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-user"></i></span>
                 </div>
-                <div class="input-group form-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fas fa-key"></i></span>
-                  </div>
-                  <input id="password" v-model="password" type="password" class="form-control" style="font-family: 'Georgia', sans-serif" placeholder="password">
-                </div>
-
-                <div class="form-check form-check-inline">
-                  <input v-model="user" class="form-check-input" type="radio" name="user" id="owner" value="Owner">
-                  <label class="form-check-label" for="owner">Owner</label>
-                </div>
-
-                <div class="form-check form-check-inline">
-                  <input v-model="user" class="form-check-input" type="radio" name="user" id="customer" value="Customer">
-                  <label class="form-check-label" for="customer">Customer</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input v-model="user" class="form-check-input" type="radio" name="user" id="employee" value="Employee">
-                  <label class="form-check-label" for="employee">Employee</label>
-                </div>
-<!--                <div class="form-group">-->
-<!--                    <button v-bind:disabled="createUserButtonDisabled" @click="getUser()" type="button" class="btn btn-primary btn-block mb-4 signinbutton">Sign in</button>-->
-<!--                </div>-->
-                <div class="form-group">
-                  <button @click="getUser()" type="button"
-                          class="btn btn-primary btn-block mb-4 signinbutton">Sign in</button>
-                </div>
-              </form>
-            </div>
-            <div class="card-footer">
-              <div class="d-flex align-items-center links">
-                <p>Don't have an account?</p>
-                <a class="nav-link" @click="SignUp">Sign Up</a>
+                <input id="email" v-model="email" type="email" class="form-control" style="font-family: 'Georgia', sans-serif" placeholder="Email Address">
               </div>
+              <div class="input-group form-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-key"></i></span>
+                </div>
+                <input id="password" v-model="password" type="password" class="form-control" style="font-family: 'Georgia', sans-serif" placeholder="Password">
+              </div>
+
+              <div class="form-check form-check-inline">
+                <input v-model="user" class="form-check-input" type="radio" name="user" id="owner" value="Owner">
+                <label class="form-check-label" for="owner">Owner</label>
+              </div>
+
+              <div class="form-check form-check-inline">
+                <input v-model="user" class="form-check-input" type="radio" name="user" id="customer" value="Customer">
+                <label class="form-check-label" for="customer">Customer</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input v-model="user" class="form-check-input" type="radio" name="user" id="employee" value="Employee">
+                <label class="form-check-label" for="employee">Employee</label>
+              </div>
+              <div class="form-group">
+                <button @click="getUser()" type="button"
+                        class="btn btn-primary btn-block mb-4 signinbutton">Sign in</button>
+              </div>
+            </form>
+          </div>
+          <div class="card-footer">
+            <div class="d-flex align-items-center links">
+              <a class="nav-link" @click="SignUp">Don't have an account? Sign Up</a>
             </div>
           </div>
         </div>
@@ -103,17 +97,35 @@ export default {
       errorMsg: '',
     };
   },
+  computed: {
+  },
   methods: {
+    async getAccount(accountNumber){
+      try{
+        const response = await axiosClient.get("/account/?accountNumber=" + accountNumber)
+        if(response.data.password === this.password){
+          return true;
+        } else {
+          alert("Incorrect password.")
+          return false;
+        }
+      } catch (err) {
+        this.errorMsg = `Failure: ${err.response.data}`
+        alert(this.errorMsg)
+      }
+    },
+
     getUser(){
       if(this.user === "Customer"){
         axiosClient.get("/customer?email=" + this.email)
           .then((response) => {
             if(response.data.accountNumber !== 0){
-              this.logged_user = response
-              alert("Successfully logged in.")
-              this.$router.push({name: 'CustomerHome', params: {email: this.email}})
+              if(this.getAccount(response.data.accountNumber) === true){
+                alert("Successfully logged in.")
+                this.$router.push({name: 'CustomerHome', params: {email: this.email}})
+              }
             } else {
-              alert("No account exists with this email.")
+              alert("No customer account exists with this email.")
             }
           })
           .catch((err) => {
@@ -141,9 +153,13 @@ export default {
       else if (this.user === "Owner"){
         axiosClient("/owner/email?email=" + this.email)
           .then((response) => {
-            this.logged_user = response
-            alert("Successfully logged in.")
-            this.$router.push({name: 'OwnerHome', params: {email: this.email}})
+            if(response.data.accountNumber !== 0){
+              if(this.getAccount(response.data.accountNumber) === true){
+                this.$router.push({name: 'OwnerHome', params: {email: this.email}})
+              }
+            } else {
+              alert("No owner account exists with this email.")
+            }
           })
           .catch((err) => {
             this.errorMsg = `Failure: ${err.response.data}`
@@ -174,7 +190,7 @@ export default {
 }
 
 .login-container {
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: white;
   padding: 2%;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -186,7 +202,13 @@ export default {
 }
 
 .card {
-  width: 100%; /* Use 100% for responsiveness */
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: 25%;
+  left: 33%;
+  right: 33%;
+  min-height: 400px;
 }
 
 .input-group-prepend {
@@ -201,7 +223,7 @@ export default {
 }
 
 .transparent-background {
-  background-color: rgba(255, 255, 255, 0.3); /* You can replace this color code with your desired dark color */
+  background-color: rgba(255, 255, 255, 0.3);
 }
 
 .signinbutton {
@@ -214,12 +236,9 @@ export default {
 }
 
 .signinbutton:hover {
-  border: #888888;
   background-color: #888888;
   border: 2px solid #888888;
   color: white;
 }
-
-
 
 </style>
