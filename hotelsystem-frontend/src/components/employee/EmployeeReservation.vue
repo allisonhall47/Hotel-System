@@ -19,14 +19,14 @@
               <li class="nav-item">
                 <a class="nav-link" @click="Employee">Account</a> <!--employee account-->
               </li>
-              <li class="nav-item active">
-                <a class="nav-link" href="#">Reservations<span class="sr-only">(current)</span></a>
-              </li>
               <li class="nav-item">
                 <a class="nav-link" @click="Repairs">Log Repair</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" @click="ViewSchedule">View Schedule</a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="#">View Reservations<span class="sr-only">(current)</span></a>
               </li>
               <li>
                 <a class="nav-link" @click="LogOut">Log Out</a>
@@ -269,16 +269,16 @@ export default {
       this.reservationsFilter = 2
     },
     async Home() {
-      await this.$router.push({name: "EmployeeHome", params: {email: this.email, name: this.name}})
+      await this.$router.push({path: '/EmployeeHome/' + this.email + '/' + this.name})
     },
     async Repairs() {
-      await this.$router.push({name: "EmployeeRepair", params: {email: this.email, name: this.name}})
+      await this.$router.push({path: '/EmployeeRepair/' + this.email + '/' + this.name})
     },
     async Employee() {
-      await this.$router.push({name: "EmployeeAccount", params: {email: this.email, name: this.name}})
+      await this.$router.push({path: '/EmployeeAccount/' + this.email + '/' + this.name})
     },
     async ViewSchedule() {
-      await this.$router.push({name: "EmployeeViewSchedule", params: {email: this.email, name: this.name}})
+      await this.$router.push({path: '/EmployeeSchedule/' + this.email + '/' + this.name})
     },
     async LogOut() {
       await this.$router.push({name: 'Home'})
