@@ -97,11 +97,20 @@ export default {
       user: '',
       logged_user: [],
       errorMsg: '',
+      name: '',
       accountNumber: 0,
     };
   },
+
+  mounted() {
+    this.email = this.$route.params.param1;
+    this.name = this.$route.params.param2;
+  },
+
+
   computed: {
   },
+
   methods: {
     getUser(){
       if(this.user === "Customer"){
@@ -134,14 +143,14 @@ export default {
       else if (this.user === "Employee"){
         axiosClient.get("/employee?email=" + this.email)
           .then((response) => {
+            var employeeName = response.data.name;
             this.accountNumber = response.data.accountNumber;
             if(this.accountNumber !== 0){
               axiosClient.get("/account/?accountNumber=" + this.accountNumber)
                 .then((response) => {
                   if(response.data.password === this.password){
                     alert("Successfully logged in.")
-                    var employeeName = response.data.name;
-                    this.$router.push({name: 'EmployeeHome', params: {email: this.email, name: employeeName}})
+                    this.$router.push({path: '/EmployeeHome/' + this.email + '/' + employeeName})
                   } else {
                     alert("Incorrect Password.")
                   }

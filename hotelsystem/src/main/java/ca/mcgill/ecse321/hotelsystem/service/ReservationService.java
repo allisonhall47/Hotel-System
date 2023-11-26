@@ -119,11 +119,21 @@ public class ReservationService {
         if(reservation.isPaid()) {
             throw new HRSException(HttpStatus.BAD_REQUEST, "already paid");
         }
-        if(money < reservation.getTotalPrice()) {
-            throw new HRSException(HttpStatus.BAD_REQUEST, "money not sufficient");
+
+        int remaining = reservation.getTotalPrice() - money;
+
+//        if(change < 0) {
+//            throw new HRSException(HttpStatus.BAD_REQUEST, "money not sufficient");
+//        }
+
+        //allow for incremental payment
+        if(remaining <= 0) {
+            reservation.setPaid(true);
+            reservation.setTotalPrice(remaining);
+        } else {
+            reservation.setTotalPrice(remaining);
         }
 
-        reservation.setPaid(true);
         return reservationRepository.save(reservation);
     }
 

@@ -47,22 +47,16 @@ export default new Router({
       component: CustomerAccount,
     },
     {
-      path: '/',
-      name: 'EmployeeHome',
+      path: '/EmployeeHome/:param1/:param2',
       component: EmployeeHome,
-      props: true
     },
     {
-      path: '/',
-      name: 'EmployeeAccount',
+      path: '/EmployeeAccount/:param1/:param2',
       component: EmployeeAccount,
-      props: true
     },
     {
-      path: '/',
-      name: 'EmployeeRepair',
+      path: '/EmployeeRepair/:param1/:param2',
       component: EmployeeRepair,
-      props: true
     },
 
     {
@@ -76,12 +70,12 @@ export default new Router({
       component: ownerManageRooms
     },
     {
-      path: '/customer/:param1/reservation',
+      path: '/customer/reservation/:param1',
       name: 'ReservationCustomer',
       component: ReservationCustomer
     },
     {
-      path: '/customer/:param1/reservation/:param2/make_request',
+      path: '/customer/reservation/make_request/:param1/:param2',
       name: 'CustomerMakeRequest',
       component: CustomerMakeRequest
     },
@@ -118,6 +112,10 @@ export default new Router({
       path: '/employee-manage-reservations',
       name: 'EmployeeReservation',
       component: EmployeeReservation,
+    },
+    {
+      path: '/OwnerRepair/:param1',
+      component: OwnerRepair,
     },
   ]
 })
