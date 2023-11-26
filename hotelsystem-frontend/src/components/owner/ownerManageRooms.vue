@@ -120,7 +120,7 @@ export default {
 
       await axiosClient.put("/specificRoom/update", room_request)
         .then((response) => {
-
+          alert('edits were successfully saved')
         })
         .catch((err) => {
           //reset input field to what it was before

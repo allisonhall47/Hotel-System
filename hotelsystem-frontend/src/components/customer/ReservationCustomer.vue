@@ -150,7 +150,7 @@ export default {
           // }
           //
           // if(tmp !== null) this.reservations.remove(tmp)
-          alert("successfuly delete reservation with id" + id)
+          alert("successfully deleted reservation with id" + id)
         })
         .catch(err => {
           this.errorMsg = `Failure: ${err.response.data}`
