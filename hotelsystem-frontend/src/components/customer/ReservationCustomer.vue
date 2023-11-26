@@ -126,7 +126,7 @@ export default {
 
           if(response.data.paid === true) {
             document.getElementById('paid'.concat(id)).value = "Yes"
-            alert('Successfully money deposited')
+            alert('Successfully paid')
           } else {
             alert('Successfully money deposited')
           }
