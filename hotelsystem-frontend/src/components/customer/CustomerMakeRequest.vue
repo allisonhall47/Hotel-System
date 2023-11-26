@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id = "addShift"></div>
+    <div id = "makeRequest"></div>
     <div class="background">
       <div class="navbar-container">
         <nav class="navbar navbar-expand-lg navbar-light transparent-background">
@@ -9,53 +9,58 @@
           </a>
           <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
-              <li class="nav-item active">
+              <li class="nav-item">
                 <a class="nav-link" @click="Home">Home</a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" @click="Request">Requests</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" @click="Reservation">Reservations</a>
               </li>
             </ul>
           </div>
         </nav>
       </div>
 
-      <div class="big-container">
-        <div class="make-request-container">
-          <div class="d-flex justify-content-center h-100">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="text-center" style="font-family: 'Montserrat', serif; color: #888; letter-spacing: 2px">MAKE A REQUEST</h3>
-              </div>
-              <div class="card-body">
-                <form id="request_form">
-                  <div class="input-group form-group">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text"><i class="fas fa-user"></i></span>
-                    </div>
-                    <textarea id="request-description" v-model="newRequest.description" class="form-control" style="font-family: 'Georgia', sans-serif" placeholder="Enter a description"></textarea>
+      <div class="make-request-container">
+        <div class="d-flex justify-content-center h-100">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="text-center" style="font-family: 'Montserrat', serif; color: #888; letter-spacing: 2px">MAKE A REQUEST</h3>
+            </div>
+            <div class="card-body">
+              <form id="request_form">
+                <div class="input-group form-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
                   </div>
-                  <div class="form-group">
-                    <button @click="createRequest()" type="button" class="btn btn-primary btn-block mb-4 saveButton">Create</button>
-                  </div>
-                </form>
-              </div>
+                  <textarea id="request-description" v-model="newRequest.description" class="form-control" style="font-family: 'Georgia', sans-serif" placeholder="Enter a description"></textarea>
+                </div>
+                <div class="form-group">
+                  <button @click="createRequest()" type="button" class="btn btn-primary btn-block mb-4 saveButton">Create</button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
 
-        <div class="table-container">
-          <div class="table-responsive  luxurious-text">
-            <h3>All Requests for reservation {{this.resId}}:</h3>
-            <table class="table table-bordered">
-              <thead>
+        <div class="d-flex justify-content-center h-100">
+          <div class="table-container">
+            <div class="table-responsive  luxurious-text">
+              <h3>All Requests for reservation {{this.resId}}:</h3>
+              <table class="table table-bordered">
+                <thead>
                 <tr>
                   <th scope="col" class="text-center">Reservation Number</th>
                   <th scope="col" class="text-center">Description</th>
                   <th scope="col" class="text-center">Request Id</th>
                   <th scope="col" class="text-center">Status</th>
                 </tr>
-              </thead>
-              <tbody>
+                </thead>
+                <tbody>
                 <tr v-for="r in requests">
-                  <td class="text-center" style="background: white"><input class="form-control text-center" :id="'number'.concat(r.requestId)" :value="r.reservationId" readonly></td>
+                  <td class="text-center" style="background: white"><input class="form-control text-center" :id="'number'.concat(r.requestId)" :value="this.resId" readonly></td>
                   <td class="text-center" style="background: white">
                     <div class="column-content">
                       <textarea class="form-control text-center" :id="'description'.concat(r.requestId)" :value="r.description" readonly></textarea>
@@ -64,10 +69,12 @@
                   <td class="text-center" style="background: white"><input class="form-control text-center" :id="'request'.concat(r.requestId)" :value="r.requestId" readonly></td>
                   <td class="text-center" style="background: white"><input class="form-control text-center" :id="'status'.concat(r.requestId)" :value="r.status" readonly></td>
                 </tr>
-              </tbody>
-            </table>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
+
       </div>
     </div>
   </div>
@@ -84,27 +91,26 @@ var axiosClient = axios.create({
 })
 export default {
   name: "CustomerMakeRequest",
-  props: {
-    email: {
-      type: String,
-      required: true
-    },
-    resId: {
-      type: String,
-      required: true
-    }
-  },
   data() {
     return {
-      reservation: {},
-      newRequest: {description: '', reservationId: this.resId},
+      reservationData: {},
+      newRequest: {description: '', reservationId: ''},
       requests: [],
+      email: '',
+      resId: '',
     };
   },
+  mounted() {
+    this.email = this.$route.params.param1
+    this.resId = this.$route.params.param2
+  },
   created() {
+    this.email = this.$route.params.param1
+    this.resId = this.$route.params.param2
+
     axiosClient.get("/reservation/".concat(this.resId))
       .then(response => {
-        this.reservation = response.data
+        this.reservationData = response.data
       })
       .catch(err => {
         this.errorMsg = `Failure: ${err.response.data}`
@@ -124,10 +130,12 @@ export default {
   },
   methods : {
     createRequest() {
+      this.newRequest.reservationId = this.resId
+
       axiosClient.post("request/new", this.newRequest)
         .then(response => {
           //add it to the requests list
-          this.requests.push({requestId: response.data.requestId, description: response.data.description, reservation: {}, status: response.data.status})
+          this.requests.push({requestId: response.data.requestId, description: response.data.description, reservation: response.data.reservation, status: response.data.status})
         })
         .catch(err => {
           this.errorMsg = `Failure: ${err.response.data}`
@@ -139,7 +147,13 @@ export default {
       document.getElementById("request_form").reset()
     },
     async Home(){
-      await this.$router.push({name: 'OwnerHome', params: {email: this.email}})
+      await this.$router.push({path: '/CustomerHome/'+this.email})
+    },
+    async Request(){
+      await this.$router.push({path: 'customer/'+this.email+'/reservation/'+this.resId+'/make_request'})
+    },
+    async Reservation(){
+      await this.$router.push({path: 'customer/'+this.email+'/reservation'})
     },
   },
 }
@@ -172,17 +186,26 @@ export default {
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   position: absolute;
+  top:20%;
   left: 30%;
   right: 30%;
   min-height: 300px;
+  display: block;
+  clear: both;
 }
 
 .table-container {
+  background-color: rgba(255, 255, 255, 0.5);
   padding: 2%;
-  margin: 2%;
+  margin-top: 2%;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   position: absolute;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: auto;
+  display: block;
+  clear: both;
 }
 
 .navbar-container {

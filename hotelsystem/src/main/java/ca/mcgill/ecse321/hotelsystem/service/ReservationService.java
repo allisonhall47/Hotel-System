@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
@@ -147,6 +149,21 @@ public class ReservationService {
     @Transactional
     public List<Reservation> getReservationsNotPaid() {
         return reservationRepository.getReservationByPaidIs(false);
+    }
+
+    /**
+     * cancel a reservation
+     * @param reservation
+     */
+    @Transactional
+    public void cancelReservation(Reservation reservation) {
+        LocalDate present = LocalDate.now();
+        if (ChronoUnit.DAYS.between(reservation.getCheckIn(), present) < 3) {
+            throw new HRSException(HttpStatus.BAD_REQUEST, "cannot cancel less than 72 hours before checkIn date");
+        }
+
+        //delete it
+        this.deleteReservation(reservation);
     }
 
     //TODO if other methods are needed, add

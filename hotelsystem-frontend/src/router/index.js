@@ -8,6 +8,7 @@ import CustomerAccount from "../components/customer/CustomerAccount"
 import OwnerAddShift from "../components/owner/OwnerAddShift";
 import ownerManageRooms from "../components/owner/ownerManageRooms";
 import CustomerMakeRequest from "../components/customer/CustomerMakeRequest";
+import ReservationCustomer from "../components/customer/ReservationCustomer";
 
 Vue.use(Router)
 
@@ -51,7 +52,12 @@ export default new Router({
       component: ownerManageRooms
     },
     {
-      path: '/customer/make_request',
+      path: '/customer/:param1/reservation',
+      name: 'ReservationCustomer',
+      component: ReservationCustomer
+    },
+    {
+      path: '/customer/:param1/reservation/:param2/make_request',
       name: 'CustomerMakeRequest',
       component: CustomerMakeRequest
     },
