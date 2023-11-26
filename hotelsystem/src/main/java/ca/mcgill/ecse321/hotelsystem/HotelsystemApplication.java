@@ -29,6 +29,24 @@ public class HotelsystemApplication {
 				employeeService.createEmployee(new Employee("tony@themarwaniott.com", "Tony", 6000, b));
 				Account c = accountService.createAccount(new Account("PasswordAccount123", "The Marwaniott", LocalDate.of(1980,1,1)));
 				customerService.createCustomer(new Customer("anniegouchee@gmail.com","Annie", c));
+
+				Room regRoom = roomService.createRoom(new Room("Regular", 899, BedType.Queen, 2));
+				Room deleuxeRoom = roomService.createRoom(new Room("Deluxe", 1299, BedType.Queen, 4));
+				Room luxuryRoom = roomService.createRoom(new Room("Luxury", 1499, BedType.King, 2));
+				Room suite = roomService.createRoom(new Room("Suite", 1999, BedType.King, 4));
+				int num = 100;
+				for (int i = 0; i < 10; i++) {
+					SpecificRoom specificRoom = specificRoomService.createSpecificRoom(new SpecificRoom(num+i, ViewType.Mountain, "such a nice room", Boolean.TRUE, suite));
+				}
+				for (int i = 10; i < 20; i++) {
+					SpecificRoom specificRoom = specificRoomService.createSpecificRoom(new SpecificRoom(num+i, ViewType.Mountain, "such a nice room", Boolean.TRUE, deleuxeRoom));
+				}
+				for (int i = 20; i < 30; i++) {
+					SpecificRoom specificRoom = specificRoomService.createSpecificRoom(new SpecificRoom(num+i, ViewType.Mountain, "such a nice room", Boolean.TRUE, luxuryRoom));
+				}
+				for (int i = 30; i < 70; i++) {
+					SpecificRoom specificRoom = specificRoomService.createSpecificRoom(new SpecificRoom(num+i, ViewType.Mountain, "such a nice room", Boolean.TRUE, regRoom));
+				}
 			}
 		};
 	}
