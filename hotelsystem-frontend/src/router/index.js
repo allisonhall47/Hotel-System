@@ -23,6 +23,7 @@ import OwnerViewSchedule from "../components/owner/OwnerViewSchedule"
 import EmployeeViewSchedule from "../components/employee/EmployeeViewSchedule";
 import EmployeeReservation from "../components/employee/EmployeeReservation";
 import OwnerRepair from "../components/owner/OwnerRepair.vue";
+import BookedConfirmation from "../components/shared/BookedConfirmation";
 
 Vue.use(Router)
 
@@ -143,6 +144,11 @@ export default new Router({
     {
       path: '/OwnerRepair/:param1',
       component: OwnerRepair,
+    },
+
+    {
+      path: '/BookedConfirmation/',
+      component: BookedConfirmation,
     },
   ]
 })

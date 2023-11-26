@@ -11,19 +11,22 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link" @click="Home">Home</a>
+              <a class="nav-link clickable-text" @click="Home">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" @click="Login">LogIn</a>
+              <a class="nav-link clickable-text" @click="Login">LogIn</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" @click="SignUp">SignUp</a>
+              <a class="nav-link clickable-text" @click="SignUp">SignUp</a>
             </li>
           </ul>
         </div>
       </nav>
     </div>
       <div class="room-container">
+        <h1 class="text-left" style="font-family: 'Montserrat', sans-serif; color: #888; letter-spacing: 3px; font-size: 30px" >CHOOSE YOUR ROOMS</h1>
+        <div style="margin-top: 15px;"></div>
+
         <!-- Iterate over the list of room combinations -->
         <div v-for="(combination, index) in roomCombinations" :key="index" class="room-combination-box">
           <!-- Iterate over the keys in each combination object -->
@@ -91,10 +94,11 @@ export default {
   },
   methods: {
     findPossibleRoomCombinations(guests, totalRooms) {
+      guests = parseInt(guests, 10);
       // Step 1: Find basic room combinations
       let basicCombos = [];
       if (guests % 2 === 1) {
-        guests += 1; // Adjusting odd number of guests to even
+        guests = guests + 1; // Adjusting odd number of guests to even
       }
       for (let i = 0; i <= guests / 4; i++) {
         const remainingGuests = guests - i * 4;
@@ -209,10 +213,10 @@ export default {
       }
     },
     async Login() {
-      await this.$router.push({name: 'Login'})
+      await this.$router.push({path: '/Login/'})
     },
     async SignUp() {
-      await this.$router.push({name: 'SignUp'})
+      await this.$router.push({path: '/SignUp/'})
     },
     async Home() {
       await this.$router.push({name: 'Home'})
@@ -299,9 +303,8 @@ export default {
   margin-right: 0; /* Reset the margin for the navbar-brand */
 }
 
-
 .transparent-background {
-  background-color: rgba(136, 136, 136, 0.4); /* You can replace this color code with your desired dark color */
+  background-color: rgba(136, 136, 136, 0.3);
 }
 
 .navbar-container {
@@ -345,6 +348,11 @@ export default {
 
 .room-image:hover {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Adjust the shadow on hover as needed */
+}
+
+.clickable-text:hover {
+  cursor: pointer;
+  color: white !important;
 }
 
 </style>

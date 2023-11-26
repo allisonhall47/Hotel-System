@@ -42,7 +42,7 @@
                 <a class="nav-link clickable-text" @click="Home">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="LogIn">LogIn</a>
+                <a class="nav-link clickable-text" @click="LogIn">LogIn</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link clickable-text" @click="SignUp">SignUp</a>
@@ -61,6 +61,7 @@
 <script>
 
 import axios from 'axios'
+import BookedConfirmation from "./BookedConfirmation";
 var config = require('../../../config')
 var frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
 var backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort
@@ -96,13 +97,16 @@ export default{
   },
   methods: {
     async LogIn() {
-      await this.$router.push({name: 'Login'})
+      await this.$router.push({path: '/Login/'})
     },
     async SignUp() {
-      await this.$router.push({name: 'SignUp'})
+      await this.$router.push({path: '/SignUp/'})
     },
     async Home() {
       await this.$router.push({name: 'Home'})
+    },
+    async Confirmation(){
+      await this.$router.push({path: '/BookedConfirmation/'})
     },
     async CreateCustomer(){
       this.email = document.getElementById("email").value;
@@ -125,6 +129,7 @@ export default{
                       const reservedRoom_request = {linkedReservationId: this.reservationId, roomNumber: specificRoomNumber};
                       axiosClient.post("/reservedRoom/new", reservedRoom_request)
                     }
+                    this.Confirmation();
                   })
                   .catch((err) => {
                     this.errorMsg = `Failure: ${err.response.data}`
@@ -141,6 +146,7 @@ export default{
                       const reservedRoom_request = {linkedReservationId: this.reservationId, roomNumber: specificRoomNumber};
                       axiosClient.post("/reservedRoom/new", reservedRoom_request)
                     }
+                    this.Confirmation();
                   })
                   .catch((err) => {
                     this.errorMsg = `Failure: ${err.response.data}`
@@ -157,6 +163,7 @@ export default{
                       const reservedRoom_request = {linkedReservationId: this.reservationId, roomNumber: specificRoomNumber};
                       axiosClient.post("/reservedRoom/new", reservedRoom_request)
                     }
+                    this.Confirmation();
                   })
                   .catch((err) => {
                     this.errorMsg = `Failure: ${err.response.data}`
@@ -173,6 +180,7 @@ export default{
                       const reservedRoom_request = {linkedReservationId: this.reservationId, roomNumber: specificRoomNumber};
                       axiosClient.post("/reservedRoom/new", reservedRoom_request)
                     }
+                    this.Confirmation();
                   })
                   .catch((err) => {
                     this.errorMsg = `Failure: ${err.response.data}`

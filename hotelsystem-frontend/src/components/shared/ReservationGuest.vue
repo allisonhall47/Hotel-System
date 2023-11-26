@@ -57,13 +57,13 @@
           <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link" @click="Home">Home</a>
+                <a class="nav-link clickable-text" @click="Home">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="Login">LogIn</a>
+                <a class="nav-link clickable-text" @click="Login">LogIn</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="SignUp">SignUp</a>
+                <a class="nav-link clickable-text" @click="SignUp">SignUp</a>
               </li>
             </ul>
           </div>
@@ -87,10 +87,10 @@ export default {
   },
   methods: {
     async Login() {
-      await this.$router.push({name: 'Login'})
+      await this.$router.push({path: '/Login/'})
     },
     async SignUp() {
-      await this.$router.push({name: 'SignUp'})
+      await this.$router.push({path: '/SignUp/'})
     },
     async Home() {
       await this.$router.push({name: 'Home'})
@@ -128,21 +128,21 @@ export default {
       }
 
       if (this.guests%2 === 1) {
-        if (this.rooms*4 < (this.guests+1) ) {
+        if (parseInt(this.rooms*4, 10)< parseInt(this.guests, 10)) {
           alert('Stop it G');
           return;
         }
-        if (this.rooms*2 > (this.guests+1)) {
-          this.guests = this.rooms*2;
+        if (parseInt(this.rooms*2, 10)> parseInt(this.guests+1, 10)) {
+          this.guests = parseInt(this.rooms*2,10);
         }
       }
-      if (this.guests%2 === 0) {
-        if (this.rooms*4 < this.guests) {
+      if (parseInt(this.guests%2,10) === 0) {
+        if ((this.rooms*4)<this.guests) {
           alert('Stop it G');
           return;
         }
-        if (this.rooms*2 > this.guests) {
-          this.guests = this.rooms*2;
+        if (parseInt(this.rooms*2,10)>parseInt(this.guests,10)) {
+          this.guests = parseInt(this.rooms*2,10);
         }
       }
 
@@ -179,7 +179,7 @@ export default {
 
 .background-image {
   flex: 1;
-  background-image: url('../../assets/hotelView.png');
+  background-image: url('../../assets/hotelRoomView.png');
   background-size: cover;
   background-position: center;
 }
@@ -248,6 +248,11 @@ export default {
 
 #endDate::placeholder {
   color:#888;
+}
+
+.clickable-text:hover {
+  cursor: pointer;
+  color: white !important;
 }
 
 </style>
