@@ -5,6 +5,10 @@ import SignUp from "../components/shared/SignUp"
 import Login from "../components/shared/Login"
 import CustomerHome from "../components/customer/CustomerHome"
 import CustomerAccount from "../components/customer/CustomerAccount"
+import OwnerAddShift from "../components/owner/OwnerAddShift";
+import ownerManageRooms from "../components/owner/ownerManageRooms";
+import CustomerMakeRequest from "../components/customer/CustomerMakeRequest";
+import ReservationCustomer from "../components/customer/ReservationCustomer";
 import EmployeeHome from "../components/employee/EmployeeHome"
 import EmployeeAccount from "../components/employee/EmployeeAccount"
 import EmployeeRepair from "../components/employee/EmployeeRepair.vue";
@@ -14,18 +18,20 @@ import OwnerManageEmployees from "../components/owner/OwnerManageEmployees"
 import OwnerViewSchedule from "../components/owner/OwnerViewSchedule"
 import OwnerRepair  from "../components/owner/OwnerRepair.vue";
 import EmployeeViewSchedule from "../components/employee/EmployeeViewSchedule";
+import EmployeeReservation from "../components/employee/EmployeeReservation";
+import OwnerRepair from "../components/owner/OwnerRepair.vue";
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
+
     {
       path: '/Home/',
       component: Home
     },
     {
-      path: '/',
-      name: 'SignUp',
+      path: '/SignUp/',
       component: SignUp
     },
     {
@@ -33,16 +39,12 @@ export default new Router({
       component: Login
     },
     {
-      path: '/',
-      name: 'CustomerHome',
+      path: '/CustomerHome/:param1',
       component: CustomerHome,
-      props: true
     },
     {
-      path: '/',
-      name: 'CustomerAccount',
+      path: '/CustomerAccount/:param1',
       component: CustomerAccount,
-      props: true
     },
     {
       path: '/EmployeeHome/:param1/:param2',
@@ -56,35 +58,60 @@ export default new Router({
       path: '/EmployeeRepair/:param1/:param2',
       component: EmployeeRepair,
     },
+
     {
-      path: '/',
+      path: '/owner',
+      name: 'OwnerAddShift',
+      component: OwnerAddShift
+    },
+    {
+      path: '/owner/manage_rooms',
+      name: 'ownerManageRooms',
+      component: ownerManageRooms
+    },
+    {
+      path: '/customer/:param1/reservation',
+      name: 'ReservationCustomer',
+      component: ReservationCustomer
+    },
+    {
+      path: '/customer/:param1/reservation/:param2/make_request',
+      name: 'CustomerMakeRequest',
+      component: CustomerMakeRequest
+    },
+    {
+      path: '/owner-view-schedule',
       name: 'OwnerViewSchedule',
       component: OwnerViewSchedule,
-      props: true
     },
     {
-      path: '/',
+      path: '/employee-view-schedule',
       name: 'EmployeeViewSchedule',
       component: EmployeeViewSchedule,
-      props: true
     },
     {
-     path: '/owner-home',
-     name: 'OwnerHome',
-     component: OwnerHome,
-     props: true
+     path: '/OwnerHome/:param1',
+      component: OwnerHome,
+    },
+
+    {
+      path: '/OwnerAccount/:param1',
+      component: OwnerAccount,
+    },
+
+    {
+      path: '/OwnerManageEmployees/:param1',
+      component: OwnerManageEmployees,
+    },
+
+    {
+      path: '/OwnerRepair/:param1',
+      component: OwnerRepair,
     },
     {
-     path: '/owner-account',
-     name: 'OwnerAccount',
-     component: OwnerAccount,
-     props: true
-    },
-    {
-     path: '/owner-manage-employees',
-     name: 'OwnerManageEmployees',
-     component: OwnerManageEmployees,
-     props: true
+      path: '/employee-manage-reservations',
+      name: 'EmployeeReservation',
+      component: EmployeeReservation,
     },
     {
       path: '/OwnerRepair/:param1',

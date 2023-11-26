@@ -1,6 +1,53 @@
 <template>
   <div class="login">
     <div class="background">
+
+      <div class="login-container">
+        <div class="login-box">
+          <div class="card-header">
+            <h3 class="text-center" style="font-family: 'Montserrat', sans-serif; color: #888; letter-spacing: 2px">LOG IN</h3>
+          </div>
+          <div class="card-body">
+            <form>
+              <div class="input-group form-group">
+                <input id="email" v-model="email" type="email" class="form-control" style="font-family: 'Georgia', sans-serif" placeholder="Email Address">
+              </div>
+              <div class="input-group form-group">
+                <input id="password" v-model="password" type="password" class="form-control" style="font-family: 'Georgia', sans-serif" placeholder="Password">
+              </div>
+
+              <div class="form-check form-check-inline">
+                <input v-model="user" class="form-check-input" type="radio" name="user" id="owner" value="Owner">
+                <label class="form-check-label" for="owner">Owner</label>
+              </div>
+
+              <div class="form-check form-check-inline">
+                <input v-model="user" class="form-check-input" type="radio" name="user" id="customer" value="Customer">
+                <label class="form-check-label" for="customer">Customer</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input v-model="user" class="form-check-input" type="radio" name="user" id="employee" value="Employee">
+                <label class="form-check-label" for="employee">Employee</label>
+              </div>
+              <div class="form-group">
+                <button @click="getUser()" type="button"
+                        class="btn btn-primary btn-block mb-4 signinbutton">Sign in</button>
+              </div>
+            </form>
+          </div>
+          <div class="card-footer">
+            <div class="d-flex align-items-center links">
+              <a class="nav-link" @click="SignUp">Don't have an account? Sign Up</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="background-image">
+        <div class="layout-background-image">
+        </div>
+      </div>
+
       <div class="navbar-container">
         <nav class="navbar navbar-expand-lg navbar-light transparent-background">
           <a class="navbar-brand" href="#">
@@ -12,71 +59,20 @@
           <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link" @click="Home">Home</a>
+                <a class="nav-link clickable-text" @click="Home">Home</a>
               </li>
               <li class="nav-item active">
                 <a class="nav-link" href="#">LogIn<span class="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="SignUp">SignUp</a>
+                <a class="nav-link clickable-text" @click="SignUp">SignUp</a>
               </li>
             </ul>
           </div>
         </nav>
       </div>
 
-      <div class="login-container">
-        <div class="d-flex justify-content-center h-100">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="text-center" style="font-family: 'Montserrat', serif; color: #888; letter-spacing: 2px">LOG IN</h3>
-            </div>
-            <div class="card-body">
-              <form>
-                <div class="input-group form-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fas fa-user"></i></span>
-                  </div>
-                  <input id="email" v-model="email" type="email" class="form-control" style="font-family: 'Georgia', sans-serif" placeholder="email">
-                </div>
-                <div class="input-group form-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fas fa-key"></i></span>
-                  </div>
-                  <input id="password" v-model="password" type="password" class="form-control" style="font-family: 'Georgia', sans-serif" placeholder="password">
-                </div>
 
-                <div class="form-check form-check-inline">
-                  <input v-model="user" class="form-check-input" type="radio" name="user" id="owner" value="Owner">
-                  <label class="form-check-label" for="owner">Owner</label>
-                </div>
-
-                <div class="form-check form-check-inline">
-                  <input v-model="user" class="form-check-input" type="radio" name="user" id="customer" value="Customer">
-                  <label class="form-check-label" for="customer">Customer</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input v-model="user" class="form-check-input" type="radio" name="user" id="employee" value="Employee">
-                  <label class="form-check-label" for="employee">Employee</label>
-                </div>
-<!--                <div class="form-group">-->
-<!--                    <button v-bind:disabled="createUserButtonDisabled" @click="getUser()" type="button" class="btn btn-primary btn-block mb-4 signinbutton">Sign in</button>-->
-<!--                </div>-->
-                <div class="form-group">
-                  <button @click="getUser()" type="button"
-                          class="btn btn-primary btn-block mb-4 signinbutton">Sign in</button>
-                </div>
-              </form>
-            </div>
-            <div class="card-footer">
-              <div class="d-flex align-items-center links">
-                <p>Don't have an account?</p>
-                <a class="nav-link" @click="SignUp">Sign Up</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -101,11 +97,17 @@ export default {
       user: '',
       logged_user: [],
       errorMsg: '',
+      accountNumber: 0,
     };
   },
+
   mounted() {
     this.email = this.$route.params.param1;
     this.name = this.$route.params.param2;
+  },
+
+
+  computed: {
   },
 
   methods: {
@@ -113,12 +115,23 @@ export default {
       if(this.user === "Customer"){
         axiosClient.get("/customer?email=" + this.email)
           .then((response) => {
-            if(response.data.accountNumber !== 0){
-              this.logged_user = response
-              alert("Successfully logged in.")
-              this.$router.push({name: 'CustomerHome', params: {email: this.email}})
+            this.accountNumber = response.data.accountNumber;
+            if(this.accountNumber !== 0){
+              axiosClient.get("/account/?accountNumber=" + this.accountNumber)
+                .then((response) => {
+                  if(response.data.password === this.password){
+                    alert("Successfully logged in.")
+                    this.$router.push({path: '/CustomerHome/' + this.email})
+                  } else {
+                    alert("Incorrect Password.")
+                  }
+                })
+                .catch((err) => {
+                  this.errorMsg = `Failure: ${err.response.data}`
+                  alert(this.errorMsg)
+                })
             } else {
-              alert("No account exists with this email.")
+              alert("This email is not linked to an account.");
             }
           })
           .catch((err) => {
@@ -129,14 +142,24 @@ export default {
       else if (this.user === "Employee"){
         axiosClient.get("/employee?email=" + this.email)
           .then((response) => {
-            if(response.data.accountNumber !== 0){
-              this.logged_user = response
-              alert("Successfully logged in.")
-              var employeeName = response.data.name;
-              // this.$router.push({name: 'EmployeeHome', params: {email: this.email, name: employeeName}})
-              this.$router.push({path: '/EmployeeHome/' + this.email + '/' + employeeName})
+            this.accountNumber = response.data.accountNumber;
+            if(this.accountNumber !== 0){
+              axiosClient.get("/account/?accountNumber=" + this.accountNumber)
+                .then((response) => {
+                  if(response.data.password === this.password){
+                    alert("Successfully logged in.")
+                    var employeeName = response.data.name;
+                    this.$router.push({path: '/EmployeeHome/' + this.email + '/' + employeeName})
+                  } else {
+                    alert("Incorrect Password.")
+                  }
+                })
+                .catch((err) => {
+                  this.errorMsg = `Failure: ${err.response.data}`
+                  alert(this.errorMsg)
+                })
             } else {
-              alert("No account exists with this email.")
+              alert("This email is not linked to an account.");
             }
           })
           .catch((err) => {
@@ -147,10 +170,24 @@ export default {
       else if (this.user === "Owner"){
         axiosClient("/owner/email?email=" + this.email)
           .then((response) => {
-            this.logged_user = response
-            alert("Successfully logged in.")
-            this.$router.push({name: 'OwnerHome', params: {email: this.email}})
-            // this.$router.push({path: '/OwnerHome/' + this.email})
+            this.accountNumber = response.data.accountNumber;
+            if(this.accountNumber !== 0){
+              axiosClient.get("/account/?accountNumber=" + this.accountNumber)
+                .then((response) => {
+                  if(response.data.password === this.password){
+                    alert("Successfully logged in.")
+                    this.$router.push({path: '/OwnerHome/' + this.email})
+                  } else {
+                    alert("Incorrect Password.")
+                  }
+                })
+                .catch((err) => {
+                  this.errorMsg = `Failure: ${err.response.data}`
+                  alert(this.errorMsg)
+                })
+            } else {
+              alert("This email is not linked to an account.");
+            }
           })
           .catch((err) => {
             this.errorMsg = `Failure: ${err.response.data}`
@@ -162,7 +199,7 @@ export default {
       }
     },
     async SignUp() {
-      await this.$router.push({name: 'SignUp'})
+      await this.$router.push({path: '/SignUp/'})
     },
     async Home(){
       await this.$router.push({name: 'Home'})
@@ -176,28 +213,37 @@ export default {
   width: 100%;
   height: 100%;
   position: absolute;
-  background: url('../../assets/hotelView.png') center center no-repeat;
+  background: white;
   background-size: cover;
 }
 
+.login {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.login-box {
+  width: 65%;
+}
+
+.background {
+  flex: 1;
+  display: flex;
+}
+
+.background-image {
+  flex: 1;
+  background-image: url('../../assets/hotelRoomView.png');
+  background-size: cover;
+  background-position: center;
+}
+
 .login-container {
-  background-color: rgba(255, 255, 255, 0.5);
-  padding: 2%;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  position: absolute;
-  top: 25%;
-  left: 30%;
-  right: 30%;
-  min-height: 300px;
-}
-
-.card {
-  width: 100%; /* Use 100% for responsiveness */
-}
-
-.input-group-prepend {
-  background-color: transparent;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .navbar-container {
@@ -208,7 +254,7 @@ export default {
 }
 
 .transparent-background {
-  background-color: rgba(255, 255, 255, 0.3); /* You can replace this color code with your desired dark color */
+  background-color: rgba(136, 136, 136, 0.3);
 }
 
 .signinbutton {
@@ -221,12 +267,25 @@ export default {
 }
 
 .signinbutton:hover {
-  border: #888888;
   background-color: #888888;
   border: 2px solid #888888;
   color: white;
 }
 
+.clickable-text:hover {
+  cursor: pointer;
+  color: white !important;
+}
 
+.card-header {
+  background: white;
+  border-bottom: white;
+}
+
+.card-footer {
+  background: white;
+  border-top: white;
+  cursor: pointer;
+}
 
 </style>

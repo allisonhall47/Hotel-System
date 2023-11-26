@@ -86,6 +86,18 @@ public class ReservationController {
         return new ReservationResponseDto(reservationService.checkIn(res));
     }
 
+    @PutMapping ("/reservation/{reservationId}/checkOut")
+    public ReservationResponseDto checkOutReservationById(@PathVariable(value = "reservationId") int id) {
+        Reservation res = reservationService.getReservation(id);
+        return new ReservationResponseDto(reservationService.checkOut(res));
+    }
+
+    @PutMapping ("/reservation/{reservationId}/noShow")
+    public ReservationResponseDto noShowReservationById(@PathVariable(value = "reservationId") int id) {
+        Reservation res = reservationService.getReservation(id);
+        return new ReservationResponseDto(reservationService.noShow(res));
+    }
+
     /**
      * get all reservations for customer
      * @param customerEmail email
@@ -110,6 +122,16 @@ public class ReservationController {
     public void deleteReservation(@PathVariable("reservationId") int id) {
         Reservation reservation = reservationService.getReservation(id);
         reservationService.deleteReservation(reservation);
+    }
+
+    /**
+     * cancel a reservation with id
+     * @param id id
+     */
+    @DeleteMapping("/reservation/cancel/{reservationId}")
+    public void cancelReservation(@PathVariable("reservationId") int id) {
+        Reservation reservation = reservationService.getReservation(id);
+        reservationService.cancelReservation(reservation);
     }
 
     /**

@@ -1,4 +1,5 @@
 <template>
+  <div class="hero-section">
   <div class="ownerManageEmployees">
     <div class="background">
       <div class="navbar-container">
@@ -18,6 +19,9 @@
                  <a class="nav-link" @click="ManageEmployees">Manage Employees</a>
               </li>
               <li class="nav-item">
+                <a class="nav-link" @click="Repair">Manage Repairs</a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link" @click="Account">Account</a>
               </li>
               <li class="nav-item">
@@ -32,7 +36,7 @@
               <div class="d-flex justify-content-center h-100">
                 <div class="card">
                   <div class="card-header">
-                    <h3 class="text-center" style="font-family: 'Montserrat', serif; color: #888; letter-spacing: 2px">HIRE EMPLOYEE</h3>
+                    <h3 class="text-center" style="font-family: 'Montserrat', sans-serif; color: #888; letter-spacing: 2px">HIRE EMPLOYEE</h3>
                   </div>
                   <div class="card-body">
                     <form>
@@ -46,7 +50,7 @@
                         <div class="input-group-prepend">
                           <span class="input-group-text"><i class="fas fa-user"></i></span>
                         </div>
-                        <input id="email" v-model="email" type="email" class="form-control" style="font-family: 'Georgia', sans-serif" placeholder="email">
+                        <input id="employeeEmail" v-model="employeeEmail" type="email" class="form-control" style="font-family: 'Georgia', sans-serif" placeholder="email">
                       </div>
                       <div class="input-group form-group">
                         <div class="input-group-prepend">
@@ -86,7 +90,7 @@
         <div class="d-flex justify-content-center h-100">
           <div class="card">
             <div class="card-header">
-              <h3 class="text-center" style="font-family: 'Montserrat', serif; color: #888; letter-spacing: 2px">MANAGE CURRENT EMPLOYEES</h3>
+              <h3 class="text-center" style="font-family: 'Montserrat', sans-serif; color: #888; letter-spacing: 2px">MANAGE CURRENT EMPLOYEES</h3>
             </div>
             <div class="card-body">
               <div v-if="isEditing" class="edit-employee-container">
@@ -128,6 +132,7 @@
 
           </div>
         </div>
+  </div>
       </template>
 
       <script>
@@ -143,9 +148,10 @@
 
       export default {
         name: 'Hire',
+
         data() {
           return {
-            email: '',
+            email: "",
             password: '',
             salary: '',
             name: '',
@@ -157,6 +163,7 @@
             new_account: [],
             accountNumber: 0,
             employees: [],
+            employeeEmail: '',
             selectedEmployeeEmail: null,
 
             editableEmployee: {
@@ -167,6 +174,11 @@
             isEditing: false,
           };
         },
+
+        mounted(){
+          this.email = this.$route.params.param1
+        },
+
         methods: {
           editEmployee() {
             if (!this.selectedEmployeeEmail) {
@@ -201,7 +213,7 @@
             this.selectedEmployeeEmail = email;
           },
           createEmployee(){
-            this.email = document.getElementById("email").value;
+            this.employeeEmail = document.getElementById("employeeEmail").value;
             this.password = document.getElementById("password").value;
             this.salary = document.getElementById("salary").value;
             this.name = document.getElementById("name").value;
@@ -214,7 +226,7 @@
                   this.accountNumber = response.data.accountNumber
                   this.new_account = response
 
-                  const employee_request = {name: this.name, email: this.email, salary: this.salary, accountNumber: this.accountNumber}
+                  const employee_request = {name: this.name, email: this.employeeEmail, salary: this.salary, accountNumber: this.accountNumber}
                   axiosClient.post("/employee/create",employee_request)
                     .then((response) => {
                       alert('Employee successfully hired.')
@@ -234,13 +246,16 @@
 
           },
           async Home(){
-            await this.$router.push({name: 'OwnerHome', params: {email: this.email}})
+            await this.$router.push({path: '/OwnerHome/' + this.email})
           },
           async ManageEmployees(){
-            await this.$router.push({name: 'OwnerManageEmployees', params: {email: this.email}})
+            await this.$router.push({path: '/OwnerManageEmployees/' + this.email})
+          },
+          async Repair(){
+            await this.$router.push({path: '/OwnerRepair/' + this.email})
           },
           async Account(){
-            await this.$router.push({name: 'OwnerAccount', params: {email: this.email}})
+            await this.$router.push({path: '/OwnerAccount/' + this.email})
           },
           async LogOut(){
             await this.$router.push({name: 'Home'})
@@ -283,18 +298,20 @@
         width: 100%;
         height: 100%;
         position: absolute;
-        background: url('../../assets/hotelView.png') center center no-repeat;
         background-size: cover;
+      }
+
+      .transparent-background {
+        background-color: rgba(255, 255, 255, 0.6) !important;
       }
 
       .hire-container {
         background-color: rgba(255, 255, 255, 0.5);
-        padding: 2%; /* Use a percentage for padding */
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         position: absolute;
         top: 23%; /* Use a percentage for top positioning */
-        bottom: 18%; /* Use a percentage for top positioning */
+        bottom: 25%; /* Use a percentage for top positioning */
         left: 52%; /* Use a percentage for left positioning */
         right: 5%; /* Use a percentage for right positioning */
         min-height: 300px; /* Set a minimum height if needed */
@@ -302,7 +319,6 @@
 
       .viewEmployees-container {
         background-color: rgba(255, 255, 255, 0.5);
-        padding: 2%; /* Use a percentage for padding */
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         position: absolute;
@@ -400,6 +416,13 @@
         flex-grow: 1; /* Input fields take available space */
         margin-bottom: 0; /* Remove any default margin */
       }
+
+      .hero-section {
+        background: url('../../assets/hotelLobby.jpeg') center/cover no-repeat;
+        min-height: 100vh; /* Full viewport height */
+        position: relative; /* This is important for absolute positioning inside */
+      }
+
 
 
       </style>
