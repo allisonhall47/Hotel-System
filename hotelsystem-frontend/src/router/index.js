@@ -16,7 +16,6 @@ import OwnerHome from "../components/owner/OwnerHome"
 import OwnerAccount from "../components/owner/OwnerAccount"
 import OwnerManageEmployees from "../components/owner/OwnerManageEmployees"
 import OwnerViewSchedule from "../components/owner/OwnerViewSchedule"
-import OwnerRepair  from "../components/owner/OwnerRepair.vue";
 import EmployeeViewSchedule from "../components/employee/EmployeeViewSchedule";
 import EmployeeReservation from "../components/employee/EmployeeReservation";
 import OwnerRepair from "../components/owner/OwnerRepair.vue";
