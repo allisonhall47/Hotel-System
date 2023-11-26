@@ -97,11 +97,20 @@ export default {
       user: '',
       logged_user: [],
       errorMsg: '',
+      name: '',
       accountNumber: 0,
     };
   },
+
+  mounted() {
+    this.email = this.$route.params.param1;
+    this.name = this.$route.params.param2;
+  },
+
+
   computed: {
   },
+
   methods: {
     getUser(){
       if(this.user === "Customer"){
@@ -113,7 +122,7 @@ export default {
                 .then((response) => {
                   if(response.data.password === this.password){
                     alert("Successfully logged in.")
-                    this.$router.push({path: 'CustomerHome/' + this.email})
+                    this.$router.push({path: '/CustomerHome/' + this.email})
                   } else {
                     alert("Incorrect Password.")
                   }
@@ -141,7 +150,7 @@ export default {
                   if(response.data.password === this.password){
                     alert("Successfully logged in.")
                     var employeeName = response.data.name;
-                    this.$router.push({name: 'EmployeeHome', params: {email: this.email, name: employeeName}})
+                    this.$router.push({path: '/EmployeeHome/' + this.email + '/' + employeeName})
                   } else {
                     alert("Incorrect Password.")
                   }
@@ -168,7 +177,7 @@ export default {
                 .then((response) => {
                   if(response.data.password === this.password){
                     alert("Successfully logged in.")
-                    this.$router.push({name: 'OwnerHome', params: {email: this.email}})
+                    this.$router.push({path: '/OwnerHome/' + this.email})
                   } else {
                     alert("Incorrect Password.")
                   }

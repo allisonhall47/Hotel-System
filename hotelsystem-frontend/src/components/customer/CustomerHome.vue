@@ -85,6 +85,17 @@
         </div>
       </div>
     </div>
+
+    <div class="footer-container">
+      <footer class="footer transparent-background">
+        <div class="d-flex align-items-center justify-content-center">
+          <img src="../../assets/marwaniottNoBG.png" alt="Your Logo" height="65">
+        </div>
+        <div class="d-flex align-items-center justify-content-center">
+          <p class="text-right" style="font-size: 10px">©The Marwaniott Hotel 2023. All Right Reserved.</p>
+        </div>
+      </footer>
+    </div>
   </div>
 </template>
 
@@ -166,6 +177,19 @@ export default {
 .clickable-text:hover {
   cursor: pointer;
   color: white !important;
+}
+
+.footer-container {
+  position: relative;
+  margin-top: 100px;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: rgba(136, 136, 136, 0.2);
+  padding-top: 15px;
 }
 
 </style>

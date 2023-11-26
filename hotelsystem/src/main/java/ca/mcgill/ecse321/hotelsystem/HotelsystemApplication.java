@@ -32,6 +32,9 @@ public class HotelsystemApplication {
 				customerService.createCustomer(customer);
 				Reservation res1 = reservationService.createReservation(new Reservation(4, LocalDate.of(1990,3,3), LocalDate.of(1990,3,6), 0, false, CheckInStatus.BeforeCheckIn, customer));
 				reservedRoomService.createReservedRoom(new ReservedRoom(res1, specificRoom));
+				//customerService.createCustomer(new Customer("anniegouchee@gmail.com","Annie", c));
+				Account d = accountService.createAccount(new Account("EmployeeAccount123", "The Marwaniott", LocalDate.of(1990,2,2)));
+				employeeService.createEmployee(new Employee("louis@themarwaniott.com","Louis", 8000, d));
 			}
 		};
 	}

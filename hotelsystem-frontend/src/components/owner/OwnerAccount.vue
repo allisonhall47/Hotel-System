@@ -1,4 +1,5 @@
 <template>
+  <div class="hero-section">
   <div class="ownerAccount">
     <div class="background">
       <div class="navbar-container">
@@ -16,6 +17,9 @@
               </li>
               <li class="nav-item">
                  <a class="nav-link" @click="ManageEmployees">Manage Employees</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" @click="Repair">Manage Repairs</a>
               </li>
               <li class="nav-item active">
                 <a class="nav-link" @click="Account">Account</a>
@@ -39,7 +43,7 @@
             <div class="col-md-9">
               <div class="p-3 py-5">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                  <h4 class="text-right" style="font-family: 'Montserrat', serif; color: #888; letter-spacing: 2px">ACCOUNT</h4>
+                  <h4 class="text-right" style="font-family: 'Montserrat', sans-serif; color: #888; letter-spacing: 2px">ACCOUNT</h4>
                 </div>
 
                 <div class="image-pos">
@@ -71,12 +75,7 @@
                     </div>
                   </div>
                 </div>
-<!--                <div class="mt-5 text-center">-->
-<!--                  <button @click="editInfo" type="button"-->
-<!--                          class="btn btn-primary btn-block mb-4 editbutton">Edit Profile</button>-->
-<!--                  <button @click="saveInfo" type="button"-->
-<!--                          class="btn btn-primary btn-block mb-4 editbutton">Save Profile</button>-->
-<!--                </div>-->
+
                 <div class="mt-5 text-center">
                   <div class="row">
                     <div class="col-md-6">
@@ -94,6 +93,7 @@
       </div>
     </div>
   </div>
+  </div>
 </template>
 
 <script>
@@ -108,12 +108,7 @@ var axiosClient = axios.create({
 
 export default {
   name: 'OwnerAccount',
-  props: {
-    email: {
-      type: String,
-      required: true
-    }
-  },
+
   data() {
     return {
       password: '',
@@ -123,7 +118,11 @@ export default {
       errorMsg: '',
       hiddenPassword: '',
       accountNumber: 0,
+      email: "",
     };
+  },
+  mounted(){
+    this.email = this.$route.params.param1
   },
   created(){
     axiosClient.get("/owner/email?email=" + this.email)
@@ -195,13 +194,16 @@ export default {
       document.getElementById('address').removeAttribute('readonly');
     },
     async Home(){
-      await this.$router.push({name: 'OwnerHome', params: {email: this.email}})
+      await this.$router.push({path: '/OwnerHome/' + this.email})
     },
     async ManageEmployees(){
-      await this.$router.push({name: 'OwnerManageEmployees', params: {email: this.email}})
+      await this.$router.push({path: '/OwnerManageEmployees/' + this.email})
+    },
+    async Repair(){
+      await this.$router.push({path: '/OwnerRepair/' + this.email})
     },
     async Account(){
-      await this.$router.push({name: 'OwnerAccount', params: {email: this.email}})
+      await this.$router.push({path: '/OwnerAccount/' + this.email})
     },
     async LogOut(){
       await this.$router.push({name: 'Home'})
@@ -217,7 +219,6 @@ export default {
   width: 100%;
   height: 100%;
   position: absolute;
-  background: url('../../assets/hotelView.png') center center no-repeat;
   background-size: cover;
 }
 
@@ -241,6 +242,10 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.navbar-container .navbar.transparent-background {
+  background-color: rgba(136, 136, 136, 0.3);
 }
 
 .form-control:focus {
@@ -283,10 +288,6 @@ export default {
   font-size: 11px
 }
 
-.transparent-background {
-  background-color: rgba(255, 255, 255, 0.2); /* You can replace this color code with your desired dark color */
-}
-
 .navbar-container {
   position: absolute;
   top: 0;
@@ -305,6 +306,15 @@ export default {
   cursor: pointer;
 }
 
+.transparent-background {
+  background-color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.hero-section {
+  background: url('../../assets/hotelLobby.jpeg') center/cover no-repeat;
+  min-height: 100vh; /* Full viewport height */
+  position: relative; /* This is important for absolute positioning inside */
+}
 
 </style>
 
