@@ -97,6 +97,7 @@ export default {
       user: '',
       logged_user: [],
       errorMsg: '',
+      name: '',
       accountNumber: 0,
     };
   },
