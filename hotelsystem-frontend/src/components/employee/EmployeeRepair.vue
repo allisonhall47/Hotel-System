@@ -131,7 +131,6 @@ export default {
     },
 
     async submitRepair() {
-
       this.description = document.getElementById("description").value;
 
       const repair_request = {
@@ -150,6 +149,7 @@ export default {
           alert('Repair request successfully submitted.')
 
           this.resetForm(); // If you have a method to reset the form
+          window.location.reload();
         })
         .catch((err) => {
           this.errorMsg = `Failure: ${err.response.data}`;
@@ -186,18 +186,6 @@ export default {
         });
     },
 
-    // async fetchEmployeeByEmail(email, repairIndex) {
-    //   // Fetch the employee details using the email as a query parameter
-    //   axiosClient.get("/employee?email=" + encodeURIComponent(email))
-    //     .then(response => {
-    //       // Assuming response.data has a 'name' field in the EmployeeResponseDto
-    //       this.$set(this.repairs[repairIndex], 'employeeName', response.data.name);
-    //     })
-    //     .catch(error => {
-    //       console.error('Error fetching employee details:', error);
-    //     });
-    // },
-
     async resetForm() {
       this.repair.description = '';
     },
@@ -206,6 +194,13 @@ export default {
 </script>
 
 <style scoped>
+
+/*@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');*/
+
+/*h2 {*/
+/*  font-family: 'Times New Roman', sans-serif;*/
+/*}*/
+
 
 container {
   display: flex;
@@ -243,5 +238,6 @@ container {
   left: 0;
   right: 0;
 }
+
 
 </style>

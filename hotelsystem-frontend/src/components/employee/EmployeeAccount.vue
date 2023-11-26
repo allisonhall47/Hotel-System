@@ -132,6 +132,7 @@ export default {
   },
 
   created(){
+    this.email = this.$route.params.param1;
     axiosClient.get("/employee?email=" + this.email)
       .then((response) => {
         this.name = response.data.name;

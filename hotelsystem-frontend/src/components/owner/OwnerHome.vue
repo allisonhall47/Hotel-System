@@ -128,7 +128,8 @@ export default {
       await this.$router.push({name: 'OwnerManageEmployees', params: {email: this.email}})
     },
     async Repair(){
-      await this.$router.push({name: 'OwnerRepair', params: {email: this.email}})
+      // await this.$router.push({name: 'OwnerRepair', params: {email: this.email}})
+      await this.$router.push({path: '/OwnerRepair/' + this.email})
     },
     async Account(){
       await this.$router.push({name: 'OwnerAccount', params: {email: this.email}})

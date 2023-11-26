@@ -138,13 +138,16 @@ export default {
   },
   methods: {
     async Home(){
-      await this.$router.push({name: 'OwnerHome', params: {email: this.email}})
+      // await this.$router.push({name: 'OwnerHome', params: {email: this.email}})
+      await this.$router.push({path: '/OwnerHome/' + this.email})
     },
     async ManageEmployees(){
-      await this.$router.push({name: 'OwnerManageEmployees', params: {email: this.email}})
+      // await this.$router.push({name: 'OwnerManageEmployees', params: {email: this.email}})
+      await this.$router.push({path: '/OwnerManageEmployees/' + this.email})
     },
     async Account(){
-      await this.$router.push({name: 'OwnerAccount', params: {email: this.email}})
+      // await this.$router.push({name: 'OwnerAccount', params: {email: this.email}})
+      await this.$router.push({path: '/OwnerAccount/' + this.email})
     },
     async LogOut(){
       await this.$router.push({path: '/Home/'})
@@ -189,6 +192,7 @@ export default {
           // Optional: Refresh the list of repairs or update the UI accordingly
           this.repair.selectedEmployeeEmail = ''; // resets the box
           // refresh here so the new employee for that shift pops up (once i've adjusted links)
+          window.location.reload();
         })
         .catch(error => {
           console.error('Error assigning employee:', error.response.data);
@@ -240,6 +244,7 @@ export default {
         .then(() => {
           alert('Status updated successfully');
           // Optional: Refresh the list of repairs or update the UI accordingly
+          window.location.reload();
         })
         .catch(error => {
           // Handle errors here
@@ -264,6 +269,7 @@ export default {
           this.repairs.push(response.data);
           alert('Repair request successfully submitted.');
           this.resetForm(); // Reset your form here
+          window.location.reload();
         })
         .catch((error) => {
           // Handle any errors from the API call
