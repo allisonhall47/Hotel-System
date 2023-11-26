@@ -125,6 +125,16 @@ public class ReservationController {
     }
 
     /**
+     * cancel a reservation with id
+     * @param id id
+     */
+    @DeleteMapping("/reservation/cancel/{reservationId}")
+    public void cancelReservation(@PathVariable("reservationId") int id) {
+        Reservation reservation = reservationService.getReservation(id);
+        reservationService.cancelReservation(reservation);
+    }
+
+    /**
      * Pay reservation
      * @param id id
      * @param money amount of money

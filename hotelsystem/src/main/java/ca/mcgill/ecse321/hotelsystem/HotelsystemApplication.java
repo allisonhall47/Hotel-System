@@ -1,7 +1,6 @@
 package ca.mcgill.ecse321.hotelsystem;
 
 import ca.mcgill.ecse321.hotelsystem.Model.*;
-
 import ca.mcgill.ecse321.hotelsystem.repository.CustomerRepository;
 import ca.mcgill.ecse321.hotelsystem.repository.OwnerRepository;
 import ca.mcgill.ecse321.hotelsystem.repository.EmployeeRepository;
@@ -24,6 +23,8 @@ public class HotelsystemApplication {
 			if (ownerRepository.count() == 0){
 				Account a = accountService.createAccount(new Account("OwnerAccount123", "The Marwaniott", LocalDate.of(1980, 1, 1)));
 				ownerService.createOwner(new Owner("marwan@themarwaniott.com", "Marwan", a));
+				specificRoomService.createSpecificRoom(new SpecificRoom(10, ViewType.Mountain, "description", true, roomService.createRoom(new Room("Regular", 10, BedType.Double, 2))));
+				specificRoomService.createSpecificRoom(new SpecificRoom(15, ViewType.Mountain, "description", false, roomService.createRoom(new Room("Suite", 15, BedType.Double, 2))));
 				Account b = accountService.createAccount(new Account("EmployeeAccount123","The Marwaniott", LocalDate.of(1980,1,1)));
 				employeeService.createEmployee(new Employee("tony@themarwaniott.com", "Tony", 6000, b));
 				Account c = accountService.createAccount(new Account("PasswordAccount123", "The Marwaniott", LocalDate.of(1980,1,1)));

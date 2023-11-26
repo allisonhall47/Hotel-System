@@ -5,6 +5,10 @@ import SignUp from "../components/shared/SignUp"
 import Login from "../components/shared/Login"
 import CustomerHome from "../components/customer/CustomerHome"
 import CustomerAccount from "../components/customer/CustomerAccount"
+import OwnerAddShift from "../components/owner/OwnerAddShift";
+import ownerManageRooms from "../components/owner/ownerManageRooms";
+import CustomerMakeRequest from "../components/customer/CustomerMakeRequest";
+import ReservationCustomer from "../components/customer/ReservationCustomer";
 import EmployeeHome from "../components/employee/EmployeeHome"
 import EmployeeAccount from "../components/employee/EmployeeAccount"
 import EmployeeRepair from "../components/employee/EmployeeRepair.vue";
@@ -57,6 +61,26 @@ export default new Router({
       name: 'EmployeeRepair',
       component: EmployeeRepair,
       props: true
+    },
+    {
+      path: '/owner',
+      name: 'OwnerAddShift',
+      component: OwnerAddShift
+    },
+    {
+      path: '/owner/manage_rooms',
+      name: 'ownerManageRooms',
+      component: ownerManageRooms
+    },
+    {
+      path: '/customer/:param1/reservation',
+      name: 'ReservationCustomer',
+      component: ReservationCustomer
+    },
+    {
+      path: '/customer/:param1/reservation/:param2/make_request',
+      name: 'CustomerMakeRequest',
+      component: CustomerMakeRequest
     },
     {
       path: '/owner-view-schedule',
