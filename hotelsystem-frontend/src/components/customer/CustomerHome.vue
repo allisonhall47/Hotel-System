@@ -17,6 +17,9 @@
                 <a class="nav-link" href="#">Home<span class="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
+                <a class="nav-link clickable-text" @click="Reservations">Reservations</a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link clickable-text" @click="Account">Account</a>
               </li>
               <li class="nav-item">
@@ -112,6 +115,9 @@ export default {
     this.email = this.$route.params.param1
   },
   methods: {
+    async Reservations() {
+      await this.$router.push({path: '/customer/' + this.email + '/reservation'})
+    },
     async Account() {
       await this.$router.push({path: '/CustomerAccount/' + this.email})
     },
