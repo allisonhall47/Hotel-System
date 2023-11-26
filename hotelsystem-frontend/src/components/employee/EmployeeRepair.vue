@@ -57,7 +57,7 @@
               <tr>
                 <th>Status</th>
                 <th>Description</th>
-                <th>Employee: Created By</th>
+                <th>Employee: Assigned To</th>
               </tr>
               </thead>
               <tbody>

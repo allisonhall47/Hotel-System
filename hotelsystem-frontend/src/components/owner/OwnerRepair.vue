@@ -1,6 +1,7 @@
 <template>
-  <div class="ownerAccount">
-    <div class="background">
+  <div>
+    <div id = "main"></div>
+    <div class="hero-section">
       <div class="navbar-container">
         <nav class="navbar navbar-expand-lg navbar-light transparent-background">
           <a class="navbar-brand" href="#">
@@ -32,6 +33,64 @@
       </div>
 
       <!--put rest of page here-->
+      <div class="container mt-5">
+        <div class="row">
+
+          <!-- Repair Request Form -->
+          <div class="col-lg-4.5 mb-5">
+            <h2>Submit Repair Request</h2>
+            <form @submit.prevent="submitRepair">
+
+              <!-- Description Field -->
+              <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea class="form-control" id="description" v-model="repair.description" required></textarea>
+              </div>
+              <!-- Employee Assign Dropdown -->
+              <!-- Dropdown to select an employee -->
+              <select v-model="repair.selectedEmployeeEmail">
+                <option disabled value="">Assign to:</option>
+                <option v-for="employee in employees" :value="employee.email">{{ employee.name }}</option>
+              </select>
+              <!-- Submit Button -->
+              <button @click="submitRepair()" type="button" class="btn btn-primary">Submit</button>
+            </form>
+          </div>
+
+          <!-- Repair List -->
+          <div class="col-lg-8">
+            <h2>Repair List</h2>
+            <table class="table">
+              <thead>
+              <tr>
+                <th>Status</th>
+                <th>Description</th>
+                <th>Assigned: </th>
+                <th>Assign To </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="repair in repairs" :key="repair.id">
+                <td>
+                  <select v-model="repair.status" @change="updateStatus(repair.repairId, repair.status)">
+                    <option disabled value="">Please select one:</option>
+                    <option v-for="status in statuses" :value="status">{{ status }}</option>
+                  </select>
+                </td>
+                <td>{{ repair.description }}</td>
+                <td>{{ repair.employeeName || 'Loading...' }}</td> <!-- Assuming the employee's email is the identifier -->
+                <td>
+                  <select v-model="repair.employee" @change="assignEmployee(repair.repairId, repair.employee)">
+                    <option disabled value="">Please select one:</option>
+                    <option v-for="employee in employees" :value="employee.email">{{ employee.name }}</option>
+                  </select>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
 
     </div>
   </div>
@@ -57,11 +116,24 @@ export default {
   },
   data() {
     return {
+      repair: {
+        status: '',
+        description: '',
+        employee: '',
+        email: '',
+        name: '',
+        selectedEmployeeEmail: '',
+        repairId: 0,
+      },
+      repairs: [],
+      employees: [],
+      statuses: ['Done', 'In Progress', 'Pending'],
       isLoggedIn: false,
     };
   },
   created() {
-
+    this.fetchRepairs();
+    this.fetchEmployees();
   },
   methods: {
     async Home(){
@@ -76,10 +148,125 @@ export default {
     async LogOut(){
       await this.$router.push({name: 'Home'})
     },
+
+    async fetchEmployees() {
+      axiosClient.get('/employees/') // modify this endpoint to your actual API endpoint for fetching employees
+        .then(response => {
+          this.employees = response.data;
+          this.employees = response.data.map(employee => {
+            return {
+              ... employee,
+              employeeEmail: employee.email,
+            }
+          })
+        })
+        .catch(error => {
+          console.error('Error fetching employees:', error);
+        });
+    },
+    async assignEmployee(repairId, employeeEmail) {
+      if (!repairId) {
+        console.error('Repair ID is missing');
+        return;
+      }
+      if (!employeeEmail) {
+        console.error('Employee Email is missing');
+        return;
+      }
+      // Call API to assign employee to repair
+      axiosClient.post('repair/employee/' + repairId, {employeeEmail: employeeEmail})
+        .then(() => {
+          alert('Employee assigned successfully');
+          // Optional: Refresh the list of repairs or update the UI accordingly
+        })
+        .catch(error => {
+          console.error('Error assigning employee:', error.response.data);
+        });
+    },
+    async fetchRepairs() {
+      axiosClient.get("/repair")
+        .then(response => {
+          this.repairs = response.data.map(repair => {
+            return {
+              ...repair,
+              employeeName: repair.employee.name, // Access the nested name property
+              repairId: repair.repairId,
+            };
+          });
+        })
+        .catch(error => {
+          console.error('Error fetching repairs:', error);
+        });
+    },
+
+    async updateStatus(repairId, newStatus) {
+      // Call API to update the status of the repair
+      axiosClient.post('/repair/status/', + repairId, newStatus)
+        .then(() => {
+          alert('Status updated successfully');
+          // Optional: Refresh the list of repairs or update the UI accordingly
+        })
+        .catch(error => {
+          console.error('Error updating status:', error);
+        });
+    },
+    async submitRepair() {
+      if(!this.repair.selectedEmployeeEmail) {
+        alert('Please select an employee.');
+        return;
+      }
+
+      const repairRequest = {
+        description: this.repair.description,
+        employeeEmail: this.repair.selectedEmployeeEmail, // Use the selected employee's email
+      };
+
+      axiosClient.post("/repair/new", repairRequest)
+        .then((response) => {
+          // Handle the successful submission
+          this.repairs.push(response.data);
+          alert('Repair request successfully submitted.');
+          this.resetForm(); // Reset your form here
+        })
+        .catch((error) => {
+          // Handle any errors from the API call
+          console.error('Error submitting repair:', error);
+          alert(`Error: ${error.response.data.message}`);
+        });
+    },
+
   }
 }
 </script>
 
 <style scoped>
+.container.mt-5 {
+  margin-top: 0 !important; /* Adjust the value as needed */
+}
+
+.navbar-brand {
+  margin-right: 0; /* Reset the margin for the navbar-brand */
+}
+
+.hero-section {
+  background: url('../../assets/hotelView.png') center/cover no-repeat;
+  padding: 300px 0;
+  text-align: center;
+}
+
+.transparent-background {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.navbar-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+.nav-link:hover {
+  cursor: pointer;
+}
+
 
 </style>

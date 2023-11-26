@@ -28,6 +28,8 @@ public class HotelsystemApplication {
 				employeeService.createEmployee(new Employee("tony@themarwaniott.com", "Tony", 6000, b));
 				Account c = accountService.createAccount(new Account("PasswordAccount123", "The Marwaniott", LocalDate.of(1980,1,1)));
 				customerService.createCustomer(new Customer("anniegouchee@gmail.com","Annie", c));
+				Account d = accountService.createAccount(new Account("EmployeeAccount123", "The Marwaniott", LocalDate.of(1990,2,2)));
+				employeeService.createEmployee(new Employee("louis@themarwaniott.com","Louis", 8000, d));
 			}
 		};
 	}
