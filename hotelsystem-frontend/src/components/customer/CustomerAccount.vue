@@ -193,7 +193,7 @@ export default {
       await this.$router.push({name: 'Home'})
     },
     async Reservations() {
-      await this.$router.push({path: '/customer/' + this.email + '/reservation'})
+      await this.$router.push({path: '/customer/reservation/' + this.email})
     },
   }
 };

@@ -13,67 +13,74 @@
           <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link" @click="Home">Home</a>
+                <a class="nav-link clickable-text" @click="Home">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="Employee">Account</a> <!--employee account-->
+                <a class="nav-link clickable-text" @click="Employee">Account</a> <!--employee account-->
               </li>
               <li class="nav-item active">
                 <a class="nav-link" href="#">Log Repair<span class ="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="ViewSchedule">View Schedule</a> <!--view employee schedule-->
+                <a class="nav-link clickable-text" @click="ViewSchedule">View Schedule</a> <!--view employee schedule-->
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="Reservations">View Reservations</a>
+                <a class="nav-link clickable-text" @click="Reservations">View Reservations</a>
               </li>
               <li>
-                <a class="nav-link" @click="LogOut">Log Out</a>
+                <a class="nav-link clickable-text" @click="LogOut">Log Out</a>
               </li>
             </ul>
           </div>
         </nav>
       </div>
 
-      <div class="container mt-5">
-        <div class="row">
-          <!-- Repair Request Form -->
-          <div class="col-lg-5 mb-5">
-            <h2>Submit Repair Request</h2>
-            <form @submit.prevent="submitRepair">
-
-              <!-- Description Field -->
-              <div class="form-group">
-                <label for="description">Description:</label>
-                <textarea class="form-control" id="description" v-model="repair.description" required></textarea>
+      <div class="table-container">
+        <div class="container mt-5">
+          <div class="row">
+            <!-- Repair Request Form -->
+            <div class="col-lg-5 mb-5">
+              <div class="prettyheader">
+                <h3>SUBMIT REPAIR REQUEST</h3>
               </div>
-              <!-- Submit Button -->
-              <button @click="submitRepair()" type="button" class="btn btn-primary">Submit</button>
-            </form>
-          </div>
+              <form @submit.prevent="submitRepair">
 
-          <!-- Repair List -->
-          <div class="col-lg-7">
-            <h2>Repair List</h2>
-            <table class="table">
-              <thead>
-              <tr>
-                <th>Status</th>
-                <th>Description</th>
-                <th>Employee: Assigned To</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr v-for="repair in repairs" :key="repair.id">
-                <td>{{ repair.status }}</td>
-                <td>{{ repair.description }}</td>
-                <td>{{ repair.employeeName || 'Loading...' }}</td> <!-- Assuming the employee's email is the identifier -->
-              </tr>
-              </tbody>
-            </table>
+                <!-- Description Field -->
+                <div class="form-group">
+                  <label for="description">Description:</label>
+                  <textarea class="form-control" id="description" v-model="repair.description" required></textarea>
+                </div>
+                <!-- Submit Button -->
+                <button @click="submitRepair()" type="button" class="btn btn-primary submitbutton">Submit</button>
+              </form>
+            </div>
+
+            <!-- Repair List -->
+            <div class="col-lg-7">
+              <div class="prettyheader">
+                <h3>REPAIR LIST</h3>
+              </div>
+              <table class="table table-bordered">
+                <thead>
+                <tr>
+                  <th>Status</th>
+                  <th>Description</th>
+                  <th>Employee: Assigned To</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="repair in repairs" :key="repair.id">
+                  <td>{{ repair.status }}</td>
+                  <td>{{ repair.description }}</td>
+                  <td>{{ repair.employeeName || 'Loading...' }}</td> <!-- Assuming the employee's email is the identifier -->
+                </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
+
     </div>
   </div>
 </template>
@@ -234,13 +241,13 @@ container {
 }
 
 .hero-section {
-  background: url('../../assets/pattern.png');
-  padding: 250px 0;
-  text-align: center;
+  background: url('../../assets/hotelLobby.jpeg') center/cover no-repeat;
+  min-height: 100vh;
+  position: relative;
 }
 
 .transparent-background {
-  background-color: rgba(169, 169, 169, 0.2);
+  background-color: rgba(255, 255, 255, 0.6);
 }
 
 .navbar-container {
@@ -248,6 +255,46 @@ container {
   top: 0;
   left: 0;
   right: 0;
+}
+
+.clickable-text:hover {
+  cursor: pointer;
+  color: white !important;
+}
+
+.submitbutton {
+  width: 40%;
+  margin-top: 5%;
+  margin-right: 60%;
+  background-color: white;
+  border: 2px solid #888888;
+  color: #888888;
+}
+
+.submitbutton:hover {
+  background-color: #888888;
+  border: 2px solid #888888;
+  color: white;
+}
+
+.table-container {
+  background-color: rgba(255, 255, 255, 1);
+  padding: 2%;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: 25%;
+  left: 10%;
+  right: 10%;
+  min-height: 500px;
+}
+
+.prettyheader {
+  /*margin-bottom: 3%;*/
+  font-family: 'Montserrat', sans-serif;
+  color: #888;
+  letter-spacing: 2px;
+  /*font-size: 10px;*/
 }
 
 

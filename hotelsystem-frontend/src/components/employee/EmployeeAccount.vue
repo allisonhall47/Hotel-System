@@ -13,22 +13,22 @@
           <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link" @click="Home">Home</a>
+                <a class="nav-link clickable-text" @click="Home">Home</a>
               </li>
               <li class="nav-item active">
-                <a class="nav-link" href="#">Account<span class="sr-only">(current)</span></a> <!--employee account-->
+                <a class="nav-link" href="#">Account<span class="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="Repair">Log Repair</a> <!--employee repair-->
+                <a class="nav-link clickable-text" @click="Repair">Log Repair</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="ViewSchedule">View Schedule</a> <!--view employee schedule-->
+                <a class="nav-link clickable-text" @click="ViewSchedule">View Schedule</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="Reservations">View Reservations</a>
+                <a class="nav-link clickable-text" @click="Reservations">View Reservations</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="LogOut">Log Out</a>
+                <a class="nav-link clickable-text" @click="LogOut">Log Out</a>
               </li>
             </ul>
           </div>
@@ -47,7 +47,7 @@
             <div class="col-md-9">
               <div class="p-3 py-5">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                  <h4 class="text-right" style="font-family: 'Montserrat', serif; color: #888; letter-spacing: 3px">ACCOUNT</h4>
+                  <h4 class="text-right" style="font-family: 'Montserrat', sans-serif; color: #888; letter-spacing: 3px">ACCOUNT</h4>
                 </div>
 
                 <div class="image-pos">
@@ -78,13 +78,13 @@
                     </div>
                   </div>
                 </div>
-                <div class="mt-5 text-center button-container">
+                <div class="mt-5 text-center">
                   <div class="row">
                     <div class="col-md-6">
-                      <button @click="editInfo" type="button" class="btn btn-primary btn-block mb-2 profile-button">Edit Profile</button>
+                      <button @click="editInfo" type="button" class="btn btn-primary btn-block mb-2 editbutton">Edit Profile</button>
                     </div>
                     <div class="col-md-6">
-                      <button @click="saveInfo" type="button" class="btn btn-primary btn-block mb-2 profile-button">Save Profile</button>
+                      <button @click="saveInfo" type="button" class="btn btn-primary btn-block mb-2 savebutton">Save Profile</button>
                     </div>
                   </div>
                 </div>
@@ -210,15 +210,13 @@ export default {
       document.getElementById('dob').removeAttribute('readonly');
     },
     async Home() {
-      // await this.$router.push({name: 'EmployeeHome', params: {email: this.email, name: this.name}})
       await this.$router.push({path: '/EmployeeHome/' + this.email + '/' + this.name})
     },
     async Repair() {
-      // await this.$router.push({name: "EmployeeRepair", params: {email: this.email, name: this.name}})
       await this.$router.push({path: '/EmployeeRepair/' + this.email + '/' + this.name})
     },
     async LogOut() {
-      await this.$router.push({path: '/Home/'})
+      await this.$router.push({name: 'Home'})
     },
     async ViewSchedule() {
       await this.$router.push({path: '/EmployeeSchedule/' + this.email + '/' + this.name})
@@ -233,19 +231,10 @@ export default {
 </script>
 
 <style scoped>
-.background {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  background: url('../../assets/hotelView.png') center center no-repeat;
-  background-size: cover;
-}
-
-.customerAccount {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+.hero-section {
+  background: url('../../assets/hotelLobby.jpeg') center/cover no-repeat;
+  min-height: 100vh;
+  position: relative;
 }
 
 .account-box {
@@ -268,6 +257,33 @@ export default {
   border-color: #888
 }
 
+.labels {
+  font-size: 11px
+}
+
+.transparent-background {
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+.navbar-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.profile-box {
+  position: absolute;
+  top: 15%;
+  right: 20%;
+  left: 20%;
+}
+
+.clickable-text:hover {
+  cursor: pointer;
+  color: white !important;
+}
+
 .editbutton {
   width: 40%;
   margin-top: 5%;
@@ -288,58 +304,14 @@ export default {
 .editbutton:hover {
   border: #888888;
   background-color: #888888;
+  border: 2px solid #888888;
   color: white;
 }
 
 .savebutton:hover {
-  border: #888888;
   background-color: #888888;
-  color: white;
-}
-
-.labels {
-  font-size: 11px
-}
-
-.transparent-background {
-  background-color: rgba(255, 255, 255, 0.2); /* You can replace this color code with your desired dark color */
-}
-
-.navbar-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-}
-
-.profile-box {
-  position: absolute;
-  top: 15%;
-  right: 20%;
-  left: 20%;
-}
-
-.profile-button {
-  width: 70%;
-  margin-top: 5%;
-  margin-left: auto;
-  margin-right: auto;
-  background-color: white;
   border: 2px solid #888888;
-  color: #888888;
-}
-
-.profile-button:hover {
-  border: #888888;
-  background-color: #888888;
   color: white;
-}
-
-/* Container for buttons */
-.button-container {
-  display: flex;
-  justify-content: space-around; /* Adjust as necessary for your layout */
-  margin: 0 auto;
 }
 
 

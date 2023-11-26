@@ -43,7 +43,7 @@
             <div class="col-md-9">
               <div class="p-3 py-5">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                  <h4 class="text-right" style="font-family: 'Montserrat', sans-serif; color: #888; letter-spacing: 2px">ACCOUNT</h4>
+                  <h4 class="text-right" style="font-family: 'Montserrat', sans-serif; color: #888; letter-spacing: 3px">ACCOUNT</h4>
                 </div>
 
                 <div class="image-pos">
