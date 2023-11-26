@@ -3,6 +3,7 @@ package ca.mcgill.ecse321.hotelsystem.controller;
 import ca.mcgill.ecse321.hotelsystem.Model.Room;
 import ca.mcgill.ecse321.hotelsystem.Model.SpecificRoom;
 import ca.mcgill.ecse321.hotelsystem.Model.ViewType;
+import ca.mcgill.ecse321.hotelsystem.dto.ReservationRequestDto;
 import ca.mcgill.ecse321.hotelsystem.dto.SpecificRoomRequestDto;
 import ca.mcgill.ecse321.hotelsystem.dto.SpecificRoomResponseDto;
 import ca.mcgill.ecse321.hotelsystem.service.RoomService;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,6 +43,14 @@ public class SpecificRoomController {
     @GetMapping(value = "/specificRoom/type/{type}")
     public List<SpecificRoomResponseDto> getSpecificRoomsByRoomType(@PathVariable String type){
         List<SpecificRoom> specificRooms = specificRoomService.findSpecificRoomsByRoomType(type);
+        return specificRooms.stream().map(SpecificRoomResponseDto::new).collect(Collectors.toList());
+    }
+
+    @GetMapping(value = "/specificRoom/available/type/{type}")
+    public List<SpecificRoomResponseDto> getAvailableSpecificRoomsByRoomType(@PathVariable String type,@RequestBody ReservationRequestDto reservationRequestDto){
+        LocalDate startDate = reservationRequestDto.getCheckin();
+        LocalDate endDate = reservationRequestDto.getCheckOut();
+        List<SpecificRoom> specificRooms = specificRoomService.getAvailableSpecificRoomByType(startDate, endDate, type);
         return specificRooms.stream().map(SpecificRoomResponseDto::new).collect(Collectors.toList());
     }
 

@@ -40,7 +40,7 @@
                 <p style="font-family: 'Georgia', sans-serif">{{ getRoomDescription(roomType) }}</p>
                 <p style="font-family: 'Georgia', sans-serif">Price: {{ getTotalPrice(roomType, count) }}</p>
                 <p v-if="roomIndex === Object.keys(combination).length - 1" style="font-family: 'Georgia', sans-serif">Total Price: {{ getTotalCombinationPrice(combination) }}</p>
-                <button v-if="roomIndex === Object.keys(combination).length - 1" class="btn btn-lg custom-book-button" @click="">Book</button>
+                <button v-if="roomIndex === Object.keys(combination).length - 1" class="btn btn-lg custom-book-button" @click="book(combination)">Book</button>
               </div>
             </div>
           </div>
@@ -54,6 +54,16 @@ import regularRoomImage from "../../assets/regularRoom.png";
 import deluxeRoomImage from "../../assets/deluxeRoom.png";
 import luxuryRoomImage from "../../assets/luxuryRoom.png";
 import suiteImage from "../../assets/suiteRoom.png";
+
+import axios from 'axios'
+var config = require('../../../config')
+var frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
+var backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort
+var axiosClient = axios.create({
+  baseURL: backendUrl,
+  headers: { 'Access-Control-Allow-Origin': frontendUrl }
+})
+
 export default {
   name: "SuggestRooms",
   data(){
@@ -216,6 +226,22 @@ export default {
 
       return totalPrice;
     },
+    book(combination) {
+      if(combination.hasOwnProperty("Regular")) {
+        axiosClient.get("/specificRoom/type/Regular")
+          .then()
+      }
+      if(combination.hasOwnProperty("Luxury")) {
+
+      }
+      if(combination.hasOwnProperty("Suite")) {
+
+      }
+      if(combination.hasOwnProperty("Deluxe")) {
+
+      }
+
+    }
   }
 }
 </script>
