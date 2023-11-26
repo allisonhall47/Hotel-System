@@ -1,13 +1,249 @@
 <template>
+  <div>
+    <div id = "makeRequest">
+      <div class="background">
+        <div class="navbar-container">
+          <nav class="navbar navbar-expand-lg navbar-light transparent-background">
+            <a class="navbar-brand" href="#">
+              <img src="../../assets/marwaniottNoBG.png" alt="Your Logo" height="60">
+            </a>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a class="nav-link" @click="Home">Home</a>
+                </li>
+                <li class="nav-item active">
+                  <a class="nav-link" @click="Reservation">Reservations</a>
+                </li>
+              </ul>
+            </div>
+          </nav>
+        </div>
 
+        <div class="reservations-container">
+          <div class="luxurious-text">
+            <h3>All Reservations for {{this.name}}:</h3>
+            <div class="table-responsive">
+              <table class="table table-bordered">
+                <thead>
+                <tr>
+                  <th scope="col" class="text-center">Id</th>
+                  <th scope="col" class="text-center">Number of People</th>
+                  <th scope="col" class="text-center">Check In date</th>
+                  <th scope="col" class="text-center">Check Out date</th>
+                  <th scope="col" class="text-center">Total price</th>
+                  <th scope="col" class="text-center">Paid ?</th>
+                  <th scope="col" class="text-center">Status</th>
+                  <th scope="col" class="text-center">Pay</th>
+                  <th scope="col" class="text-center">Cancel</th>
+                  <th scope="col" class="text-center">Request</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="r in reservations">
+                  <td class="text-center" style="background: white"><input class="form-control text-center" :value="r.reservationId" readonly></td>
+                  <td class="text-center" style="background: white"><input class="form-control text-center" :value="r.numPeople" readonly></td>
+                  <td class="text-center" style="background: white"><input class="form-control text-center" :value="r.checkin" readonly></td>
+                  <td class="text-center" style="background: white"><input class="form-control text-center" :value="r.checkOut" readonly></td>
+                  <td class="text-center" style="background: white"><input class="form-control text-center" :value="r.totalPrice" readonly></td>
+                  <td class="text-center" style="background: white"><input class="form-control text-center" :id="'paid'.concat(r.reservationId)" :value="r.paid ? 'Yes' : 'No'" readonly></td>
+                  <td class="text-center" style="background: white"><input class="form-control text-center" :value="r.checkedIn" readonly></td>
+                  <td :id="'pay'.concat(r.reservationId)" class="text-center" style="background: white">
+                    <button v-if="document.getElementById('amount'.concat(r.reservationId)).value.length === 0" type="button" class="btn btn-primary btn-block mb-4 payButtonDisabled" disabled>Pay</button>
+                    <button v-else type="button" @click="pay(r.reservationId)" class="btn btn-primary btn-block mb-4 payButton" >Pay</button>
+                    <input v-if="document.getElementById('paid'.concat(r.reservationId)).value === 'No'" :id="'amount'.concat(r.reservationId)" class="form-control text-center" placeholder="$" >
+                    <input v-else :id="'amount'.concat(r.reservationId)" class="form-control text-center" placeholder="$" readonly>
+                  </td>
+                  <td :id="'cancel'.concat(r.reservationId)" class="text-center" style="background: white" hidden>
+                    <button type="button" @click="cancel(r.reservationId)" class="btn btn-primary btn-block mb-4 cancelButton">Cancel</button>
+                  </td>
+                  <td :id="'cancel'.concat(r.reservationId)" class="text-center" style="background: white" hidden>
+                    <button type="button" @click="newRequest(r.reservationId)" class="btn btn-primary btn-block mb-4 payButton">New Request</button>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
+import axios from 'axios'
+var config = require('../../../config')
+var frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
+var backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort
+var axiosClient = axios.create({
+  baseURL: backendUrl,
+  headers: { 'Access-Control-Allow-Origin': frontendUrl }
+})
 export default {
-  name: "ReservationCustomer"
+  name: "ReservationCustomer",
+  data() {
+    return {
+      reservations: [],
+      email: '',
+      name: '',
+    };
+  },
+  mounted() {
+    this.email = this.$route.params.param1
+  },
+  created() {
+    this.email = this.$route.params.param1
+
+    axiosClient.get("/customer?email="+this.email)
+      .then(response => {
+        this.name = response.data.name
+      })
+      .catch(err => {
+        this.errorMsg = `Failure: ${err.response.data}`
+        alert(this.errorMsg)
+        //console.log(err.response.data)
+      })
+
+    axiosClient.get("/reservation/customer/"+this.email)
+      .then(response => {
+        this.reservations = response.data
+      })
+      .catch(err => {
+        this.errorMsg = `Failure: ${err.response.data}`
+        alert(this.errorMsg)
+        //console.log(err.response.data)
+      })
+  },
+  methods : {
+    async pay(id) {
+      const money = document.getElementById('amount'.concat(id))
+      axiosClient.put("/reservation/"+id+"?money="+money)
+        .then(response => {
+          document.getElementById('paid'.concat(id)).value = "Yes"
+        })
+        .catch(err => {
+          this.errorMsg = `Failure: ${err.response.data}`
+          alert(this.errorMsg)
+          //console.log(err.response.data)
+        })
+    },
+    async cancel(id) {
+      axiosClient.delete('/reservation/cancel/'+id)
+        .then(response => {
+
+        })
+        .catch(err => {
+          this.errorMsg = `Failure: ${err.response.data}`
+          alert(this.errorMsg)
+          //console.log(err.response.data)
+        })
+    },
+    async Home(){
+      await this.$router.push({path: '/CustomerHome/'+this.email})
+    },
+    async newRequest(reservationId){
+      await this.$router.push({path: 'customer/'+this.email+'/reservation/'+reservationId+'/make_request'})
+    },
+    async Reservation(){
+      await this.$router.push({path: 'customer/'+this.email+'/reservation'})
+    },
+  }
 }
 </script>
 
 <style scoped>
+.background {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: url('../../assets/hotelView.png') center center no-repeat;
+  background-size: cover;
+}
+.navbar-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.navbar-brand {
+  margin-right: 0; /* Reset the margin for the navbar-brand */
+}
+
+.transparent-background {
+  background-color: rgba(255, 255, 255, 0.3); /* You can replace this color code with your desired dark color */
+}
+
+.nav-link:hover {
+  cursor: pointer;
+}
+
+.reservations-container {
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 2%;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: 25%;
+  left: 3%;
+  right: 3%;
+  min-height: 300px;
+}
+
+.table-responsive {
+  font-family: 'Georgia', sans-serif;
+  font-weight: bold;
+  color: black;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: auto;
+  display: block;
+  clear: both;
+  margin-bottom: 10px;
+}
+
+.payButton {
+  width: 100%;
+  background-color: white;
+  border: 2px solid #0055FF;
+  color: #0055FF;
+}
+
+.payButton:hover {
+  width: 100%;
+  background-color: #0055FF;
+  border: 2px solid #0055FF;
+  color: white;
+}
+
+.cancelButton {
+  width: 100%;
+  background-color: white;
+  border: 2px solid #888888;
+  color: #888888;
+}
+
+.cancelButton:hover {
+//border: #888888;
+  background-color: #888888;
+  border: 2px solid #888888;
+  color: white;
+}
+
+.payButtonDisabled {
+  width: 100%;
+  border: 2px solid #0055FF;
+  background-color: #7c1919;
+  color: white;
+}
+
+.luxurious-text {
+  font-family: 'Georgia', sans-serif;
+  font-weight: bold;
+  color: black;
+}
 
 </style>
