@@ -120,7 +120,7 @@ export default {
               .then((response) => {
                 alert('Account successfully created.')
                 this.new_customer = response
-                this.$router.push({name: 'Login'})
+                this.$router.push({path: '/Login/'})
               })
               .catch((err) => {
                 this.errorMsg = `Failure: ${err.response.data}`
