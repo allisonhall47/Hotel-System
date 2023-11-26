@@ -70,12 +70,12 @@ export default new Router({
       component: ownerManageRooms
     },
     {
-      path: '/customer/:param1/reservation',
+      path: '/customer/reservation/:param1',
       name: 'ReservationCustomer',
       component: ReservationCustomer
     },
     {
-      path: '/customer/:param1/reservation/:param2/make_request',
+      path: '/customer/reservation/make_request/:param1/:param2',
       name: 'CustomerMakeRequest',
       component: CustomerMakeRequest
     },

@@ -26,41 +26,39 @@
             <div class="table-responsive">
               <table class="table table-bordered">
                 <thead>
-                <tr>
-                  <th scope="col" class="text-center">Id</th>
-                  <th scope="col" class="text-center">Number of People</th>
-                  <th scope="col" class="text-center">Check In date</th>
-                  <th scope="col" class="text-center">Check Out date</th>
-                  <th scope="col" class="text-center">Total price</th>
-                  <th scope="col" class="text-center">Paid ?</th>
-                  <th scope="col" class="text-center">Status</th>
-                  <th scope="col" class="text-center">Pay</th>
-                  <th scope="col" class="text-center">Cancel</th>
-                  <th scope="col" class="text-center">Request</th>
-                </tr>
+                  <tr>
+                    <th scope="col" class="text-center">Id</th>
+                    <th scope="col" class="text-center">Number of People</th>
+                    <th scope="col" class="text-center">Check In date</th>
+                    <th scope="col" class="text-center">Check Out date</th>
+                    <th scope="col" class="text-center">Total price</th>
+                    <th scope="col" class="text-center">Paid ?</th>
+                    <th scope="col" class="text-center">Status</th>
+                    <th scope="col" class="text-center">Pay</th>
+                    <th scope="col" class="text-center">Cancel</th>
+                    <th scope="col" class="text-center">Request</th>
+                  </tr>
                 </thead>
                 <tbody>
-                <tr v-for="r in reservations">
-                  <td class="text-center" style="background: white"><input class="form-control text-center" :value="r.reservationId" readonly></td>
-                  <td class="text-center" style="background: white"><input class="form-control text-center" :value="r.numPeople" readonly></td>
-                  <td class="text-center" style="background: white"><input class="form-control text-center" :value="r.checkin" readonly></td>
-                  <td class="text-center" style="background: white"><input class="form-control text-center" :value="r.checkOut" readonly></td>
-                  <td class="text-center" style="background: white"><input class="form-control text-center" :value="r.totalPrice" readonly></td>
-                  <td class="text-center" style="background: white"><input class="form-control text-center" :id="'paid'.concat(r.reservationId)" :value="r.paid ? 'Yes' : 'No'" readonly></td>
-                  <td class="text-center" style="background: white"><input class="form-control text-center" :value="r.checkedIn" readonly></td>
-                  <td :id="'pay'.concat(r.reservationId)" class="text-center" style="background: white">
-                    <button v-if="document.getElementById('amount'.concat(r.reservationId)).value.length === 0" type="button" class="btn btn-primary btn-block mb-4 payButtonDisabled" disabled>Pay</button>
-                    <button v-else type="button" @click="pay(r.reservationId)" class="btn btn-primary btn-block mb-4 payButton" >Pay</button>
-                    <input v-if="document.getElementById('paid'.concat(r.reservationId)).value === 'No'" :id="'amount'.concat(r.reservationId)" class="form-control text-center" placeholder="$" >
-                    <input v-else :id="'amount'.concat(r.reservationId)" class="form-control text-center" placeholder="$" readonly>
-                  </td>
-                  <td :id="'cancel'.concat(r.reservationId)" class="text-center" style="background: white" hidden>
-                    <button type="button" @click="cancel(r.reservationId)" class="btn btn-primary btn-block mb-4 cancelButton">Cancel</button>
-                  </td>
-                  <td :id="'cancel'.concat(r.reservationId)" class="text-center" style="background: white" hidden>
-                    <button type="button" @click="newRequest(r.reservationId)" class="btn btn-primary btn-block mb-4 payButton">New Request</button>
-                  </td>
-                </tr>
+                  <tr v-for="r in reservations">
+                    <td class="text-center" style="background: white; min-width: 90px"><input class="form-control text-center" :value="r.reservationId" readonly></td>
+                    <td class="text-center" style="background: white"><input class="form-control text-center" :value="r.numPeople" readonly></td>
+                    <td class="text-center" style="background: white; min-width: 150px"><input class="form-control text-center" :value="r.checkin" readonly></td>
+                    <td class="text-center" style="background: white; min-width: 150px"><input class="form-control text-center" :value="r.checkOut" readonly></td>
+                    <td class="text-center" style="background: white ; min-width: 90px"><input class="form-control text-center" :id="'price'.concat(r.reservationId)" :value="r.totalPrice" readonly></td>
+                    <td class="text-center" style="background: white; min-width: 90px"><input class="form-control text-center" :id="'paid'.concat(r.reservationId)" :value="r.paid ? 'Yes' : 'No'" readonly></td>
+                    <td class="text-center" style="background: white; min-width: 160px"><input class="form-control text-center" :value="r.checkedIn" readonly></td>
+                    <td :id="'pay'.concat(r.reservationId)" class="text-center" style="background: white; min-width: 130px">
+                      <input :id="'amount'.concat(r.reservationId)" class="form-control text-center" style="min-width:60px; display: inline-block; margin-bottom: 3px" placeholder="$">
+                      <button type="button" @click="pay(r.reservationId)" class="btn btn-primary btn-block mb-4 payButton" style="min-width:60px; display: inline-block" >Pay</button>
+                    </td>
+                    <td :id="'cancel'.concat(r.reservationId)" class="text-center" style="background: white">
+                      <button type="button" @click="cancel(r.reservationId)" class="btn btn-primary btn-block mb-4 cancelButton">Cancel</button>
+                    </td>
+                    <td :id="'cancel'.concat(r.reservationId)" class="text-center" style="background: white">
+                      <button type="button" @click="newRequest(r.reservationId)" class="btn btn-primary btn-block mb-4 payButton">New Request</button>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -93,10 +91,10 @@ export default {
   mounted() {
     this.email = this.$route.params.param1
   },
-  created() {
+  async created() {
     this.email = this.$route.params.param1
 
-    axiosClient.get("/customer?email="+this.email)
+    await axiosClient.get("/customer?email="+this.email)
       .then(response => {
         this.name = response.data.name
       })
@@ -106,7 +104,7 @@ export default {
         //console.log(err.response.data)
       })
 
-    axiosClient.get("/reservation/customer/"+this.email)
+    await axiosClient.get("/reservation/customer/"+this.email)
       .then(response => {
         this.reservations = response.data
       })
@@ -115,13 +113,23 @@ export default {
         alert(this.errorMsg)
         //console.log(err.response.data)
       })
+
+    console.log(this.reservations)
   },
   methods : {
     async pay(id) {
-      const money = document.getElementById('amount'.concat(id))
+      const money = document.getElementById('amount'.concat(id)).value
       axiosClient.put("/reservation/"+id+"?money="+money)
         .then(response => {
-          document.getElementById('paid'.concat(id)).value = "Yes"
+          document.getElementById('price'.concat(id)).value = response.data.totalPrice
+          document.getElementById('amount'.concat(id)).value = ''
+
+          if(response.data.paid === true) {
+            document.getElementById('paid'.concat(id)).value = "Yes"
+            alert('Successfully money deposited')
+          } else {
+            alert('Successfully money deposited')
+          }
         })
         .catch(err => {
           this.errorMsg = `Failure: ${err.response.data}`
@@ -130,9 +138,29 @@ export default {
         })
     },
     async cancel(id) {
-      axiosClient.delete('/reservation/cancel/'+id)
+      await axiosClient.delete('/reservation/cancel/'+id)
         .then(response => {
+          //remove it
+          // let tmp = null
+          // for(const element in this.reservations) {
+          //   if(element.reservationId === id) {
+          //     tmp = element
+          //     break
+          //   }
+          // }
+          //
+          // if(tmp !== null) this.reservations.remove(tmp)
+        })
+        .catch(err => {
+          this.errorMsg = `Failure: ${err.response.data}`
+          alert(this.errorMsg)
+          //console.log(err.response.data)
+        })
 
+      //get the new list of reservations without the one that got cancelled
+      await axiosClient.get("/reservation/customer/"+this.email)
+        .then(response => {
+          this.reservations = response.data
         })
         .catch(err => {
           this.errorMsg = `Failure: ${err.response.data}`
@@ -144,10 +172,10 @@ export default {
       await this.$router.push({path: '/CustomerHome/'+this.email})
     },
     async newRequest(reservationId){
-      await this.$router.push({path: 'customer/'+this.email+'/reservation/'+reservationId+'/make_request'})
+      await this.$router.push({path: 'make_request/'+this.email+'/'+reservationId})
     },
     async Reservation(){
-      await this.$router.push({path: 'customer/'+this.email+'/reservation'})
+      await this.$router.push({path: this.email})
     },
   }
 }
@@ -206,14 +234,14 @@ export default {
 }
 
 .payButton {
-  width: 100%;
+  //width: 100%;
   background-color: white;
   border: 2px solid #0055FF;
   color: #0055FF;
 }
 
 .payButton:hover {
-  width: 100%;
+  //width: 100%;
   background-color: #0055FF;
   border: 2px solid #0055FF;
   color: white;
