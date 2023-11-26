@@ -131,7 +131,7 @@ export default {
 
           if(response.data.paid === true) {
             document.getElementById('paid'.concat(id)).value = "Yes"
-            alert('Successfully money deposited')
+            alert('Successfully paid')
           } else {
             alert('Successfully money deposited')
           }
@@ -155,6 +155,7 @@ export default {
           // }
           //
           // if(tmp !== null) this.reservations.remove(tmp)
+          alert("successfully deleted reservation with id" + id)
         })
         .catch(err => {
           this.errorMsg = `Failure: ${err.response.data}`

@@ -136,6 +136,7 @@ export default {
         .then(response => {
           //add it to the requests list
           this.requests.push({requestId: response.data.requestId, description: response.data.description, reservation: response.data.reservation, status: response.data.status})
+          alert('request created')
         })
         .catch(err => {
           this.errorMsg = `Failure: ${err.response.data}`
