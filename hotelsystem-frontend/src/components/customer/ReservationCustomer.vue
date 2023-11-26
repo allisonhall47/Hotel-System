@@ -10,10 +10,16 @@
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
               <ul class="navbar-nav">
                 <li class="nav-item">
-                  <a class="nav-link" @click="Home">Home</a>
+                  <a class="nav-link clickable-text" @click="Home">Home</a>
                 </li>
                 <li class="nav-item active">
-                  <a class="nav-link" @click="Reservation">Reservations</a>
+                  <a class="nav-link" href="#">Reservations<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link clickable-text" @click="Account">Account</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link clickable-text" @click="LogOut">Log Out</a>
                 </li>
               </ul>
             </div>
@@ -21,23 +27,23 @@
         </div>
 
         <div class="reservations-container">
-          <div class="luxurious-text">
+          <div class="luxurious-text" style="font-family: 'Montserrat', sans-serif; color: #888; letter-spacing: 3px">
             <h3>All Reservations for {{this.name}}:</h3>
-            <div class="table-responsive">
+            <div class="table-responsive subheading">
               <table class="table table-bordered">
                 <thead>
-                  <tr>
-                    <th scope="col" class="text-center">Id</th>
-                    <th scope="col" class="text-center">Number of People</th>
-                    <th scope="col" class="text-center">Check In date</th>
-                    <th scope="col" class="text-center">Check Out date</th>
-                    <th scope="col" class="text-center">Total price</th>
-                    <th scope="col" class="text-center">Paid ?</th>
-                    <th scope="col" class="text-center">Status</th>
-                    <th scope="col" class="text-center">Pay</th>
-                    <th scope="col" class="text-center">Cancel</th>
-                    <th scope="col" class="text-center">Request</th>
-                  </tr>
+                <tr>
+                  <th scope="col" class="text-center subheading">Id</th>
+                  <th scope="col" class="text-center subheading">Number of People</th>
+                  <th scope="col" class="text-center subheading">Check In date</th>
+                  <th scope="col" class="text-center subheading">Check Out date</th>
+                  <th scope="col" class="text-center subheading">Total price</th>
+                  <th scope="col" class="text-center subheading">Paid ?</th>
+                  <th scope="col" class="text-center subheading">Status</th>
+                  <th scope="col" class="text-center subheading">Pay</th>
+                  <th scope="col" class="text-center subheading">Cancel</th>
+                  <th scope="col" class="text-center subheading">Request</th>
+                </tr>
                 </thead>
                 <tbody>
                   <tr v-for="r in reservations">
@@ -174,8 +180,16 @@ export default {
     async newRequest(reservationId){
       await this.$router.push({path: 'make_request/'+this.email+'/'+reservationId})
     },
-    async Reservation(){
-      await this.$router.push({path: this.email})
+    // async Reservation(){
+    //   await this.$router.push({path: 'customer/'+this.email+'/reservation'})
+    // },
+    async Account() {
+      await this.$router.push({path: '/CustomerAccount/' + this.email})
+    },
+    async LogOut() {
+      alert('Successfully logged out.')
+      await this.$router.push({name: 'Home'})
+
     },
   }
 }
@@ -272,6 +286,16 @@ export default {
   font-family: 'Georgia', sans-serif;
   font-weight: bold;
   color: black;
+}
+
+.subheading {
+  font-family: 'Montserrat', sans-serif;
+  color: #888;
+}
+
+.clickable-text:hover {
+  cursor: pointer;
+  color: white !important;
 }
 
 </style>

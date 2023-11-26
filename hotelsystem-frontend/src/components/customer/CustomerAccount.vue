@@ -14,6 +14,9 @@
               <li class="nav-item">
                 <a class="nav-link clickable-text" @click="Home">Home</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link clickable-text" @click="Reservations">Reservations</a>
+              </li>
               <li class="nav-item active">
                 <a class="nav-link" href="#">Account<span class="sr-only">(current)</span></a>
               </li>
@@ -105,9 +108,9 @@ export default {
       email: "",
     };
   },
-  mounted(){
-    this.email = this.$route.params.param1
-  },
+  // mounted(){
+  //   this.email = this.$route.params.param1
+  // },
   created(){
     this.email = this.$route.params.param1
 
@@ -189,7 +192,9 @@ export default {
     async LogOut() {
       await this.$router.push({name: 'Home'})
     },
-
+    async Reservations() {
+      await this.$router.push({path: '/customer/' + this.email + '/reservation'})
+    },
   }
 };
 

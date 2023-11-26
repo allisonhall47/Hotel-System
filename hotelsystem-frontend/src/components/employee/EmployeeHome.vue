@@ -16,19 +16,19 @@
                 <a class="nav-link" href="#">Home<span class="sr-only">(current)</span></a> <!--CURRENT-->
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="Employee">Account</a> <!--employee account-->
+                <a class="nav-link clickable-text" @click="Employee">Account</a> <!--employee account-->
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="Repair">Log Repair</a> <!--employee repair-->
+                <a class="nav-link clickable-text" @click="Repair">Log Repair</a> <!--employee repair-->
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="ViewSchedule">View Schedule</a> <!--view employee schedule-->
+                <a class="nav-link clickable-text" @click="ViewSchedule">View Schedule</a> <!--view employee schedule-->
               </li>
               <li class="nav-item">
                 <a class="nav-link" @click="Reservations">View Reservations</a>
               </li>
               <li>
-                <a class="nav-link" @click="LogOut">Log Out</a>
+                <a class="nav-link clickable-text" @click="LogOut">Log Out</a>
               </li>
             </ul>
           </div>
@@ -116,6 +116,11 @@ export default {
   top: 0;
   left: 0;
   right: 0;
+}
+
+.clickable-text:hover {
+  cursor: pointer;
+  color: white !important;
 }
 
 </style>
