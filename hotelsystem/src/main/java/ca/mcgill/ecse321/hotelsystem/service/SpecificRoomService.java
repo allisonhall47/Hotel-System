@@ -155,6 +155,7 @@ public class SpecificRoomService {
         if (oldSpecificRoom == null) {
             throw new HRSException(HttpStatus.NOT_FOUND, "No specific rooms in the system with number " + specificRoom.getNumber() + ".");
         }
+
         oldSpecificRoom.setRoom(specificRoom.getRoom());
         oldSpecificRoom.setDescription(specificRoom.getDescription());
         oldSpecificRoom.setView(specificRoom.getView());

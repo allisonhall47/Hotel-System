@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
@@ -28,8 +29,8 @@ public class ReservedRoomService {
     @Autowired
     SpecificRoomService specificRoomService;
 
-//    @Autowired
-//    ReservationRepository reservationRepository;
+    @Autowired
+    ReservationRepository reservationRepository;
 //
 //    @Autowired
 //    SpecificRoomRepository specificRoomRepository;
@@ -39,8 +40,18 @@ public class ReservedRoomService {
         //input check in other services
         Reservation reservation = reservedRoom.getReservation();
         reservedRoom.setReservation(null); //temporarily sent to null
-        reservedRoom = reservedRoomRepository.save(reservedRoom);
+        //reservedRoom = reservedRoomRepository.save(reservedRoom);
+
         reservedRoom = this.assignReservedRoomToReservation(reservation,reservedRoom); //this to check if valid
+        //set the price for the reservation
+        reservation = reservedRoom.getReservation();
+        //TODO check if it works
+        long days = ChronoUnit.DAYS.between(reservation.getCheckIn(), reservation.getCheckOut());
+        reservation.setTotalPrice(reservedRoom.getSpecificRoom().getRoom().getRate()*(int)days);
+        reservationRepository.save(reservation);
+        reservedRoom.setReservation(reservation);
+        reservedRoom = reservedRoomRepository.save(reservedRoom);
+
         return reservedRoom;
     }
 

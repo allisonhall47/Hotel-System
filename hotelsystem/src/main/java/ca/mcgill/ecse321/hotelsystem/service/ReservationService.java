@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
@@ -117,11 +119,21 @@ public class ReservationService {
         if(reservation.isPaid()) {
             throw new HRSException(HttpStatus.BAD_REQUEST, "already paid");
         }
-        if(money < reservation.getTotalPrice()) {
-            throw new HRSException(HttpStatus.BAD_REQUEST, "money not sufficient");
+
+        int remaining = reservation.getTotalPrice() - money;
+
+//        if(change < 0) {
+//            throw new HRSException(HttpStatus.BAD_REQUEST, "money not sufficient");
+//        }
+
+        //allow for incremental payment
+        if(remaining <= 0) {
+            reservation.setPaid(true);
+            reservation.setTotalPrice(remaining);
+        } else {
+            reservation.setTotalPrice(remaining);
         }
 
-        reservation.setPaid(true);
         return reservationRepository.save(reservation);
     }
 
@@ -140,6 +152,28 @@ public class ReservationService {
         return reservationRepository.save(reservation);
     }
 
+    @Transactional
+    public Reservation checkOut(Reservation reservation) {
+        reservation = reservationRepository.findReservationByReservationID(reservation.getReservationID());
+        if(reservation.getCheckedIn() == CheckInStatus.CheckedOut) {
+            throw new HRSException(HttpStatus.BAD_REQUEST, "already checked out");
+        }
+        if(reservation.getCheckedIn() == CheckInStatus.BeforeCheckIn) {
+            throw new HRSException(HttpStatus.BAD_REQUEST, "pending reservation, not checked in");
+        }
+        reservation.setCheckedIn(CheckInStatus.CheckedOut);
+        return reservationRepository.save(reservation);
+    }
+
+    @Transactional
+    public Reservation noShow(Reservation reservation) {
+        if(reservation.getCheckedIn() != CheckInStatus.BeforeCheckIn) {
+            throw new HRSException(HttpStatus.BAD_REQUEST, "customer is checkedIn or already checkedOut");
+        }
+        reservation.setCheckedIn(CheckInStatus.NoShow);
+        return reservationRepository.save(reservation);
+    }
+
     /**
      * get non paid reservations
      * @return list of reservations
@@ -147,6 +181,21 @@ public class ReservationService {
     @Transactional
     public List<Reservation> getReservationsNotPaid() {
         return reservationRepository.getReservationByPaidIs(false);
+    }
+
+    /**
+     * cancel a reservation
+     * @param reservation
+     */
+    @Transactional
+    public void cancelReservation(Reservation reservation) {
+        LocalDate present = LocalDate.now();
+        if (ChronoUnit.DAYS.between(reservation.getCheckIn(), present) < 3) {
+            throw new HRSException(HttpStatus.BAD_REQUEST, "cannot cancel less than 72 hours before checkIn date");
+        }
+
+        //delete it
+        this.deleteReservation(reservation);
     }
 
     //TODO if other methods are needed, add

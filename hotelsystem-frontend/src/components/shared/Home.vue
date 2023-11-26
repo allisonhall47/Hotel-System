@@ -17,10 +17,10 @@
                 <a class="nav-link" href="#">Home<span class="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="Login">LogIn</a>
+                <a class="nav-link clickable-text" @click="Login">LogIn</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="SignUp">SignUp</a>
+                <a class="nav-link clickable-text" @click="SignUp">SignUp</a>
               </li>
             </ul>
           </div>
@@ -83,6 +83,17 @@
         </div>
       </div>
     </div>
+
+    <div class="footer-container">
+      <footer class="footer transparent-background">
+        <div class="d-flex align-items-center justify-content-center">
+          <img src="../../assets/marwaniottNoBG.png" alt="Your Logo" height="65">
+        </div>
+        <div class="d-flex align-items-center justify-content-center">
+          <p class="text-right" style="font-size: 10px">©The Marwaniott Hotel 2023. All Right Reserved.</p>
+        </div>
+      </footer>
+    </div>
   </div>
 </template>
 
@@ -97,7 +108,7 @@ export default {
   },
   methods: {
     async Login() {
-      await this.$router.push({name: 'Login'})
+      await this.$router.push({path: '/Login/'})
     },
     async SignUp() {
       await this.$router.push({name: 'SignUp'})
@@ -110,16 +121,16 @@ export default {
     },
     showLoginModal() {
       console.log('Show login modal');
+
     },
   }
 };
 </script>
 
 <style scoped>
-/* Add your custom styles here */
 
 .navbar-brand {
-  margin-right: 0; /* Reset the margin for the navbar-brand */
+  margin-right: 0;
 }
 
 .hero-section {
@@ -153,7 +164,7 @@ export default {
 }
 
 .transparent-background {
-  background-color: rgba(255, 255, 255, 0.2); /* You can replace this color code with your desired dark color */
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .navbar-container {
@@ -161,6 +172,24 @@ export default {
   top: 0;
   left: 0;
   right: 0;
+}
+
+.footer-container {
+  position: relative;
+  margin-top: 100px;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: rgba(136, 136, 136, 0.2);
+  padding-top: 15px;
+}
+
+.clickable-text:hover {
+  cursor: pointer;
+  color: white !important;
 }
 
 </style>
