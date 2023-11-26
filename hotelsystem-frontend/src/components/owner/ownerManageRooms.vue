@@ -12,11 +12,23 @@
           </button>
           <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
-              <li class="nav-item ">
+              <li class="nav-item active">
                 <a class="nav-link" @click="Home">Home</a>
               </li>
-              <li class="nav-item active">
-                <a class="nav-link" @click="ManageRooms">Manage Rooms</a>
+              <li class="nav-item">
+                <a class="nav-link" @click="ManageEmployees">Manage Employees</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" @click="Repair">Manage Repairs</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" @click="Rooms">Manage Rooms</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" @click="Account">Account</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" @click="LogOut">Log Out</a>
               </li>
             </ul>
           </div>
@@ -93,7 +105,11 @@ export default {
       filteredRooms : [],
       temporary_data_holder: {}, //a dictionary ??
       errorMsg: '',
+      email: '',
     };
+  },
+  mounted() {
+    this.email = this.$route.params.param1
   },
   async created() {
     // Initializing rooms from backend
@@ -195,11 +211,23 @@ export default {
       this.filteredRooms = result
     },
     async Home(){
-      await this.$router.push({name: 'OwnerHome', params: {email: this.email}})
+      await this.$router.push({path: '/OwnerHome/' + this.email})
     },
-    async ManageRooms() {
-      await this.$router.push({name: 'ownerManageRooms'})
-    }
+    async ManageEmployees(){
+      await this.$router.push({path: '/OwnerManageEmployees/' + this.email})
+    },
+    async Repair(){
+      await this.$router.push({path: '/OwnerRepair/' + this.email})
+    },
+    async Rooms(){
+      await this.$router.push({path: '/owner/manage_rooms/' + this.email})
+    },
+    async Account(){
+      await this.$router.push({path: '/OwnerAccount/' + this.email})
+    },
+    async LogOut(){
+      await this.$router.push({name: 'Home'})
+    },
   }
 }
 </script>

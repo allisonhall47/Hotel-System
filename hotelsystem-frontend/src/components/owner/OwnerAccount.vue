@@ -21,6 +21,9 @@
               <li class="nav-item">
                 <a class="nav-link" @click="Repair">Manage Repairs</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" @click="Rooms">Manage Rooms</a>
+              </li>
               <li class="nav-item active">
                 <a class="nav-link" @click="Account">Account</a>
               </li>
@@ -201,6 +204,9 @@ export default {
     },
     async Repair(){
       await this.$router.push({path: '/OwnerRepair/' + this.email})
+    },
+    async Rooms(){
+      await this.$router.push({path: '/owner/manage_rooms/' + this.email})
     },
     async Account(){
       await this.$router.push({path: '/OwnerAccount/' + this.email})

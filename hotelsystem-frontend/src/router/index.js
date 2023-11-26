@@ -94,7 +94,7 @@ export default new Router({
       component: OwnerAddShift
     },
     {
-      path: '/owner/manage_rooms',
+      path: '/owner/manage_rooms/:param1',
       name: 'ownerManageRooms',
       component: ownerManageRooms
     },

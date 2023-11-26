@@ -22,6 +22,9 @@
                 <a class="nav-link" href="#">Manage Repairs<span class ="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
+                <a class="nav-link" @click="Rooms">Manage Rooms</a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link" @click="Account">Manage Account</a>
               </li>
               <li class="nav-item">
@@ -151,6 +154,9 @@ export default {
     },
     async LogOut(){
       await this.$router.push({name: "Home"})
+    },
+    async Rooms(){
+      await this.$router.push({path: '/owner/manage_rooms/' + this.email})
     },
 
 
