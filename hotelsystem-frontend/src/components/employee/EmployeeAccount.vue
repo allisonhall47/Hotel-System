@@ -22,7 +22,10 @@
                 <a class="nav-link" @click="Repair">Log Repair</a> <!--employee repair-->
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="">View Schedule</a> <!--view employee schedule-->
+                <a class="nav-link" @click="ViewSchedule">View Schedule</a> <!--view employee schedule-->
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" @click="Reservations">View Reservations</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" @click="LogOut">Log Out</a>
@@ -112,12 +115,7 @@ export default {
       return SignUp
     }
   },
-  props: {
-    email: {
-      type: String,
-      required: true
-    }
-  },
+
   data() {
     return {
       password: '',
@@ -127,9 +125,17 @@ export default {
       salary: '',
       errorMsg: '',
       accountNumber: 0,
+      email: ''
     };
   },
+
+  mounted() {
+    this.email = this.$route.params.param1;
+    this.name = this.$route.params.param2;
+  },
+
   created(){
+    this.email = this.$route.params.param1;
     axiosClient.get("/employee?email=" + this.email)
       .then((response) => {
         this.name = response.data.name;
@@ -204,13 +210,22 @@ export default {
       document.getElementById('dob').removeAttribute('readonly');
     },
     async Home() {
-      await this.$router.push({name: 'EmployeeHome', params: {email: this.email, name: this.name}})
+      // await this.$router.push({name: 'EmployeeHome', params: {email: this.email, name: this.name}})
+      await this.$router.push({path: '/EmployeeHome/' + this.email + '/' + this.name})
     },
     async Repair() {
-      await this.$router.push({name: "EmployeeRepair", params: {email: this.email, name: this.name}})
+      // await this.$router.push({name: "EmployeeRepair", params: {email: this.email, name: this.name}})
+      await this.$router.push({path: '/EmployeeRepair/' + this.email + '/' + this.name})
     },
     async LogOut() {
-      await this.$router.push({name: 'Home'})
+      await this.$router.push({path: '/Home/'})
+    },
+    async ViewSchedule() {
+      await this.$router.push({path: '/EmployeeSchedule/' + this.email + '/' + this.name})
+    },
+
+    async Reservations() {
+      await this.$router.push({path: '/EmployeeReservation/' + this.email + '/' + this.name})
     },
   }
 };

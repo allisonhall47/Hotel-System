@@ -22,7 +22,10 @@
                 <a class="nav-link" href="#">Log Repair<span class ="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="">View Schedule</a> <!--view employee schedule-->
+                <a class="nav-link" @click="ViewSchedule">View Schedule</a> <!--view employee schedule-->
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" @click="Reservations">View Reservations</a>
               </li>
               <li>
                 <a class="nav-link" @click="LogOut">Log Out</a>
@@ -57,7 +60,7 @@
               <tr>
                 <th>Status</th>
                 <th>Description</th>
-                <th>Employee: Created By</th>
+                <th>Employee: Assigned To</th>
               </tr>
               </thead>
               <tbody>
@@ -92,27 +95,24 @@ export default {
       return EmployeeAccount
     }
   },
-  props: {
-    email: {
-      type: String,
-      required: true
-    },
-    name: {
-      type: String,
-      required: true
-    }
-  },
+
   data() {
     return {
       repair: {
         status: '',
         description: '',
         employee: '',
-        name: ''
+        name: '',
+        email: ''
       },
       repairs: [],
     };
 
+  },
+
+  mounted() {
+    this.email = this.$route.params.param1;
+    this.name = this.$route.params.param2;
   },
 
   created() {
@@ -122,17 +122,26 @@ export default {
   methods: {
     async Home() {
       console.log(`name: ${this.name}`)
-      await this.$router.push({name: "EmployeeHome", params: {email: this.email, name: this.name}})
+      // await this.$router.push({name: "EmployeeHome", params: {email: this.email, name: this.name}})
+      await this.$router.push({path: '/EmployeeHome/' + this.email + '/' + this.name})
     },
     async Employee() {
-      await this.$router.push({name: "EmployeeAccount", params: {email: this.email, name: this.name}})
+      // await this.$router.push({name: "EmployeeAccount", params: {email: this.email, name: this.name}})
+      await this.$router.push({path: '/EmployeeAccount/' + this.email + '/' + this.name})
     },
     async LogOut() {
-      await this.$router.push({name: 'Home'})
+      await this.$router.push({name: "Home"})
+    },
+
+    async ViewSchedule() {
+      await this.$router.push({path: '/EmployeeSchedule/' + this.email + '/' + this.name})
+    },
+
+    async Reservations() {
+      await this.$router.push({path: '/EmployeeReservation/' + this.email + '/' + this.name})
     },
 
     async submitRepair() {
-
       this.description = document.getElementById("description").value;
 
       const repair_request = {
@@ -151,6 +160,7 @@ export default {
           alert('Repair request successfully submitted.')
 
           this.resetForm(); // If you have a method to reset the form
+          window.location.reload();
         })
         .catch((err) => {
           this.errorMsg = `Failure: ${err.response.data}`;
@@ -187,18 +197,6 @@ export default {
         });
     },
 
-    // async fetchEmployeeByEmail(email, repairIndex) {
-    //   // Fetch the employee details using the email as a query parameter
-    //   axiosClient.get("/employee?email=" + encodeURIComponent(email))
-    //     .then(response => {
-    //       // Assuming response.data has a 'name' field in the EmployeeResponseDto
-    //       this.$set(this.repairs[repairIndex], 'employeeName', response.data.name);
-    //     })
-    //     .catch(error => {
-    //       console.error('Error fetching employee details:', error);
-    //     });
-    // },
-
     async resetForm() {
       this.repair.description = '';
     },
@@ -207,6 +205,13 @@ export default {
 </script>
 
 <style scoped>
+
+/*@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');*/
+
+/*h2 {*/
+/*  font-family: 'Times New Roman', sans-serif;*/
+/*}*/
+
 
 container {
   display: flex;
@@ -229,8 +234,8 @@ container {
 }
 
 .hero-section {
-  background: mintcream;
-  padding: 190px 0;
+  background: url('../../assets/pattern.png');
+  padding: 250px 0;
   text-align: center;
 }
 
@@ -244,5 +249,6 @@ container {
   left: 0;
   right: 0;
 }
+
 
 </style>
