@@ -16,6 +16,7 @@ import OwnerHome from "../components/owner/OwnerHome"
 import OwnerAccount from "../components/owner/OwnerAccount"
 import OwnerManageEmployees from "../components/owner/OwnerManageEmployees"
 import OwnerViewSchedule from "../components/owner/OwnerViewSchedule"
+import OwnerRepair  from "../components/owner/OwnerRepair.vue";
 import EmployeeViewSchedule from "../components/employee/EmployeeViewSchedule";
 import EmployeeReservation from "../components/employee/EmployeeReservation";
 import OwnerRepair from "../components/owner/OwnerRepair.vue";
@@ -26,8 +27,7 @@ export default new Router({
   routes: [
 
     {
-      path: '/',
-      name: 'Home',
+      path: '/Home/',
       component: Home
     },
     {
@@ -47,22 +47,16 @@ export default new Router({
       component: CustomerAccount,
     },
     {
-      path: '/',
-      name: 'EmployeeHome',
+      path: '/EmployeeHome/:param1/:param2',
       component: EmployeeHome,
-      props: true
     },
     {
-      path: '/',
-      name: 'EmployeeAccount',
+      path: '/EmployeeAccount/:param1/:param2',
       component: EmployeeAccount,
-      props: true
     },
     {
-      path: '/',
-      name: 'EmployeeRepair',
+      path: '/EmployeeRepair/:param1/:param2',
       component: EmployeeRepair,
-      props: true
     },
 
     {
@@ -118,6 +112,10 @@ export default new Router({
       path: '/employee-manage-reservations',
       name: 'EmployeeReservation',
       component: EmployeeReservation,
+    },
+    {
+      path: '/OwnerRepair/:param1',
+      component: OwnerRepair,
     },
   ]
 })

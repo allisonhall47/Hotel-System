@@ -100,8 +100,16 @@ export default {
       accountNumber: 0,
     };
   },
+
+  mounted() {
+    this.email = this.$route.params.param1;
+    this.name = this.$route.params.param2;
+  },
+
+
   computed: {
   },
+
   methods: {
     getUser(){
       if(this.user === "Customer"){
@@ -141,7 +149,7 @@ export default {
                   if(response.data.password === this.password){
                     alert("Successfully logged in.")
                     var employeeName = response.data.name;
-                    this.$router.push({name: 'EmployeeHome', params: {email: this.email, name: employeeName}})
+                    this.$router.push({path: '/EmployeeHome/' + this.email + '/' + employeeName})
                   } else {
                     alert("Incorrect Password.")
                   }

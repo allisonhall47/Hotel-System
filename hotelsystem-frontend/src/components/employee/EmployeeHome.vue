@@ -37,8 +37,8 @@
         <div class="container">
           <div class="row">
             <div class="col-md-12 mx-auto text-center">
-              <h1 class="text-center" style="font-family: 'Montserrat', serif; color: #888; letter-spacing: 5px; font-size: 45px" >Marwaniott Hotel Employee Portal</h1>
-              <p class="luxurious-text" style="font-weight: normal; color: #888; font-size: 20px;">Welcome, {{name}}! </p>
+              <h1 class="text-center" style="font-family: 'Montserrat', serif; color: #ffffff; letter-spacing: 3px; font-size: 45px" >Marwaniott Hotel Employee Portal</h1>
+              <p class="luxurious-text" style="font-weight: normal; color: #ffffff; font-size: 20px;">Welcome, {{name}}! </p>
             </div>
           </div>
         </div>
@@ -55,33 +55,36 @@ import EmployeeRepair from "./EmployeeRepair.vue";
 
 export default {
   name: 'EmployeeHome',
-  props: {
-    email: {
-      type: String,
-      required: true
-    },
-    name: {
-      type: String,
-      required: true
-    }
-  },
+
   data() {
     return {
       isLoggedIn: false,
+      name: '',
+      email: ''
     };
   },
+
+  mounted() {
+    this.email = this.$route.params.param1;
+    this.name = this.$route.params.param2;
+  },
+
   methods: {
     async Employee() {
-      await this.$router.push({name: "EmployeeAccount", params: {email: this.email, name: this.name}})
+      // await this.$router.push({name: "EmployeeAccount", params: {email: this.email, name: this.name}})
+      await this.$router.push({path: '/EmployeeAccount/' + this.email + '/' + this.name})
     },
     async LogOut() {
-      await this.$router.push({name: 'Home'})
+      await this.$router.push({path: '/Home/'})
     },
     async Repair() {
-      await this.$router.push({name: "EmployeeRepair", params: {email: this.email, name: this.name}})
+
+      // await this.$router.push({name: "EmployeeRepair", params: {email: this.email, name: this.name}})
+      await this.$router.push({path: '/EmployeeRepair/' + this.email + '/' + this.name})
     },
     async ViewSchedule() {
       await this.$router.push({name: "EmployeeViewSchedule", params: {email: this.email, name: this.name}})
+
     }
   }
 };
@@ -94,8 +97,8 @@ export default {
 }
 
 .hero-section {
-  background: white;
-  padding: 300px 0;
+  background: url('../../assets/img_3.png');
+  padding: 325px 0;
   text-align: center;
 }
 

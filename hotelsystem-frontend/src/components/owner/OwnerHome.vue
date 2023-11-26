@@ -48,6 +48,14 @@
 
 <script>
 
+import axios from 'axios'
+var config = require('../../../config')
+var frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
+var backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort
+var axiosClient = axios.create({
+  baseURL: backendUrl,
+  headers: { 'Access-Control-Allow-Origin': frontendUrl }
+})
 export default {
   name: 'OwnerHome',
 
@@ -71,6 +79,10 @@ export default {
       await this.$router.push({path: '/OwnerManageEmployees/' + this.email})
     },
     async Repair(){
+      await this.$router.push({path: '/OwnerRepair/' + this.email})
+    },
+    async Repair(){
+      // await this.$router.push({name: 'OwnerRepair', params: {email: this.email}})
       await this.$router.push({path: '/OwnerRepair/' + this.email})
     },
     async Account(){
@@ -127,10 +139,9 @@ export default {
   top: 0;
   left: 0;
   right: 0;
-
+}
   .nav-link:hover {
     cursor: pointer;
-  }
 }
 
 </style>
