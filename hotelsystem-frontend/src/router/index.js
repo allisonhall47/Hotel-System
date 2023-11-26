@@ -85,8 +85,7 @@ export default new Router({
       component: OwnerViewSchedule,
     },
     {
-      path: '/employee-view-schedule',
-      name: 'EmployeeViewSchedule',
+      path: '/EmployeeSchedule/:param1/:param2',
       component: EmployeeViewSchedule,
     },
     {
@@ -109,8 +108,7 @@ export default new Router({
       component: OwnerRepair,
     },
     {
-      path: '/employee-manage-reservations',
-      name: 'EmployeeReservation',
+      path: '/EmployeeReservation/:param1/:param2',
       component: EmployeeReservation,
     },
     {

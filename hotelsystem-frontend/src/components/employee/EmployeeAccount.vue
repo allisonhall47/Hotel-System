@@ -22,7 +22,10 @@
                 <a class="nav-link" @click="Repair">Log Repair</a> <!--employee repair-->
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="">View Schedule</a> <!--view employee schedule-->
+                <a class="nav-link" @click="ViewSchedule">View Schedule</a> <!--view employee schedule-->
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" @click="Reservations">View Reservations</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" @click="LogOut">Log Out</a>
@@ -216,6 +219,13 @@ export default {
     },
     async LogOut() {
       await this.$router.push({path: '/Home/'})
+    },
+    async ViewSchedule() {
+      await this.$router.push({path: '/EmployeeSchedule/' + this.email + '/' + this.name})
+    },
+
+    async Reservations() {
+      await this.$router.push({path: '/EmployeeReservation/' + this.email + '/' + this.name})
     },
   }
 };

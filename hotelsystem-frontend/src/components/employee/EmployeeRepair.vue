@@ -22,7 +22,10 @@
                 <a class="nav-link" href="#">Log Repair<span class ="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="">View Schedule</a> <!--view employee schedule-->
+                <a class="nav-link" @click="ViewSchedule">View Schedule</a> <!--view employee schedule-->
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" @click="Reservations">View Reservations</a>
               </li>
               <li>
                 <a class="nav-link" @click="LogOut">Log Out</a>
@@ -130,6 +133,14 @@ export default {
       await this.$router.push({name: "Home"})
     },
 
+    async ViewSchedule() {
+      await this.$router.push({path: '/EmployeeSchedule/' + this.email + '/' + this.name})
+    },
+
+    async Reservations() {
+      await this.$router.push({path: '/EmployeeReservation/' + this.email + '/' + this.name})
+    },
+
     async submitRepair() {
       this.description = document.getElementById("description").value;
 
@@ -223,8 +234,8 @@ container {
 }
 
 .hero-section {
-  background: mintcream;
-  padding: 190px 0;
+  background: url('../../assets/pattern.png');
+  padding: 250px 0;
   text-align: center;
 }
 
