@@ -121,10 +121,10 @@ export default {
       email: "",
     };
   },
-  mounted(){
-    this.email = this.$route.params.param1
-  },
+
   created(){
+    this.email = this.$route.params.param1
+    console.log(this.email);
     axiosClient.get("/owner/email?email=" + this.email)
       .then((response) => {
         this.name = response.data.name;
