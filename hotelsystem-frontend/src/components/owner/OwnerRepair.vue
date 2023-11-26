@@ -127,7 +127,7 @@ export default {
       },
       repairs: [],
       employees: [],
-      statuses: ['Done', 'In Progress', 'Pending'],
+      statuses: ['Done','InProgress','Pending'],
       isLoggedIn: false,
     };
   },
@@ -148,6 +148,8 @@ export default {
     async LogOut(){
       await this.$router.push({name: 'Home'})
     },
+
+
 
     async fetchEmployees() {
       axiosClient.get('/employees/') // modify this endpoint to your actual API endpoint for fetching employees
@@ -173,11 +175,19 @@ export default {
         console.error('Employee Email is missing');
         return;
       }
+
+      const config = {
+        headers: {
+          'Content-Type': 'text/plain'
+        }
+      }
       // Call API to assign employee to repair
-      axiosClient.post('repair/employee/' + repairId, {employeeEmail: employeeEmail})
+      axiosClient.post('repair/employee/' + repairId, employeeEmail,config)
         .then(() => {
           alert('Employee assigned successfully');
           // Optional: Refresh the list of repairs or update the UI accordingly
+          this.repair.selectedEmployeeEmail = ''; // resets the box
+          // refresh here so the new employee for that shift pops up (once i've adjusted links)
         })
         .catch(error => {
           console.error('Error assigning employee:', error.response.data);
@@ -199,15 +209,43 @@ export default {
         });
     },
 
+    // async updateStatus(repairId, newStatus) {
+    //   // Call API to update the status of the repair
+    //   axiosClient.post('/repair/status/', + repairId, newStatus)
+    //     .then(() => {
+    //       alert('Status updated successfully');
+    //       // Optional: Refresh the list of repairs or update the UI accordingly
+    //     })
+    //     .catch(error => {
+    //       console.error('Error updating status:', error);
+    //     });
+    // },
     async updateStatus(repairId, newStatus) {
-      // Call API to update the status of the repair
-      axiosClient.post('/repair/status/', + repairId, newStatus)
+      if (!this.statuses.includes(newStatus)) {
+        console.error('Invalid status:', newStatus);
+        return;
+      }
+      // Ensure the newStatus is an object that contains the enum value
+      const statusPayload = {
+        CompletionStatus : newStatus
+      };
+
+      // Set the Content-Type header to 'application/json'
+      const config = {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      };
+
+      // Pass the statusPayload as a JSON string
+      axiosClient.post('repair/status/' + repairId, JSON.stringify(statusPayload), config)
         .then(() => {
           alert('Status updated successfully');
           // Optional: Refresh the list of repairs or update the UI accordingly
         })
         .catch(error => {
-          console.error('Error updating status:', error);
+          // Handle errors here
+          console.error('Error updating status:', error.response ? error.response.data : error);
         });
     },
     async submitRepair() {
@@ -221,7 +259,7 @@ export default {
         employeeEmail: this.repair.selectedEmployeeEmail, // Use the selected employee's email
       };
 
-      axiosClient.post("/repair/new", repairRequest)
+      axiosClient.post("repair/new", repairRequest)
         .then((response) => {
           // Handle the successful submission
           this.repairs.push(response.data);
@@ -233,6 +271,17 @@ export default {
           console.error('Error submitting repair:', error);
           alert(`Error: ${error.response.data.message}`);
         });
+    },
+
+    resetForm() {
+      // Reset the repair form to its initial state
+      this.repair.status = '';
+      this.repair.description = '';
+      this.repair.employee = '';
+      this.repair.email = '';
+      this.repair.name = '';
+      this.repair.selectedEmployeeEmail = '';
+      this.repair.repairId = 0;
     },
 
   }
