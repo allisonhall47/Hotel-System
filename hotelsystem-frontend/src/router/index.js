@@ -5,6 +5,10 @@ import SignUp from "../components/shared/SignUp"
 import Login from "../components/shared/Login"
 import CustomerHome from "../components/customer/CustomerHome"
 import CustomerAccount from "../components/customer/CustomerAccount"
+import ReservationGuest from "../components/shared/ReservationGuest"
+import CreateAccountSuggestion from "../components/shared/CreateAccountSuggestion"
+import SuggestRooms from "../components/shared/SuggestRooms"
+import CreateCustomerPage from "../components/shared/createCustomerPage"
 import OwnerAddShift from "../components/owner/OwnerAddShift";
 import ownerManageRooms from "../components/owner/ownerManageRooms";
 import CustomerMakeRequest from "../components/customer/CustomerMakeRequest";
@@ -37,6 +41,31 @@ export default new Router({
     {
       path: '/Login/',
       component: Login
+    },
+    {
+      path: '/ReservationGuest',
+      name: 'ReservationGuest',
+      component: ReservationGuest
+    },
+    {
+      path: '/CreateAccountSuggestion',
+      name: 'CreateAccountSuggestion',
+      component: CreateAccountSuggestion
+    },
+    {
+      path: '/SuggestRooms/:param1/:param2/:param3/:param4/:param5',
+      name: 'SuggestRooms',
+      component: SuggestRooms
+    },
+    {
+      path: '/CreateCustomerPage/:param1/:param2/:param3/:param4',
+      name: 'CreateCustomerPage',
+      component: CreateCustomerPage
+    },
+    {
+      path: '/ReservationGuest/:param1'
+      name: 'ReservationGuest'
+      component: ReservationGuest
     },
     {
       path: '/CustomerHome/:param1',

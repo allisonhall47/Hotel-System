@@ -70,7 +70,6 @@
             </div>
           </div>
         </div>
-
       </div>
     </div>
   </div>
@@ -296,6 +295,102 @@ export default {
 .clickable-text:hover {
   cursor: pointer;
   color: white !important;
+}
+
+.background {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: white;
+  background-size: cover;
+}
+
+.reservation {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.reservation-box {
+  width: 65%;
+}
+
+.background {
+  flex: 1;
+  display: flex;
+}
+
+.background-image {
+  flex: 1;
+  background-image: url('../../assets/hotelView.png');
+  background-size: cover;
+  background-position: center;
+}
+
+.reservation-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.navbar-brand {
+  margin-right: 0; /* Reset the margin for the navbar-brand */
+}
+
+.luxurious-text {
+  font-family: 'Georgia', sans-serif;
+  color: #888;
+}
+
+
+.transparent-background {
+  background-color: rgba(136, 136, 136, 0.3); /* You can replace this color code with your desired dark color */
+}
+
+.navbar-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+
+.custom-card-width {
+  width: 100%;
+  max-width: 800px !important;
+  margin: 0 auto;
+  top: 30%;
+  border: none !important;
+}
+
+.custom-form-group {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.custom-reservation-button {
+  background-color: transparent;
+  color: #888;
+  border: 2px solid #888;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.custom-reservation-button:hover {
+  background-color: #888;
+  color: white;
+}
+
+.card-header {
+  background: white;
+  border-bottom: white;
+}
+
+#startDate::placeholder {
+  color:#888;
+}
+
+#endDate::placeholder {
+  color:#888;
 }
 
 </style>

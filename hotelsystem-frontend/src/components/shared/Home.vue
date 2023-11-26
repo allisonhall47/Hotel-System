@@ -32,7 +32,7 @@
           <div class="col-md-12 mx-auto text-center">
             <h1 class="text-center" style="font-family: 'Montserrat', serif; color: #888; letter-spacing: 5px; font-size: 45px" >THE MARWANIOTT HOTEL</h1>
             <p class="luxurious-text" style="font-weight: normal; color: #888;">explore. relax. rejuvenate.</p>
-            <button class="btn btn-lg mt-3 custom-login-button" @click="">Book Your Stay</button>
+            <button class="btn btn-lg mt-3 custom-login-button" @click="CreateAccountSuggestion">Book Your Stay</button>
           </div>
         </div>
       </div>
@@ -111,7 +111,17 @@ export default {
       await this.$router.push({path: '/Login/'})
     },
     async SignUp() {
-      await this.$router.push({path: '/SignUp/'})
+      await this.$router.push({name: 'SignUp'})
+    },
+    async ReservationGuest() {
+      await this.$router.push({name: 'ReservationGuest'})
+    },
+    async CreateAccountSuggestion(){
+      await this.$router.push({name: 'CreateAccountSuggestion'})
+    },
+    showLoginModal() {
+      console.log('Show login modal');
+
     },
   }
 };
