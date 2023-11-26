@@ -22,7 +22,7 @@
 
         <div class="reservations-container">
           <div class="luxurious-text">
-            <h3>All Reservations for {{this.email}}:</h3>
+            <h3>All Reservations for {{this.name}}:</h3>
             <div class="table-responsive">
               <table class="table table-bordered">
                 <thead>
@@ -96,9 +96,9 @@ export default {
   created() {
     this.email = this.$route.params.param1
 
-    axiosClient.get("/reservation/customer/"+this.email)
+    axiosClient.get("/customer?email="+this.email)
       .then(response => {
-        this.reservations = response.data
+        this.name = response.data.name
       })
       .catch(err => {
         this.errorMsg = `Failure: ${err.response.data}`
@@ -106,9 +106,9 @@ export default {
         //console.log(err.response.data)
       })
 
-    axiosClient.get("/customer?email="+this.email)
+    axiosClient.get("/reservation/customer/"+this.email)
       .then(response => {
-        this.name = response.data.name
+        this.reservations = response.data
       })
       .catch(err => {
         this.errorMsg = `Failure: ${err.response.data}`
