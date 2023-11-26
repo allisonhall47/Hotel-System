@@ -347,8 +347,8 @@ th {
 .prettybutton {
   border-radius: 5px;
   background-color: white;
-  border: 1px solid #721c24;
-  color: #721c24;
+  border: 1px solid #888;
+  color: #888;
 }
 
 .prettybutton2 {
@@ -360,9 +360,8 @@ th {
 
 .prettybutton:hover {
   border-radius: 5px;
-  border: #721c24;
-  background-color: #721c24;
-  border: 1px solid #721c24;
+  background-color: #888;
+  border: 1px solid #888;
   color: white;
 }
 

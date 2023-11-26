@@ -7,14 +7,10 @@
             <div class="container">
               <div class="row">
                 <div class="col-md-12 mx-auto text-center">
-                  <h1 class="text-center" style="font-family: 'Montserrat', serif; color: #888; font-size: 42px" >Looks like you didn't sign in yet!</h1>
+                  <h1 class="text-center" style="font-family: 'Montserrat', serif; color: #888; font-size: 42px" >Reservation Confirmed!</h1>
                   <div style="margin-top: 30px;"></div>
-                  <p class="luxurious-text" style="font-weight: normal; color: #888;">Choose an option below to continue</p>
+                  <p class="luxurious-text" style="font-weight: normal; color: #888;">We are looking forward to welcoming you at The Marwaniott Hotel</p>
                   <div style="margin-top: 15px;"></div>
-                  <button class="btn btn-lg custom-guest-button" style="margin-right: 10px;" @click="Login">Log in</button>
-                  <button class="btn btn-lg custom-guest-button" @click="ReservationGuest">Continue as guest</button>
-                  <div style="margin-top: 30px;"></div>
-                  <p class="no-account" style="font-weight: normal; color: #888; text-decoration: underline" @click="SignUp">Don't have an account? Sign up here</p>
                 </div>
               </div>
             </div>
@@ -57,7 +53,7 @@
 
 <script>
 export default{
-  name: "CreateAccountSuggestion",
+  name: "BookedConfirmation",
   methods: {
     async Login() {
       await this.$router.push({path: '/Login/'})
@@ -67,9 +63,6 @@ export default{
     },
     async Home() {
       await this.$router.push({name: 'Home'})
-    },
-    async ReservationGuest() {
-      await this.$router.push({name: 'ReservationGuest'})
     },
   }
 }
@@ -115,7 +108,7 @@ export default{
 }
 
 .navbar-brand {
-  margin-right: 0; /* Reset the margin for the navbar-brand */
+  margin-right: 0;
 }
 
 .luxurious-text {
@@ -124,17 +117,6 @@ export default{
   color: black;
 }
 
-.custom-guest-button {
-  background-color: transparent;
-  color: #888;
-  border: 2px solid #888;
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.custom-guest-button:hover {
-  background-color: #888;
-  color: white;
-}
 
 .clickable-text:hover {
   cursor: pointer;
@@ -150,12 +132,6 @@ export default{
   top: 0;
   left: 0;
   right: 0;
-}
-
-.no-account:hover {
-  text-decoration: underline;
-  cursor: pointer;
-  color: black !important;
 }
 
 </style>

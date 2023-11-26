@@ -111,17 +111,13 @@ export default {
       await this.$router.push({path: '/Login/'})
     },
     async SignUp() {
-      await this.$router.push({name: 'SignUp'})
+      await this.$router.push({path: '/SignUp/'})
     },
     async ReservationGuest() {
       await this.$router.push({name: 'ReservationGuest'})
     },
     async CreateAccountSuggestion(){
       await this.$router.push({name: 'CreateAccountSuggestion'})
-    },
-    showLoginModal() {
-      console.log('Show login modal');
-
     },
   }
 };
