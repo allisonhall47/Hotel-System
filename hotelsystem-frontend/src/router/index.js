@@ -40,14 +40,19 @@ export default new Router({
       component: CreateAccountSuggestion
     },
     {
-      path: '/SuggestRooms/:param1/:param2/:param3/:param4',
+      path: '/SuggestRooms/:param1/:param2/:param3/:param4/:param5',
       name: 'SuggestRooms',
       component: SuggestRooms
     },
     {
-      path: '/CreateCustomerPage/:param1/:param2/:param3',
+      path: '/CreateCustomerPage/:param1/:param2/:param3/:param4',
       name: 'CreateCustomerPage',
       component: CreateCustomerPage
+    },
+    {
+      path: '/ReservationGuest/:param1'
+      name: 'ReservationGuest'
+      component: ReservationGuest
     },
     {
       path: '/',

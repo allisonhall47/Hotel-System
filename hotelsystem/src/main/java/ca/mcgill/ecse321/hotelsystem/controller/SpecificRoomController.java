@@ -47,11 +47,9 @@ public class SpecificRoomController {
         return specificRooms.stream().map(SpecificRoomResponseDto::new).collect(Collectors.toList());
     }
 
-    @GetMapping(value = "/specificRoom/available/type/{type}")
-    public List<SpecificRoomResponseDto> getAvailableSpecificRoomsByRoomType(@PathVariable String type,@RequestBody SpecificRoomAvailableDto specificRoomAvailableDto){
-        LocalDate startDate = specificRoomAvailableDto.getCheckin();
-        LocalDate endDate = specificRoomAvailableDto.getCheckOut();
-        List<SpecificRoom> specificRooms = specificRoomService.getAvailableSpecificRoomByType(startDate, endDate, type);
+    @GetMapping(value = "/specificRoom/available/type/{type}/{checkIn}/{checkOut}")
+    public List<SpecificRoomResponseDto> getAvailableSpecificRoomsByRoomType(@PathVariable String type,@PathVariable LocalDate checkIn,  @PathVariable LocalDate checkOut){
+        List<SpecificRoom> specificRooms = specificRoomService.getAvailableSpecificRoomByType(checkIn, checkOut, type);
         return specificRooms.stream().map(SpecificRoomResponseDto::new).collect(Collectors.toList());
     }
 

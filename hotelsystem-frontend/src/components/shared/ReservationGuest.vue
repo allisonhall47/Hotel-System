@@ -81,6 +81,7 @@ export default {
       startDate: '',
       endDate: '',
       guests: 0,
+      new_guests: 0,
       rooms: 0,
     }
   },
@@ -95,6 +96,7 @@ export default {
       await this.$router.push({name: 'Home'})
     },
     async SuggestRooms() {
+      this.new_guests = this.guests;
       if (parseInt(this.guests) <= 0) {
         // Display an error message or handle the case where guests are less than or equal to 0
         alert('Number of guests should be greater than 0.');
@@ -127,7 +129,7 @@ export default {
 
       if (this.guests%2 === 1) {
         if (this.rooms*4 < (this.guests+1) ) {
-          alert('Stop it');
+          alert('Stop it G');
           return;
         }
         if (this.rooms*2 > (this.guests+1)) {
@@ -136,7 +138,7 @@ export default {
       }
       if (this.guests%2 === 0) {
         if (this.rooms*4 < this.guests) {
-          alert('Stop it');
+          alert('Stop it G');
           return;
         }
         if (this.rooms*2 > this.guests) {
@@ -144,7 +146,7 @@ export default {
         }
       }
 
-      await this.$router.push({path: '/SuggestRooms/' + this.startDate + '/' +  this.endDate + '/' +this.guests + '/' +this.rooms})
+      await this.$router.push({path: '/SuggestRooms/' + this.startDate + '/' +  this.endDate + '/' +this.guests + '/' +this.rooms + '/' + this.new_guests})
     }
   }
 }

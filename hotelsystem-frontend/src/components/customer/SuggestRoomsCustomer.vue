@@ -14,37 +14,37 @@
               <a class="nav-link" @click="Home">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" @click="Login">LogIn</a>
+              <a class="nav-link" @click="LogOut">Log Out</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" @click="SignUp">SignUp</a>
+              <a class="nav-link" @click="Account">Account</a>
             </li>
           </ul>
         </div>
       </nav>
     </div>
-      <div class="room-container">
-        <!-- Iterate over the list of room combinations -->
-        <div v-for="(combination, index) in roomCombinations" :key="index" class="room-combination-box">
-          <!-- Iterate over the keys in each combination object -->
-          <div v-for="(count, roomType, roomIndex) in combination" :key="roomType" class="room-info">
-            <!-- Add Bootstrap classes for styling -->
-            <div class="row">
-              <div class="col-md-3">
-                <!-- Add an image for each room type -->
-                <img :src="getRoomImage(roomType)" alt="Room Image" class="img-fluid room-image" />
-              </div>
-              <div class="col-md-9">
-                <!-- Display room information and count -->
-                <h5 style="font-family: 'Montserrat', sans-serif; color: #888; letter-spacing: 2px" >{{ count }} {{ roomType }} room(s)</h5>
-                <p style="font-family: 'Georgia', sans-serif">{{ getRoomDescription(roomType) }}</p>
-                <p style="font-family: 'Georgia', sans-serif">Price: {{ getTotalPrice(roomType, count) }}</p>
-                <p v-if="roomIndex === Object.keys(combination).length - 1" style="font-family: 'Georgia', sans-serif">Total Price: {{ getTotalCombinationPrice(combination) }}</p>
-                <button v-if="roomIndex === Object.keys(combination).length - 1" class="btn btn-lg custom-book-button" @click="book(combination)">Book</button>
-              </div>
+    <div class="room-container">
+      <!-- Iterate over the list of room combinations -->
+      <div v-for="(combination, index) in roomCombinations" :key="index" class="room-combination-box">
+        <!-- Iterate over the keys in each combination object -->
+        <div v-for="(count, roomType, roomIndex) in combination" :key="roomType" class="room-info">
+          <!-- Add Bootstrap classes for styling -->
+          <div class="row">
+            <div class="col-md-3">
+              <!-- Add an image for each room type -->
+              <img :src="getRoomImage(roomType)" alt="Room Image" class="img-fluid room-image" />
+            </div>
+            <div class="col-md-9">
+              <!-- Display room information and count -->
+              <h5 style="font-family: 'Montserrat', sans-serif; color: #888; letter-spacing: 2px" >{{ count }} {{ roomType }} room(s)</h5>
+              <p style="font-family: 'Georgia', sans-serif">{{ getRoomDescription(roomType) }}</p>
+              <p style="font-family: 'Georgia', sans-serif">Price: {{ getTotalPrice(roomType, count) }}</p>
+              <p v-if="roomIndex === Object.keys(combination).length - 1" style="font-family: 'Georgia', sans-serif">Total Price: {{ getTotalCombinationPrice(combination) }}</p>
+              <button v-if="roomIndex === Object.keys(combination).length - 1" class="btn btn-lg custom-book-button" @click="book(combination)">Book</button>
             </div>
           </div>
         </div>
+      </div>
     </div>
   </div>
 </template>
@@ -65,7 +65,7 @@ var axiosClient = axios.create({
 })
 
 export default {
-  name: "SuggestRooms",
+  name: "SuggestRoomsCustomer",
   data(){
     return {
       startDate: '',
@@ -73,6 +73,7 @@ export default {
       guests: 0,
       newGuests: 0,
       rooms: 0,
+      customerEmail: '',
       regularRoom: ['Regular', 899, 'Queen', 2],
       deluxeRoom: ['Deluxe', 1299, 'Queen', 4],
       luxuryRoom: ['Luxury', 1499, 'King', 2],
@@ -86,6 +87,7 @@ export default {
     this.guests = this.$route.params.param3;
     this.rooms = this.$route.params.param4;
     this.newGuests = this.$route.params.param5;
+    this.customerEmail = this.$route.params.param6;
     this.roomCombinations = this.findPossibleRoomCombinations(this.guests, this.rooms);
     console.log(this.roomCombinations);
   },
@@ -208,11 +210,11 @@ export default {
           return 0; // Handle other cases as needed
       }
     },
-    async Login() {
-      await this.$router.push({name: 'Login'})
+    async Account() {
+      await this.$router.push({name: 'CustomerAccount', params: {email: this.email}})
     },
-    async SignUp() {
-      await this.$router.push({name: 'SignUp'})
+    async LogOut() {
+      await this.$router.push({name: 'Home'})
     },
     async Home() {
       await this.$router.push({name: 'Home'})
