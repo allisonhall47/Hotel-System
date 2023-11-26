@@ -142,7 +142,13 @@ export default {
       currShiftId: 0,
       errorShift: '',
       popupErrorShift: '',
+      name: "",
+      email: "",
     }
+  },
+  mounted() {
+    this.email = this.$route.params.param1;
+    this.name = this.$route.params.param2;
   },
   created: function () {
     this.getShifts()
@@ -280,10 +286,18 @@ export default {
     SelectDateFilter() {
       this.scheduleFilter = 1
     },
-    async LogOut() {
-      //TODO: logout
+    async Home(){
+      await this.$router.push({name: 'OwnerHome', params: {email: this.email}})
+    },
+    async ManageEmployees(){
+      await this.$router.push({name: 'OwnerManageEmployees', params: {email: this.email}})
+    },
+    async Account(){
+      await this.$router.push({name: 'OwnerAccount', params: {email: this.email}})
+    },
+    async LogOut(){
       await this.$router.push({name: 'Home'})
-    }
+    },
   },
 }
 
