@@ -28,7 +28,7 @@
 
         <div class="reservations-container">
           <div class="luxurious-text" style="font-family: 'Montserrat', sans-serif; color: #888; letter-spacing: 3px">
-            <h3>All Reservations for {{this.name}}:</h3>
+            <h3>YOUR RESERVATIONS</h3>
             <div class="table-responsive subheading">
               <table class="table table-bordered">
                 <thead>

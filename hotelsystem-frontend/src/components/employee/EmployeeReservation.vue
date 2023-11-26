@@ -14,22 +14,22 @@
           <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link" @click="Home">Home</a>
+                <a class="nav-link clickable-text" @click="Home">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="Employee">Account</a> <!--employee account-->
+                <a class="nav-link clickable-text" @click="Employee">Account</a> <!--employee account-->
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="Repairs">Log Repair</a>
+                <a class="nav-link clickable-text" @click="Repairs">Log Repair</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="ViewSchedule">View Schedule</a>
+                <a class="nav-link clickable-text" @click="ViewSchedule">View Schedule</a>
               </li>
               <li class="nav-item active">
                 <a class="nav-link" href="#">View Reservations<span class="sr-only">(current)</span></a>
               </li>
               <li>
-                <a class="nav-link" @click="LogOut">Log Out</a>
+                <a class="nav-link clickable-text" @click="LogOut">Log Out</a>
               </li>
             </ul>
           </div>
@@ -293,7 +293,7 @@ export default {
   width: 100%;
   height: 100%;
   position: absolute;
-  background: url('../../assets/pattern.png') center center no-repeat;
+  background: url('../../assets/hotelLobby.jpeg') center center no-repeat;
   background-size: cover;
 }
 
@@ -306,7 +306,7 @@ body {
 }
 
 .table-container {
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 1);
   padding: 2%;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -314,7 +314,7 @@ body {
   top: 25%;
   left: 10%;
   right: 10%;
-  min-height: 300px;
+  min-height: 500px;
 }
 
 .buttons-container {
@@ -390,9 +390,15 @@ th {
   color: #4e555b;
 }
 
+/*.prettyheader {*/
+/*  color: #721c24;*/
+/*  margin-bottom: 10%;*/
+/*}*/
 .prettyheader {
-  color: #721c24;
   margin-bottom: 10%;
+  font-family: 'Montserrat', sans-serif;
+  color: #888;
+  letter-spacing: 3px;
 }
 
 /* Dropdown styles */
@@ -476,6 +482,15 @@ th {
 
 .separator-vert {
   margin-bottom: 10px;
+}
+
+.clickable-text:hover {
+  cursor: pointer;
+  color: white !important;
+}
+
+.transparent-background {
+  background-color: rgba(255, 255, 255, 0.6);
 }
 
 </style>

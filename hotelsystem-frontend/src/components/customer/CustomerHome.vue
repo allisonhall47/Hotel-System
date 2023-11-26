@@ -116,7 +116,7 @@ export default {
   },
   methods: {
     async Reservations() {
-      await this.$router.push({path: '/customer/' + this.email + '/reservation'})
+      await this.$router.push({path: '/customer/reservation/' + this.email})
     },
     async Account() {
       await this.$router.push({path: '/CustomerAccount/' + this.email})

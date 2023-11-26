@@ -81,18 +81,11 @@ export default {
     async Repair(){
       await this.$router.push({path: '/OwnerRepair/' + this.email})
     },
-    async Repair(){
-      // await this.$router.push({name: 'OwnerRepair', params: {email: this.email}})
-      await this.$router.push({path: '/OwnerRepair/' + this.email})
-    },
     async Account(){
       await this.$router.push({path: '/OwnerAccount/' + this.email})
     },
     async LogOut(){
       await this.$router.push({name: 'Home'})
-    },
-    showLoginModal() {
-      console.log('Show login modal');
     },
   }
 };
