@@ -19,6 +19,9 @@
                 <a class="nav-link" @click="Employee">Account</a> <!--employee account-->
               </li>
               <li class="nav-item">
+                <a class="nav-link" @click="Reservations">Reservations</a> <!--employee account-->
+              </li>
+              <li class="nav-item">
                 <a class="nav-link" @click="Repairs">Log Repair</a>
               </li>
               <li class="nav-item active">
@@ -31,6 +34,7 @@
           </div>
         </nav>
       </div>
+
       <div class="table-container">
         <div class="buttons-container">
           <h2 class="prettyheader">Your Shifts</h2>
@@ -80,21 +84,17 @@ function Shift(shiftId, date, startTime, endTime, employeeEmail) {
 
 export default {
   name: 'EmployeeViewSchedule',
-  props: {
-    email: {
-        type: String,
-          required: true
-    },
-    name: {
-      type: String,
-        required: true
-    }
-  },
   data() {
     return {
       shifts: [],
       errorShift: '',
+      email: "",
+      name: "",
     }
+  },
+  mounted() {
+    this.email = this.$route.params.param1;
+    this.name = this.$route.params.param2;
   },
   created: function () {
     this.getShifts()
@@ -135,6 +135,9 @@ export default {
     },
     async Employee() {
       await this.$router.push({name: "EmployeeAccount", params: {email: this.email, name: this.name}})
+    },
+    async Reservations() {
+      await this.$router.push({name: "EmployeeReservation", params: {email: this.email, name: this.name}})
     },
     async LogOut() {
       await this.$router.push({name: 'Home'})

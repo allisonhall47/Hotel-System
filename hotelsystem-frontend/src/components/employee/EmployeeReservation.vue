@@ -2,7 +2,39 @@
   <div>
     <div class="background">
 
-      <!--TODO: navbar-->
+      <div class="navbar-container">
+        <nav class="navbar navbar-expand-lg navbar-light transparent-background">
+          <a class="navbar-brand" href="#">
+            <img src="../../assets/marwaniottNoBG.png" alt="Your Logo" height="60">
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                  aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" @click="Home">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" @click="Employee">Account</a> <!--employee account-->
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="#">Reservations<span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" @click="Repairs">Log Repair</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" @click="ViewSchedule">View Schedule</a>
+              </li>
+              <li>
+                <a class="nav-link" @click="LogOut">Log Out</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
 
       <div class="table-container">
         <div class="buttons-container">
@@ -28,6 +60,7 @@
             <th>Total Price</th>
             <th>Paid</th>
             <th>Status</th>
+            <th>Delete</th>
           </tr>
 
           <tr v-for="res in reservations" :key="res.reservationId">
@@ -47,9 +80,17 @@
               <button @click="openConfirmationPopup(0, res.reservationId)" class="prettybutton">Pay</button>
             </td>
             <td>
-              <button v-if="res.checkedIn == 'BeforeCheckIn'" @click="openConfirmationPopup(1, res.reservationId)" class="prettybutton">Check In</button>
-              <button v-if="res.checkedIn == 'CheckedIn'" @click="openConfirmationPopup(2, res.reservationId)" class="prettybutton">Check Out</button>
+              <div v-if="res.checkedIn == 'BeforeCheckIn'">
+                <button @click="openConfirmationPopup(1, res.reservationId)" class="prettybutton">Check In</button>
+                <div class="separator-vert"></div>
+                <button @click="openConfirmationPopup(2, res.reservationId)" class="prettybutton2">No Show</button>
+              </div>
+              <button v-if="res.checkedIn == 'CheckedIn'" @click="openConfirmationPopup(3, res.reservationId)" class="prettybutton">Check Out</button>
               <label v-if="res.checkedIn == 'CheckedOut'">Checked Out</label>
+              <label v-if="res.checkedIn == 'NoShow'">No Show</label>
+            </td>
+            <td>
+              <button @click="openConfirmationPopup(4, res.reservationId)" class="prettybutton">Delete</button>
             </td>
           </tr>
         </table>
@@ -66,7 +107,9 @@
         <div class="popup">
           <h2 v-if="confirmationAction == 0" class="prettyheader">Confirm Payment</h2>
           <h2 v-if="confirmationAction == 1" class="prettyheader">Check In</h2>
-          <h2 v-if="confirmationAction == 2" class="prettyheader">Check Out</h2>
+          <h2 v-if="confirmationAction == 2" class="prettyheader">No Show</h2>
+          <h2 v-if="confirmationAction == 3" class="prettyheader">Check Out</h2>
+          <h2 v-if="confirmationAction == 4" class="prettyheader">Delete</h2>
           <div class="centerbuttoncontainer">
             <label class="prettylabel">Reservation ID: {{currReservationId}}</label>
           </div>
@@ -120,7 +163,13 @@ export default {
       confirmationAction: false,
       errorReservation: '',
       popupError: '',
+      email: "",
+      name: "",
     }
+  },
+  mounted() {
+    this.email = this.$route.params.param1;
+    this.name = this.$route.params.param2;
   },
   created: function () {
     this.getReservations()
@@ -169,21 +218,35 @@ export default {
     },
     confirmAction() {
       var url = '/reservation/' + this.currReservationId;
+      var params = {}
+      var cmd = 'put'
+
+      if (this.confirmationAction == 0){
+        params = {
+          "money": 100000000 // Always enough money. In practice, amount should come from payment service
+        }
+      }
+
       switch (this.confirmationAction) {
         case 1: // Check In
           url += '/checkIn';
-        case 2: // Check Out
-          //TODO
+          break;
+        case 2: // No Show
+          url += '/noShow';
+          break;
+        case 3: //Check Out
+          url += '/checkOut';
+          break;
+        case 4:
+          cmd = 'delete';
       }
 
       axios.request({
-        method: 'put',
+        method: cmd,
         maxBodyLength: Infinity,
         url: backendUrl+url,
         headers: { },
-        params : {
-          "money": 100000000 // Always enough money. In practice, amount should come from payment service
-        }
+        params : params
       })
         .then((response) => {
           this.getReservations()
@@ -205,9 +268,21 @@ export default {
       this.reservationsFilterName = 'Customer'
       this.reservationsFilter = 2
     },
+    async Home() {
+      await this.$router.push({name: "EmployeeHome", params: {email: this.email, name: this.name}})
+    },
+    async Repairs() {
+      await this.$router.push({name: "EmployeeRepair", params: {email: this.email, name: this.name}})
+    },
+    async Employee() {
+      await this.$router.push({name: "EmployeeAccount", params: {email: this.email, name: this.name}})
+    },
+    async ViewSchedule() {
+      await this.$router.push({name: "EmployeeViewSchedule", params: {email: this.email, name: this.name}})
+    },
     async LogOut() {
       await this.$router.push({name: 'Home'})
-    }
+    },
   },
 }
 
@@ -397,6 +472,10 @@ th {
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.separator-vert {
+  margin-bottom: 10px;
 }
 
 </style>

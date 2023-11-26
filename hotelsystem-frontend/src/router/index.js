@@ -65,16 +65,14 @@ export default new Router({
       props: true
     },
     {
-      path: '/',
+      path: '/owner-view-schedule',
       name: 'OwnerViewSchedule',
       component: OwnerViewSchedule,
-      props: true
     },
     {
-      path: '/',
+      path: '/employee-view-schedule',
       name: 'EmployeeViewSchedule',
       component: EmployeeViewSchedule,
-      props: true
     },
     {
      path: '/owner-home',
@@ -98,7 +96,6 @@ export default new Router({
       path: '/employee-manage-reservations',
       name: 'EmployeeReservation',
       component: EmployeeReservation,
-      props: true
     },
   ]
 })
