@@ -150,10 +150,10 @@ export default {
       await this.$router.push({path: '/CustomerHome/'+this.email})
     },
     async Request(){
-      await this.$router.push({path: 'customer/'+this.email+'/reservation/'+this.resId+'/make_request'})
+      await this.$router.push({path: this.resId})
     },
     async Reservation(){
-      await this.$router.push({path: 'customer/'+this.email+'/reservation'})
+      await this.$router.push({path: '/customer/reservation/'+this.email})
     },
   },
 }
