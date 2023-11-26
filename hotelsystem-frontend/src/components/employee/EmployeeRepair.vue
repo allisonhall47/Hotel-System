@@ -92,27 +92,24 @@ export default {
       return EmployeeAccount
     }
   },
-  props: {
-    email: {
-      type: String,
-      required: true
-    },
-    name: {
-      type: String,
-      required: true
-    }
-  },
+
   data() {
     return {
       repair: {
         status: '',
         description: '',
         employee: '',
-        name: ''
+        name: '',
+        email: ''
       },
       repairs: [],
     };
 
+  },
+
+  mounted() {
+    this.email = this.$route.params.param1;
+    this.name = this.$route.params.param2;
   },
 
   created() {
@@ -122,13 +119,15 @@ export default {
   methods: {
     async Home() {
       console.log(`name: ${this.name}`)
-      await this.$router.push({name: "EmployeeHome", params: {email: this.email, name: this.name}})
+      // await this.$router.push({name: "EmployeeHome", params: {email: this.email, name: this.name}})
+      await this.$router.push({path: '/EmployeeHome/' + this.email + '/' + this.name})
     },
     async Employee() {
-      await this.$router.push({name: "EmployeeAccount", params: {email: this.email, name: this.name}})
+      // await this.$router.push({name: "EmployeeAccount", params: {email: this.email, name: this.name}})
+      await this.$router.push({path: '/EmployeeAccount/' + this.email + '/' + this.name})
     },
     async LogOut() {
-      await this.$router.push({name: 'Home'})
+      await this.$router.push({path: '/Home/'})
     },
 
     async submitRepair() {

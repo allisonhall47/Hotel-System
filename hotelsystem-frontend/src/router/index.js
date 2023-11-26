@@ -20,8 +20,7 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/',
-      name: 'Home',
+      path: '/Home/',
       component: Home
     },
     {
@@ -30,8 +29,7 @@ export default new Router({
       component: SignUp
     },
     {
-      path: '/',
-      name: 'Login',
+      path: '/Login/',
       component: Login
     },
     {
@@ -47,22 +45,16 @@ export default new Router({
       props: true
     },
     {
-      path: '/',
-      name: 'EmployeeHome',
+      path: '/EmployeeHome/:param1/:param2',
       component: EmployeeHome,
-      props: true
     },
     {
-      path: '/',
-      name: 'EmployeeAccount',
+      path: '/EmployeeAccount/:param1/:param2',
       component: EmployeeAccount,
-      props: true
     },
     {
-      path: '/',
-      name: 'EmployeeRepair',
+      path: '/EmployeeRepair/:param1/:param2',
       component: EmployeeRepair,
-      props: true
     },
     {
       path: '/',
@@ -95,10 +87,8 @@ export default new Router({
      props: true
     },
     {
-      path: '/',
-      name: 'OwnerRepair',
+      path: '/OwnerRepair/:param1',
       component: OwnerRepair,
-      props: true
     },
   ]
 })

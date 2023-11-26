@@ -97,7 +97,7 @@ export default {
   },
   methods: {
     async Login() {
-      await this.$router.push({name: 'Login'})
+      await this.$router.push({path: '/Login/'})
     },
     async SignUp() {
       await this.$router.push({name: 'SignUp'})

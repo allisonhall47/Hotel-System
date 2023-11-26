@@ -103,6 +103,11 @@ export default {
       errorMsg: '',
     };
   },
+  mounted() {
+    this.email = this.$route.params.param1;
+    this.name = this.$route.params.param2;
+  },
+
   methods: {
     getUser(){
       if(this.user === "Customer"){
@@ -128,7 +133,8 @@ export default {
               this.logged_user = response
               alert("Successfully logged in.")
               var employeeName = response.data.name;
-              this.$router.push({name: 'EmployeeHome', params: {email: this.email, name: employeeName}})
+              // this.$router.push({name: 'EmployeeHome', params: {email: this.email, name: employeeName}})
+              this.$router.push({path: '/EmployeeHome/' + this.email + '/' + employeeName})
             } else {
               alert("No account exists with this email.")
             }

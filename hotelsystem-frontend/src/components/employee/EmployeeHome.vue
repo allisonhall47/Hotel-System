@@ -55,30 +55,31 @@ import EmployeeRepair from "./EmployeeRepair.vue";
 
 export default {
   name: 'EmployeeHome',
-  props: {
-    email: {
-      type: String,
-      required: true
-    },
-    name: {
-      type: String,
-      required: true
-    }
-  },
+
   data() {
     return {
       isLoggedIn: false,
+      name: '',
+      email: ''
     };
   },
+
+  mounted() {
+    this.email = this.$route.params.param1;
+    this.name = this.$route.params.param2;
+  },
+
   methods: {
     async Employee() {
-      await this.$router.push({name: "EmployeeAccount", params: {email: this.email, name: this.name}})
+      // await this.$router.push({name: "EmployeeAccount", params: {email: this.email, name: this.name}})
+      await this.$router.push({path: '/EmployeeAccount/' + this.email + '/' + this.name})
     },
     async LogOut() {
-      await this.$router.push({name: 'Home'})
+      await this.$router.push({path: '/Home/'})
     },
     async Repair() {
-      await this.$router.push({name: "EmployeeRepair", params: {email: this.email, name: this.name}})
+      // await this.$router.push({name: "EmployeeRepair", params: {email: this.email, name: this.name}})
+      await this.$router.push({path: '/EmployeeRepair/' + this.email + '/' + this.name})
     }
   }
 };

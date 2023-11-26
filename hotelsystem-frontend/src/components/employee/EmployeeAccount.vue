@@ -112,12 +112,7 @@ export default {
       return SignUp
     }
   },
-  props: {
-    email: {
-      type: String,
-      required: true
-    }
-  },
+
   data() {
     return {
       password: '',
@@ -127,8 +122,15 @@ export default {
       salary: '',
       errorMsg: '',
       accountNumber: 0,
+      email: ''
     };
   },
+
+  mounted() {
+    this.email = this.$route.params.param1;
+    this.name = this.$route.params.param2;
+  },
+
   created(){
     axiosClient.get("/employee?email=" + this.email)
       .then((response) => {
@@ -204,13 +206,15 @@ export default {
       document.getElementById('dob').removeAttribute('readonly');
     },
     async Home() {
-      await this.$router.push({name: 'EmployeeHome', params: {email: this.email, name: this.name}})
+      // await this.$router.push({name: 'EmployeeHome', params: {email: this.email, name: this.name}})
+      await this.$router.push({path: '/EmployeeHome/' + this.email + '/' + this.name})
     },
     async Repair() {
-      await this.$router.push({name: "EmployeeRepair", params: {email: this.email, name: this.name}})
+      // await this.$router.push({name: "EmployeeRepair", params: {email: this.email, name: this.name}})
+      await this.$router.push({path: '/EmployeeRepair/' + this.email + '/' + this.name})
     },
     async LogOut() {
-      await this.$router.push({name: 'Home'})
+      await this.$router.push({path: '/Home/'})
     },
   }
 };

@@ -108,12 +108,7 @@ var axiosClient = axios.create({
 })
 export default {
   name: "OwnerRepair",
-  props: {
-    email: {
-      type: String,
-      required: true
-    }
-  },
+
   data() {
     return {
       repair: {
@@ -125,12 +120,18 @@ export default {
         selectedEmployeeEmail: '',
         repairId: 0,
       },
+      email: '',
       repairs: [],
       employees: [],
       statuses: ['Done','InProgress','Pending'],
       isLoggedIn: false,
     };
   },
+
+  mounted() {
+    this.email = this.$route.params.param1;
+  },
+
   created() {
     this.fetchRepairs();
     this.fetchEmployees();
@@ -146,7 +147,7 @@ export default {
       await this.$router.push({name: 'OwnerAccount', params: {email: this.email}})
     },
     async LogOut(){
-      await this.$router.push({name: 'Home'})
+      await this.$router.push({path: '/Home/'})
     },
 
 
@@ -226,9 +227,7 @@ export default {
         return;
       }
       // Ensure the newStatus is an object that contains the enum value
-      const statusPayload = {
-        CompletionStatus : newStatus
-      };
+      const statusPayload = newStatus;
 
       // Set the Content-Type header to 'application/json'
       const config = {
@@ -236,7 +235,6 @@ export default {
           'Content-Type': 'application/json'
         }
       };
-
       // Pass the statusPayload as a JSON string
       axiosClient.post('repair/status/' + repairId, JSON.stringify(statusPayload), config)
         .then(() => {
@@ -245,6 +243,7 @@ export default {
         })
         .catch(error => {
           // Handle errors here
+          console.log(JSON.stringify(statusPayload))
           console.error('Error updating status:', error.response ? error.response.data : error);
         });
     },
