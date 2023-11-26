@@ -31,6 +31,9 @@
                 <button @click="createCustomer()" type="button"
                         class="btn btn-primary btn-block mb-4 signinbutton">Sign Up</button>
               </div>
+              <div class="d-flex align-items-center links">
+                <a class="nav-link" style="cursor: pointer" @click="Login">Already have an account? Log In</a>
+              </div>
             </form>
           </div>
         </div>
@@ -135,7 +138,7 @@ export default {
 
     },
     async Login() {
-      await this.$router.push({name: 'Login'})
+      await this.$router.push({path: '/Login/'})
     },
     async Home(){
       await this.$router.push({name: 'Home'})

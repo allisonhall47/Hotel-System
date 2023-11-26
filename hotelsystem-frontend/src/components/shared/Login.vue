@@ -191,7 +191,7 @@ export default {
       }
     },
     async SignUp() {
-      await this.$router.push({name: 'SignUp'})
+      await this.$router.push({path: '/SignUp/'})
     },
     async Home(){
       await this.$router.push({name: 'Home'})
@@ -277,6 +277,7 @@ export default {
 .card-footer {
   background: white;
   border-top: white;
+  cursor: pointer;
 }
 
 </style>
