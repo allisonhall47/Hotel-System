@@ -23,7 +23,7 @@ public class HotelsystemApplication {
 			if (ownerRepository.count() == 0){
 				Account a = accountService.createAccount(new Account("OwnerAccount123", "The Marwaniott", LocalDate.of(1980, 1, 1)));
 				ownerService.createOwner(new Owner("marwan@themarwaniott.com", "Marwan", a));
-				SpecificRoom specificRoom = specificRoomService.createSpecificRoom(new SpecificRoom(10, ViewType.Mountain, "description", true, roomService.createRoom(new Room("Regular", 10, BedType.Double, 2))));
+				SpecificRoom specificRoom1 = specificRoomService.createSpecificRoom(new SpecificRoom(10, ViewType.Mountain, "description", true, roomService.createRoom(new Room("Regular", 10, BedType.Double, 2))));
 				specificRoomService.createSpecificRoom(new SpecificRoom(15, ViewType.Mountain, "description", false, roomService.createRoom(new Room("Suite", 15, BedType.Double, 2))));
 				Account b = accountService.createAccount(new Account("EmployeeAccount123","The Marwaniott", LocalDate.of(1980,1,1)));
 				employeeService.createEmployee(new Employee("tony@themarwaniott.com", "Tony", 6000, b));
@@ -31,7 +31,7 @@ public class HotelsystemApplication {
 				Customer customer = new Customer("anniegouchee@gmail.com","Annie", c);
 				customerService.createCustomer(customer);
 				Reservation res1 = reservationService.createReservation(new Reservation(4, LocalDate.of(1990,3,3), LocalDate.of(1990,3,6), 0, false, CheckInStatus.BeforeCheckIn, customer));
-				reservedRoomService.createReservedRoom(new ReservedRoom(res1, specificRoom));
+				reservedRoomService.createReservedRoom(new ReservedRoom(res1, specificRoom1));
 				//customerService.createCustomer(new Customer("anniegouchee@gmail.com","Annie", c));
 				Account d = accountService.createAccount(new Account("EmployeeAccount123", "The Marwaniott", LocalDate.of(1990,2,2)));
 				employeeService.createEmployee(new Employee("louis@themarwaniott.com","Louis", 8000, d));
