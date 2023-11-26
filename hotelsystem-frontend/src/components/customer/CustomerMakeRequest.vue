@@ -60,7 +60,7 @@
                 </thead>
                 <tbody>
                 <tr v-for="r in requests">
-                  <td class="text-center" style="background: white"><input class="form-control text-center" :id="'number'.concat(r.requestId)" :value="this.resId" readonly></td>
+                  <td class="text-center" style="background: white"><input class="form-control text-center" :id="'number'.concat(r.requestId)" :value="r.reservation.reservationID" readonly></td>
                   <td class="text-center" style="background: white">
                     <div class="column-content">
                       <textarea class="form-control text-center" :id="'description'.concat(r.requestId)" :value="r.description" readonly></textarea>
@@ -146,6 +146,7 @@ export default {
 
       //clear the input fields
       document.getElementById("request_form").reset()
+      console.log(this.requests)
     },
     async Home(){
       await this.$router.push({path: '/CustomerHome/'+this.email})
