@@ -1,6 +1,49 @@
 <template>
   <div class="signup">
     <div class="background">
+
+      <div class="signup-container">
+        <div class="signup-box">
+          <div class="card-header">
+            <h3 class="text-center" style="font-family: 'Montserrat', sans-serif; color: #888; letter-spacing: 2px">SIGN UP</h3>
+          </div>
+          <div class="card-body">
+            <form>
+              <div class="input-group form-group">
+                <input id="name" v-model="name" type="text" class="form-control" style="font-family: 'Georgia', sans-serif" placeholder="Full Name">
+              </div>
+              <div class="input-group form-group">
+                <input id="email" v-model="email" type="email" class="form-control" style="font-family: 'Georgia', sans-serif" placeholder="Email Address">
+              </div>
+              <div class="input-group form-group">
+                <input id="password" v-model="password" type="password" class="form-control" style="font-family: 'Georgia', sans-serif" placeholder="Password">
+              </div>
+              <div class="input-group form-group">
+                <input id="passwordConfirm" v-model="password_confirm" type="password" class="form-control" style="font-family: 'Georgia', sans-serif" placeholder="Confirm Password">
+              </div>
+              <div class="input-group form-group">
+                <input id="address" v-model="address" type="text" class="form-control" style="font-family: 'Georgia', sans-serif" placeholder="Address">
+              </div>
+              <div class="input-group form-group">
+                <input id="dob" v-model="dob" type="date" class="form-control" style="font-family: 'Georgia', sans-serif">
+              </div>
+              <div class="form-group">
+                <button @click="createCustomer()" type="button"
+                        class="btn btn-primary btn-block mb-4 signinbutton">Sign Up</button>
+              </div>
+              <div class="d-flex align-items-center links">
+                <a class="nav-link" style="cursor: pointer" @click="Login">Already have an account? Log In</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="background-image">
+        <div class="layout-background-image">
+        </div>
+      </div>
+
       <div class="navbar-container">
         <nav class="navbar navbar-expand-lg navbar-light transparent-background">
           <a class="navbar-brand" href="#">
@@ -24,58 +67,6 @@
           </div>
         </nav>
       </div>
-
-      <div class="d-flex justify-content-center h-100">
-        <div class="card">
-          <div class="card-header">
-            <h3 class="text-center" style="font-family: 'Montserrat', sans-serif; color: #888; letter-spacing: 2px">SIGN UP</h3>
-          </div>
-          <div class="card-body">
-            <form>
-              <div class="input-group form-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="fas fa-key"></i></span>
-                </div>
-                <input id="name" v-model="name" type="text" class="form-control" style="font-family: 'Georgia', sans-serif" placeholder="Full Name">
-              </div>
-              <div class="input-group form-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="fas fa-user"></i></span>
-                </div>
-                <input id="email" v-model="email" type="email" class="form-control" style="font-family: 'Georgia', sans-serif" placeholder="Email Address">
-              </div>
-              <div class="input-group form-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="fas fa-key"></i></span>
-                </div>
-                <input id="password" v-model="password" type="password" class="form-control" style="font-family: 'Georgia', sans-serif" placeholder="Password">
-              </div>
-              <div class="input-group form-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="fas fa-key"></i></span>
-                </div>
-                <input id="passwordConfirm" v-model="password_confirm" type="password" class="form-control" style="font-family: 'Georgia', sans-serif" placeholder="Confirm Password">
-              </div>
-              <div class="input-group form-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="fas fa-key"></i></span>
-                </div>
-                <input id="address" v-model="address" type="text" class="form-control" style="font-family: 'Georgia', sans-serif" placeholder="Address">
-              </div>
-              <div class="input-group form-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="fas fa-key"></i></span>
-                </div>
-                <input id="dob" v-model="dob" type="date" class="form-control" style="font-family: 'Georgia', sans-serif">
-              </div>
-              <div class="form-group">
-                <button @click="createCustomer()" type="button"
-                        class="btn btn-primary btn-block mb-4 signinbutton">Sign Up</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -87,8 +78,8 @@ var config = require('../../../config')
 var frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
 var backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort
 var axiosClient = axios.create({
- baseURL: backendUrl,
- headers: { 'Access-Control-Allow-Origin': frontendUrl }
+  baseURL: backendUrl,
+  headers: { 'Access-Control-Allow-Origin': frontendUrl }
 })
 
 export default {
@@ -147,7 +138,7 @@ export default {
 
     },
     async Login() {
-      await this.$router.push({name: 'Login'})
+      await this.$router.push({path: '/Login/'})
     },
     async Home(){
       await this.$router.push({name: 'Home'})
@@ -161,22 +152,37 @@ export default {
   width: 100%;
   height: 100%;
   position: absolute;
-  background: url('../../assets/hotelView.png') center center no-repeat;
+  background: white;
   background-size: cover;
 }
 
-.card {
-  background-color: white;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  position: absolute;
-  top: 20%;
-  left: 32%;
-  right: 32%;
-  min-height: 300px;
+.signup {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-.input-group-prepend {
-  background-color: transparent;
+.signup-box {
+  width: 65%;
+}
+
+.background {
+  flex: 1;
+  display: flex;
+}
+
+.background-image {
+  flex: 1;
+  background-image: url('../../assets/hotelRoomView.png');
+  background-size: cover;
+  background-position: center;
+}
+
+.signup-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .navbar-container {
@@ -187,7 +193,7 @@ export default {
 }
 
 .transparent-background {
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(136, 136, 136, 0.3);
 }
 
 .signinbutton {
@@ -209,6 +215,11 @@ export default {
 .clickable-text:hover {
   cursor: pointer;
   color: white !important;
+}
+
+.card-header {
+  background: white;
+  border-bottom: white;
 }
 
 

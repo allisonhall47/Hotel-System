@@ -33,7 +33,7 @@
             <div class="col-md-12 mx-auto text-center">
               <h1 class="text-center" style="font-family: 'Montserrat', serif; color: #888; letter-spacing: 5px; font-size: 45px" >THE MARWANIOTT HOTEL</h1>
               <p class="luxurious-text" style="font-weight: normal; color: #888;">explore. relax. rejuvenate.</p>
-              <button class="btn btn-lg mt-3 custom-login-button" @click="showLoginModal">Book Your Stay</button>
+              <button class="btn btn-lg mt-3 custom-login-button" @click="">Book Your Stay</button>
             </div>
           </div>
         </div>
@@ -92,27 +92,21 @@
 
 export default {
   name: 'CustomerHome',
-  props: {
-    email: {
-      type: String,
-      required: true
-    }
-  },
   data() {
     return {
-      isLoggedIn: false,
+      email: "",
     };
+  },
+  mounted(){
+    this.email = this.$route.params.param1
   },
   methods: {
     async Account() {
-      await this.$router.push({name: 'CustomerAccount', params: {email: this.email}})
+      await this.$router.push({path: '/CustomerAccount/' + this.email})
     },
     async LogOut() {
       alert('Successfully logged out.')
       await this.$router.push({name: 'Home'})
-    },
-    showLoginModal() {
-      console.log('Show login modal');
     },
   }
 };
