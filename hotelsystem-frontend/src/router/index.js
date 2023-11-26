@@ -63,8 +63,8 @@ export default new Router({
       component: CreateCustomerPage
     },
     {
-      path: '/ReservationGuest/:param1'
-      name: 'ReservationGuest'
+      path: '/ReservationGuest/:param1',
+      name: 'ReservationGuest',
       component: ReservationGuest
     },
     {
