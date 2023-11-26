@@ -8,11 +8,13 @@ import CustomerAccount from "../components/customer/CustomerAccount"
 import OwnerHome from "../components/owner/OwnerHome"
 import OwnerAccount from "../components/owner/OwnerAccount"
 import OwnerManageEmployees from "../components/owner/OwnerManageEmployees"
+import OwnerRepair from "../components/owner/OwnerRepair.vue";
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
+
     {
       path: '/',
       name: 'Home',
@@ -40,23 +42,25 @@ export default new Router({
       component: CustomerAccount,
       props: true
     },
+
     {
-     path: '/owner-home',
-     name: 'OwnerHome',
-     component: OwnerHome,
-     props: true
+      path: '/OwnerHome/:param1',
+      component: OwnerHome,
     },
+
     {
-     path: '/owner-account',
-     name: 'OwnerAccount',
-     component: OwnerAccount,
-     props: true
+      path: '/OwnerAccount/:param1',
+      component: OwnerAccount,
     },
+
     {
-     path: '/owner-manage-employees',
-     name: 'OwnerManageEmployees',
-     component: OwnerManageEmployees,
-     props: true
+      path: '/OwnerManageEmployees/:param1',
+      component: OwnerManageEmployees,
+    },
+
+    {
+      path: '/OwnerRepair/:param1',
+      component: OwnerRepair,
     },
   ]
 })
