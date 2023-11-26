@@ -150,7 +150,7 @@ export default {
       await this.$router.push({path: '/OwnerAccount/' + this.email})
     },
     async LogOut(){
-      await this.$router.push({path: '/Home/'})
+      await this.$router.push({name: "Home"})
     },
 
 

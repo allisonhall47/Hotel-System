@@ -143,13 +143,13 @@ export default {
       else if (this.user === "Employee"){
         axiosClient.get("/employee?email=" + this.email)
           .then((response) => {
+            var employeeName = response.data.name;
             this.accountNumber = response.data.accountNumber;
             if(this.accountNumber !== 0){
               axiosClient.get("/account/?accountNumber=" + this.accountNumber)
                 .then((response) => {
                   if(response.data.password === this.password){
                     alert("Successfully logged in.")
-                    var employeeName = response.data.name;
                     this.$router.push({path: '/EmployeeHome/' + this.email + '/' + employeeName})
                   } else {
                     alert("Incorrect Password.")

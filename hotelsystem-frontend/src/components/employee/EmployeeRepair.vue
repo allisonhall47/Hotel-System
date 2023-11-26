@@ -127,7 +127,7 @@ export default {
       await this.$router.push({path: '/EmployeeAccount/' + this.email + '/' + this.name})
     },
     async LogOut() {
-      await this.$router.push({path: '/Home/'})
+      await this.$router.push({name: "Home"})
     },
 
     async submitRepair() {
