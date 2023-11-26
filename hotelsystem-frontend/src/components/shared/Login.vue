@@ -168,7 +168,7 @@ export default {
                 .then((response) => {
                   if(response.data.password === this.password){
                     alert("Successfully logged in.")
-                    this.$router.push({name: 'OwnerHome', params: {email: this.email}})
+                    this.$router.push({path: '/OwnerHome/' + this.email})
                   } else {
                     alert("Incorrect Password.")
                   }
