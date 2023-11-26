@@ -4,6 +4,7 @@ import ca.mcgill.ecse321.hotelsystem.Model.Room;
 import ca.mcgill.ecse321.hotelsystem.Model.SpecificRoom;
 import ca.mcgill.ecse321.hotelsystem.Model.ViewType;
 import ca.mcgill.ecse321.hotelsystem.dto.ReservationRequestDto;
+import ca.mcgill.ecse321.hotelsystem.dto.SpecificRoomAvailableDto;
 import ca.mcgill.ecse321.hotelsystem.dto.SpecificRoomRequestDto;
 import ca.mcgill.ecse321.hotelsystem.dto.SpecificRoomResponseDto;
 import ca.mcgill.ecse321.hotelsystem.service.RoomService;
@@ -47,9 +48,9 @@ public class SpecificRoomController {
     }
 
     @GetMapping(value = "/specificRoom/available/type/{type}")
-    public List<SpecificRoomResponseDto> getAvailableSpecificRoomsByRoomType(@PathVariable String type,@RequestBody ReservationRequestDto reservationRequestDto){
-        LocalDate startDate = reservationRequestDto.getCheckin();
-        LocalDate endDate = reservationRequestDto.getCheckOut();
+    public List<SpecificRoomResponseDto> getAvailableSpecificRoomsByRoomType(@PathVariable String type,@RequestBody SpecificRoomAvailableDto specificRoomAvailableDto){
+        LocalDate startDate = specificRoomAvailableDto.getCheckin();
+        LocalDate endDate = specificRoomAvailableDto.getCheckOut();
         List<SpecificRoom> specificRooms = specificRoomService.getAvailableSpecificRoomByType(startDate, endDate, type);
         return specificRooms.stream().map(SpecificRoomResponseDto::new).collect(Collectors.toList());
     }

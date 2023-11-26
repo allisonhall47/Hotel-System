@@ -81,7 +81,9 @@ export default {
   },
   mounted(){
     this.startDate = this.$route.params.param1;
+    console.log(this.startDate);
     this.endDate = this.$route.params.param2;
+    console.log(this.endDate);
     this.guests = this.$route.params.param3;
     this.rooms = this.$route.params.param4;
     this.roomCombinations = this.findPossibleRoomCombinations(this.guests, this.rooms);
@@ -226,21 +228,72 @@ export default {
 
       return totalPrice;
     },
-    book(combination) {
+    async book(combination) {
+      const combinationString = JSON.stringify(combination);
+      const encodedCombination = encodeURIComponent(combinationString);
       if(combination.hasOwnProperty("Regular")) {
-        axiosClient.get("/specificRoom/type/Regular")
-          .then()
+        const request = {checkin: this.startDate, checkOut: this.endDate};
+        console.log(request);
+        axiosClient.get("/specificRoom/available/type/Regular", request)
+          .then((response) => {
+            if(response.data.size < combination.Regular){
+              alert('Rooms unavailble')
+              return;
+            }
+          })
+          .catch((err) => {
+            this.errorMsg = `Failure: ${err.response.data}`
+            alert(this.errorMsg)
+            return;
+          })
       }
       if(combination.hasOwnProperty("Luxury")) {
-
+        const request = {checkin: this.startDate, checkOut: this.endDate};
+        axiosClient.get("/specificRoom/available/type/Luxury", request)
+          .then((response) => {
+            if(response.data.size < combination.Luxury){
+              alert('Rooms unavailble')
+              return;
+            }
+          })
+          .catch((err) => {
+            this.errorMsg = `Failure: ${err.response.data}`
+            alert(this.errorMsg)
+            return;
+          })
       }
       if(combination.hasOwnProperty("Suite")) {
-
+        const request = {checkin: this.startDate, checkOut: this.endDate};
+        axiosClient.get("/specificRoom/available/type/Suite", request)
+          .then((response) => {
+            if(response.data.size < combination.Suite){
+              alert('Rooms unavailble')
+              return;
+            }
+          })
+          .catch((err) => {
+            this.errorMsg = `Failure: ${err.response.data}`
+            alert(this.errorMsg)
+            return;
+          })
       }
       if(combination.hasOwnProperty("Deluxe")) {
-
+        const request = {checkin: this.startDate, checkOut: this.endDate};
+        axiosClient.get("/specificRoom/available/type/Deluxe", request)
+          .then((response) => {
+            if(response.data.size < combination.Deluxe){
+              alert('Rooms unavailble')
+              return;
+            }
+          })
+          .catch((err) => {
+            this.errorMsg = `Failure: ${err.response.data}`
+            alert(this.errorMsg)
+            return;
+          })
       }
-
+      alert('Everything is good');
+      await this.$router.push({path: '/CreateCustomerPage/' + this.startDate + '/' +  this.endDate + '/' + encodedCombination});
     }
   }
 }
