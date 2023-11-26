@@ -17,10 +17,10 @@
                 <a class="nav-link" href="#">Home<span class="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="Account">Account</a>
+                <a class="nav-link clickable-text" @click="Account">Account</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="LogOut">Log Out</a>
+                <a class="nav-link clickable-text" @click="LogOut">Log Out</a>
               </li>
             </ul>
           </div>
@@ -33,7 +33,7 @@
             <div class="col-md-12 mx-auto text-center">
               <h1 class="text-center" style="font-family: 'Montserrat', serif; color: #888; letter-spacing: 5px; font-size: 45px" >THE MARWANIOTT HOTEL</h1>
               <p class="luxurious-text" style="font-weight: normal; color: #888;">explore. relax. rejuvenate.</p>
-              <button class="btn btn-lg mt-3 custom-login-button" @click="showLoginModal">Book Your Stay</button>
+              <button class="btn btn-lg mt-3 custom-login-button" @click="">Book Your Stay</button>
             </div>
           </div>
         </div>
@@ -92,36 +92,30 @@
 
 export default {
   name: 'CustomerHome',
-  props: {
-    email: {
-      type: String,
-      required: true
-    }
-  },
   data() {
     return {
-      isLoggedIn: false,
+      email: "",
     };
+  },
+  mounted(){
+    this.email = this.$route.params.param1
   },
   methods: {
     async Account() {
-      await this.$router.push({name: 'CustomerAccount', params: {email: this.email}})
+      await this.$router.push({path: '/CustomerAccount/' + this.email})
     },
     async LogOut() {
+      alert('Successfully logged out.')
       await this.$router.push({name: 'Home'})
-    },
-    showLoginModal() {
-      console.log('Show login modal');
     },
   }
 };
 </script>
 
 <style scoped>
-/* Add your custom styles here */
 
 .navbar-brand {
-  margin-right: 0; /* Reset the margin for the navbar-brand */
+  margin-right: 0;
 }
 
 .hero-section {
@@ -159,7 +153,7 @@ export default {
 }
 
 .transparent-background {
-  background-color: rgba(255, 255, 255, 0.2); /* You can replace this color code with your desired dark color */
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .navbar-container {
@@ -167,6 +161,11 @@ export default {
   top: 0;
   left: 0;
   right: 0;
+}
+
+.clickable-text:hover {
+  cursor: pointer;
+  color: white !important;
 }
 
 </style>
