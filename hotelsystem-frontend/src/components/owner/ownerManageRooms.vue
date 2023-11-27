@@ -12,7 +12,7 @@
           </button>
           <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
-              <li class="nav-item active">
+              <li class="nav-item">
                 <a class="nav-link" @click="Home">Home</a>
               </li>
               <li class="nav-item">
@@ -21,7 +21,7 @@
               <li class="nav-item">
                 <a class="nav-link" @click="Repair">Manage Repairs</a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item active">
                 <a class="nav-link" @click="Rooms">Manage Rooms</a>
               </li>
               <li class="nav-item">
@@ -29,6 +29,9 @@
               </li>
               <li class="nav-item">
                 <a class="nav-link" @click="Account">Account</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link clickable-text" @click="Reservations">View Reservations</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" @click="LogOut">Log Out</a>
@@ -233,6 +236,9 @@ export default {
     },
     async Schedule(){
       await this.$router.push({path: '/owner-view-schedule/' + this.email})
+    },
+    async Reservations(){
+      await this.$router.push({path: '/OwnerReservation/' + this.email + '/' + this.name})
     },
   }
 }

@@ -31,6 +31,9 @@
                 <a class="nav-link" href="#">Account<span class="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
+                <a class="nav-link clickable-text" @click="Reservations">View Reservations</a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link clickable-text" @click="LogOut">Log Out</a>
               </li>
             </ul>
@@ -203,6 +206,9 @@ export default {
     async Schedule(){
       await this.$router.push({path: '/owner-view-schedule/' + this.email})
     },
+    async Reservations(){
+      await this.$router.push({path: '/OwnerReservation/' + this.email + '/' + this.name})
+    },
   }
 };
 
@@ -279,7 +285,7 @@ export default {
 }
 
 .transparent-background {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.6);
 }
 
 .navbar-container {
