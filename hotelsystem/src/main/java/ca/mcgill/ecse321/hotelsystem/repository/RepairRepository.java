@@ -9,4 +9,7 @@ public interface RepairRepository extends CrudRepository<Repair, Integer> {
     Repair findRepairByRepairId(int repairId);
     List<Repair> findRepairsByEmployee_Email(String email);
     void deleteRepairByRepairId(int repairId);
+
+    List<Repair> findAll();
+
 }

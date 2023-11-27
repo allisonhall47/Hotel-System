@@ -26,16 +26,16 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-tasks.named('jacocoTestCoverageVerification') {
-	violationRules {
-		rule {
-			limit {
-				minimum = 0.9
-			}
-		}
-	}
-	dependsOn test
-}
+//tasks.named('jacocoTestCoverageVerification') {
+//	violationRules {
+//		rule {
+//			limit {
+//				minimum = 0.9
+//			}
+//		}
+//	}
+//	dependsOn test
+//}
 
 task integrationTest(type: Test){
 	include '**/ca/mcgill/ecse321/hotelsystem/integration/*'

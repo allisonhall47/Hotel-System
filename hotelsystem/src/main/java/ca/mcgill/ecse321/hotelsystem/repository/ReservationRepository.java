@@ -10,7 +10,8 @@ public interface ReservationRepository extends CrudRepository<Reservation, Integ
     Reservation findReservationByReservationID(int id);
     List<Reservation> findReservationsByCheckin(LocalDate date);
     List<Reservation> findReservationsByCustomerEmail(String email); // potentially customer_email
-
     void deleteReservationByReservationID(int id);
-
+    List<Reservation> findAll();
+    List<Reservation> getReservationByCustomerEmail(String email);
+    List<Reservation> getReservationByPaidIs(boolean paid);
 }
