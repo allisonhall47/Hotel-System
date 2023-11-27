@@ -57,7 +57,7 @@
             <th>Check in</th>
             <th>Checkout</th>
             <th>People</th>
-            <th>Total Price</th>
+<!--            <th>Total Price</th>-->
             <th>Paid</th>
             <th>Status</th>
             <th>Delete</th>
@@ -74,7 +74,7 @@
             <td>{{ res.checkin }}</td>
             <td>{{ res.checkOut }}</td>
             <td>{{ res.numPeople }}</td>
-            <td> {{res.totalPrice}}$</td>
+<!--            <td> {{res.totalPrice}}$</td>-->
             <td v-if="res.paid">Paid</td>
             <td v-if="!res.paid">
               <button @click="openConfirmationPopup(0, res.reservationId)" class="prettybutton">Pay</button>

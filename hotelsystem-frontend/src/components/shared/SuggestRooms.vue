@@ -76,10 +76,10 @@ export default {
       guests: 0,
       newGuests: 0,
       rooms: 0,
-      regularRoom: ['Regular', 899, 'Queen', 2],
-      deluxeRoom: ['Deluxe', 1299, 'Queen', 4],
-      luxuryRoom: ['Luxury', 1499, 'King', 2],
-      suite: ['Suite', 1999, 'King', 4],
+      regularRoom: ['Regular', 450, 'Queen', 2],
+      deluxeRoom: ['Deluxe', 600, 'Queen', 4],
+      luxuryRoom: ['Luxury', 950, 'King', 2],
+      suite: ['Suite', 1400, 'King', 4],
       roomCombinations: []
     }
   },

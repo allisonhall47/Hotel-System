@@ -241,7 +241,7 @@ export default {
 <style scoped>
 
 .background {
-  background-color: white;
+  background-color: white !important;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
