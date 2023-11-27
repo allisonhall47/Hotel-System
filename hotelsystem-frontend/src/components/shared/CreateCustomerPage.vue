@@ -129,7 +129,6 @@ export default{
                       const reservedRoom_request = {linkedReservationId: this.reservationId, roomNumber: specificRoomNumber};
                       axiosClient.post("/reservedRoom/new", reservedRoom_request)
                     }
-                    this.Confirmation();
                   })
                   .catch((err) => {
                     this.errorMsg = `Failure: ${err.response.data}`
@@ -146,7 +145,6 @@ export default{
                       const reservedRoom_request = {linkedReservationId: this.reservationId, roomNumber: specificRoomNumber};
                       axiosClient.post("/reservedRoom/new", reservedRoom_request)
                     }
-                    this.Confirmation();
                   })
                   .catch((err) => {
                     this.errorMsg = `Failure: ${err.response.data}`
@@ -163,7 +161,6 @@ export default{
                       const reservedRoom_request = {linkedReservationId: this.reservationId, roomNumber: specificRoomNumber};
                       axiosClient.post("/reservedRoom/new", reservedRoom_request)
                     }
-                    this.Confirmation();
                   })
                   .catch((err) => {
                     this.errorMsg = `Failure: ${err.response.data}`
@@ -180,7 +177,6 @@ export default{
                       const reservedRoom_request = {linkedReservationId: this.reservationId, roomNumber: specificRoomNumber};
                       axiosClient.post("/reservedRoom/new", reservedRoom_request)
                     }
-                    this.Confirmation();
                   })
                   .catch((err) => {
                     this.errorMsg = `Failure: ${err.response.data}`
@@ -192,12 +188,15 @@ export default{
             .catch((err) => {
               this.errorMsg = `Failure: ${err.response.data}`
               alert(this.errorMsg)
+              return;
             })
         })
         .catch((err) => {
           this.errorMsg = `Failure: ${err.response.data}`
           alert(this.errorMsg)
+          return;
         })
+      await this.$router.push({path: '/BookedConfirmation/'})
     }
   }
 }

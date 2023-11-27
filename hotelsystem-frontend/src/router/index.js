@@ -110,8 +110,7 @@ export default new Router({
       component: CustomerMakeRequest
     },
     {
-      path: '/owner-view-schedule',
-      name: 'OwnerViewSchedule',
+      path: '/owner-view-schedule/:param1',
       component: OwnerViewSchedule,
     },
     {

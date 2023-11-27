@@ -10,7 +10,8 @@
                   <h1 class="text-center" style="font-family: 'Montserrat', serif; color: #888; font-size: 42px" >Reservation Confirmed!</h1>
                   <div style="margin-top: 30px;"></div>
                   <p class="luxurious-text" style="font-weight: normal; color: #888;">We are looking forward to welcoming you at The Marwaniott Hotel</p>
-                  <div style="margin-top: 15px;"></div>
+                  <div style="margin-top: 30px;"></div>
+                  <button class="btn custom-guest-button" style="margin-right: 10px;" @click="Home">Return to Home</button>
                 </div>
               </div>
             </div>
@@ -132,6 +133,18 @@ export default{
   top: 0;
   left: 0;
   right: 0;
+}
+
+.custom-guest-button {
+  background-color: transparent;
+  color: #888;
+  border: 2px solid #888;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.custom-guest-button:hover {
+  background-color: #888;
+  color: white;
 }
 
 </style>

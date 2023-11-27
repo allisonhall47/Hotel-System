@@ -6,19 +6,38 @@
           <a class="navbar-brand" href="#">
             <img src="../../assets/marwaniottNoBG.png" alt="Your Logo" height="60">
           </a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                  aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link" @click="LogOut">LogOut</a>
+                <a class="nav-link clickable-text" @click="Home">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link clickable-text" @click="ManageEmployees">Manage Employees</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link clickable-text" @click="Repair">Manage Repairs</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link clickable-text" @click="Rooms">Manage Rooms</a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="#">Schedule<span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link clickable-text" @click="Account">Account</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link clickable-text" @click="LogOut">Log Out</a>
               </li>
             </ul>
           </div>
         </nav>
       </div>
+
+
       <div class="table-container">
         <div class="buttons-container">
           <button @click="openCreateShiftPopup" class="prettybutton">Create Shift</button>
@@ -286,14 +305,21 @@ export default {
     SelectDateFilter() {
       this.scheduleFilter = 1
     },
+
+    async Account(){
+      await this.$router.push({path: '/OwnerAccount/' + this.email})
+    },
     async Home(){
-      await this.$router.push({name: 'OwnerHome', params: {email: this.email}})
+      await this.$router.push({path: '/OwnerHome/' + this.email})
     },
     async ManageEmployees(){
-      await this.$router.push({name: 'OwnerManageEmployees', params: {email: this.email}})
+      await this.$router.push({path: '/OwnerManageEmployees/' + this.email})
     },
-    async Account(){
-      await this.$router.push({name: 'OwnerAccount', params: {email: this.email}})
+    async Repair(){
+      await this.$router.push({path: '/OwnerRepair/' + this.email})
+    },
+    async Rooms(){
+      await this.$router.push({path: '/owner/manage_rooms/' + this.email})
     },
     async LogOut(){
       await this.$router.push({name: 'Home'})
@@ -308,8 +334,12 @@ export default {
   width: 100%;
   height: 100%;
   position: absolute;
-  background: url('../../assets/pattern.png') center center no-repeat;
+  background: url('../../assets/hotelLobby.jpeg') center center no-repeat;
   background-size: cover;
+}
+
+.transparent-background {
+  background-color: rgba(255, 255, 255, 0.6);
 }
 
 body {
@@ -321,7 +351,7 @@ body {
 }
 
 .table-container {
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 1);
   padding: 2%;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -329,7 +359,7 @@ body {
   top: 25%;
   left: 10%;
   right: 10%;
-  min-height: 300px;
+  min-height: 500px;
 }
 
 .buttons-container {
@@ -466,7 +496,7 @@ th {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+  background-color: rgba(0, 0, 0, 0.5);
   justify-content: center;
   align-items: center;
   z-index: 2;
@@ -475,10 +505,9 @@ th {
 .popup-container {
   display: block;
   position: relative;
-  z-index: 3; /* Ensure the popup container is on top of other content */
+  z-index: 3;
 }
 
-/* Styles for the popup */
 .popup {
   width: 350px;
   height: 350px;
@@ -486,6 +515,11 @@ th {
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.clickable-text:hover {
+  cursor: pointer;
+  color: white !important;
 }
 
 </style>
