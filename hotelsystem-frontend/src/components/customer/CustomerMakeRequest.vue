@@ -7,16 +7,22 @@
           <a class="navbar-brand" href="#">
             <img src="../../assets/marwaniottNoBG.png" alt="Your Logo" height="60">
           </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
           <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link" @click="Home">Home</a>
-              </li>
-              <li class="nav-item active">
-                <a class="nav-link" @click="Request">Requests</a>
+                <a class="nav-link clickable-text" @click="Home">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="Reservation">Reservations</a>
+                <a class="nav-link clickable-text" @click="Reservations">Reservations</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link clickable-text" @click="Account">Account</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link clickable-text" @click="LogOut">Log Out</a>
               </li>
             </ul>
           </div>
@@ -27,14 +33,11 @@
         <div class="d-flex justify-content-center h-100">
           <div class="card">
             <div class="card-header">
-              <h3 class="text-center" style="font-family: 'Montserrat', serif; color: #888; letter-spacing: 2px">MAKE A REQUEST</h3>
+              <h3 class="text-center" style="font-family: 'Montserrat', sans-serif; color: #888; letter-spacing: 3px">MAKE A REQUEST</h3>
             </div>
             <div class="card-body">
               <form id="request_form">
                 <div class="input-group form-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fas fa-user"></i></span>
-                  </div>
                   <textarea id="request-description" v-model="newRequest.description" class="form-control" style="font-family: 'Georgia', sans-serif" placeholder="Enter a description"></textarea>
                 </div>
                 <div class="form-group">
@@ -47,7 +50,7 @@
 
         <div class="d-flex justify-content-center h-100">
           <div class="table-container">
-            <div class="table-responsive  luxurious-text">
+            <div class="table-responsive  luxurious-text" style="font-family: 'Montserrat', sans-serif; color: #888; letter-spacing: 3px">
               <h3>All Requests for reservation {{this.resId}}:</h3>
               <table class="table table-bordered">
                 <thead>
@@ -151,11 +154,14 @@ export default {
     async Home(){
       await this.$router.push({path: '/CustomerHome/'+this.email})
     },
-    async Request(){
-      await this.$router.push({path: this.resId})
+    async LogOut() {
+      await this.$router.push({name: 'Home'})
     },
-    async Reservation(){
-      await this.$router.push({path: '/customer/reservation/'+this.email})
+    async Reservations() {
+      await this.$router.push({path: '/customer/reservation/' + this.email})
+    },
+    async Account() {
+      await this.$router.push({path: '/CustomerAccount/' + this.email})
     },
   },
 }
@@ -193,11 +199,12 @@ export default {
   right: 30%;
   min-height: 300px;
   display: block;
+  background: white;
   clear: both;
 }
 
 .table-container {
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 1);
   padding: 2%;
   margin-top: 2%;
   border-radius: 10px;
@@ -279,5 +286,10 @@ td:nth-child(4){
   font-family: 'Georgia', sans-serif;
   font-weight: bold;
   color: black;
+}
+
+.clickable-text:hover {
+  cursor: pointer;
+  color: white !important;
 }
 </style>

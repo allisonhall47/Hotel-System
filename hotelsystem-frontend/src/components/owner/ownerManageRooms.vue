@@ -13,25 +13,25 @@
           <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item active">
-                <a class="nav-link" @click="Home">Home</a>
+                <a class="nav-link clickable-text" @click="Home">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="ManageEmployees">Manage Employees</a>
+                <a class="nav-link clickable-text" @click="ManageEmployees">Manage Employees</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="Repair">Manage Repairs</a>
+                <a class="nav-link clickable-text" @click="Repair">Manage Repairs</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="Rooms">Manage Rooms</a>
+                <a class="nav-link" href="#">Manage Rooms<span class="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
                 <a class="nav-link clickable-text" @click="Schedule">Schedule</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="Account">Account</a>
+                <a class="nav-link clickable-text" @click="Account">Account</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="LogOut">Log Out</a>
+                <a class="nav-link clickable-text" @click="LogOut">Log Out</a>
               </li>
             </ul>
           </div>
@@ -356,4 +356,11 @@ td:nth-child(4){
 .nav-link:hover {
   cursor: pointer;
 }
+
+.clickable-text:hover {
+  cursor: pointer;
+  color: white !important;
+}
+
+
 </style>
