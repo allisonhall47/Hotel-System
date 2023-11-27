@@ -24,6 +24,10 @@ import EmployeeViewSchedule from "../components/employee/EmployeeViewSchedule";
 import EmployeeReservation from "../components/employee/EmployeeReservation";
 import OwnerRepair from "../components/owner/OwnerRepair.vue";
 import BookedConfirmation from "../components/shared/BookedConfirmation";
+import CustomerReservation from "../components/customer/CustomerReservation.vue";
+import SuggestRoomsCustomer from "../components/customer/SuggestRoomsCustomer.vue";
+import ConfirmReservation from "../components/customer/ConfirmReservation.vue";
+import BookedConfirmationCustomer from "../components/customer/BookedConfirmationCustomer.vue";
 
 Vue.use(Router)
 
@@ -54,6 +58,11 @@ export default new Router({
       component: CreateAccountSuggestion
     },
     {
+      path: '/BookedConfirmationCustomer/:param1',
+      name: 'BookedConfirmationCustomer',
+      component: BookedConfirmationCustomer
+    },
+    {
       path: '/SuggestRooms/:param1/:param2/:param3/:param4/:param5',
       name: 'SuggestRooms',
       component: SuggestRooms
@@ -64,9 +73,19 @@ export default new Router({
       component: CreateCustomerPage
     },
     {
-      path: '/ReservationGuest/:param1',
-      name: 'ReservationGuest',
-      component: ReservationGuest
+      path: '/CustomerReservation/:param1',
+      name: 'CustomerReservation',
+      component: CustomerReservation
+    },
+    {
+      path: '/SuggestRoomsCustomer/:param1/:param2/:param3/:param4/:param5/:param6',
+      name: 'SuggestRoomsCustomer',
+      component: SuggestRoomsCustomer
+    },
+    {
+      path: '/ConfirmReservation/:param1/:param2/:param3/:param4/:param5',
+      name: 'ConfirmReservation',
+      component: ConfirmReservation
     },
     {
       path: '/CustomerHome/:param1',
