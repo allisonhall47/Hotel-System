@@ -389,10 +389,7 @@ th {
   color: #4e555b;
 }
 
-/*.prettyheader {*/
-/*  color: #721c24;*/
-/*  margin-bottom: 10%;*/
-/*}*/
+
 .prettyheader {
   margin-bottom: 10%;
   font-family: 'Montserrat', sans-serif;
@@ -400,7 +397,6 @@ th {
   letter-spacing: 3px;
 }
 
-/* Dropdown styles */
 .dropdown {
   position: relative;
   display: inline-block;
