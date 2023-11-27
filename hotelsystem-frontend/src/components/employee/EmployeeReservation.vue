@@ -56,8 +56,8 @@
             <th>Customer</th>
             <th>Check in</th>
             <th>Checkout</th>
+            <th>Room Number</th>
             <th>People</th>
-<!--            <th>Total Price</th>-->
             <th>Paid</th>
             <th>Status</th>
             <th>Delete</th>
@@ -74,7 +74,6 @@
             <td>{{ res.checkin }}</td>
             <td>{{ res.checkOut }}</td>
             <td>{{ res.numPeople }}</td>
-<!--            <td> {{res.totalPrice}}$</td>-->
             <td v-if="res.paid">Paid</td>
             <td v-if="!res.paid">
               <button @click="openConfirmationPopup(0, res.reservationId)" class="prettybutton">Pay</button>
@@ -301,8 +300,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh; /* 100% of the viewport height */
-  margin: 0; /* Remove default margin */
+  height: 100vh;
+  margin: 0;
 }
 
 .table-container {
@@ -324,7 +323,7 @@ body {
 table {
   border-collapse: collapse;
   margin: 0 auto;
-  width: 100%; /* Adjust the width as needed */
+  width: 100%;
 }
 
 th, td {
@@ -445,7 +444,6 @@ th {
   color: white;
 }
 
-/* Styles for overlay */
 .overlay {
   display: flex;
   position: fixed;
@@ -453,7 +451,7 @@ th {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+  background-color: rgba(0, 0, 0, 0.5);
   justify-content: center;
   align-items: center;
   z-index: 2;
@@ -462,7 +460,7 @@ th {
 .popup-container {
   display: block;
   position: relative;
-  z-index: 3; /* Ensure the popup container is on top of other content */
+  z-index: 3;
 }
 
 /* Styles for the popup */

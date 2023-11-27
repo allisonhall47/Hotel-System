@@ -310,11 +310,11 @@ export default {
 
 <style scoped>
 .container.mt-5 {
-  margin-top: 0 !important; /* Adjust the value as needed */
+  margin-top: 0 !important;
 }
 
 .navbar-brand {
-  margin-right: 0; /* Reset the margin for the navbar-brand */
+  margin-right: 0;
 }
 
 .hero-section {

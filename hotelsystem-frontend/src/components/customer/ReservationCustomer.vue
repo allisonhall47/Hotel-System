@@ -145,22 +145,11 @@ export default {
     async cancel(id) {
       await axiosClient.delete('/reservation/cancel/'+id)
         .then(response => {
-          //remove it
-          // let tmp = null
-          // for(const element in this.reservations) {
-          //   if(element.reservationId === id) {
-          //     tmp = element
-          //     break
-          //   }
-          // }
-          //
-          // if(tmp !== null) this.reservations.remove(tmp)
           alert("successfully deleted reservation with id: " + id)
         })
         .catch(err => {
           this.errorMsg = `Failure: ${err.response.data}`
           alert(this.errorMsg)
-          //console.log(err.response.data)
         })
 
       //get the new list of reservations without the one that got cancelled
@@ -171,7 +160,6 @@ export default {
         .catch(err => {
           this.errorMsg = `Failure: ${err.response.data}`
           alert(this.errorMsg)
-          //console.log(err.response.data)
         })
     },
     async Home(){
@@ -180,9 +168,6 @@ export default {
     async newRequest(reservationId){
       await this.$router.push({path: 'make_request/'+this.email+'/'+reservationId})
     },
-    // async Reservation(){
-    //   await this.$router.push({path: 'customer/'+this.email+'/reservation'})
-    // },
     async Account() {
       await this.$router.push({path: '/CustomerAccount/' + this.email})
     },
@@ -211,7 +196,7 @@ export default {
 }
 
 .navbar-brand {
-  margin-right: 0; /* Reset the margin for the navbar-brand */
+  margin-right: 0;
 }
 
 
@@ -294,7 +279,7 @@ export default {
 }
 
 .navbar-brand {
-  margin-right: 0; /* Reset the margin for the navbar-brand */
+  margin-right: 0;
 }
 
 .luxurious-text {
