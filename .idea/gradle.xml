@@ -5,6 +5,7 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/hotelsystem" />
+        <option name="gradleHome" value="/usr/local/Cellar/gradle/8.3/libexec" />
         <option name="gradleJvm" value="liberica-17" />
         <option name="modules">
           <set>

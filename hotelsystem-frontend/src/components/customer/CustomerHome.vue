@@ -36,7 +36,7 @@
             <div class="col-md-12 mx-auto text-center">
               <h1 class="text-center" style="font-family: 'Montserrat', serif; color: #888; letter-spacing: 5px; font-size: 45px" >THE MARWANIOTT HOTEL</h1>
               <p class="luxurious-text" style="font-weight: normal; color: #888;">explore. relax. rejuvenate.</p>
-              <button class="btn btn-lg mt-3 custom-login-button" @click="">Book Your Stay</button>
+              <button class="btn btn-lg mt-3 custom-login-button" @click="BookRoom">Book Your Stay</button>
             </div>
           </div>
         </div>
@@ -125,6 +125,9 @@ export default {
       alert('Successfully logged out.')
       await this.$router.push({name: 'Home'})
     },
+    async BookRoom(){
+      await this.$router.push({path: '/CustomerReservation/' + this.email})
+    }
   }
 };
 </script>

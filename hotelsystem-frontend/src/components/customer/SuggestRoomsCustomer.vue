@@ -14,10 +14,13 @@
               <a class="nav-link" @click="Home">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" @click="LogOut">Log Out</a>
+              <a class="nav-link" @click="Account">Account</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" @click="Account">Account</a>
+              <a class="nav-link clickable-text" @click="Reservations">Reservations</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" @click="LogOut">Log Out</a>
             </li>
           </ul>
         </div>
@@ -93,10 +96,11 @@ export default {
   },
   methods: {
     findPossibleRoomCombinations(guests, totalRooms) {
+      guests = parseInt(guests, 10);
       // Step 1: Find basic room combinations
       let basicCombos = [];
       if (guests % 2 === 1) {
-        guests += 1; // Adjusting odd number of guests to even
+        guests = guests + 1; // Adjusting odd number of guests to even
       }
       for (let i = 0; i <= guests / 4; i++) {
         const remainingGuests = guests - i * 4;
@@ -211,13 +215,16 @@ export default {
       }
     },
     async Account() {
-      await this.$router.push({name: 'CustomerAccount', params: {email: this.email}})
+      await this.$router.push({name: 'CustomerAccount', params: {email: this.customerEmail}})
     },
     async LogOut() {
       await this.$router.push({name: 'Home'})
     },
     async Home() {
-      await this.$router.push({name: 'Home'})
+      await this.$router.push({path: '/CustomerHome/' + this.customerEmail})
+    },
+    async Reservations() {
+      await this.$router.push({path: '/customer/reservation/' + this.customerEmail})
     },
     getTotalCombinationPrice(combination) {
       let totalPrice = 0;
@@ -237,7 +244,7 @@ export default {
         axiosClient.get("/specificRoom/available/type/Regular/" + this.startDate + '/' + this.endDate)
           .then((response) => {
             if(response.data.length < combination.Regular){
-              alert('Rooms unavailble')
+              alert('Rooms unavailable')
               return;
             }
           })
@@ -251,7 +258,7 @@ export default {
         axiosClient.get("/specificRoom/available/type/Luxury/"+ this.startDate + '/' + this.endDate)
           .then((response) => {
             if(response.data.length < combination.Luxury){
-              alert('Rooms unavailble')
+              alert('Rooms unavailable')
               return;
             }
           })
@@ -265,7 +272,7 @@ export default {
         axiosClient.get("/specificRoom/available/type/Suite/"+ this.startDate + '/' + this.endDate)
           .then((response) => {
             if(response.data.length < combination.Suite){
-              alert('Rooms unavailble')
+              alert('Rooms unavailable')
               return;
             }
           })
@@ -279,7 +286,7 @@ export default {
         axiosClient.get("/specificRoom/available/type/Deluxe"+ this.startDate + '/' + this.endDate)
           .then((response) => {
             if(response.data.length < combination.Deluxe){
-              alert('Rooms unavailble')
+              alert('Rooms unavailable')
               return;
             }
           })
@@ -289,7 +296,7 @@ export default {
             return;
           })
       }
-      await this.$router.push({path: '/CreateCustomerPage/' + this.startDate + '/' +  this.endDate + '/' + encodedCombination + '/' + this.newGuests});
+      await this.$router.push({path: '/ConfirmReservation/' + this.startDate + '/' +  this.endDate + '/' + encodedCombination + '/' + this.newGuests + '/' + this.customerEmail});
     }
   }
 }

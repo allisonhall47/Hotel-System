@@ -3,41 +3,41 @@
     <div class="background">
       <div class="reservation-container">
         <div class="reservation-box">
-            <div class="card custom-card-width justify-content-center">
-              <div class="card-body">
-                <div class="card-header">
-                  <h3 class="text-center" style="font-family: 'Montserrat', sans-serif; color: #888; letter-spacing: 2px">ROOM RESERVATION</h3>
-                </div>
+          <div class="card custom-card-width justify-content-center">
+            <div class="card-body">
+              <div class="card-header">
+                <h3 class="text-center" style="font-family: 'Montserrat', sans-serif; color: #888; letter-spacing: 2px">ROOM RESERVATION</h3>
+              </div>
 
-                <!-- Number of Guests -->
-                <div class="form-group custom-form-group">
-                  <label class="luxurious-text" for="guests">Number of Guests:</label>
-                  <input type="number" class="form-control" id="guests" v-model="guests">
-                </div>
+              <!-- Number of Guests -->
+              <div class="form-group custom-form-group">
+                <label class="luxurious-text" for="guests">Number of Guests:</label>
+                <input type="number" class="form-control" id="guests" v-model="guests">
+              </div>
 
-                <div class="form-group custom-form-group">
-                  <label class="luxurious-text" for="guests">Number of Rooms:</label>
-                  <input type="number" class="form-control" id="rooms" v-model="rooms">
-                </div>
+              <div class="form-group custom-form-group">
+                <label class="luxurious-text" for="guests">Number of Rooms:</label>
+                <input type="number" class="form-control" id="rooms" v-model="rooms">
+              </div>
 
-                <!-- Start Date -->
-                <div class="form-group custom-form-group">
-                  <label class="luxurious-text" for="startDate">Start Date:</label>
-                  <input type="date" class="form-control" id="startDate" v-model="startDate">
-                </div>
+              <!-- Start Date -->
+              <div class="form-group custom-form-group">
+                <label class="luxurious-text" for="startDate">Start Date:</label>
+                <input type="date" class="form-control" id="startDate" v-model="startDate">
+              </div>
 
-                <!-- End Date -->
-                <div class="form-group custom-form-group">
-                  <label class="luxurious-text" for="endDate">End Date:</label>
-                  <input type="date" class="form-control" id="endDate" v-model="endDate">
-                </div>
-                <div style="margin-bottom: 20px;"></div>
-                <div class="text-center">
-                  <!-- Reservation Button -->
-                  <button class="btn btn-primary custom-reservation-button" @click="SuggestRooms">View Rooms</button>
-                </div>
+              <!-- End Date -->
+              <div class="form-group custom-form-group">
+                <label class="luxurious-text" for="endDate">End Date:</label>
+                <input type="date" class="form-control" id="endDate" v-model="endDate">
+              </div>
+              <div style="margin-bottom: 20px;"></div>
+              <div class="text-center">
+                <!-- Reservation Button -->
+                <button class="btn btn-primary custom-reservation-button" @click="SuggestRooms">View Rooms</button>
               </div>
             </div>
+          </div>
         </div>
       </div>
 
@@ -65,6 +65,12 @@
               <li class="nav-item">
                 <a class="nav-link clickable-text" @click="SignUp">SignUp</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link clickable-text" @click="Reservations">Reservations</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link clickable-text" @click="Account">Account</a>
+              </li>
             </ul>
           </div>
         </nav>
@@ -75,7 +81,7 @@
 
 <script>
 export default {
-  name: "ReservationGuest",
+  name: "CustomerReservation",
   data() {
     return {
       startDate: '',
@@ -83,7 +89,11 @@ export default {
       guests: 0,
       new_guests: 0,
       rooms: 0,
+      email: ''
     }
+  },
+  mounted() {
+    this.email = this.$route.params.param1
   },
   methods: {
     async Login() {
@@ -94,6 +104,12 @@ export default {
     },
     async Home() {
       await this.$router.push({name: 'Home'})
+    },
+    async Reservations() {
+      await this.$router.push({path: '/customer/reservation/' + this.email})
+    },
+    async Account() {
+      await this.$router.push({path: '/CustomerAccount/' + this.email})
     },
     async SuggestRooms() {
       this.new_guests = this.guests;
@@ -133,11 +149,12 @@ export default {
           return;
         }
         if (parseInt(this.rooms, 10)*2> parseInt(this.guests, 10)+1) {
+          console.log('hello')
           this.guests = parseInt(this.rooms,10)*2;
         }
       }
       if (parseInt(this.guests,10)%2 === 0) {
-        if ((parseInt(this.rooms,10)*4)<parseInt(this.guests,10)) {
+        if ((this.rooms*4)<this.guests) {
           alert('Stop it G');
           return;
         }
@@ -145,8 +162,7 @@ export default {
           this.guests = parseInt(this.rooms,10)*2;
         }
       }
-
-      await this.$router.push({path: '/SuggestRooms/' + this.startDate + '/' +  this.endDate + '/' +this.guests + '/' +this.rooms + '/' + this.new_guests})
+      await this.$router.push({path: '/SuggestRoomsCustomer/' + this.startDate + '/' +  this.endDate + '/' +this.guests + '/' +this.rooms + '/' + this.new_guests + '/' + this.email})
     }
   }
 }
