@@ -214,8 +214,9 @@ export default {
   margin-right: 0; /* Reset the margin for the navbar-brand */
 }
 
+
 .transparent-background {
-  background-color: rgba(255, 255, 255, 0.3); /* You can replace this color code with your desired dark color */
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .nav-link:hover {
@@ -223,7 +224,7 @@ export default {
 }
 
 .reservations-container {
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 1);
   padding: 2%;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -231,7 +232,7 @@ export default {
   top: 25%;
   left: 3%;
   right: 3%;
-  min-height: 300px;
+  min-height: 500px;
 }
 
 .table-responsive {
@@ -275,12 +276,6 @@ export default {
   color: white;
 }
 
-.payButtonDisabled {
-  width: 100%;
-  border: 2px solid #0055FF;
-  background-color: #7c1919;
-  color: white;
-}
 
 .luxurious-text {
   font-family: 'Georgia', sans-serif;
@@ -298,42 +293,6 @@ export default {
   color: white !important;
 }
 
-.background {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  background: white;
-  background-size: cover;
-}
-
-.reservation {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.reservation-box {
-  width: 65%;
-}
-
-.background {
-  flex: 1;
-  display: flex;
-}
-
-.background-image {
-  flex: 1;
-  background-image: url('../../assets/hotelView.png');
-  background-size: cover;
-  background-position: center;
-}
-
-.reservation-container {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 .navbar-brand {
   margin-right: 0; /* Reset the margin for the navbar-brand */
 }
@@ -343,11 +302,6 @@ export default {
   color: #888;
 }
 
-
-.transparent-background {
-  background-color: rgba(136, 136, 136, 0.3); /* You can replace this color code with your desired dark color */
-}
-
 .navbar-container {
   position: absolute;
   top: 0;
@@ -355,43 +309,5 @@ export default {
   right: 0;
 }
 
-
-.custom-card-width {
-  width: 100%;
-  max-width: 800px !important;
-  margin: 0 auto;
-  top: 30%;
-  border: none !important;
-}
-
-.custom-form-group {
-  width: 100%;
-  margin-bottom: 15px;
-}
-
-.custom-reservation-button {
-  background-color: transparent;
-  color: #888;
-  border: 2px solid #888;
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.custom-reservation-button:hover {
-  background-color: #888;
-  color: white;
-}
-
-.card-header {
-  background: white;
-  border-bottom: white;
-}
-
-#startDate::placeholder {
-  color:#888;
-}
-
-#endDate::placeholder {
-  color:#888;
-}
 
 </style>

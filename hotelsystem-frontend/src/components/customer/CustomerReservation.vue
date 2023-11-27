@@ -207,7 +207,7 @@ export default {
   align-items: center;
 }
 .navbar-brand {
-  margin-right: 0; /* Reset the margin for the navbar-brand */
+  margin-right: 0;
 }
 
 .luxurious-text {
@@ -217,7 +217,7 @@ export default {
 
 
 .transparent-background {
-  background-color: rgba(136, 136, 136, 0.3); /* You can replace this color code with your desired dark color */
+  background-color: rgba(136, 136, 136, 0.3);
 }
 
 .navbar-container {

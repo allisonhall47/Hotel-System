@@ -239,22 +239,21 @@ export default {
 </script>
 
 <style scoped>
+
 .background {
-  width: 100%;
-  color: #c1cbd6;
-  height: 100%;
-  position: absolute;
-  /*background: url('../../assets/hotelView.png') center center no-repeat;*/
-  /*background-size: cover;*/
+  background-color: white;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .manage-room-container {
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 1);
   padding: 2%;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   position: absolute;
-  top: 25%;
+  top: 15%;
   left: 3%;
   right: 3%;
   min-height: 300px;
@@ -272,7 +271,7 @@ export default {
 }
 
 .transparent-background {
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(136, 136, 136, 0.3);
 }
 
 th:nth-child(3),

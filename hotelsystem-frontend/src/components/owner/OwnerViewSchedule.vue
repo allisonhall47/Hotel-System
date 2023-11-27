@@ -68,8 +68,7 @@
           </tr>
 
           <tr v-for="shift in shifts" :key="shift.id">
-            <td>{{shift.employeeName}}
-            </td>
+            <td>{{shift.employeeEmail}}</td>
             <td>{{ shift.date }}</td>
             <td>{{ shift.startTime }}</td>
             <td>{{ shift.endTime }}</td>
