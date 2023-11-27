@@ -273,7 +273,7 @@ export default {
 }
 
 .navbar-brand {
-  margin-right: 0; /* Reset the margin for the navbar-brand */
+  margin-right: 0;
 }
 
 .transparent-background {

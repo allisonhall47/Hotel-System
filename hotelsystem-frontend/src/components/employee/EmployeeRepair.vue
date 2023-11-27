@@ -213,13 +213,6 @@ export default {
 
 <style scoped>
 
-/*@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');*/
-
-/*h2 {*/
-/*  font-family: 'Times New Roman', sans-serif;*/
-/*}*/
-
-
 container {
   display: flex;
   justify-content: space-between;

@@ -123,7 +123,7 @@ export default {
   right: 0;
 }
 .card {
-  width: 100%; /* Use 100% for responsiveness */
+  width: 100%;
 }
 
 .input-group-prepend {
@@ -131,10 +131,10 @@ export default {
 }
 
 .navbar-brand {
-  margin-right: 0; /* Reset the margin for the navbar-brand */
+  margin-right: 0;
 }
 
 .transparent-background {
-  background-color: rgba(255, 255, 255, 0.3); /* You can replace this color code with your desired dark color */
+  background-color: rgba(255, 255, 255, 0.3);
 }
 </style>

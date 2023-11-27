@@ -308,12 +308,12 @@ export default {
 
 <style scoped>
 .navbar-brand {
-  margin-right: 0; /* Reset the margin for the navbar-brand */
+  margin-right: 0;
 }
 
 
 .transparent-background {
-  background-color: rgba(136, 136, 136, 0.4); /* You can replace this color code with your desired dark color */
+  background-color: rgba(136, 136, 136, 0.4);
 }
 
 .navbar-container {
@@ -338,7 +338,7 @@ export default {
 }
 
 .room-info:not(:last-child) {
-  margin-bottom: 20px; /* Add space between room combinations except for the last one */
+  margin-bottom: 20px;
 }
 
 .custom-book-button {
@@ -359,7 +359,7 @@ export default {
 }
 
 .room-image:hover {
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Adjust the shadow on hover as needed */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 </style>

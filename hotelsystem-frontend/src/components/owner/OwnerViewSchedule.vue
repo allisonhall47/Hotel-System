@@ -351,8 +351,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh; /* 100% of the viewport height */
-  margin: 0; /* Remove default margin */
+  height: 100vh;
+  margin: 0;
 }
 
 .table-container {
@@ -374,7 +374,7 @@ body {
 table {
   border-collapse: collapse;
   margin: 0 auto;
-  width: 100%; /* Adjust the width as needed */
+  width: 100%;
 }
 
 th, td {
