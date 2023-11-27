@@ -17,18 +17,24 @@
                 <a class="nav-link clickable-text" @click="Home">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link clickable-text" @click="Employee">Account</a> <!--employee account-->
+                <a class="nav-link" href="#">Manage Employees<span class="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link clickable-text" @click="Repairs">Log Repair</a>
+                <a class="nav-link clickable-text" @click="Repair">Manage Repairs</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link clickable-text" @click="ViewSchedule">View Schedule</a>
+                <a class="nav-link clickable-text" @click="Rooms">Manage Rooms</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link clickable-text" @click="Schedule">Schedule</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link clickable-text" @click="Account">Account</a>
               </li>
               <li class="nav-item active">
-                <a class="nav-link" href="#">View Reservations<span class="sr-only">(current)</span></a>
+                <a class="nav-link clickable-text" @click="Reservations">View Reservations</a>
               </li>
-              <li>
+              <li class="nav-item">
                 <a class="nav-link clickable-text" @click="LogOut">Log Out</a>
               </li>
             </ul>
@@ -46,7 +52,7 @@
               <button class="dropdown-button" @click="SelectCustomerFilter">Customer</button>
             </div>
           </div>
-          <input v-model="filteredCustomerEmail" v-if="reservationsFilter==2" type="text" id="scheduleEmployeeFilter" name="scheduleEmployeeFilter" class="styledinput"
+          <input v-model="filteredCustomerEmail" v-if="reservationsFilter==2" type="text" id="scheduleOwnerFilter" name="scheduleOwnerFilter" class="styledinput"
                  @keyup.enter="getReservations" placeholder="Customer Email">
         </div>
 
@@ -151,7 +157,7 @@ function Reservation(reservationId, numPeople, checkin, checkOut, totalPrice, pa
 }
 
 export default {
-  name: 'EmployeeReservation',
+    name: 'Owner Reservation',
   data() {
     return {
       reservations: [],
@@ -268,20 +274,29 @@ export default {
       this.reservationsFilterName = 'Customer'
       this.reservationsFilter = 2
     },
-    async Home() {
-      await this.$router.push({path: '/EmployeeHome/' + this.email + '/' + this.name})
+    async Home(){
+      await this.$router.push({path: '/OwnerHome/' + this.email})
     },
-    async Repairs() {
-      await this.$router.push({path: '/EmployeeRepair/' + this.email + '/' + this.name})
+    async ManageEmployees(){
+      await this.$router.push({path: '/OwnerManageEmployees/' + this.email})
     },
-    async Employee() {
-      await this.$router.push({path: '/EmployeeAccount/' + this.email + '/' + this.name})
+    async Repair(){
+      await this.$router.push({path: '/OwnerRepair/' + this.email})
     },
-    async ViewSchedule() {
-      await this.$router.push({path: '/EmployeeSchedule/' + this.email + '/' + this.name})
+    async Rooms(){
+      await this.$router.push({path: '/owner/manage_rooms/' + this.email})
     },
-    async LogOut() {
+    async Account(){
+      await this.$router.push({path: '/OwnerAccount/' + this.email})
+    },
+    async LogOut(){
       await this.$router.push({name: 'Home'})
+    },
+    async Schedule(){
+      await this.$router.push({path: '/owner-view-schedule/' + this.email})
+    },
+    async Reservations(){
+      await this.$router.push({path: '/OwnerReservation/' + this.email + this.name})
     },
   },
 }
@@ -389,7 +404,10 @@ th {
   color: #4e555b;
 }
 
-
+/*.prettyheader {*/
+/*  color: #721c24;*/
+/*  margin-bottom: 10%;*/
+/*}*/
 .prettyheader {
   margin-bottom: 10%;
   font-family: 'Montserrat', sans-serif;
@@ -397,6 +415,7 @@ th {
   letter-spacing: 3px;
 }
 
+/* Dropdown styles */
 .dropdown {
   position: relative;
   display: inline-block;

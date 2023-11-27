@@ -149,7 +149,7 @@ public class RoomServiceTests {
     @Test
     public void testUpdateRoom(){
         Room oldRoom = new Room("Suite", 999, BedType.King, 4);
-        Room room = new Room("Suite", 1499, BedType.King, 4);
+        Room room = new Room("Suite", 950, BedType.King, 4);
         when(roomRepository.findRoomByType("Suite")).thenReturn(oldRoom);
         when(roomRepository.save(oldRoom)).thenReturn(oldRoom);
         Room result = roomService.updateRoom(room);
@@ -158,7 +158,7 @@ public class RoomServiceTests {
 
     @Test
     public void testUpdateRoomNonExistingRoom(){
-        Room room = new Room("Suite", 1499, BedType.King, 4);
+        Room room = new Room("Suite", 950, BedType.King, 4);
         when(roomRepository.findRoomByType("Suite")).thenReturn(null);
         HRSException e = assertThrows(HRSException.class, () -> roomService.updateRoom(room));
         assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);

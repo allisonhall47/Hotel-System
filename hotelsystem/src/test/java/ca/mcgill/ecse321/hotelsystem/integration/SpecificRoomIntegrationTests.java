@@ -38,7 +38,7 @@ public class SpecificRoomIntegrationTests {
     @BeforeAll
     public void clearDatabase() {
         specificRoomRepository.deleteAll();
-        Room room = new Room("Suite", 1499, BedType.King, 4);
+        Room room = new Room("Suite", 950, BedType.King, 4);
         roomRepository.save(room);
     }
 

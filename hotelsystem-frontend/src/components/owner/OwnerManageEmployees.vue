@@ -31,6 +31,9 @@
                 <a class="nav-link clickable-text" @click="Account">Account</a>
               </li>
               <li class="nav-item">
+                <a class="nav-link clickable-text" @click="Reservations">View Reservations</a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link clickable-text" @click="LogOut">Log Out</a>
               </li>
             </ul>
@@ -270,6 +273,9 @@ export default {
     },
     async Schedule(){
       await this.$router.push({path: '/owner-view-schedule/' + this.email})
+    },
+    async Reservations(){
+      await this.$router.push({path: '/OwnerReservation/' + this.email + '/' + this.name})
     },
 
     fetchAllEmployees() {
