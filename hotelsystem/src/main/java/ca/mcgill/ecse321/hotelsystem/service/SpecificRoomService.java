@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -163,25 +164,28 @@ public class SpecificRoomService {
         return specificRoomRepository.save(oldSpecificRoom);
     }
 
-    @Transactional
     public List<SpecificRoom> getAvailableSpecificRoomByType(LocalDate checkIn, LocalDate checkOut, String type) {
         List<SpecificRoom> specificRooms = specificRoomRepository.findSpecificRoomsByRoom_Type(type);
         List<ReservedRoom> reservedRooms = reservedRoomRepository.findAll();
+        List<SpecificRoom> roomsToRemove = new ArrayList<>();
+
         for (SpecificRoom room : specificRooms) {
             for (ReservedRoom reservedRoom : reservedRooms) {
                 SpecificRoom specificRoom = reservedRoom.getSpecificRoom();
                 if (specificRoom.getNumber() == room.getNumber()) {
                     Reservation reservation = reservedRoom.getReservation();
-                    if((reservation.getCheckIn().isBefore(checkOut) && reservation.getCheckIn().isAfter(checkIn)) ||
-                            (reservation.getCheckOut().isBefore(checkOut) && reservation.getCheckOut().isAfter(checkIn)) ||
-                            (reservation.getCheckIn().isBefore(checkOut) && reservation.getCheckOut().isAfter(checkIn))) {
-                        specificRooms.remove(room);
+                    if ((reservation.getCheckIn().isBefore(checkOut) && reservation.getCheckOut().isAfter(checkIn)) ||
+                            (reservation.getCheckIn().isEqual(checkIn) || reservation.getCheckOut().isEqual(checkOut))) {
+                        roomsToRemove.add(room);
                         break;
                     }
                 }
             }
         }
+
+        specificRooms.removeAll(roomsToRemove);
         return specificRooms;
     }
+
 
 }
