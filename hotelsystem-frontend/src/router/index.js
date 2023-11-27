@@ -28,6 +28,7 @@ import CustomerReservation from "../components/customer/CustomerReservation.vue"
 import SuggestRoomsCustomer from "../components/customer/SuggestRoomsCustomer.vue";
 import ConfirmReservation from "../components/customer/ConfirmReservation.vue";
 import BookedConfirmationCustomer from "../components/customer/BookedConfirmationCustomer.vue";
+import OwnerReservation from "../components/owner/OwnerReservation";
 
 Vue.use(Router)
 
@@ -165,8 +166,15 @@ export default new Router({
     },
 
     {
+      path: '/OwnerReservation/:param1/:param2',
+      component: OwnerReservation,
+    },
+
+    {
       path: '/BookedConfirmation/',
       component: BookedConfirmation,
     },
+
+
   ]
 })
