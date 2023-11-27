@@ -47,7 +47,7 @@ public class ReservedRoomService {
         reservation = reservedRoom.getReservation();
         //TODO check if it works
         long days = ChronoUnit.DAYS.between(reservation.getCheckIn(), reservation.getCheckOut());
-        reservation.setTotalPrice(reservedRoom.getSpecificRoom().getRoom().getRate()*(int)days);
+        reservation.setTotalPrice((reservedRoom.getSpecificRoom().getRoom().getRate()*(int)days) + reservation.getTotalPrice()); //add additional price to the initial one
         reservationRepository.save(reservation);
         reservedRoom.setReservation(reservation);
         reservedRoom = reservedRoomRepository.save(reservedRoom);
