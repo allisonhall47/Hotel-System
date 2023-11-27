@@ -41,7 +41,7 @@
             <!-- Repair Request Form -->
             <div class="col-lg-5 mb-5">
               <div class="prettyheader">
-                <h3>SUBMIT REPAIR REQUEST</h3>
+                <h3>SUBMIT REPAIR</h3>
               </div>
               <form @submit.prevent="submitRepair">
 
@@ -225,16 +225,8 @@ container {
   justify-content: space-between;
 }
 
-.repair-list-container {
-  padding-top: 20px; /* Adjust this value to move the repair list up */
-  height: calc(100vh - 200px); /* Adjust the 200px to increase or decrease the space for the repair list */
-  overflow-y: auto; /* Allows scrolling if the list is long */
-}
 .form-group {
   margin-bottom: 15px;
-}
-.list-group-item {
-  margin-top: 5px;
 }
 .navbar-brand {
   margin-right: 0;
@@ -290,11 +282,9 @@ container {
 }
 
 .prettyheader {
-  /*margin-bottom: 3%;*/
   font-family: 'Montserrat', sans-serif;
   color: #888;
   letter-spacing: 2px;
-  /*font-size: 10px;*/
 }
 
 

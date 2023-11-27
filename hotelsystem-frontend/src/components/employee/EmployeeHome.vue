@@ -1,53 +1,3 @@
-<!--<template>-->
-<!--  <div>-->
-<!--    <div id = "main"></div>-->
-<!--    <div class="hero-section">-->
-<!--      <div class="navbar-container">-->
-<!--        <nav class="navbar navbar-expand-lg navbar-light transparent-background">-->
-<!--          <a class="navbar-brand" href="#">-->
-<!--            <img src="../../assets/marwaniottNoBG.png" alt="Your Logo" height="60">-->
-<!--          </a>-->
-<!--          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">-->
-<!--            <span class="navbar-toggler-icon"></span>-->
-<!--          </button>-->
-<!--          <div class="collapse navbar-collapse justify-content-end" id="navbarNav">-->
-<!--            <ul class="navbar-nav">-->
-<!--              <li class="nav-item active">-->
-<!--                <a class="nav-link" href="#">Home<span class="sr-only">(current)</span></a> &lt;!&ndash;CURRENT&ndash;&gt;-->
-<!--              </li>-->
-<!--              <li class="nav-item">-->
-<!--                <a class="nav-link clickable-text" @click="Employee">Account</a> &lt;!&ndash;employee account&ndash;&gt;-->
-<!--              </li>-->
-<!--              <li class="nav-item">-->
-<!--                <a class="nav-link clickable-text" @click="Repair">Log Repair</a> &lt;!&ndash;employee repair&ndash;&gt;-->
-<!--              </li>-->
-<!--              <li class="nav-item">-->
-<!--                <a class="nav-link clickable-text" @click="ViewSchedule">View Schedule</a> &lt;!&ndash;view employee schedule&ndash;&gt;-->
-<!--              </li>-->
-<!--              <li class="nav-item">-->
-<!--                <a class="nav-link clickable-text" @click="Reservations">View Reservations</a>-->
-<!--              </li>-->
-<!--              <li>-->
-<!--                <a class="nav-link clickable-text" @click="LogOut">Log Out</a>-->
-<!--              </li>-->
-<!--            </ul>-->
-<!--          </div>-->
-<!--        </nav>-->
-<!--      </div>-->
-<!--      <div class="main-container">-->
-<!--        <div class="container">-->
-<!--          <div class="row">-->
-<!--            <div class="col-md-12 mx-auto text-center">-->
-<!--              <h1 class="text-center" style="font-family: 'Montserrat', serif; color: white; letter-spacing: 5px; font-size: 45px;" >MARWANIOTT HOTEL EMPLOYEE PORTAL</h1>-->
-<!--              <p class="luxurious-text" style="font-weight: normal; color: #ffffff; font-size: 20px;">Welcome, {{name}}! </p>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</template>-->
-
 <template>
   <div>
     <div id = "main"></div>
@@ -119,7 +69,6 @@
     </div>
   </div>
 </template>
-
 <script>
 
 export default {
@@ -213,43 +162,5 @@ export default {
   background-color: rgba(255, 255, 255, 0.6);
 }
 
-
-
-/*.navbar-brand {*/
-/*  margin-right: 0;*/
-/*}*/
-
-/*.hero-section {*/
-/*  background: url('../../assets/hotelLobby.jpeg') center/cover no-repeat;*/
-/*  min-height: 100vh;*/
-/*  position: relative;*/
-/*}*/
-
-/*.transparent-background {*/
-/*  background-color: rgba(255, 255, 255, 0.6);*/
-/*}*/
-
-/*.navbar-container {*/
-/*  position: absolute;*/
-/*  top: 0;*/
-/*  left: 0;*/
-/*  right: 0;*/
-/*}*/
-
-/*.clickable-text:hover {*/
-/*  cursor: pointer;*/
-/*  color: white !important;*/
-/*}*/
-
-/*.main-container {*/
-/*  display: flex;*/
-/*  align-items: center;*/
-/*  justify-content: center;*/
-/*  height: 100vh;*/
-/*}*/
-
-/*.container {*/
-/*  text-align: center;*/
-/*}*/
 
 </style>

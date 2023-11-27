@@ -173,7 +173,7 @@ body {
   top: 25%;
   left: 10%;
   right: 10%;
-  min-height: 300px;
+  min-height: 500px;
 }
 
 .buttons-container {

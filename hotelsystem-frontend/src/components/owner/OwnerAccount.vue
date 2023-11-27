@@ -1,5 +1,5 @@
+
 <template>
-  <div class="hero-section">
   <div class="ownerAccount">
     <div class="background">
       <div class="navbar-container">
@@ -13,22 +13,25 @@
           <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link" @click="Home">Home</a>
+                <a class="nav-link clickable-text" @click="Home">Home</a>
               </li>
               <li class="nav-item">
-                 <a class="nav-link" @click="ManageEmployees">Manage Employees</a>
+                <a class="nav-link clickable-text" @click="ManageEmployees">Manage Employees</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="Repair">Manage Repairs</a>
+                <a class="nav-link clickable-text" @click="Repair">Manage Repairs</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="Rooms">Manage Rooms</a>
+                <a class="nav-link clickable-text" @click="Rooms">Manage Rooms</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link clickable-text" @click="Schedule">Schedule</a>
               </li>
               <li class="nav-item active">
-                <a class="nav-link" @click="Account">Account</a>
+                <a class="nav-link" href="#">Account<span class="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="LogOut">Log Out</a>
+                <a class="nav-link clickable-text" @click="LogOut">Log Out</a>
               </li>
             </ul>
           </div>
@@ -37,12 +40,12 @@
 
       <div class="profile-box">
         <div class="container rounded bg-white mt-5 mb-5 account-box shadow">
-        <div class="row">
-          <div class="col-md-3 border-right">
-            <div class="d-flex flex-column align-items-center justify-content-center text-center p-3 py-5 image-pos">
-              <img class="rounded-circle" width="200px" src="../../assets/anonymousicon.png" alt="Profile Photo">
+          <div class="row">
+            <div class="col-md-3 border-right">
+              <div class="d-flex flex-column align-items-center justify-content-center text-center p-3 py-5 image-pos">
+                <img class="rounded-circle" width="100%" src="../../assets/anonymousicon.png" alt="Profile Photo">
+              </div>
             </div>
-          </div>
             <div class="col-md-9">
               <div class="p-3 py-5">
                 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -53,32 +56,26 @@
                   <div class="row mt-3">
                     <div class="col-md-6">
                       <label class="labels">Name</label>
-                      <!--                    <input type="text" class="form-control" placeholder="name" value=email>-->
                       <input class="form-control" id="name" v-model="name" readonly>
                     </div>
                     <div class="col-md-6">
                       <label class="labels">Email</label>
-                      <!--                    <input type="text" class="form-control" placeholder="email" value="">-->
                       <input class="form-control" id="email" :value="email" readonly>
                     </div>
                     <div class="col-md-6">
                       <label class="labels">Password</label>
-                      <!--                    <input type="text" class="form-control" placeholder="***********" value="">-->
-                      <input class="form-control" id="password" v-model="hiddenPassword" readonly>
+                      <input class="form-control" id="password" type="password" v-model="password" readonly>
                     </div>
                     <div class="col-md-6">
                       <label class="labels">Address</label>
-                      <!--                    <input type="text" class="form-control" placeholder="enter address" value="">-->
                       <input class="form-control" id="address" v-model="address" readonly>
                     </div>
                     <div class="col-md-12">
                       <label class="labels">Date of Birth</label>
-                      <!--                    <input type="date" class="form-control" value="">-->
-                      <input class="form-control" id="address" v-model="dob" readonly>
+                      <input class="form-control" id="dob" type="date" v-model="dob" readonly>
                     </div>
                   </div>
                 </div>
-
                 <div class="mt-5 text-center">
                   <div class="row">
                     <div class="col-md-6">
@@ -95,7 +92,6 @@
         </div>
       </div>
     </div>
-  </div>
   </div>
 </template>
 
@@ -119,7 +115,6 @@ export default {
       address: '',
       dob: '',
       errorMsg: '',
-      hiddenPassword: '',
       accountNumber: 0,
       email: "",
     };
@@ -127,7 +122,6 @@ export default {
 
   created(){
     this.email = this.$route.params.param1
-    console.log(this.email);
     axiosClient.get("/owner/email?email=" + this.email)
       .then((response) => {
         this.name = response.data.name;
@@ -138,13 +132,11 @@ export default {
             this.address = response.data.address;
             this.dob = response.data.dob;
             this.password = response.data.password;
-            this.hiddenPassword = '*'.repeat(this.password.length);
           })
           .catch((err) => {
             this.errorMsg = `Failure: ${err.response.data}`
             alert(this.errorMsg)
           })
-
       })
       .catch((err) => {
         this.errorMsg = `Failure: ${err.response.data}`
@@ -153,48 +145,45 @@ export default {
   },
   methods: {
     async saveInfo(){
-      this.password = document.getElementById("password").value;
       this.name = document.getElementById("name").value;
       this.address = document.getElementById("address").value;
-
-      axiosClient.get("/owner?email=" + this.email)
-        .then((response) => {
-          this.accountNumber = response.data.accountNumber;
-        })
-        .catch((err) => {
-          this.errorMsg = `Failure: ${err.response.data}`
-          alert(this.errorMsg)
-        })
+      this.password = document.getElementById("password").value;
+      this.dob = document.getElementById("dob").value;
 
       const account_request = {password: this.password, address: this.address, dob: this.dob};
       axiosClient.put("/account/" + this.accountNumber, account_request)
         .then((response) => {
           this.password = response.data.password;
           this.address = response.data.address;
+          this.dob = response.data.dob;
+
+          const owner_request = {name: this.name, email: this.email, accountNumber: this.accountNumber}
+          axiosClient.put("/owner/update", owner_request)
+            .then((response) => {
+              this.name = response.data.name;
+              alert("Account successfully updated.")
+
+              document.getElementById('name').setAttribute('readonly', 'true');
+              document.getElementById('password').setAttribute('readonly', 'true');
+              document.getElementById('address').setAttribute('readonly', 'true');
+              document.getElementById('dob').setAttribute('readonly', 'true');
+
+            })
+            .catch((err) => {
+              this.errorMsg = `Failure: ${err.response.data}`
+              alert(this.errorMsg)
+            })
         })
         .catch((err) => {
           this.errorMsg = `Failure: ${err.response.data}`
           alert(this.errorMsg)
         })
-
-      const owner_request = {name: this.name, email: this.email, accountNumber: this.accountNumber}
-      axiosClient.put("/owner/update", owner_request)
-        .then((response) => {
-          this.name = response.data.name;
-        })
-        .catch((err) => {
-          this.errorMsg = `Failure: ${err.response.data}`
-          alert(this.errorMsg)
-        })
-
-      document.getElementById('name').setAttribute('readonly', 'true');
-      document.getElementById('password').setAttribute('readonly', 'true');
-      document.getElementById('address').setAttribute('readonly', 'true');
     },
     async editInfo(){
       document.getElementById('name').removeAttribute('readonly');
       document.getElementById('password').removeAttribute('readonly');
       document.getElementById('address').removeAttribute('readonly');
+      document.getElementById('dob').removeAttribute('readonly');
     },
     async Home(){
       await this.$router.push({path: '/OwnerHome/' + this.email})
@@ -208,13 +197,12 @@ export default {
     async Rooms(){
       await this.$router.push({path: '/owner/manage_rooms/' + this.email})
     },
-    async Account(){
-      await this.$router.push({path: '/OwnerAccount/' + this.email})
-    },
     async LogOut(){
       await this.$router.push({name: 'Home'})
     },
-
+    async Schedule(){
+      await this.$router.push({path: '/owner-view-schedule/' + this.email})
+    },
   }
 };
 
@@ -225,6 +213,7 @@ export default {
   width: 100%;
   height: 100%;
   position: absolute;
+  background: url('../../assets/hotelLobby.jpeg') center center no-repeat;
   background-size: cover;
 }
 
@@ -248,10 +237,6 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-.navbar-container .navbar.transparent-background {
-  background-color: rgba(136, 136, 136, 0.3);
 }
 
 .form-control:focus {
@@ -284,7 +269,6 @@ export default {
 }
 
 .savebutton:hover {
-  border: #888888;
   background-color: #888888;
   border: 2px solid #888888;
   color: white;
@@ -292,6 +276,10 @@ export default {
 
 .labels {
   font-size: 11px
+}
+
+.transparent-background {
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .navbar-container {
@@ -308,18 +296,9 @@ export default {
   left: 20%;
 }
 
-.nav-link:hover {
+.clickable-text:hover {
   cursor: pointer;
-}
-
-.transparent-background {
-  background-color: rgba(255, 255, 255, 0.6) !important;
-}
-
-.hero-section {
-  background: url('../../assets/hotelLobby.jpeg') center/cover no-repeat;
-  min-height: 100vh; /* Full viewport height */
-  position: relative; /* This is important for absolute positioning inside */
+  color: white !important;
 }
 
 </style>

@@ -13,88 +13,95 @@
           <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link" @click="Home">Home</a>
+                <a class="nav-link clickable-text" @click="Home">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="ManageEmployees">Manage Employees</a>
+                <a class="nav-link clickable-text" @click="ManageEmployees">Manage Employees</a>
               </li>
               <li class="nav-item active">
                 <a class="nav-link" href="#">Manage Repairs<span class ="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="Rooms">Manage Rooms</a>
+                <a class="nav-link clickable-text" @click="Rooms">Manage Rooms</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="Account">Manage Account</a>
+                <a class="nav-link clickable-text" @click="Schedule">Schedule</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="LogOut">Logout</a>
+                <a class="nav-link clickable-text" @click="Account">Manage Account</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link clickable-text" @click="LogOut">Logout</a>
               </li>
             </ul>
           </div>
         </nav>
       </div>
 
-      <!--put rest of page here-->
-      <div class="container mt-5">
-        <div class="row">
+      <div class="table-container">
+        <div class="container mt-5">
+          <div class="row">
 
-          <!-- Repair Request Form -->
-          <div class="col-lg-4.5 mb-5">
-            <h2>Submit Repair Request</h2>
-            <form @submit.prevent="submitRepair">
-
-              <!-- Description Field -->
-              <div class="form-group">
-                <label for="description">Description:</label>
-                <textarea class="form-control" id="description" v-model="repair.description" required></textarea>
+            <!-- Repair Request Form -->
+            <div class="col-lg-5 mb-5">
+              <div class="prettyheader">
+                <h3>SUBMIT REPAIR</h3>
               </div>
-              <!-- Employee Assign Dropdown -->
-              <!-- Dropdown to select an employee -->
-              <select v-model="repair.selectedEmployeeEmail">
-                <option disabled value="">Assign to:</option>
-                <option v-for="employee in employees" :value="employee.email">{{ employee.name }}</option>
-              </select>
-              <!-- Submit Button -->
-              <button @click="submitRepair()" type="button" class="btn btn-primary">Submit</button>
-            </form>
-          </div>
+              <form @submit.prevent="submitRepair">
 
-          <!-- Repair List -->
-          <div class="col-lg-8">
-            <h2>Repair List</h2>
-            <table class="table">
-              <thead>
-              <tr>
-                <th>Status</th>
-                <th>Description</th>
-                <th>Assigned: </th>
-                <th>Assign To </th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr v-for="repair in repairs" :key="repair.id">
-                <td>
-                  <select v-model="repair.status" @change="updateStatus(repair.repairId, repair.status)">
-                    <option disabled value="">Please select one:</option>
-                    <option v-for="status in statuses" :value="status">{{ status }}</option>
-                  </select>
-                </td>
-                <td>{{ repair.description }}</td>
-                <td>{{ repair.employeeName || 'Loading...' }}</td> <!-- Assuming the employee's email is the identifier -->
-                <td>
-                  <select v-model="repair.employee" @change="assignEmployee(repair.repairId, repair.employee)">
-                    <option disabled value="">Please select one:</option>
-                    <option v-for="employee in employees" :value="employee.email">{{ employee.name }}</option>
-                  </select>
-                </td>
-              </tr>
-              </tbody>
-            </table>
+                <!-- Description Field -->
+                <div class="form-group">
+                  <label for="description">Description:</label>
+                  <textarea class="form-control" id="description" v-model="repair.description" required></textarea>
+                </div>
+                <!-- Employee Assign Dropdown -->
+                <!-- Dropdown to select an employee -->
+                <select v-model="repair.selectedEmployeeEmail">
+                  <option disabled value="">Assign to:</option>
+                  <option v-for="employee in employees" :value="employee.email">{{ employee.name }}</option>
+                </select>
+                <!-- Submit Button -->
+                <button @click="submitRepair()" type="button" class="btn btn-primary submitbutton">Submit</button>
+              </form>
+            </div>
+
+            <!-- Repair List -->
+            <div class="col-lg-7">
+              <div class="prettyheader">
+                <h3>REPAIR LIST</h3>
+              </div>
+              <table class="table table-bordered">
+                <thead>
+                <tr>
+                  <th>Status</th>
+                  <th>Description</th>
+                  <th>Assigned: </th>
+                  <th>Assign To </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="repair in repairs" :key="repair.id">
+                  <td>
+                    <select v-model="repair.status" @change="updateStatus(repair.repairId, repair.status)">
+                      <option disabled value="">Please select one:</option>
+                      <option v-for="status in statuses" :value="status">{{ status }}</option>
+                    </select>
+                  </td>
+                  <td>{{ repair.description }}</td>
+                  <td>{{ repair.employeeName || 'Loading...' }}</td> <!-- Assuming the employee's email is the identifier -->
+                  <td>
+                    <select v-model="repair.employee" @change="assignEmployee(repair.repairId, repair.employee)">
+                      <option disabled value="">Please select one:</option>
+                      <option v-for="employee in employees" :value="employee.email">{{ employee.name }}</option>
+                    </select>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </template>
@@ -157,6 +164,9 @@ export default {
     },
     async Rooms(){
       await this.$router.push({path: '/owner/manage_rooms/' + this.email})
+    },
+    async Schedule(){
+      await this.$router.push({path: '/owner-view-schedule/' + this.email})
     },
 
 
@@ -248,7 +258,6 @@ export default {
       // Pass the statusPayload as a JSON string
       axiosClient.post('repair/status/' + repairId, JSON.stringify(statusPayload), config)
         .then(() => {
-          alert('Status updated successfully');
           // Optional: Refresh the list of repairs or update the UI accordingly
           window.location.reload();
         })
@@ -309,13 +318,13 @@ export default {
 }
 
 .hero-section {
-  background: url('../../assets/hotelView.png') center/cover no-repeat;
-  padding: 300px 0;
-  text-align: center;
+  background: url('../../assets/hotelLobby.jpeg') center/cover no-repeat;
+  min-height: 100vh;
+  position: relative;
 }
 
 .transparent-background {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.6);
 }
 
 .navbar-container {
@@ -326,6 +335,44 @@ export default {
 }
 .nav-link:hover {
   cursor: pointer;
+}
+
+.clickable-text:hover {
+  cursor: pointer;
+  color: white !important;
+}
+
+.table-container {
+  background-color: rgba(255, 255, 255, 1);
+  padding: 2%;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: 25%;
+  left: 10%;
+  right: 10%;
+  min-height: 500px;
+}
+
+.prettyheader {
+  font-family: 'Montserrat', sans-serif;
+  color: #888;
+  letter-spacing: 2px;
+}
+
+.submitbutton {
+  width: 40%;
+  margin-top: 5%;
+  margin-right: 60%;
+  background-color: white;
+  border: 2px solid #888888;
+  color: #888888;
+}
+
+.submitbutton:hover {
+  background-color: #888888;
+  border: 2px solid #888888;
+  color: white;
 }
 
 

@@ -35,41 +35,27 @@ public class HotelsystemApplication {
 				//customerService.createCustomer(new Customer("anniegouchee@gmail.com","Annie", c));
 				Account d = accountService.createAccount(new Account("EmployeeAccount123", "The Marwaniott", LocalDate.of(1990,2,2)));
 				employeeService.createEmployee(new Employee("louis@themarwaniott.com","Louis", 8000, d));
-        
-        Room regRoom = roomService.createRoom(new Room("Regular", 899, BedType.Queen, 2));
+
+				Room regRoom = roomService.createRoom(new Room("Regular", 899, BedType.Queen, 2));
 				Room deleuxeRoom = roomService.createRoom(new Room("Deluxe", 1299, BedType.Queen, 4));
 				Room luxuryRoom = roomService.createRoom(new Room("Luxury", 1499, BedType.King, 2));
 				Room suite = roomService.createRoom(new Room("Suite", 1999, BedType.King, 4));
 				int num = 100;
 				for (int i = 0; i < 10; i++) {
-					SpecificRoom specificRoom = specificRoomService.createSpecificRoom(new SpecificRoom(num+i, ViewType.Mountain, "such a nice room", Boolean.TRUE, suite));
+					SpecificRoom specificRoom = specificRoomService.createSpecificRoom(new SpecificRoom(num+i, ViewType.Mountain, "Suite with two king beds.", Boolean.TRUE, suite));
 				}
 				for (int i = 10; i < 20; i++) {
-					SpecificRoom specificRoom = specificRoomService.createSpecificRoom(new SpecificRoom(num+i, ViewType.Mountain, "such a nice room", Boolean.TRUE, deleuxeRoom));
+					SpecificRoom specificRoom = specificRoomService.createSpecificRoom(new SpecificRoom(num+i, ViewType.Mountain, "Deluxe room with two queen beds.", Boolean.TRUE, deleuxeRoom));
 				}
 				for (int i = 20; i < 30; i++) {
-					SpecificRoom specificRoom = specificRoomService.createSpecificRoom(new SpecificRoom(num+i, ViewType.Mountain, "such a nice room", Boolean.TRUE, luxuryRoom));
+					SpecificRoom specificRoom = specificRoomService.createSpecificRoom(new SpecificRoom(num+i, ViewType.Mountain, "Luxury room with one king bed.", Boolean.TRUE, luxuryRoom));
 				}
-				for (int i = 30; i < 70; i++) {
-					SpecificRoom specificRoom = specificRoomService.createSpecificRoom(new SpecificRoom(num+i, ViewType.Mountain, "such a nice room", Boolean.TRUE, regRoom));
+				for (int i = 30; i < 50; i++) {
+					SpecificRoom specificRoom = specificRoomService.createSpecificRoom(new SpecificRoom(num+i, ViewType.Village, "Regular room with one queen bed.", Boolean.TRUE, regRoom));
 				}
-			}
-			Room regRoom = roomService.createRoom(new Room("Regular", 899, BedType.Queen, 2));
-			Room deleuxeRoom = roomService.createRoom(new Room("Deluxe", 1299, BedType.Queen, 4));
-			Room luxuryRoom = roomService.createRoom(new Room("Luxury", 1499, BedType.King, 2));
-			Room suite = roomService.createRoom(new Room("Suite", 1999, BedType.King, 4));
-			int num = 100;
-			for (int i = 0; i < 10; i++) {
-				SpecificRoom specificRoom = specificRoomService.createSpecificRoom(new SpecificRoom(num+i, ViewType.Mountain, "such a nice room", Boolean.TRUE, suite));
-			}
-			for (int i = 10; i < 20; i++) {
-				SpecificRoom specificRoom = specificRoomService.createSpecificRoom(new SpecificRoom(num+i, ViewType.Mountain, "such a nice room", Boolean.TRUE, deleuxeRoom));
-			}
-			for (int i = 20; i < 30; i++) {
-				SpecificRoom specificRoom = specificRoomService.createSpecificRoom(new SpecificRoom(num+i, ViewType.Mountain, "such a nice room", Boolean.TRUE, luxuryRoom));
-			}
-			for (int i = 30; i < 70; i++) {
-				SpecificRoom specificRoom = specificRoomService.createSpecificRoom(new SpecificRoom(num+i, ViewType.Mountain, "such a nice room", Boolean.TRUE, regRoom));
+				for (int i = 50; i < 70; i++) {
+					SpecificRoom specificRoom = specificRoomService.createSpecificRoom(new SpecificRoom(num+i, ViewType.Forest, "Regular room with one queen bed.", Boolean.TRUE, regRoom));
+				}
 			}
 		};
 	}

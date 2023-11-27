@@ -25,6 +25,9 @@
                 <a class="nav-link" @click="Rooms">Manage Rooms</a>
               </li>
               <li class="nav-item">
+                <a class="nav-link clickable-text" @click="Schedule">Schedule</a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link" @click="Account">Account</a>
               </li>
               <li class="nav-item">
@@ -228,6 +231,9 @@ export default {
     async LogOut(){
       await this.$router.push({name: 'Home'})
     },
+    async Schedule(){
+      await this.$router.push({path: '/owner-view-schedule/' + this.email})
+    },
   }
 }
 </script>
@@ -235,10 +241,11 @@ export default {
 <style scoped>
 .background {
   width: 100%;
+  color: #c1cbd6;
   height: 100%;
   position: absolute;
-  background: url('../../assets/hotelView.png') center center no-repeat;
-  background-size: cover;
+  /*background: url('../../assets/hotelView.png') center center no-repeat;*/
+  /*background-size: cover;*/
 }
 
 .manage-room-container {
@@ -265,7 +272,7 @@ export default {
 }
 
 .transparent-background {
-  background-color: rgba(255, 255, 255, 0.3); /* You can replace this color code with your desired dark color */
+  background-color: rgba(255, 255, 255, 0.6);
 }
 
 th:nth-child(3),

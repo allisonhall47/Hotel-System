@@ -41,8 +41,8 @@
                 <!-- Display room information and count -->
                 <h5 style="font-family: 'Montserrat', sans-serif; color: #888; letter-spacing: 2px" >{{ count }} {{ roomType }} room(s)</h5>
                 <p style="font-family: 'Georgia', sans-serif">{{ getRoomDescription(roomType) }}</p>
-                <p style="font-family: 'Georgia', sans-serif">Price: {{ getTotalPrice(roomType, count) }}</p>
-                <p v-if="roomIndex === Object.keys(combination).length - 1" style="font-family: 'Georgia', sans-serif">Total Price: {{ getTotalCombinationPrice(combination) }}</p>
+                <p style="font-family: 'Georgia', sans-serif">Price: ${{ getTotalPrice(roomType, count) }}</p>
+                <p v-if="roomIndex === Object.keys(combination).length - 1" style="font-family: 'Georgia', sans-serif">Total Price: ${{ getTotalCombinationPrice(combination) }}</p>
                 <button v-if="roomIndex === Object.keys(combination).length - 1" class="btn btn-lg custom-book-button" @click="book(combination)">Book</button>
               </div>
             </div>
