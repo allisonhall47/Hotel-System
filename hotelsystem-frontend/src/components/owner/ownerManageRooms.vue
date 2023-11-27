@@ -16,10 +16,10 @@
                 <a class="nav-link" @click="Home">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="ManageEmployees">Manage Employees</a>
+                <a class="nav-link clickable-text" @click="ManageEmployees">Manage Employees</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="Repair">Manage Repairs</a>
+                <a class="nav-link clickable-text" @click="Repair">Manage Repairs</a>
               </li>
               <li class="nav-item active">
                 <a class="nav-link" @click="Rooms">Manage Rooms</a>
@@ -28,7 +28,7 @@
                 <a class="nav-link clickable-text" @click="Schedule">Schedule</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="Account">Account</a>
+                <a class="nav-link clickable-text" @click="Account">Account</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link clickable-text" @click="Reservations">View Reservations</a>
@@ -245,22 +245,21 @@ export default {
 </script>
 
 <style scoped>
+
 .background {
-  width: 100%;
-  color: #c1cbd6;
-  height: 100%;
-  position: absolute;
-  /*background: url('../../assets/hotelView.png') center center no-repeat;*/
-  /*background-size: cover;*/
+  background-color: white !important;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .manage-room-container {
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 1);
   padding: 2%;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   position: absolute;
-  top: 25%;
+  top: 15%;
   left: 3%;
   right: 3%;
   min-height: 300px;
@@ -278,7 +277,7 @@ export default {
 }
 
 .transparent-background {
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(136, 136, 136, 0.3);
 }
 
 th:nth-child(3),
@@ -363,4 +362,11 @@ td:nth-child(4){
 .nav-link:hover {
   cursor: pointer;
 }
+
+.clickable-text:hover {
+  cursor: pointer;
+  color: white !important;
+}
+
+
 </style>

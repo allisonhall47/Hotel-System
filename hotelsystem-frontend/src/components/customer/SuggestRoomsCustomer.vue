@@ -27,6 +27,9 @@
       </nav>
     </div>
     <div class="room-container">
+      <h1 class="text-left" style="font-family: 'Montserrat', sans-serif; color: #888; letter-spacing: 3px; font-size: 30px" >CHOOSE YOUR ROOMS</h1>
+      <div style="margin-top: 15px;"></div>
+
       <!-- Iterate over the list of room combinations -->
       <div v-for="(combination, index) in roomCombinations" :key="index" class="room-combination-box">
         <!-- Iterate over the keys in each combination object -->
@@ -77,10 +80,10 @@ export default {
       newGuests: 0,
       rooms: 0,
       customerEmail: '',
-      regularRoom: ['Regular', 899, 'Queen', 2],
-      deluxeRoom: ['Deluxe', 1299, 'Queen', 4],
-      luxuryRoom: ['Luxury', 1499, 'King', 2],
-      suite: ['Suite', 1999, 'King', 4],
+      regularRoom: ['Regular', 450, 'Queen', 2],
+      deluxeRoom: ['Deluxe', 600, 'Queen', 4],
+      luxuryRoom: ['Luxury', 950, 'King', 2],
+      suite: ['Suite', 1400, 'King', 4],
       roomCombinations: []
     }
   },
@@ -314,7 +317,8 @@ export default {
 }
 
 .navbar-container {
-  z-index: 1;
+  top: 0;
+  z-index: 1000;
 }
 
 .room-combination-box {
@@ -325,7 +329,9 @@ export default {
 }
 
 .room-container {
-  margin: 20px 40px;
+  margin-top: 100px;
+  margin-right: 40px;
+  margin-left: 40px;
   padding: 20px;
   border-radius: 8px;
   border: none;

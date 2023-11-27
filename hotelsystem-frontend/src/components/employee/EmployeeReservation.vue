@@ -57,7 +57,7 @@
             <th>Check in</th>
             <th>Checkout</th>
             <th>People</th>
-            <th>Total Price</th>
+<!--            <th>Total Price</th>-->
             <th>Paid</th>
             <th>Status</th>
             <th>Delete</th>
@@ -74,7 +74,7 @@
             <td>{{ res.checkin }}</td>
             <td>{{ res.checkOut }}</td>
             <td>{{ res.numPeople }}</td>
-            <td> {{res.totalPrice}}$</td>
+<!--            <td> {{res.totalPrice}}$</td>-->
             <td v-if="res.paid">Paid</td>
             <td v-if="!res.paid">
               <button @click="openConfirmationPopup(0, res.reservationId)" class="prettybutton">Pay</button>
@@ -389,10 +389,7 @@ th {
   color: #4e555b;
 }
 
-/*.prettyheader {*/
-/*  color: #721c24;*/
-/*  margin-bottom: 10%;*/
-/*}*/
+
 .prettyheader {
   margin-bottom: 10%;
   font-family: 'Montserrat', sans-serif;
@@ -400,7 +397,6 @@ th {
   letter-spacing: 3px;
 }
 
-/* Dropdown styles */
 .dropdown {
   position: relative;
   display: inline-block;
