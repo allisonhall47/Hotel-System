@@ -308,7 +308,8 @@ export default {
 }
 
 .navbar-container {
-  z-index: 1;
+  top: 0;
+  z-index: 1000;
 }
 
 .room-combination-box {
@@ -319,7 +320,9 @@ export default {
 }
 
 .room-container {
-  margin: 20px 40px;
+  margin-top: 100px;
+  margin-right: 40px;
+  margin-left: 40px;
   padding: 20px;
   border-radius: 8px;
   border: none;
