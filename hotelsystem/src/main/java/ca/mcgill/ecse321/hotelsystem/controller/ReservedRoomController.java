@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin(origins="*")
 @RestController
 public class ReservedRoomController {
 
@@ -25,6 +26,7 @@ public class ReservedRoomController {
 
     @Autowired
     RoomService roomService;
+
     @Autowired
     CustomerService customerService;
 

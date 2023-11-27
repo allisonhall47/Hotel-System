@@ -8,8 +8,20 @@ public class SpecificRoomRequestDto {
     private int number;
     private ViewType view;
     private String description;
-//    private Boolean openForUse;
+    private Boolean openForUse;
     private String roomType;
+
+    public SpecificRoomRequestDto() {
+
+    }
+
+    public SpecificRoomRequestDto(int number, ViewType view, String description, Boolean openForUse, String roomType){
+        this.number = number;
+        this.view = view;
+        this.description = description;
+        this.openForUse = openForUse;
+        this.roomType = roomType;
+    }
 
     public SpecificRoomRequestDto(int number, ViewType view, String description, String roomType){
         this.number = number;
@@ -19,7 +31,7 @@ public class SpecificRoomRequestDto {
     }
 
     public SpecificRoom toModel(Room room){
-        return new SpecificRoom(number, view, description, Boolean.TRUE, room);
+        return new SpecificRoom(number, view, description, openForUse, room);
     }
 
     public int getNumber() {
@@ -54,4 +66,11 @@ public class SpecificRoomRequestDto {
         this.roomType = roomType;
     }
 
+    public Boolean getOpenForUse() {
+        return openForUse;
+    }
+
+    public void setOpenForUse(Boolean openForUse) {
+        this.openForUse = openForUse;
+    }
 }

@@ -40,7 +40,7 @@ public class RoomIntegrationTests {
     @Order(1)
     public void testCreateValidRoom(){
         RoomRequestDto roomRequestDto = new RoomRequestDto("Luxury", 999, BedType.King, 3);
-        RoomRequestDto roomRequestDto2 = new RoomRequestDto("Suite", 1499, BedType.King, 5);
+        RoomRequestDto roomRequestDto2 = new RoomRequestDto("Suite", 950, BedType.King, 5);
         ResponseEntity<RoomResponseDto> roomResponse = client.postForEntity("/room/create", roomRequestDto, RoomResponseDto.class);
         ResponseEntity<RoomResponseDto> roomResponse2 = client.postForEntity("/room/create", roomRequestDto2, RoomResponseDto.class);
         assertEquals(HttpStatus.CREATED, roomResponse.getStatusCode());
@@ -74,7 +74,7 @@ public class RoomIntegrationTests {
     @Order(4)
     public void testGetAllRooms(){
         RoomRequestDto roomRequestDto = new RoomRequestDto("Luxury", 999, BedType.King, 4);
-        RoomRequestDto roomRequestDto2 = new RoomRequestDto("Suite", 1499, BedType.King, 5);
+        RoomRequestDto roomRequestDto2 = new RoomRequestDto("Suite", 950, BedType.King, 5);
         ResponseEntity<List> response = client.getForEntity("/rooms", List.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(response.getBody().size(), 2);
